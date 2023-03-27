@@ -13,7 +13,7 @@
       <a-button style="margin-top: 16px" @click="getPuntaje">Ver Puntaje</a-button>
     </div>
 
-    <a-modal v-model:visible="visible" title="MIS PUNTAJES" @ok="handleOk" style="width: 340px;">
+    <a-modal v-model:visible="visible" title="MIS PUNTAJES" @ok="handleOk" style="width: 340px; ">
       <div v-if="res != null">
         <div v-for="item in res.data.datos ">
             <Cardpuntje :datos="item"/>
@@ -28,7 +28,7 @@
 
 
 </template>
-
+ 
 <script setup>
 import Cardpuntje from './cardpuntaje.vue';
 import { Head } from '@inertiajs/vue3';
