@@ -1,0 +1,1 @@
+import{c as a,d as e,t,F as o,o as n}from"./app-6aed9f17.js";const c=e("h1",null,"Pagina Crear",-1),m={__name:"crear",props:["permisos"],setup(r){const s=r;return(p,l)=>(n(),a(o,null,[c,e("pre",null,t(s.permisos),1)],64))}};export{m as default};
