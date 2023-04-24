@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Provincia;
+use App\Models\Filial;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -78,10 +79,10 @@ class SeleccionDataController extends Controller
       return response()->json($this->response, 200);
   }
 
-  public function getSedes(){
+  public function getSedes(Request $request){
     $query_where = [];
     $res = Filial::select(
-        'id as key', 'nombre as value' 
+        'id as value', 'nombre as label' 
     )
       ->where($query_where)
       ->where(function ($query) use ($request) {

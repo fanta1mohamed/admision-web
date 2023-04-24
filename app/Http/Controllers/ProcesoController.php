@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Proceso;
+use App\Models\TipoProceso;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -82,6 +83,15 @@ class ProcesoController extends Controller
     $this->response['estado'] = true;
     $this->response['datos'] = $p;
     return response()->json($this->response, 200);
+  }
+
+  public function getTipoProceso(){
+
+    $res = DB::select('SELECT id as value, nombre as label FROM tipo_proceso');
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  
   }
 
 

@@ -71,6 +71,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/procesos', [ProcesoController::class, 'index'])->name('proceso-index');
     Route::get('/eliminar-proceso/{id}', [ProcesoController::class, 'deleteProceso']);
+    Route::get('/procesos/tipo-procesos', [ProcesoController::class, 'getTipoProceso']);
     Route::post('/procesos/get-procesos', [ProcesoController::class, 'getProcesos']);
     Route::post('/save-proceso', [ProcesoController::class, 'saveProceso']);
     //Route::get('/get-has-permission/{rol}', [BlogController::class, 'getPermission']);
@@ -87,6 +88,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/save-programa', [ProgramaController::class, 'savePrograma']);
     Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);
     Route::get('/eliminar-programa/{id}', [ProgramaController::class, 'deletePrograma']);
+    
 
     //MODALIDAD
     Route::get('/modalidad', [ModalidadController::class, 'index'])->name('modalidad-index');
@@ -96,8 +98,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     //GET DATA 
     Route::get('/get-facultades', [SeleccionDataController::class, 'getFacultades']);
+    Route::post('/procesos/get-sedes', [SeleccionDataController::class, 'getSedes']);
     Route::post('/get-departamentos', [SeleccionDataController::class, 'getDepartamento']);
     Route::get('/get-provincia-x-departamento/{cod}', [SeleccionDataController::class, 'getProvinciasPorDepartamento']);
+    
     
 });
 

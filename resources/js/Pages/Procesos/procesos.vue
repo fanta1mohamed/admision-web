@@ -3,7 +3,7 @@
 <AuthenticatedLayout>
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
 
-{{ buscar }}
+{{ tipoProcesos }}
 <row class="flex justify-between mb-4" >
   <div class="mr-3">
     <a-button type="primary" @click="showModalProceso">Nuevo</a-button>
@@ -40,7 +40,7 @@
 <div>
 
   <a-modal v-model:visible="visible" title="Nuevo Proceso" style="margin-top: -40px;">
-      <pre> {{ proceso }} </pre> 
+      <!-- <pre> {{ tipoProcesos }} </pre>  -->
       <a-form
         ref="formRef"
         name="custom-validation"
@@ -52,16 +52,23 @@
         @finishFailed="handleFinishFailed"
       >
         <a-form-item has-feedback label="Nombre" name="nombre">
-          <a-input type="text" v-model:value="proceso.nombre" autocomplete="off" />
+          <a-input type="text" style="width: 100%;" v-model:value="proceso.nombre" autocomplete="off" />
         </a-form-item>
         <a-form-item has-feedback label="Sede" name="sede">
-          <a-input type="text" v-model:value="proceso.sede" autocomplete="off" />
-        </a-form-item>
+          <a-select
+            ref="Tipo"
+            style="width: 100%"
+            @focus="focus"
+            @change="handleChange"
+            :options="sedes"
+            v-model:value="proceso.sede"
+          />
 
+        </a-form-item>
         <a-form-item has-feedback label="Tipo" name="tipo">
           <a-select
             ref="Tipo"
-            style="width: 120px"
+            style="width: 100%"
             @focus="focus"
             @change="handleChange"
             v-model:value="proceso.tipo"
@@ -71,7 +78,7 @@
           </a-select>
         </a-form-item>
         <a-form-item has-feedback label="Año" name="anio">
-          <a-input-number v-model:value="proceso.anio" />
+          <a-input-number style="width: 100%;"  v-model:value="proceso.anio" />
         </a-form-item>
         <a-form-item has-feedback label="Estado" name="estado">
           <a-switch v-model:checked="proceso.estado"/>
@@ -103,6 +110,8 @@
     import axios from 'axios';
 
   const buscar = ref("");
+  const sedes = ref([]);
+  const tipoProcesos = ref([]);
   const procesos= ref([]);
   const visible = ref(false);
   const proceso = ref({
@@ -207,6 +216,22 @@
       );
       procesos.value = res.data.datos.data;
     }
+
+    const getSedes =  async (term = "", page = 1) => {
+      let res = await axios.post(
+        "procesos/get-sedes?page=" + page,
+      );
+      sedes.value = res.data.datos.data;
+    }
+
+    const getTipoProceso =  async (term = "", page = 1) => {
+      let res = await axios.get(
+        "procesos/tipo-procesos?page=" + page,
+      );
+      tipoProcesos.value = res.data.datos;
+    }
+
+    
     
     const guardar = () => {
       let post = {
@@ -268,7 +293,9 @@
 
 
 
-    getProcesos()
+    //  getProcesos()
+    getSedes()
+    getTipoProceso()
     
     
     </script>
