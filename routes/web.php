@@ -10,17 +10,23 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\InscripcionController;
+use App\Http\Controllers\ProcesoController;
+use App\Http\Controllers\FilialController;
+use App\Http\Controllers\ModalidadController;
+use App\Http\Controllers\ProgramaController;
+use App\Http\Controllers\SeleccionDataController;
 
 
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -40,11 +46,63 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('roles',RolController::class);
     Route::resource('usuarios',UsuarioController::class);
     Route::resource('blogs',BlogController::class);
+
+    Route::get('/get-permission', [RolController::class, 'getPermission'])->name('get');
+    Route::get('/get-roles', [RolController::class, 'getRoles']);
+
+    Route::post('/save-rol', [RolController::class, 'saveRol']);
+
+    Route::get('/get-usuarios', [UsuarioController::class, 'getUsuarios']);
+    Route::get('/get-roles-u', [UsuarioController::class, 'getRoles']);
+    Route::post('/save-user',[UsuarioController::class, 'saveUsuario']);
+
+    Route::get('/get-permisos', [UsuarioController::class, 'getPermisos']);
+
+    Route::post('/inscripciones/get-postulantes', [InscripcionController::class, 'getPostulantes']);
+
+    Route::get('/inscripciones/impresion', [InscripcionController::class, 'index'])->name('impresion-cepre');
+    Route::get('/inscripciones/get-postulante-dni/{dni}', [InscripcionController::class, 'getPostulanteByDni']);
+    Route::get('/inscripciones/get-apoderados-postulante/{dni}', [InscripcionController::class, 'getApoderados']);
+    Route::get('/inscripciones/get-vouchers-postulante/{dni}', [InscripcionController::class, 'getVouchers']);
+    Route::get('/inscripciones/get-documentos-postulante/{dni}', [InscripcionController::class, 'getDocumentos']);
+    Route::get('/inscripciones/get-preinscripciones-postulante/{dni}', [InscripcionController::class, 'getPreinscipciones']);
+    Route::get('/inscripciones/get-inscripciones-postulante/{dni}', [InscripcionController::class, 'getInscripciones']);
+
+
+    Route::get('/procesos', [ProcesoController::class, 'index'])->name('proceso-index');
+    Route::get('/eliminar-proceso/{id}', [ProcesoController::class, 'deleteProceso']);
+    Route::post('/procesos/get-procesos', [ProcesoController::class, 'getProcesos']);
+    Route::post('/save-proceso', [ProcesoController::class, 'saveProceso']);
+    //Route::get('/get-has-permission/{rol}', [BlogController::class, 'getPermission']);
+    
+
+    //fILIAL 
+    Route::get('/filial', [FilialController::class, 'index'])->name('filial-index');
+    Route::post('/filiales/get-filiales', [FilialController::class, 'getFiliales']);
+    Route::post('/save-filial', [FilialController::class, 'saveFilial']);
+    Route::get('/eliminar-filial/{id}', [FilialController::class, 'deleteFilial']);
+    
+    //PROGRAMA
+    Route::get('/programa', [ProgramaController::class, 'index'])->name('programa-index');
+    Route::post('/save-programa', [ProgramaController::class, 'savePrograma']);
+    Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);
+    Route::get('/eliminar-programa/{id}', [ProgramaController::class, 'deletePrograma']);
+
+    //MODALIDAD
+    Route::get('/modalidad', [ModalidadController::class, 'index'])->name('modalidad-index');
+    Route::post('/save-modalidad', [ModalidadController::class, 'saveModalidad']);
+    Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
+    Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);    
+
+    //GET DATA 
+    Route::get('/get-facultades', [SeleccionDataController::class, 'getFacultades']);
+    Route::post('/get-departamentos', [SeleccionDataController::class, 'getDepartamento']);
+    Route::get('/get-provincia-x-departamento/{cod}', [SeleccionDataController::class, 'getProvinciasPorDepartamento']);
+    
 });
 
 
-Route::get('/', [BlogController::class, 'verPuntajes']);
+//Route::get('/', [BlogController::class, 'verPuntajes']);
 Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
-
 
 require __DIR__.'/auth.php';

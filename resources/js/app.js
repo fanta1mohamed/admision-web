@@ -9,6 +9,10 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 
+
+
+
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Admision 2023';
 
 createInertiaApp({
@@ -23,5 +27,6 @@ createInertiaApp({
     },
     progress: {
         color: '#4B5563',
+        '@primary-color': '#2d2880',
     },
 });

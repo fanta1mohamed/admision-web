@@ -2,8 +2,9 @@
     <Head title="Log in" />
 
     <GuestLayout>
-        <Link href="/" class="flex items-center justify-center">
-            <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
+    <div style="width: 300px;">
+        <Link href="/" class="flex items-center justify-center" >
+            <ApplicationLogo class="h-20 fill-current text-gray-500" />
         </Link>
 
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
@@ -12,33 +13,36 @@
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus autocomplete="username" />
+                <InputLabel for="email" value="Correo" />
+                <TextInput id="email" type="email" class="mt-1 block w-full" style="height: 35px;"  v-model="form.email" required autofocus autocomplete="username" />
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-3">
-                <InputLabel for="password" value="Password" />
-                <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                <InputLabel for="password" value="Contraseña" />
+                <TextInput id="password" type="password" class="mt-1 block w-full" style="height: 35px;" v-model="form.password" required autocomplete="current-password" />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4 flex justify-between">
+            <div class="mt-2 flex justify-between">
                 <label class="inline-flex items-center">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="mx-2 text-sm text-gray-600">Remember me</span> </label>
-
-                <Link v-if="canResetPassword" :href="route('password.request')" class="text-sm text-gray-600 underline hover:text-gray-900">
-                    Forgot your password?
-                </Link>
+                    <span class="mx-2 text-sm text-gray-600">Recuerdame</span> </label>
             </div>
 
             <div class="mt-6">
-                <PrimaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
+                <PrimaryButton class="w-full primary"  style="background: linear-gradient(to right, #0079EA, #0006EB);  box-shadow: 0px 10px 20px -10px #0000FF9D;" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Ingresar al Sistema
                 </PrimaryButton>
+                <div style="display: flex; justify-content: center;" class="mt-2">
+                    <Link v-if="canResetPassword" :href="route('password.request')" style="font-size: .8rem; text-decoration: none;" class="text-sm text-gray-600 underline hover:text-gray-900">
+                        ¿Olvidé mi contraseña?
+                    </Link>
+                </div>
+
             </div>
         </form>
+    </div>
     </GuestLayout>
 </template>
 
@@ -69,3 +73,10 @@ const submit = () => {
     });
 };
 </script>
+
+<style scoped>
+    .button-login{
+
+    }
+
+</style>

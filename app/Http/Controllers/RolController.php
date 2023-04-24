@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\HasPermission;
+use App\Models\Rol;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -33,7 +35,7 @@ class RolController extends Controller
 
     public function getRoles()
     {
-        $roles = Role::paginate(5);
+        $roles = Role::paginate(10);
         $this->response['datos'] = $roles;
         return response()->json($this->response, 200);
     
@@ -92,11 +94,42 @@ class RolController extends Controller
         return redirect()->route('roles.index');
     }
 
-
-
     public function destroy(string $id)
     {
         DB::table('roles')->where('id',$id)->delete();
         return redirect()->route('roles.index');
     }
+
+    public function getPermission(){
+        $permisos = DB::select('SELECT id AS "key", name AS name, guard_name  from permissions') ;
+
+        $this->response['permisos'] = $permisos;
+        return response()->json($this->response, 200); 
+    }
+
+    public function saveRol(Request $request) {
+        $rol = new Rol();
+     
+        $rol['name'] = $request->name;
+        $rol['guard_name'] = 'web';
+        $rol->save();
+
+        foreach($request->permisos as $permiso){
+
+            $this->savePermisos($rol['id'], $permiso);            
+        }
+        
+        $this->response['rol'] = $rol['id'];
+        return response()->json($this->response, 200); 
+    }
+
+    public function savePermisos($rol, $permiso) {
+        $permisos = new HasPermission();     
+        $permisos['permission_id'] = $permiso;
+        $permisos['role_id'] = $rol;
+        $permisos->save();
+    }
+
+
+
 }
