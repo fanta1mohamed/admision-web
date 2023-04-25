@@ -325,7 +325,7 @@ const columnsFiliales = [
     { title: 'Nombre', dataIndex: 'nombre', sorter :true },
     { title: 'Departamento', dataIndex: 'departamento', sorter :true },
     { title: 'Provincia', dataIndex: 'provincia'},
-    { title: 'Vigente', dataIndex: 'estado'},
+    { title: 'Vigente', dataIndex: 'estado', align:'center', width:'100px'},
     { title: 'Acciones', dataIndex: 'acciones'},
 ];
 

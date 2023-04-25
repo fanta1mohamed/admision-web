@@ -80,11 +80,13 @@ class SeleccionDataController extends Controller
   }
 
   public function getSedes(Request $request){
+
     $query_where = [];
     $res = Filial::select(
         'id as value', 'nombre as label' 
     )
       ->where($query_where)
+      ->where('estado','=',1)
       ->where(function ($query) use ($request) {
         return $query
             ->orWhere('filial.codigo', 'LIKE', '%' . $request->term . '%')

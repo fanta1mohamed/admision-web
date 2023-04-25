@@ -21,13 +21,20 @@ class ProcesoController extends Controller
   {
     $query_where = [];
     $res = Proceso::select(
-        'id', 'nombre','sede','tipo_proceso as tipo','anio','estado','nro_convocatoria as convocatoria' 
+        'procesos.id', 'procesos.nombre','procesos.estado','procesos.anio',
+        'filial.id as id_sede', 'filial.nombre as sede',
+        'tipo_proceso.id as id_tipo', 'tipo_proceso.nombre as tipo',
+        'modalidad_proceso.id as id_modalidad', 'modalidad_proceso.nombre as modalidad'
     )
+      ->join ('filial', 'filial.id', '=','procesos.id_sede_filial')
+      ->join ('tipo_proceso', 'tipo_proceso.id', '=','procesos.id_tipo_proceso')
+      ->join ('modalidad_proceso', 'modalidad_proceso.id', '=','procesos.id_modalidad_proceso')
       ->where($query_where)
       ->where(function ($query) use ($request) {
           return $query
-              ->orWhere('procesos.sede', 'LIKE', '%' . $request->term . '%')
               ->orWhere('procesos.nombre', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('filial.nombre', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('modalidad_proceso.nombre', 'LIKE', '%' . $request->term . '%')
               ->orWhere('procesos.anio', 'LIKE', '%' . $request->term . '%');
       })->orderBy('procesos.id', 'DESC')
       ->paginate(10);
@@ -43,10 +50,11 @@ class ProcesoController extends Controller
         if (!$request->id) {
             $proceso = Proceso::create([
                 'nombre' => $request->nombre,
-                'sede' => $request->sede,
-                'tipo_proceso' => $request->tipo_proceso,
+                'id_tipo_proceso' => $request->tipo,
+                'id_modalidad_proceso' => $request->modalidad,
                 'anio' => $request->anio,
                 'estado' => $request->estado,
+                'id_sede_filial' => $request->sede,
                 'id_usuario' => auth()->id()
             ]);
             $this->response['titulo'] = 'REGISTRO NUEVO';
@@ -57,10 +65,11 @@ class ProcesoController extends Controller
 
             $proceso = Proceso::find($request->id);
             $proceso->nombre = $request->nombre;
-            $proceso->sede = $request->sede;
-            $proceso->tipo_proceso = $request->tipo_proceso;
+            $proceso->id_tipo_proceso = $request->tipo;
+            $proceso->id_modalidad_proceso = $request->modalidad;
             $proceso->anio = $request->anio;
             $proceso->estado = $request->estado;
+            $proceso->id_sede_filial = $request->sede;
             $proceso->id_usuario = auth()->id();
             $proceso->save();
 
@@ -87,7 +96,17 @@ class ProcesoController extends Controller
 
   public function getTipoProceso(){
 
-    $res = DB::select('SELECT id as value, nombre as label FROM tipo_proceso');
+    $res = DB::select('SELECT id as value, nombre as label FROM tipo_proceso ');
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  
+  }
+
+  
+  public function getModalidades(){
+
+    $res = DB::select('SELECT id as value, nombre as label FROM modalidad_proceso');
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);

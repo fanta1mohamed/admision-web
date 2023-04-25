@@ -3,7 +3,6 @@
 <AuthenticatedLayout>
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
 
-{{ tipoProcesos }}
 <row class="flex justify-between mb-4" >
   <div class="mr-3">
     <a-button type="primary" @click="showModalProceso">Nuevo</a-button>
@@ -21,14 +20,35 @@
   size="small"
   > 
   <template #bodyCell="{ column, index }">
+
+    <template v-if="column.dataIndex === 'modalidad'">
+      <div class="flex" style="justify-content: center;">
+        <a-tag color="cyan" v-if="procesos[index].modalidad === 'CEPREUNA'" >CEPREUNA</a-tag>
+        <a-tag color="orange" v-if="procesos[index].modalidad === 'GENERAL'" >GENERAL</a-tag>
+        <a-tag color="pink" v-if="procesos[index].modalidad === 'EXTRAORDINARIO'"> EXTRAORDINARIO</a-tag>
+      </div>
+    </template>
+
+    <template v-if="column.dataIndex === 'estado'">
+      <div class="flex" style="justify-content: center;">
+          <div v-if="1 == procesos[index].estado">
+              <a-tag color="green">VIGENTE</a-tag>
+          </div>
+          <div v-if="procesos[index].estado == 0">
+              <a-tag color="red">NO VIGENTE</a-tag>
+          </div>
+      </div>
+    </template>
+
     <template v-if="column.dataIndex === 'acciones'">
-      <a-button type="primary" @click="abrirEditar(procesos[index])" size="small">
-        <template #icon><form-outlined/></template>
-      </a-button>
-      <a-divider type="vertical" />
-      <a-button type="danger" @click="eliminar(procesos[index])" shape="" size="small">
-        <template #icon><delete-outlined/></template>
-      </a-button>
+      <div class="flex" style="justify-content: space-between;">
+        <a-button type="primary" @click="abrirEditar(procesos[index])" size="small">
+          <template #icon><form-outlined/></template>
+        </a-button>
+        <a-button type="danger" @click="eliminar(procesos[index])" shape="" size="small">
+          <template #icon><delete-outlined/></template>
+        </a-button>
+      </div>
     </template>
   </template>
 </a-table> 
@@ -40,7 +60,7 @@
 <div>
 
   <a-modal v-model:visible="visible" title="Nuevo Proceso" style="margin-top: -40px;">
-      <!-- <pre> {{ tipoProcesos }} </pre>  -->
+      <!-- <pre> {{ proceso }} </pre>  -->
       <a-form
         ref="formRef"
         name="custom-validation"
@@ -69,13 +89,21 @@
           <a-select
             ref="Tipo"
             style="width: 100%"
+            :options="tipoProcesos"
             @focus="focus"
             @change="handleChange"
             v-model:value="proceso.tipo"
-          >
-            <a-select-option value="PRESENCIAL">Presencial</a-select-option>
-            <a-select-option value="VIRTUAL">Virtual</a-select-option>
-          </a-select>
+          />
+        </a-form-item>
+        <a-form-item has-feedback label="Modalidad" name="modalidad">
+          <a-select
+            ref="Tipo"
+            style="width: 100%"
+            :options="modalidades"
+            @focus="focus"
+            @change="handleChange"
+            v-model:value="proceso.modalidad"
+          />
         </a-form-item>
         <a-form-item has-feedback label="Año" name="anio">
           <a-input-number style="width: 100%;"  v-model:value="proceso.anio" />
@@ -101,24 +129,26 @@
 
 </template>
     
-    <script setup>
-    import { Head } from '@inertiajs/vue3';
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-    import { watch, computed, ref, unref } from 'vue';
-    import { FormOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue';
-    import { notification } from 'ant-design-vue';
-    import axios from 'axios';
+<script setup>
+  import { Head } from '@inertiajs/vue3';
+  import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+  import { watch, computed, ref, unref } from 'vue';
+  import { FormOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue';
+  import { notification } from 'ant-design-vue';
+  import axios from 'axios';
 
   const buscar = ref("");
   const sedes = ref([]);
   const tipoProcesos = ref([]);
   const procesos= ref([]);
   const visible = ref(false);
+  const modalidades = ref([])
   const proceso = ref({
     id:null,
     nombre:"",
-    sede:"",
-    tipo:"Presencial",
+    sede:null,
+    tipo:null,
+    modalidad: null,
     anio:new Date().getFullYear(),
     estado: true,
     f_inicio : '',
@@ -138,10 +168,12 @@
     if(visible.value == false && proceso.value.id != null ){
       proceso.value.id = null;
       proceso.value.nombre = null;
-      proceso.value.sede = null;
-      proceso.value.tipo = 'Presencial';
+      proceso.value.sede = sedes.value[0].value;
+      proceso.value.tipo = tipoProcesos.value[0].value;
+      proceso.value.modalidad = modalidades.value[0].value;
       proceso.value.anio = new Date().getFullYear();
       proceso.value.estado = true;
+
     }
   })
 
@@ -197,13 +229,14 @@
       let res = await axios.get(`get-permission`);
       permisos.value = res.data.permisos;
     }
-    
+ 
     const abrirEditar = (item) => {
       visible.value = true;
       proceso.value.id = item.id;
       proceso.value.nombre = item.nombre;
-      proceso.value.sede = item.sede;
-      proceso.value.tipo = item.tipo;
+      proceso.value.sede = item.id_sede;
+      proceso.value.tipo = item.id_tipo;
+      proceso.value.modalidad = item.id_modalidad;
       proceso.value.anio = item.anio;
       if(item.estado == 1){ proceso.value.estado = true }
       else { proceso.value.estado = false}
@@ -222,24 +255,33 @@
         "procesos/get-sedes?page=" + page,
       );
       sedes.value = res.data.datos.data;
+      proceso.value.sede = res.data.datos.data[0].value;
     }
 
-    const getTipoProceso =  async (term = "", page = 1) => {
+    const getTipos =  async (term = "", page = 1) => {
       let res = await axios.get(
-        "procesos/tipo-procesos?page=" + page,
+        "procesos/get-tipos?page=" + page,
       );
       tipoProcesos.value = res.data.datos;
+      proceso.value.tipo = res.data.datos[0].value;
     }
 
-    
-    
+    const getModalidades =  async (term = "", page = 1) => {
+      let res = await axios.get(
+        "procesos/get-modalidades?page=" + page,
+      );
+      modalidades.value = res.data.datos;
+      proceso.value.modalidad = res.data.datos[0].value;
+    }
+
     const guardar = () => {
       let post = {
         id: proceso.value.id,
         nombre: proceso.value.nombre ,
         sede: proceso.value.sede,
-        tipo_proceso: proceso.value.tipo,
+        tipo: proceso.value.tipo,
         anio: proceso.value.anio,
+        modalidad: proceso.value.modalidad,
         estado: proceso.value.estado,
         f_inicio: proceso.value.f_inicio,
         f_fin: proceso.value.f_fin,
@@ -260,12 +302,13 @@
     }
 
     const columnsProcesos = [
-      { title: 'Nombre', dataIndex: 'nombre', sorter :true },
-      { title: 'Sede', dataIndex: 'sede', sorter :true },
-      { title: 'Tipo', dataIndex: 'tipo', sorter :true },
-      { title: 'Año', dataIndex: 'anio'},
-      { title: 'Estado', dataIndex: 'estado'},
-      { title: 'Acciones', dataIndex: 'acciones'},
+      { title: 'Nombre', dataIndex: 'nombre',  },
+      { title: 'Sede', dataIndex: 'sede', align:'center'},
+      { title: 'Tipo', dataIndex: 'tipo', align:'center', width:'120px' },
+      { title: 'Modalidad', dataIndex: 'modalidad', align:'center', width:'120px' },
+      { title: 'Año', dataIndex: 'anio', width:'40px'},
+      { title: 'Estado', dataIndex: 'estado', align:'center', width:'60px' },
+      { title: 'Acciones', dataIndex: 'acciones', width:'50px'},
     ];
 
     
@@ -293,9 +336,10 @@
 
 
 
-    //  getProcesos()
+    getProcesos()
     getSedes()
-    getTipoProceso()
+    getTipos()
+    getModalidades()
     
     
     </script>

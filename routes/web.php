@@ -71,7 +71,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/procesos', [ProcesoController::class, 'index'])->name('proceso-index');
     Route::get('/eliminar-proceso/{id}', [ProcesoController::class, 'deleteProceso']);
-    Route::get('/procesos/tipo-procesos', [ProcesoController::class, 'getTipoProceso']);
+    Route::get('/procesos/get-tipos', [ProcesoController::class, 'getTipoProceso']);
+    Route::get('/procesos/get-modalidades', [ProcesoController::class, 'getModalidades']);
     Route::post('/procesos/get-procesos', [ProcesoController::class, 'getProcesos']);
     Route::post('/save-proceso', [ProcesoController::class, 'saveProceso']);
     //Route::get('/get-has-permission/{rol}', [BlogController::class, 'getPermission']);
