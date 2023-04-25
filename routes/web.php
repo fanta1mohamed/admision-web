@@ -15,8 +15,8 @@ use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\FilialController;
 use App\Http\Controllers\ModalidadController;
 use App\Http\Controllers\ProgramaController;
+use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\SeleccionDataController;
-
 
 
 Route::get('/', function () {
@@ -97,11 +97,24 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
     Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);    
 
+    //PRE-INSCRIPCIONES
+    Route::get('/pre-inscripcion', [PreinscripcionController::class, 'index'])->name('preincripcion-index');
+    // Route::get('/pre-inscripcion', [PreinscripcionController::class, 'index'])->name('preincripcion-index');
+    // Route::get('/pre-inscripcion', [PreinscripcionController::class, 'index'])->name('preincripcion-index');
+    // Route::get('/pre-inscripcion', [PreinscripcionController::class, 'index'])->name('preincripcion-index');
+
+
+
+
+
     //GET DATA 
     Route::get('/get-facultades', [SeleccionDataController::class, 'getFacultades']);
     Route::post('/procesos/get-sedes', [SeleccionDataController::class, 'getSedes']);
     Route::post('/get-departamentos', [SeleccionDataController::class, 'getDepartamento']);
     Route::get('/get-provincia-x-departamento/{cod}', [SeleccionDataController::class, 'getProvinciasPorDepartamento']);
+
+
+
     
     
 });
