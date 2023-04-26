@@ -2,20 +2,65 @@
 <Head title="Procesos"/>
 <AuthenticatedLayout>
   <div class="p-4" style="">
-    <div>
-      <a-steps v-model:current="current" direction="vertical">
-        <a-step title="Step 1"> 
-          <div>
-            sdafasdf
-          </div>
-        </a-step>
-        <a-step title="Step 2" description="This is a description." />
-        <a-step title="Step 3" description="This is a description." />
-      </a-steps>
+    <div> 
+      <div style="">
+        <a-steps v-model:current="current" direction="horizontal">
+          <template #progressDot="{ index, status, prefixCls }">
+            <a-popover>
+              <template #content>
+                <span>step {{ index }} status: {{ status }}</span>
+              </template>
+              <span :class="`${prefixCls}-icon-dot`" />
+            </a-popover>
+          </template>
+          <a-step title=""/>
+          <a-step title=""/>
+          <a-step title=""/>
+          <a-step title=""/>
+          <a-step title=""/>
+          <a-step title=""/>
+        </a-steps>
+      </div>
+      <a-divider type="vertical"/>
+      <div v-if="current===0" style="width: 100%;">
+        <div class="flex" style="justify-content: center; align-items: center; width: 100%;">
+          <a-card style="min-width: 300px; height: 300px;">
+            <div style="margin-bottom: 10px;"><label>Dni</label></div>
+            <a-input v-model:value="value" placeholder="Basic usage"/>
+
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <a-button type="primary">Iniciar Postulación</a-button>
+            </div>
+
+            <div>
+              <a-radio-group v-model:value="value">
+                <a-radio :style="radioStyle" :value="1">Option A</a-radio>
+                    <div>
+                      <a-radio :value="2" style="width: 100%; background: yellowgreen;"  >
+                        <a-card :class="[value === 2? 'cards' : '' ]">
+                          <div style="width: 220px;">
+
+                          </div>
+                        </a-card>
+                      </a-radio>
+                    </div>
+              </a-radio-group>  
+            </div>
+          </a-card>
+        </div>
+        
+      </div>
+      <div v-if="current===1" style="width: 100%;">
+        Paso 2
+      </div>
+      <div v-if="current===2" style="width: 100%;">
+        Paso 3
+      </div>
     </div>
     <div class="flex">
+      <!-- <a-button v-if="current > 0" @click="prev()" type="primary">Iniciar Postulación</a-button>
       <a-button v-if="current > 0" @click="prev()" type="primary">Anterior</a-button>
-      <a-button v-if="current < 2" @click="next()" >Siguiente</a-button>    
+      <a-button v-if="current < 2" @click="next()" >Siguiente</a-button>     -->
     </div>
   </div>
 </AuthenticatedLayout>
@@ -31,11 +76,16 @@ const current = ref(0);
 const next = () => { current.value++; };
 const prev = () => { current.value--; };
 
+const value = ref(1);
 
-
-  // watch(buscar, ( newValue, oldValue ) => {
-  //   getProcesos();
-  // })
+// watch(buscar, ( newValue, oldValue ) => {
+//   getProcesos();
+// })
 
     
 </script>
+<style scoped>
+.cards{
+  border: solid 1px blue;
+}
+</style>
