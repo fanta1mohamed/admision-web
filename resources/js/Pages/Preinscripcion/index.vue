@@ -33,18 +33,19 @@
             </div>
 
             <div>
-              <a-radio-group v-model:value="value">
-                <a-radio :style="radioStyle" :value="1">Option A</a-radio>
-                    <div>
-                      <a-radio :value="2" style="width: 100%; background: yellowgreen;"  >
-                        <a-card :class="[value === 2? 'cards' : '' ]">
-                          <div style="width: 220px;">
-
-                          </div>
-                        </a-card>
-                      </a-radio>
+              <div>
+                  <a-card class="mb-3" @click="value = 2" :class="[value === 2? 'cards' : '' ]">
+                    <div style="width: 220px;">
+                      d
                     </div>
-              </a-radio-group>  
+                  </a-card>
+
+                  <a-card @click="value = 3" :class="[value === 3? 'cards' : '' ]">
+                    <div style="width: 220px;">
+                      d
+                    </div>
+                  </a-card>
+              </div>
             </div>
           </a-card>
         </div>
