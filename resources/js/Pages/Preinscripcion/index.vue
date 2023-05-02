@@ -33,18 +33,18 @@
             </div>
 
             <div>
-              <div>
+              <div v-for="item in comprobantes" :key="item.id">
                   <a-card class="mb-3" @click="value = 2" :class="[value === 2? 'cards' : '' ]">
                     <div style="width: 220px;">
-                      d
+                      {{ item }}
                     </div>
                   </a-card>
 
-                  <a-card @click="value = 3" :class="[value === 3? 'cards' : '' ]">
-                    <div style="width: 220px;">
-                      d
-                    </div>
-                  </a-card>
+                    <!-- <a-card @click="value = 3" :class="[value === 3? 'cards' : '' ]">
+                      <div style="width: 220px;">
+                        d
+                      </div>
+                    </a-card> -->
               </div>
             </div>
           </a-card>
@@ -58,6 +58,9 @@
         Paso 3
       </div>
     </div>
+
+    <!-- {{ comprobantes }} -->
+
     <div class="flex">
       <!-- <a-button v-if="current > 0" @click="prev()" type="primary">Iniciar Postulación</a-button>
       <a-button v-if="current > 0" @click="prev()" type="primary">Anterior</a-button>
@@ -72,17 +75,37 @@ import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { watch, computed, ref, unref } from 'vue';
 import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined, } from '@ant-design/icons-vue';
+import axios from 'axios';
 
 const current = ref(0);
 const next = () => { current.value++; };
 const prev = () => { current.value--; };
 
 const value = ref(1);
+const dni = ref(null);
+const comprobantes = ref([])
+
+
+
+
+const getComprobantes = async (term = "", page = 1) => {
+  let res = await axios.post(
+    "pre-inscripcion/get-comprobantes?page=" + page,
+    {dni:'70757838'}
+  );
+  comprobantes.value = res.data.datos.data;
+}
+
+
+
 
 // watch(buscar, ( newValue, oldValue ) => {
 //   getProcesos();
 // })
 
+
+
+getComprobantes()
     
 </script>
 <style scoped>

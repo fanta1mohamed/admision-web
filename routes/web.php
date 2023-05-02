@@ -112,6 +112,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/procesos/get-sedes', [SeleccionDataController::class, 'getSedes']);
     Route::post('/get-departamentos', [SeleccionDataController::class, 'getDepartamento']);
     Route::get('/get-provincia-x-departamento/{cod}', [SeleccionDataController::class, 'getProvinciasPorDepartamento']);
+    Route::post('/pre-inscripcion/get-comprobantes', [SeleccionDataController::class, 'getComprobanteByDni']);
 
 
 

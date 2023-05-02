@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Provincia;
 use App\Models\Filial;
+use App\Models\Comprobante;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -98,6 +99,28 @@ class SeleccionDataController extends Controller
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
   }
+
+
+  public function getComprobanteByDni(Request $request){
+
+    $query_where = [];
+    $res = Comprobante::select('*')
+      ->where($query_where)
+      ->where('estado','=',1)
+      ->where('ndoc_postulante','=',$request->dni)
+      ->where('codigo','=',26)
+      ->where(function ($query) use ($request) {
+        return $query
+            ->orWhere('comprobante.codigo', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('comprobante.fecha', 'LIKE', '%' . $request->term . '%');
+      })->orderBy('comprobante.id', 'ASC')
+      ->paginate(50);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
 
 
 
