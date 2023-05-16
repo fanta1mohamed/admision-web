@@ -15,6 +15,7 @@ use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\FilialController;
 use App\Http\Controllers\ModalidadController;
 use App\Http\Controllers\ProgramaController;
+use App\Http\Controllers\PostulanteController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\SeleccionDataController;
 
@@ -76,7 +77,15 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/procesos/get-procesos', [ProcesoController::class, 'getProcesos']);
     Route::post('/save-proceso', [ProcesoController::class, 'saveProceso']);
     //Route::get('/get-has-permission/{rol}', [BlogController::class, 'getPermission']);
+
     
+    //PREINSCRIPCION
+    Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
+    // Route::post('/save-programa', [ProgramaController::class, 'savePrograma']);
+    // Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);
+    // Route::get('/eliminar-programa/{id}', [ProgramaController::class, 'deletePrograma']);
+    
+
 
     //fILIAL 
     Route::get('/filial', [FilialController::class, 'index'])->name('filial-index');
@@ -114,13 +123,14 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/get-provincia-x-departamento/{cod}', [SeleccionDataController::class, 'getProvinciasPorDepartamento']);
     Route::post('/pre-inscripcion/get-comprobantes', [SeleccionDataController::class, 'getComprobanteByDni']);
 
+    Route::post('/get-departamentos-codigo', [SeleccionDataController::class, 'getDepartamentoCodigo']);
 
 
     
     
 });
 
-
+Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);
 Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
 

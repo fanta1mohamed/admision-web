@@ -18,15 +18,6 @@ class PreinscripcionController extends Controller
       return Inertia::render('Preinscripcion/index');        
   }
 
-
-
-
-
-
-
-
-
-
   public function getProcesos(Request $request)
   {
     $query_where = [];
@@ -53,6 +44,8 @@ class PreinscripcionController extends Controller
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
   }
+
+  
 
   public function saveProceso(Request $request ) {
 

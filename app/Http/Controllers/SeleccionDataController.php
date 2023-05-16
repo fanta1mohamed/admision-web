@@ -20,6 +20,23 @@ class SeleccionDataController extends Controller
   {
     $this->provincia = new Provincia();
   } 
+
+  public function getDepartamentoCodigo(Request $request)
+  {
+    $res = Departamento::select(
+        'codigo as key', 'nombre as value' 
+    )
+      ->where(function ($query) use ($request) {
+        return $query
+            ->orWhere('departamento.codigo', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('departamento.nombre', 'LIKE', '%' . $request->term . '%');
+      })->orderBy('departamento.nombre', 'ASC')
+      ->paginate(25);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
   
   public function getDepartamento(Request $request)
   {
@@ -59,7 +76,7 @@ class SeleccionDataController extends Controller
     return response()->json($this->response, 200);
   }
 
-  public  function getProvinciasPorDepartamento($departamento)
+  public function getProvinciasPorDepartamento($departamento)
   {
       $res = $this->provincia->getProvinciasPorDepartamento($departamento)->map(function ($item) {
           return [
@@ -100,28 +117,37 @@ class SeleccionDataController extends Controller
     return response()->json($this->response, 200);
   }
 
-
   public function getComprobanteByDni(Request $request){
 
-    $query_where = [];
-    $res = Comprobante::select('*')
-      ->where($query_where)
-      ->where('estado','=',1)
-      ->where('ndoc_postulante','=',$request->dni)
-      ->where('codigo','=',26)
-      ->where(function ($query) use ($request) {
-        return $query
-            ->orWhere('comprobante.codigo', 'LIKE', '%' . $request->term . '%')
-            ->orWhere('comprobante.fecha', 'LIKE', '%' . $request->term . '%');
-      })->orderBy('comprobante.id', 'ASC')
-      ->paginate(50);
+    $monto = null; $res = null;
 
-    $this->response['estado'] = true;
-    $this->response['datos'] = $res;
-    return response()->json($this->response, 200);
+    $res = DB::select('SELECT sum(monto) as sum_monto, ndoc_postulante from comprobante
+    WHERE codigo = "26" AND estado = 1 AND ndoc_postulante = '.$request->dni
+    .' GROUP BY ndoc_postulante ');
+
+    $monto = DB::select('SELECT MIN(monto) as monto FROM proceso_monto_comprobante
+    WHERE id_proceso = 31 AND cod_comprobante = "26"');
+
+    if($res !== []) {
+
+      if($res[0]->sum_monto >= $monto[0]->monto ) {
+
+        $this->response['voucher'] = true;
+        $this->response['mensaje'] = "PUEDE CONTINUAR SU POSTULACIÓN";
+        $this->response['datos'] = $res[0];
+        return response()->json($this->response, 200);
+
+      }else {
+        $this->response['voucher'] = false;
+        $this->response['mensaje'] = "EL MONTO PAGADO NO ES EL CORRECTO";
+        return response()->json($this->response, 200);
+      }
+    } else {
+      $this->response['mensaje'] = "NO TENEMOS VOUCHERS REGISTRADOS PARA ESTE PROCESO A SU NOMBRE";
+      $this->response['voucher'] = false;
+      return response()->json($this->response, 200);
+    }
+
   }
-
-
-
 
 }

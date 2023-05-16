@@ -6,11 +6,10 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
+// import Antd from 'ant-design-vue';
+// import 'ant-design-vue/dist/antd.css';
 import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
-
-
-
+import '../css/theme.less'; // Cambia la ruta a la ubicación correcta de theme.less
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Admision 2023';
