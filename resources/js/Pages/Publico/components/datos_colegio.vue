@@ -10,11 +10,6 @@
         <h1 style="font-size: 1.1rem;"> Datos del colegio</h1>
       </div>
   
-      <h2>Componente Hijo</h2>
-      <p>{{ mensaje }}</p>
-  
-      {{ depseleccionado }}, {{ provseleccionada }}, {{ distseleccionado }}
-  
       <a-row :gutter="[16, 0]" class="form-row">
         <a-col :span="24" :md="16" :lg="12" :xl="16" :xxl="6">
           <a-form-item>

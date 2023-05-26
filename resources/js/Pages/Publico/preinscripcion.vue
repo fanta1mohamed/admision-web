@@ -247,8 +247,8 @@
 
         <Colegio  ref="hijoComponent" :id_postulante="datos_personales.id"/>
 
-        <div>{{  pagina_pre = pagina_pre_temp }}</div>
-        <div>{{  pagina_pre_temp = 3 }}</div>
+        <div style="display:none;">{{  pagina_pre = pagina_pre_temp }}</div>
+        <div style="display:none;">{{  pagina_pre_temp = 3 }}</div>
 
       </div>
 
@@ -256,8 +256,8 @@
 
         <div style="width: 100%; margin-top: 5px; ">
           <Apoderado ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1"/>
-            <div>{{ pagina_pre = pagina_pre_temp_padre }}</div>
-            <div>{{ pagina_pre_temp_padre = 4 }}</div>
+            <div style="display:none;">{{ pagina_pre = pagina_pre_temp_padre }}</div>
+            <div style="display:none;">{{ pagina_pre_temp_padre = 4 }}</div>
         </div>
       </div>
 
@@ -265,8 +265,8 @@
 
         <div style="width: 100%; margin-top: 5px; ">
           <Apoderado ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2"/>
-            <div>{{ pagina_pre = pagina_pre_temp_madre }}</div>
-            <div>{{ pagina_pre_temp_madre = 5 }}</div>
+            <div style="display:none;">{{ pagina_pre = pagina_pre_temp_madre }}</div>
+            <div style="display:none;">{{ pagina_pre_temp_madre = 5 }}</div>
         </div>
       </div>
 
@@ -276,7 +276,6 @@
           <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
             <div>
 
-              
               <div>
 
 
@@ -395,17 +394,17 @@
                 </a-col>
               </a-row>
 
-              {{ "TROW" }}
               <a-row :gutter="[16, 0]" class="form-row">
                 <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="6">
                   <form @submit.prevent="preInscribir">
                     <div class="flex justify-between">
                       <input type="file" @change="onChange"/>
-                      <a-button html-type="submit" @click="submit">Enviar</a-button>
 
                     </div>
                   </form>
                 </a-col>
+
+
               </a-row>
 
             </div>
@@ -450,7 +449,7 @@
       </div>
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button @click=" preInscribir()" class="boton-siguiente" type="primary" >Finalizar</a-button>    
+        <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>    
       </div>
     </a-affix>
 
@@ -701,7 +700,10 @@ const submit = async () => {
   fd.append('modalidad', datos_preinscripcion.value.modalidad)
   fd.append('programa', datos_preinscripcion.value.programa)
   fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
-  await axios.post("/documento/resolucion", fd).then(res=>{
+  fd.append('codigo_certificado', datos_preinscripcion.value.codigo_certificado)
+  fd.append('codigo_medico', datos_preinscripcion.value.codigo_medico)
+  fd.append('id_postulante', datos_personales.value.id)
+  await axios.post("save-pre-inscripcion", fd).then(res=>{
     showToast("success","2",res.data.menssje);
     getResoluciones()
   }).catch(err=>console.log(err))

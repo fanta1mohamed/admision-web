@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Proceso;
 use App\Models\TipoProceso;
-use App\Modeñs\Preinscripcion;
+use App\Models\Preinscripcion;
+use App\Models\Documento;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -43,6 +44,45 @@ class PreinscripcionController extends Controller
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
+  }
+
+
+  public function preinscribir(Request $request)
+  {
+      $pre = Preinscripcion::create([
+        'id_postulante'=> $request->id_postulante,
+        'id_programa' => $request->programa,
+        'id_proceso' => 4,
+        'id_modalidad' => $request->modalidad,
+        'estado' => 1,
+        'codigo_seguridad' => date('Y')
+      ]);
+
+      try{
+          if($request->hasFile('img')){
+              $file = $request->file('img');
+              $file_name =$file->getClientoriginalName();
+              $file->move(public_path('documentos/certificados/'.$request->programa.'/'), time().'-'.$file_name);
+
+              //2023 
+              $doc = Documento::create([
+                  'codigo' => 'PRE'.$request->id_postulante, 
+                  'nombre' => $file_name,
+                  'id_postulante' => $request->id_postulante,
+                  'id_tipo_documento' => 2,
+                  'estado' => 1,
+                  'url' => 'documentos/certificados/'.$request->programa.'/'.time().'-'.$file_name,
+                  'fecha' => date('Y-m-d'),
+                  'observacion' => $request->tipo_certificado
+              ]);
+              return response()->json(['menssje'=>'file upload success'], 200);
+          }
+      }catch(\Exception $e){
+          return response()->json([
+              'mssage'=>$e->getMessage()
+          ]);
+      }
+
   }
 
   
