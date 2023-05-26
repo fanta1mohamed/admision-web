@@ -192,7 +192,6 @@ const postulante = ref({dni:"", nombres:"", primer_apellido:"",segundo_apellido:
 const preinscripciones = ref(null)
 const inscripciones = ref(null)
 
-
 const apoderados = ref([])
 const vouchers = ref([])
 const documentos = ref ([])

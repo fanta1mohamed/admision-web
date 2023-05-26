@@ -14,10 +14,12 @@ use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\FilialController;
 use App\Http\Controllers\ModalidadController;
+use App\Http\Controllers\ApoderadoController;
 use App\Http\Controllers\ProgramaController;
 use App\Http\Controllers\PostulanteController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\SeleccionDataController;
+use App\Http\Controllers\ColegioController;
 
 
 Route::get('/', function () {
@@ -35,9 +37,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
-
     Route::get('users', [UserController::class, 'index'])->name('users.index');
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -114,8 +114,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
 
-
-
     //GET DATA 
     Route::get('/get-facultades', [SeleccionDataController::class, 'getFacultades']);
     Route::post('/procesos/get-sedes', [SeleccionDataController::class, 'getSedes']);
@@ -124,11 +122,29 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/pre-inscripcion/get-comprobantes', [SeleccionDataController::class, 'getComprobanteByDni']);
 
     Route::post('/get-departamentos-codigo', [SeleccionDataController::class, 'getDepartamentoCodigo']);
-
-
-    
+    Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
+    Route::post('/get-distritos-codigo', [SeleccionDataController::class, 'getDistritosCodigo']);
     
 });
+
+//PREINSCRIPCION
+Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
+Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
+Route::post('/save-postulante', [PostulanteController::class, 'savePostulante']);
+Route::post('/save-postulante-residencia', [PostulanteController::class, 'saveResidencia']);
+Route::post('/save-postulante-colegio', [PostulanteController::class, 'saveColegio']);
+Route::post('/save-postulante-apoderado', [ApoderadoController::class, 'saveApoderado']);
+
+Route::post('/get-departamentos-codigo', [SeleccionDataController::class, 'getDepartamentoCodigo']);
+Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
+Route::post('/get-distritos-codigo', [SeleccionDataController::class, 'getDistritosCodigo']);
+Route::post('/get-ubigeo-colegio', [ColegioController::class, 'getUbigeoColegio']);
+Route::post('/get-colegio-distrito', [ColegioController::class, 'getColegiosDistrito']);
+
+Route::post('/get-colegio-distrito', [ColegioController::class, 'getColegiosDistrito']);
+Route::post('/get-apoderado', [ApoderadoController::class, 'getApoderado']);
+
+
 
 Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);

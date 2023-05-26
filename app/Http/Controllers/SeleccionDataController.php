@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Provincia;
+use App\Models\Distrito;
+use App\Models\Pais;
 use App\Models\Filial;
 use App\Models\Comprobante;
 use Illuminate\Support\Facades\DB;
@@ -21,12 +23,74 @@ class SeleccionDataController extends Controller
     $this->provincia = new Provincia();
   } 
 
+  public function getPaises(Request $request) {
+    $res = Pais::select(
+      'distritos.codigo as key', 'distritos.nombre as value' 
+    )
+      ->join('ubigeo','distritos.id','ubigeo.id_distrito')
+      ->join('departamento','departamento.id','ubigeo.id_departamento')
+      ->join('provincia','provincia.id','ubigeo.id_provincia')
+      ->where('departamento.codigo','=',$request->departamento)
+      ->where('provincia.codigo','=',$request->provincia)
+      ->where(function ($query) use ($request) {
+        return $query
+            ->orWhere('distritos.codigo', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('distritos.nombre', 'LIKE', '%' . $request->term . '%');
+      })->orderBy('distritos.nombre', 'ASC')->get();
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+  public function getDistritosCodigo(Request $request)
+  {
+
+    $res = Distrito::select(
+      'distritos.codigo as key', 'distritos.nombre as value' 
+    )
+      ->join('ubigeo','distritos.id','ubigeo.id_distrito')
+      ->join('departamento','departamento.id','ubigeo.id_departamento')
+      ->join('provincia','provincia.id','ubigeo.id_provincia')
+      ->where('departamento.codigo','=',$request->departamento)
+      ->where('provincia.codigo','=',$request->provincia)
+      ->where(function ($query) use ($request) {
+        return $query
+            ->orWhere('distritos.codigo', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('distritos.nombre', 'LIKE', '%' . $request->term . '%');
+      })->orderBy('distritos.nombre', 'ASC')->get();
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+  public function getProvinciasCodigo(Request $request)
+  {
+    $res = Provincia::select(
+      'provincia.codigo as key', 'provincia.nombre as value' 
+    )
+      ->join('ubigeo','provincia.id','ubigeo.id_provincia')
+      ->join('departamento','departamento.id','ubigeo.id_departamento')
+      ->where('departamento.codigo','=',$request->departamento)
+      ->where(function ($query) use ($request) {
+        return $query
+            ->orWhere('provincia.codigo', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('provincia.nombre', 'LIKE', '%' . $request->term . '%');
+      })->orderBy('provincia.nombre', 'ASC')->get();
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+  
+
   public function getDepartamentoCodigo(Request $request)
   {
     $res = Departamento::select(
-        'codigo as key', 'nombre as value' 
+      'codigo as key', 'nombre as value' 
     )
-      ->where(function ($query) use ($request) {
+      ->where(function ($query) use ($request) {  
         return $query
             ->orWhere('departamento.codigo', 'LIKE', '%' . $request->term . '%')
               ->orWhere('departamento.nombre', 'LIKE', '%' . $request->term . '%');

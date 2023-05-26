@@ -1,7 +1,7 @@
 <template>
 <Head title="Procesos"/>
 <AuthenticatedLayout>
-  <div class="p-4" style="">
+  <div class="p-4" style="" >
     <div> 
       <div style="margin-top: 0px; margin-bottom: -20px;">
         <a-steps progress-dot v-model:current="current">
@@ -11,12 +11,12 @@
           <a-step title="Paso 4" description="Datos del colegio." />
           <a-step title="Paso 5" description="Datos de Postulación." />
         </a-steps>
-        <a-divider />
+        <a-divider style="margin-top:5px; margin-bottom:30px;" />
       </div>
 
       <!-- PASO 0 -->
 
-      <div v-if="current===0" style="width: 100%; margin-top: -25px;">
+      <div v-if="current===0" style="width: 100%; margin-top: 0px;">
         <div class="flex" style="justify-content: center; align-items: center; width: 100%; margin-top: 80px; margin-bottom: 50px;">
           <a-card style="min-width: 300px; ">
             
@@ -32,7 +32,7 @@
             <a-input v-model:value="dni" placeholder="Ingrese N° Documento"/>
 
             <div style="display: flex; justify-content: center; margin-top: 10px;">
-              <a-button type="primary" @click="getDatos()">Iniciar Postulación</a-button>
+              <a-button type="primary" @click="getDatosPersonales()">Iniciar Postulación</a-button>
             </div>
 
             {{ tipo }}
@@ -59,10 +59,13 @@
 
 
       <!-- PASO 1 DATOS PERSONALES -->
-      <div v-if="current===1" style="width: 100%; margin-top: -25px;">
-        {{ departamentos }}
+      <div v-if="current===1" style="width: 100%; margin-top: -25px; ">
+        <!-- {{ datos_personales }}
+        {{ depseleccionado }}
+        {{ provseleccionada }}
+        {{ distseleccionado }} -->
 
-        <a-card style="padding-top: -25px">
+        <a-card style="padding-top: -5px; padding-bottom:20px;">
           <div>
             
             <div style="margin-bottom: 25px; margin-top: -10px;">
@@ -133,43 +136,75 @@
             <a-row :gutter="[16, 0]" class="form-row">
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
                 <a-form-item>
-                  <div><label>Departamento:</label></div>
+                  <div><label>Departamento: {{ dep }}</label></div>
      
 
-
-
-
-
-
-
-
                   <a-auto-complete
-                    v-model:value="test"
-                    :options="departamentos"
-                    style="width: 200px"
-                    @select="onSelect"
+                      v-model:value="dep"                
+                      :options="departamentos"
+                      @select="onSelectDepartamentos"
                   >
+                      <a-input
+                          placeholder="Departamento"
+                          v-model:value="buscarDep"
+                          @keypress="handleKeyPress"
+                      >
+                      <template #suffix>
+                      <a-tooltip title="Extra information">
+                        <down-outlined />
+                      </a-tooltip>
+                    </template>
+                    </a-input>
                   </a-auto-complete>
 
 
 
-
-
-
-
-    
                 </a-form-item>
               </a-col>
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
                 <a-form-item>
                   <div><label>Provincia:</label></div>
-                  <a-input v-model="campo2" />
+                  <a-auto-complete
+                      v-model:value="prov"                
+                      :options="provincias"
+                      @select="onSelectProvincias"
+                  >
+                      <a-input
+                          placeholder="Provincia"
+                          v-model:value="buscarProv"
+                          @keypress="handleKeyPress"
+                      >
+                      <template #suffix>
+                      <a-tooltip title="Extra information">
+                        <down-outlined />
+                      </a-tooltip>
+                    </template>
+                    </a-input>
+                  </a-auto-complete>
                 </a-form-item>
               </a-col>
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
                 <a-form-item>
                   <div><label>Distrito:</label></div>
-                  <a-input v-model="campo3" />
+
+                  <a-auto-complete
+                      v-model:value="dist"                
+                      :options="distritos"
+                      @select="onSelectDistritos"
+                  >
+                      <a-input
+                          placeholder="Provincia"
+                          v-model:value="buscarDist"
+                          @keypress="handleKeyPress"
+                      >
+                      <template #suffix>
+                      <a-tooltip title="Extra information">
+                        <down-outlined />
+                      </a-tooltip>
+                    </template>
+                    </a-input>
+                  </a-auto-complete>
+
                 </a-form-item>
               </a-col>
             </a-row>
@@ -197,8 +232,40 @@
 
         </a-card>
       </div>
-      <div v-if="current===2" style="width: 100%;">
-        Paso 3
+
+      <!-- PASO 3 -->
+
+      <div v-if="current===2" style="width: 100%; padding-top:10px;">
+        <div style=" justify-content:center;">
+          <a-row :gutter="[16, 0]">
+            <a-col :span="24" :md="8" :lg="6" :xl="4" :xxl="3">
+            </a-col>
+            <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+              <Apoderado @hijo-clicado="manejarClicHijo" ref="miComponenteRef" titulo="Padre" :tipo_apoderado="1" />
+              <!-- <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+                <a-button type="primary" @click="ejecutarEnHijo" block style="height:40px"> Ejecutar en Hijo </a-button>
+              </div> -->
+            </a-col>
+            <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+              <Apoderado @hijo-clicado="manejarClicHijo" ref="miComponenteRef" titulo="Madre" :tipo_apoderado="2" />
+              <!-- <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+                <a-button type="primary" @click="ejecutarEnHijo" block style="height:40px"> Ejecutar en Hijo </a-button>
+              </div> -->
+            </a-col>
+            
+
+          </a-row>
+
+            <a-row :gutter="[16, 0]" class="form-row" style="margin-top: 45px;">
+                <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                  <div class="flex" style="justify-content: space-between;">
+                    <a-button @click="prev()" >Anterior</a-button>
+                    <a-button @click="next()" type="primary" >Siguiente</a-button>    
+                  </div>
+                </a-col>
+            </a-row>
+
+        </div>
       </div>
     </div>
 
@@ -219,13 +286,24 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined, } from '@ant-design/icons-vue';
+import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
 import { format } from 'date-fns';
+import Apoderado from './component/apoderado.vue'
 import dayjs from 'dayjs';
 import axios from 'axios';
 
-const test = ref("")
 
+const miComponenteRef = ref(null);
+const ejecutarEnHijo = () => {
+  miComponenteRef.value.ejecutarFuncion();
+};
+
+const manejarClicHijo = (datos) => {
+  console.log('Datos recibidos:', datos);
+  // Lógica adicional que deseas realizar con los datos recibidos del hijo
+}
+
+const test = ref("")
 
 const current = ref(0);
 const next = () => { current.value++; };
@@ -242,7 +320,9 @@ const datos_personales = ref({
   correo:"",
   celular:"",
   fec_nacimiento:"",
-  ubigeo:"" 
+  ubigeo:"",
+  ubigeo_residencia:"",
+  direccion:""
 });
 
 const datos_residencia = ref({
@@ -253,6 +333,38 @@ const datos_residencia = ref({
 })
 
 const departamentos = ref([])
+const dep = ref(null);
+const buscarDep = ref("")
+const  depseleccionado = ref('20')
+watch(buscarDep, ( newValue, oldValue ) => {
+    getDepartamentos()
+})
+const onSelectDepartamentos = (value, option) => {
+    depseleccionado.value = option.key;
+    getProvincias()
+};
+
+const provincias = ref([])
+const prov = ref(null);
+const buscarProv = ref("")
+const provseleccionada = ref(null)
+watch(buscarProv, ( newValue, oldValue ) => {
+    getProvincias()
+})
+const onSelectProvincias = (value, option) => {
+    provseleccionada.value = option.key;
+    getDistritos()
+};
+
+const distritos = ref([])
+const dist = ref(null);
+const buscarDist = ref("")
+const distseleccionado = ref('20')
+const onSelectDistritos = (value, option) => {
+    distseleccionado.value = option.key;
+    //getDistritos()
+};
+
 
 const tipo_doc = ref(1) 
 
@@ -281,18 +393,41 @@ const getDatosPersonales = async () => {
   datos_personales.value.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento)
   datos_personales.value.ubigeo = res.data.datos[0].ubigeo
   datos_personales.value.direccion = res.data.datos[0].direccion
+  depseleccionado.value = res.data.datos.dep;
+  dep.value = res.data.datos[0].departamento
+  provseleccionada.value = res.data.datos.prov;
+  prov.value = res.data.datos[0].provincia
+  distseleccionado.value = res.data.datos.dist;
+  dist.value = res.data.datos[0].distrito
+  datos_personales.value.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
+  datos_personales.value.direccion = res.data.datos[0].direccion
+  next()
 } 
 
-const getDatos = async () => {
-  //let res = await axios.get( "https://apiperu.dev/api/dni/"+dni.value, { headers: {"Authorization" : `Bearer ${token.value}`}});
-  //tipo.value = res.data.datos;
-  next()
-}
+
 
 const getDepartamentos = async () => {
-  let res = await axios.post( "get-departamentos-codigo?page=", {nro_doc: dni.value});
-  departamentos.value = res.data.datos
+  let res = await axios.post( "get-departamentos-codigo?page=", { term: buscarDep.value});
+  departamentos.value = res.data.datos.data
 } 
+
+const getProvincias = async (depp) => {
+  let res = await axios.post( "get-provincias-codigo?page=", {departamento: depseleccionado.value });
+  provincias.value = res.data.datos
+  prov.value = res.data.datos[0].value
+} 
+
+const getDistritos = async (depp) => {
+  let res = await axios.post( "get-distritos-codigo?page=", 
+    { 
+      departamento: depseleccionado.value,
+      provincia: provseleccionada.value    
+    }
+  );
+  distritos.value = res.data.datos
+  dist.value = res.data.datos[0].value
+}
+
 
 watch(dni, ( newValue, oldValue ) => {
   if(dni.value.length == 8 ){
@@ -301,23 +436,26 @@ watch(dni, ( newValue, oldValue ) => {
   }
 
 })
+
 watch(current, ( newValue, oldValue ) => {
-  if(current.value == 1 ){
-    getDatosPersonales();
-    getDepartamentos();
-  }
+
+if(current === 1 ){
+  getDatosPersonales();
+  getDepartamentos();
+}
+else {
+  return
+}
 })
 
 
-// axios.post("save-proceso", post).then((result) => {
-//   notificacion('success',result.data.titulo, result.data.mensaje);
-//   getProcesos();
-//   visible.value = false;
-
-// });
-
-
 const saveDatosPersonales =  async () => {
+
+  if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
+    //console.log(depseleccionado.value + provseleccionada.value + distseleccionado.value)
+    datos_personales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
+  }
+
   let res = await axios.post(
     "save-datos-personales",
     { 
@@ -331,7 +469,8 @@ const saveDatosPersonales =  async () => {
       celular: datos_personales.value.celular, 
       fec_nacimeinto: format(new Date(datos_personales.value.fec_nacimiento), 'yyyy-MM-dd'),
       ubigeo_nacimiento: datos_personales.value.ubigeo,
-//      ubigeo_residendia: datos_personales.value.ubigeo_residendia
+      ubigeo_residencia: datos_personales.value.ubigeo_residencia,
+      direccion: datos_personales.value.direccion 
     }
   );
 
@@ -347,17 +486,31 @@ const saveDatosPersonales =  async () => {
 //
 
 
-
-
-
 // watch(buscar, ( newValue, oldValue ) => {
 //   getProcesos();
 // })
 
+const selectedOption = ref(null);
+const inputValue = ref('');
 
 
 // getComprobantes()
     
+const handleChange = (value) => {
+  console.log(`Selected: ${value}`);
+};
+
+const handleInput = (event) => {
+  inputValue.value = event.target.value;
+};
+
+watch(inputValue, (value) => {
+  console.log(`Input value: ${value}`);
+});
+
+getDepartamentos();
+getProvincias()
+
 </script>
 <style scoped>
 .form-row {

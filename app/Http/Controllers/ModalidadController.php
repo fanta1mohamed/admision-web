@@ -14,8 +14,6 @@ class ModalidadController extends Controller
         
     }  
 
-
-
     public function getModalidades(Request $request)
     {
       $query_where = [];
