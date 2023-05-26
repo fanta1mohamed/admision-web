@@ -250,325 +250,23 @@
         <div>{{  pagina_pre = pagina_pre_temp }}</div>
         <div>{{  pagina_pre_temp = 3 }}</div>
 
-        <!-- <div style="width: 100%; margin-top: 5px; ">
-
-        <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
-          <div>
-
-            <div style="margin-bottom: 25px; margin-top: 10px; ">
-              <h1 style="font-size: 1.1rem;"> Datos del colegio</h1>
-            </div>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="16" :lg="12" :xl="16" :xxl="6">
-                <a-form-item>
-                  <div><label>Año de egreso: {{ dep }}</label></div>
-     
-                  <a-auto-complete
-                      v-model:value="dep"                
-                      :options="departamentos"
-                      @select="onSelectDepartamentos"
-                  >
-                      <a-input
-                          placeholder="Departamento"
-                          v-model:value="buscarDep"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-                  <div><label>Pais:</label></div>
-                  <a-auto-complete
-                      v-model:value="prov"                
-                      :options="provincias"
-                      @select="onSelectProvincias"
-                  >
-                      <a-input
-                          placeholder="Provincia"
-                          v-model:value="buscarProv"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-                  <div><label>Departamento: {{ dep }}</label></div>
-     
-
-                  <a-auto-complete
-                      v-model:value="dep"                
-                      :options="departamentos"
-                      @select="onSelectDepartamentos"
-                  >
-                      <a-input
-                          placeholder="Departamento"
-                          v-model:value="buscarDep"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-                  <div><label>Provincia:</label></div>
-                  <a-auto-complete
-                      v-model:value="prov"                
-                      :options="provincias"
-                      @select="onSelectProvincias"
-                  >
-                      <a-input
-                          placeholder="Provincia"
-                          v-model:value="buscarProv"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-                  <div><label>Distrito:</label></div>
-
-                  <a-auto-complete
-                      v-model:value="dist"                
-                      :options="distritos"
-                      @select="onSelectDistritos"
-                  >
-                      <a-input
-                          placeholder="Provincia"
-                          v-model:value="buscarDist"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                <a-form-item>
-                  <div><label>Nombre de colegio:</label></div>
-                  <a-input v-model:value="datos_personales.direccion" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-          </div>
-
-        </a-card>
-        </div> -->
-      
       </div>
-
 
       <div v-if="pagina_pre === 4">
 
         <div style="width: 100%; margin-top: 5px; ">
-
-        <Apoderado ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1"/>
-        <!-- <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
-          <div>
-
-            <div style="margin-bottom: 25px; margin-top: 10px; ">
-              <h1 style="font-size: 1.1rem;"> Datos del padre</h1>
-            </div>
-            <a-radio-group v-model:value="datos_personales.tipo_doc" class="flex justify-end" style="display: flex; width: yellow;" name="radioGroup">
-              <a-radio :value="1">Padre</a-radio>
-              <a-radio :value="2">Tutor</a-radio>
-            </a-radio-group>
-
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
-                <a-form-item>
-                  <div><label>N° Documento</label></div>
-
-                  <a-auto-complete
-                      v-model:value="dep"                
-                      :options="departamentos"
-                      @select="onSelectDepartamentos"
-                  >
-                      <a-input
-                          placeholder="Departamento"
-                          v-model:value="buscarDep"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
-                <a-form-item>
-                  <div><label>Pre nombres:</label></div>
-                  <a-auto-complete
-                      v-model:value="prov"                
-                      :options="provincias"
-                      @select="onSelectProvincias"
-                  >
-                      <a-input
-                          placeholder="Provincia"
-                          v-model:value="buscarProv"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-                </a-form-item>
-              </a-col>
-
-              <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                <a-form-item>
-                  <div><label>Primer apellido:</label></div>
-                  <a-input v-model:value="datos_personales.direccion" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                <a-form-item>
-                  <div><label>Segundo Apellido:</label></div>
-                  <a-input v-model:value="datos_personales.direccion" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-          </div>
-
-        </a-card> -->
+          <Apoderado ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1"/>
+            <div>{{ pagina_pre = pagina_pre_temp_padre }}</div>
+            <div>{{ pagina_pre_temp_padre = 4 }}</div>
         </div>
       </div>
 
       <div v-if="pagina_pre === 5">
 
         <div style="width: 100%; margin-top: 5px; ">
-
-        <Apoderado ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2"/>
-
-        <!-- <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
-          <div>
-
-            
-            <div style="margin-bottom: 25px; margin-top: 10px; ">
-              <h1 style="font-size: 1.1rem;"> Datos de la madre</h1>
-            </div>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
-                <a-form-item>
-                  <div><label>N° Documento</label></div>
-
-                  <a-auto-complete
-                      v-model:value="dep"                
-                      :options="departamentos"
-                      @select="onSelectDepartamentos"
-                  >
-                      <a-input
-                          placeholder="Departamento"
-                          v-model:value="buscarDep"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
-                <a-form-item>
-                  <div><label>Pre nombres:</label></div>
-                  <a-auto-complete
-                      v-model:value="prov"                
-                      :options="provincias"
-                      @select="onSelectProvincias"
-                  >
-                      <a-input
-                          placeholder="Provincia"
-                          v-model:value="buscarProv"
-                          @keypress="handleKeyPress"
-                      >
-                      <template #suffix>
-                      <a-tooltip title="Extra information">
-                        <down-outlined />
-                      </a-tooltip>
-                    </template>
-                    </a-input>
-                  </a-auto-complete>
-                </a-form-item>
-              </a-col>
-  
-              <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                <a-form-item>
-                  <div><label>Primer apellido:</label></div>
-                  <a-input v-model:value="datos_personales.direccion" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                <a-form-item>
-                  <div><label>Segundo Apellido:</label></div>
-                  <a-input v-model:value="datos_personales.direccion" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-          </div>
-
-        </a-card> -->
+          <Apoderado ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2"/>
+            <div>{{ pagina_pre = pagina_pre_temp_madre }}</div>
+            <div>{{ pagina_pre_temp_madre = 5 }}</div>
         </div>
       </div>
 
@@ -590,11 +288,12 @@
                     <div><label>Modalidad</label></div>
                      <a-select
                         ref="select"
-                        v-model:value="datos_personales.estado_civil"
+                        v-model:value="datos_preinscripcion.modalidad"
+                        placeholder="Seleccionar modalidad"
                         class="selector-modalidad"
                       >
-                        <a-select-option :value="7">Examen CEPREUNA</a-select-option>
-                        <a-select-option :value="8">Examen General</a-select-option>
+                        <a-select-option :value="7">CEPREUNA</a-select-option>
+                        <a-select-option :value="8">EXAMEN GENERAL</a-select-option>
                         <a-select-option :value="9">CONADIS</a-select-option>
                         <a-select-option :value="1">Primeros puestos y Coar</a-select-option>
                         <a-select-option :value="2">Traslado interno</a-select-option>
@@ -602,6 +301,7 @@
                         <a-select-option :value="4">Graduados o titulados</a-select-option>
                         <a-select-option :value="5">Plan de reparaciones (Ley 28592)</a-select-option>
                         <a-select-option :value="6">Programa de Becas (Pronabec)</a-select-option>
+                        <a-select-option :value="10">Deportistas de alto nivel</a-select-option>
                       </a-select>
                   </div>
                 </div>
@@ -611,71 +311,100 @@
               <a-row :gutter="[16, 0]" class="form-row">
                 <a-col :span="24" :md="16" :lg="12" :xl="24" :xxl="6">
                   <a-form-item>
-                    <div><label>Programa de estudios</label></div>
-
-                    <a-auto-complete
-                        v-model:value="dep"                
-                        :options="departamentos"
-                        @select="onSelectDepartamentos"
-                    >
-                        <a-input
-                            placeholder="Departamento"
-                            v-model:value="buscarDep"
-                            @keypress="handleKeyPress"
-                        >
-                        <template #suffix>
-                        <a-tooltip title="Extra information">
-                          <down-outlined />
-                        </a-tooltip>
-                      </template>
-                      </a-input>
-                    </a-auto-complete>
+                    <div><label>Programa de estudios</label></div>  
+                    <a-select
+                        ref="select"
+                        v-model:value="datos_preinscripcion.programa"
+                        placeholder="Seleccionar programa"
+                        class="selector-modalidad"
+                      >
+                        <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
+                        <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
+                        <a-select-option :value='3'>ARQUITECTURA Y URBANISMO</a-select-option>
+                        <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
+                        <a-select-option :value='5'>ARTE: DANZA</a-select-option>
+                        <a-select-option :value='6'>ARTE: MÚSICA</a-select-option>
+                        <a-select-option :value='7'>ARTE: TEATRO</a-select-option>
+                        <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
+                        <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
+                        <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
+                        <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
+                        <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
+                        <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
+                        <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
+                        <a-select-option :value='15'>DERECHO</a-select-option>
+                        <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
+                        <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
+                        <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
+                        <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
+                        <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
+                        <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
+                        <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
+                        <a-select-option :value='23'>ENFERMERÍA</a-select-option>
+                        <a-select-option :value='24'>INGENIERÍA AGRÍCOLA</a-select-option>
+                        <a-select-option :value='25'>INGENIERÍA AGROINDUSTRIAL</a-select-option>
+                        <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
+                        <a-select-option :value='27'>INGENIERÍA CIVIL</a-select-option>
+                        <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
+                        <a-select-option :value='29'>INGENIERÍA DE SISTEMAS</a-select-option>
+                        <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
+                        <a-select-option :value='31'>INGENIERÍA ELECTRÓNICA</a-select-option>
+                        <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
+                        <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
+                        <a-select-option :value='34'>INGENIERÍA MECÁNICA ELÉCTRICA</a-select-option>
+                        <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
+                        <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
+                        <a-select-option :value='37'>INGENIERÍA TOPOGRÁFICA Y AGRIMENSURA</a-select-option>
+                        <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
+                        <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
+                        <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
+                        <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
+                        <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
+                        <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
+                        <a-select-option :value='44'>TURISMO</a-select-option>
+                    </a-select>
 
                   </a-form-item>
                 </a-col>
                 
-                <a-col style="display:none;" :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                <a-col v-if="datos_preinscripcion.programa === 38 || datos_preinscripcion.programa === 16" :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
                   <a-form-item>
                     <div><label>Cod. de examen médico:</label></div>
-                    <a-auto-complete
-                        v-model:value="prov"                
-                        :options="provincias"
-                        @select="onSelectProvincias"
-                    >
-                        <a-input
-                            placeholder="Provincia"
-                            v-model:value="buscarProv"
-                            @keypress="handleKeyPress"
-                        >
-                        <template #suffix>
-                        <a-tooltip title="Extra information">
-                          <down-outlined />
-                        </a-tooltip>
-                      </template>
-                      </a-input>
-                    </a-auto-complete>
+                    <a-input placeholder="Cod cert Examen médico" v-model:value="datos_preinscripcion.codigo_medico"/>
                   </a-form-item>
                 </a-col>
                 <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="6">
                   <a-form-item>
                     <div><label>Tipo de certificado:</label></div>
-                    <a-input v-model:value="datos_personales.direccion" />
+                    <a-select
+                        ref="select"
+                        v-model:value="datos_preinscripcion.tipo_certificado"
+                        placeholder="Seleccionar tipo de certificado"
+                        class="selector-modalidad" >
+                        <a-select-option value='CERTIFICADO BLANCO'>CERTIFICADO BLANCO</a-select-option>
+                        <a-select-option value='CERTIFICADO AMARILLO'>CERTIFICADO AMARILLO</a-select-option>
+                        <a-select-option value='CONSTANCIA DE ESTUDIOS'>CONSTANCIA DE ESTUDIOS</a-select-option>
+                    </a-select>
                   </a-form-item>
                 </a-col>
                 <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="6">
                   <a-form-item>
                     <div><label>Codigo de certificado:</label></div>
-                    <a-input v-model:value="datos_personales.direccion" />
+                    <a-input v-model:value="datos_preinscripcion.codigo_certificado" />
                   </a-form-item>
                 </a-col>
               </a-row>
 
+              {{ "TROW" }}
               <a-row :gutter="[16, 0]" class="form-row">
                 <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="6">
-                  <a-form-item>
-                    <div><label>Subir certificado:</label></div>
-                    <a-input v-model:value="datos_personales.direccion" />
-                  </a-form-item>
+                  <form @submit.prevent="preInscribir">
+                    <div class="flex justify-between">
+                      <input type="file" @change="onChange"/>
+                      <a-button html-type="submit" @click="submit">Enviar</a-button>
+
+                    </div>
+                  </form>
                 </a-col>
               </a-row>
 
@@ -721,7 +450,7 @@
       </div>
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button @click="next()" class="boton-siguiente" type="primary" >Finalizar</a-button>    
+        <a-button @click=" preInscribir()" class="boton-siguiente" type="primary" >Finalizar</a-button>    
       </div>
     </a-affix>
 
@@ -740,7 +469,7 @@ import { notification } from 'ant-design-vue';
 const avance = ref(0)
 const bottom = ref(2)
 
-const pagina_pre = ref(0)
+const pagina_pre = ref(6)
 const next = () => { pagina_pre.value++; avance.value = avance.value + 15 }
 const prev = () => { pagina_pre.value--; avance.value = avance.value - 15 }
 const dni = ref("70757838")
@@ -779,7 +508,6 @@ const onSelectDistritos = (value, option) => {
     //getDistritos()
 };
 
-
 const getDatosPersonales = async () => {
   let res = await axios.post( "get-postulante-datos-personales", {nro_doc: dni.value});
   datos_personales.value.id = res.data.datos[0].id
@@ -803,7 +531,6 @@ const getDatosPersonales = async () => {
   datos_personales.value.direccion = res.data.datos[0].direccion
   next()
 } 
-
 
 const datos_personales = ref({
   id: null,
@@ -876,8 +603,6 @@ const saveDatosResidencia =  async () => {
 }
 
 
-
-
 watch(pagina_pre, ( newValue, oldValue ) => {
 
   if(pagina_pre === 2 ){
@@ -927,6 +652,62 @@ const funcionHijoEjecutada = () => {
   console.log('Función del componente hijo ejecutada en el componente padre');
 };
 
+const datos_preinscripcion = ref({
+  modalidad: null,
+  programa:null,
+  tipo_certificado:null,
+  codigo_medico: null,
+  codigo_certificado:null,
+})
+
+
+const certificado = ref(null);
+
+// const onChange = (e) => {
+//   console.log("Selected file", e.target.files[0])
+//   certificado.value = e.target.files[0];
+// }
+
+const preInscribir = async () => {
+  let fd = new FormData();
+
+  fd.append('img', certificado.value)
+  fd.append('modalidad', datos_preinscripcion.value.modalidad)
+  fd.append('programa', datos_preinscripcion.value.programa)
+  fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
+
+  await axios.post("pre-inscribir", {
+    fd,
+    // certificado: fd,
+    // modalidad: datos_preinscripcion.value.modalidad,
+    // programa: datos_preinscripcion.value.programa,
+    // tipo_certificado: datos_preinscripcion.tipo_certificado,
+    // codigo_medico: datos_preinscripcion.codigo_medico,
+    // codigo_certificado: datos_preinscripcion.codigo_certificado
+   }).then(res=>{
+    // showToast("success","2",res.data.menssje);
+    // getResoluciones()
+  }).catch(err=>console.log(err))
+}
+
+const imagen = ref(null);
+const onChange = (e) => {
+  console.log("Selected file", e.target.files[0])
+  imagen.value = e.target.files[0];
+}
+const submit = async () => {
+  let fd = new FormData();
+  fd.append('img', imagen.value)
+  fd.append('modalidad', datos_preinscripcion.value.modalidad)
+  fd.append('programa', datos_preinscripcion.value.programa)
+  fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
+  await axios.post("/documento/resolucion", fd).then(res=>{
+    showToast("success","2",res.data.menssje);
+    getResoluciones()
+  }).catch(err=>console.log(err))
+}
+
+
 </script>
 
 <script>
@@ -937,7 +718,11 @@ export default {
     Colegio, Apoderado
   },
   data() {
-    return { pagina_pre_temp: 3 }
+    return { 
+      pagina_pre_temp: 3,
+      pagina_pre_temp_padre: 4,
+      pagina_pre_temp_madre: 5,
+    }
   },
   methods: {
     ejecutarMetodoHijo() {
@@ -946,18 +731,32 @@ export default {
     },
     guardarApoderadoPadre() {
       this.$refs.padreComponent.saveApoderado();
-      this.pagina_pre_temp = 5;
+      this.pagina_pre_temp_padre = 5;
     },
     guardarApoderadoMadre() {
       this.$refs.madreComponent.saveApoderadoMadre();
-      this.pagina_pre_temp = 5;
+      this.pagina_pre_temp_madre = 6;
     }
   },
 }
 </script>
 
-
 <style scope>
+input[type=file]::file-selector-button {
+  margin-right: 10px;
+  border: none;
+  background: blue  ;
+  padding: 7px 20px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: #13136b;
+}
+
 .boton-anterior { width: 175px; height: 38px; }
 .boton-siguiente { width: 175px; height: 38px; }  
 .datos-postulacion { display: flex}

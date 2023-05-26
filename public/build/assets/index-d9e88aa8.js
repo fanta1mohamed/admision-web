@@ -1,1 +1,0 @@
-import{c as t,d as e,t as a,F as r,o as n}from"./app-6aed9f17.js";const l=e("h1",null," Page Roles ",-1),u={__name:"index",props:["roles"],setup(s){const o=s;return(c,p)=>(n(),t(r,null,[l,e("pre",null," "+a(o.roles)+" ",1)],64))}};export{u as default};
