@@ -469,7 +469,7 @@ import { notification } from 'ant-design-vue';
 const avance = ref(0)
 const bottom = ref(2)
 
-const pagina_pre = ref(6)
+const pagina_pre = ref(0)
 const next = () => { pagina_pre.value++; avance.value = avance.value + 15 }
 const prev = () => { pagina_pre.value--; avance.value = avance.value - 15 }
 const dni = ref("70757838")
