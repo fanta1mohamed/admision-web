@@ -7,6 +7,7 @@ use App\Models\Departamento;
 use App\Models\Provincia;
 use App\Models\Distrito;
 use App\Models\Pais;
+use App\Models\Paso;
 use App\Models\Filial;
 use App\Models\Comprobante;
 use Illuminate\Support\Facades\DB;
@@ -212,6 +213,24 @@ class SeleccionDataController extends Controller
       return response()->json($this->response, 200);
     }
 
+  }
+
+
+  public function getPasos(Request $request)
+  {
+    $res = Paso::select(
+      'id', 'nombre', 'nro','avance', 'proceso', 'postulante' 
+    )
+    ->where('paso.postulante','=',$request->postulante)
+    ->where('paso.proceso','=',$request->proceso)
+    ->orderby('id','desc')
+    ->limit(1)
+    ->get(); 
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  
   }
 
 }

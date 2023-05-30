@@ -7,6 +7,7 @@ use App\Models\Proceso;
 use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
 use App\Models\Postulante;
+use App\Models\Paso;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -139,8 +140,32 @@ class PostulanteController extends Controller
         $this->response['estado'] = true;
         $this->response['datos'] = $postulante;
       }
+
+      if($request->actualizar == 'si'){
+        $this->savePasos("Datos colegio registrados", 3, 48, $request->id, $request->proceso);
+      }
   
         return response()->json($this->response, 200);
+    }
+
+
+    private function savePasos($nom, $num, $avan, $pos, $pro) {
+
+      $pasos = null;
+      $pasos = Paso::create([
+          'nombre' => $nom,
+          'nro' => $num,
+          'avance' => $avan, 
+          'postulante' => $pos,
+          'proceso' => $pro
+      ]);
+      $this->response['tipo'] = 'success';
+      $this->response['titulo'] = 'PASO REGISTRADO';
+      $this->response['mensaje'] = 'Proceso '.$pasos->nombre.' creado con exito';
+      $this->response['estado'] = true;
+      $this->response['datos'] = $pasos;
+      
+      return response()->json($this->response, 200);
     }
   
   //END PASO 1 PRE INSCRIPCION 

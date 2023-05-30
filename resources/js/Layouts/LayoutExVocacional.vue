@@ -1,11 +1,6 @@
 <template>
     <a-layout style="min-height: 100vh">
       <a-layout>
-        <!-- <a-layout-header style="background: #f50000; height: 230px; padding: 0; position: relative;" >
-        <div style="border-bottom: 1px solid #00000013;">
-            <h1>Header</h1>
-        </div>
-      </a-layout-header> -->
       <div class="headPre" style="height: 200px;">
         <div class="logoPre">  
             <div> <img src="./../../assets/imagenes/logotiny.png" width="45" /> </div>
@@ -14,7 +9,7 @@
         </div>
         <div class="flex justify-center titulo-pre ">
             <div>  
-                <span> Preinscripción </span>
+                <span> Examen Vocacional </span>
                 <div class="flex justify-center"> <hr class="line-pre"> </div>
             </div>
         </div>

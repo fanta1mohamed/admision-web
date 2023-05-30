@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Apoderado;
+use App\Models\Paso;
 use Illuminate\Support\Str;
 
 class ApoderadoController extends Controller {
@@ -56,6 +57,11 @@ class ApoderadoController extends Controller {
             'nombres' => $request->nombres,
             'tipo_apoderado' => $request->tipo_apoderado,
         ]);
+
+        if($request->actualizar == 'si'){
+          $this->savePasos($request->name, $request->nro, $request->avance, $request->id_postulante, $request->proceso);
+        }
+
         $this->response['tipo'] = 'success';
         $this->response['titulo'] = 'REGISTRO NUEVO';
         $this->response['mensaje'] = 'Proceso '.$apoderado->nombre.' creado con exito';
@@ -73,6 +79,9 @@ class ApoderadoController extends Controller {
         $apoderado->id_usuario = auth()->id();
         $apoderado->save();
 
+        if($request->actualizar == 'si'){
+          $this->savePasos($request->name, $request->nro, $request->avance, $request->id_postulante, $request->proceso);
+        }
         if( $temp == $apoderado ) {
           $this->response['estado'] = false;
         }else 
@@ -86,6 +95,26 @@ class ApoderadoController extends Controller {
 
       }
 
+      return response()->json($this->response, 200);
+    }
+
+
+    private function savePasos($nom, $num, $avan, $pos, $pro) {
+
+      $pasos = null;
+      $pasos = Paso::create([
+          'nombre' => $nom,
+          'nro' => $num,
+          'avance' => $avan, 
+          'postulante' => $pos,
+          'proceso' => $pro
+      ]);
+      $this->response['tipo'] = 'success';
+      $this->response['titulo'] = 'PASO REGISTRADO';
+      $this->response['mensaje'] = 'Proceso '.$pasos->nombre.' creado con exito';
+      $this->response['estado'] = true;
+      $this->response['datos'] = $pasos;
+      
       return response()->json($this->response, 200);
     }
 

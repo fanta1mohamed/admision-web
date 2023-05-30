@@ -1,0 +1,147 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\DetalleExamenVocacional;
+use App\Models\Pregunta;
+use App\Models\Respuesta;
+use App\Models\ExamenVocacional;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class PreguntaController extends Controller
+{
+   
+    public function getPreguntasPrograma(Request $request)
+    {
+        $programa = $request->id_programa;
+        $preguntas = [];
+
+        $res = DB::select(
+            'SELECT preguntas.id AS id_pregunta, preguntas.url, 
+            preguntas.pregunta, respuestas.respuesta, 
+            respuestas.id AS id_respuesta, respuestas.valor
+            FROM examen_vocacional 
+            join preguntas ON examen_vocacional.id = preguntas.id_examen_vocacional
+            JOIN respuestas ON respuestas.id_pregunta = preguntas.id
+            WHERE examen_vocacional.id = '.$programa.';');
+
+        $alternativas = [];
+        $temp = $res[0]->id_pregunta;
+        $cont = 0;
+        $preguntas[0]['id'] = $temp; 
+        $preguntas[0]['pregunta'] = $res[0]->pregunta;
+        $preguntas[0]['url'] = $res[0]->url;
+
+        // $alternativas[0] = $res[0]->respuesta; 
+        foreach ($res as $key => $registro) {
+            if($temp !== $registro->id_pregunta ){
+                $preguntas[$cont]['respuestas'] = $alternativas;  
+                $temp = $registro->id_pregunta;
+                $cont++;
+                $preguntas[$cont]['id_pregunta'] = $registro->id_pregunta; 
+                $preguntas[$cont]['pregunta'] = $registro->pregunta;
+                $preguntas[$cont]['url'] = $registro->url;
+                $alternativas = [];
+                $item = new Respuesta();
+                $item['respuesta'] = $registro->respuesta;
+                $item['valor'] = $registro->valor;
+                $item['ide'] = $registro->id_respuesta;
+                $item['ideP'] = $registro->id_pregunta;
+                array_push($alternativas,$item);
+                // $alternativas[$key] = $registro->respuesta;
+            }
+            else{
+                $item = new Respuesta();
+                $item['respuesta'] = $registro->respuesta;
+                $item['valor'] = $registro->valor;
+                $item['ide'] = $registro->id_respuesta;
+                $item['ideP'] =$registro->id_pregunta;
+                array_push($alternativas,$item);
+                $preguntas[$cont]['respuestas'] = $alternativas;  
+            }
+        }
+        $this->response['estado'] = true;
+        $this->response['datos'] = $preguntas;
+        return response()->json($this->response, 200);
+    }
+   
+    public function getDatosExamen(Request $request)
+    {
+        $res = DB::select(
+            'SELECT examen_vocacional.id as id_vocacional,   programa.nombre, postulante.*  FROM pre_inscripcion
+            JOIN postulante ON postulante.id = pre_inscripcion.id_postulante
+            JOIN programa ON pre_inscripcion.id_programa  = programa.id
+            JOIN examen_vocacional ON pre_inscripcion.id_programa = examen_vocacional.programa
+            WHERE id_postulante = '.$request->id_postulante.';');
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    
+
+
+
+
+    public function guardarExamen(Request $request){
+
+        // $this->response['nota'] = $request->respuestas;
+        // $this->response['estado'] = true;
+        // return response()->json($this->response, 200);
+
+
+
+        $nota = 0;
+       //$respuestas = [];
+       //array_push($respuestas,$request->res1,$request->res2,$request->res3,$request->res4);
+       //array_push($respuestas,$request->res5,$request->res6,$request->res7,$request->res8);
+       //array_push($respuestas,$request->res9,$request->res10);
+
+        foreach($request->respuestas as $res ) {
+            if($res != null){
+                $nota = $nota + $res['valor'];
+            }
+        }
+
+        try {
+            $trans = DB::transaction(function () use ($request,$nota) {
+
+                foreach($request->respuestas as $res ) {
+                    if($res != null){
+                        $respuesta = DetalleExamenVocacional::create([ 
+                            'id_respuesta' => $res['ide'],
+                            'id_pregunta' => $res['ideP'],
+                            'codigo_pre' => $request->codigo,
+                            // 'dni' => null,   s
+                            // 'id_examen' => , 
+                        ]);
+                    }
+                }
+
+                $this->response['nota'] = $nota;
+                $this->response['estado'] = true;
+                return response()->json($this->response, 200);
+
+            });
+        } catch (\Throwable $th) {
+            $this->response['mensaje'] = 'Ocurrió un error, vuelva a intentarlo. ' .  $th->getMessage();
+            $this->response['estado'] = false;
+            return response()->json($this->response, 200);
+        }
+
+    }
+
+    private function existe($id, $array) {
+        $cont = 0;
+        foreach ($array as $key => $item) {
+           if($id  === $item->id){
+            $cont = $key;
+           }
+        }
+        return $cont;
+    }
+
+
+}

@@ -1,8 +1,10 @@
-<template>
+<template style="background:pink;">
 <Head title="Preinscipción"/>
-<Layout>	
-
+<Layout v-if="examen === 0">	
 	<div style="width: 100%; min-height: calc(100vh - 220px); padding: 20px 20px; margin-top: 0px;">
+
+    <!-- {{ nc }} -->
+    <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
 
     <div class="flex mt-3 justify-center align-center" style=" width: 100%; min-height: calc(100vh - 215px)">
     <!-- INICIO -->
@@ -137,10 +139,10 @@
               <h1 style="font-size: 1.1rem;"> Datos de residencia</h1>
             </div>
 
-            {{ datos_personales.ubigeo_residencia }}
+            <!-- {{ datos_personales.ubigeo_residencia }}
             dep {{ depseleccionado }}
             {{ provseleccionada }}
-            {{ distseleccionado }}
+            {{ distseleccionado }} -->
 
             <a-row :gutter="[16, 0]" class="form-row">
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
@@ -245,26 +247,30 @@
 
       <div v-if="pagina_pre === 3">
 
-        <Colegio  ref="hijoComponent" :id_postulante="datos_personales.id"/>
-
+        <Colegio v-if="avance_current < 48"  ref="hijoComponent" :id_postulante="datos_personales.id" :actualiza="'si'" />
+        <Colegio v-if="avance_current >= 48" ref="hijoComponent" :id_postulante="datos_personales.id" :actualiza="'no'"/>
         <div style="display:none;">{{  pagina_pre = pagina_pre_temp }}</div>
         <div style="display:none;">{{  pagina_pre_temp = 3 }}</div>
+
 
       </div>
 
       <div v-if="pagina_pre === 4">
 
         <div style="width: 100%; margin-top: 5px; ">
-          <Apoderado ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1"/>
+          <Apoderado v-if="avance_current < 65" ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1" :actualiza="'si'"/>
+          <Apoderado v-if="avance_current >= 65" ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_padre }}</div>
             <div style="display:none;">{{ pagina_pre_temp_padre = 4 }}</div>
+
         </div>
       </div>
 
       <div v-if="pagina_pre === 5">
 
         <div style="width: 100%; margin-top: 5px; ">
-          <Apoderado ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2"/>
+          <Apoderado v-if="avance_current < 80" ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2" :actualiza="'si'"/>
+          <Apoderado v-if="avance_current >= 80" ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_madre }}</div>
             <div style="display:none;">{{ pagina_pre_temp_madre = 5 }}</div>
         </div>
@@ -413,6 +419,28 @@
           </div>
       </div>
 
+      <div v-if="pagina_pre === 7">
+        <div style="width: 100%; ">
+          <a-card style="padding-top: 5px; padding-bottom:0px; background: #24c1ff25;" >
+            <div class="">
+              <div class="flex justify-center"  >
+                <img src="../../../assets/imagenes/check.png" width="160"/>
+              </div>
+              <div class="flex justify-center">
+                <div  style="text-align:center; max-width: 350px;" >
+                  Felicidades sus datos han sido regisrados con exito, complete el examen vocacional y obtenga 
+                  su constancia vocacional su hoja de preinscripción
+                </div>
+              </div>
+              <div class="flex justify-center mt-4 mb-4">
+                <a-button @click="examen = 1" style="background: #020b61;" type="primary"> Iniciar examen vocacional</a-button>
+              </div>
+            </div>
+          </a-card>
+          </div>
+      </div>
+
+
       </div>
 
 
@@ -424,6 +452,7 @@
       <div>
         <a-progress :percent="avance"/>
       </div>
+
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 1">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
         <a-button @click="saveDatosPersonales()" class="boton-siguiente" type="primary" >Siguiente</a-button>    
@@ -436,7 +465,7 @@
 
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 3">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button @click="ejecutarMetodoHijo()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+        <a-button @click="guardarColegio()" class="boton-siguiente" type="primary" >Siguiente</a-button>
       </div>
 
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 4">
@@ -452,9 +481,15 @@
         <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>    
       </div>
     </a-affix>
-
 	
 </Layout>
+
+<div v-if="examen === 1">
+  <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :actualiza="'si'"/>
+  <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datos_personales.id"  :actualiza="'no'"/>
+</div>
+
+
 </template>
 <script setup>
 import Layout from '@/Layouts/LayoutPreinscripcion.vue'    
@@ -465,12 +500,14 @@ import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
 //import Colegio from "./components/datos_colegio.vue"
 
+const examen = ref(0);
+const modvocacional = true;
 const avance = ref(0)
 const bottom = ref(2)
 
 const pagina_pre = ref(0)
-const next = () => { pagina_pre.value++; avance.value = avance.value + 15 }
-const prev = () => { pagina_pre.value--; avance.value = avance.value - 15 }
+const next = () => { pagina_pre.value++; }
+const prev = () => { pagina_pre.value--; }
 const dni = ref("70757838")
 
 
@@ -528,7 +565,8 @@ const getDatosPersonales = async () => {
   dist.value = res.data.datos[0].distrito
   datos_personales.value.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
   datos_personales.value.direccion = res.data.datos[0].direccion
-  next()
+  getPasos();
+
 } 
 
 const datos_personales = ref({
@@ -546,6 +584,22 @@ const datos_personales = ref({
   ubigeo_residencia:"",
   direccion:""
 });
+
+const savePasos =  async (namex, num, avan ) => {
+
+  let res = await axios.post(
+    "save-pasos-preinscripcion",
+    { 
+      id: id_pasos.value,
+      nombre: namex, 
+      nro: num,
+      avance: avan,
+      postulante: datos_personales.value.id,
+      proceso: 4
+    }
+  );
+  getPasos()
+}
 
 
 const saveDatosPersonales =  async () => {
@@ -574,10 +628,11 @@ const saveDatosPersonales =  async () => {
       direccion: datos_personales.value.direccion 
     }
   );
+  if( avance_current.value < 16){ savePasos("Registro de datos personales", 1, 16) } else{ next() }
   if(res.data.estado === true ){  
     notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
   }
-  next()
+
 // roles.value = res.data.datos.data;
 }
 
@@ -598,7 +653,8 @@ const saveDatosResidencia =  async () => {
   if(res.data.estado === true ){  
     notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
   }
-  next()
+  if( avance_current.value < 32){ savePasos("Registro de datos de residencia", 2, 32) } else{ next() }
+
 }
 
 
@@ -611,6 +667,7 @@ watch(pagina_pre, ( newValue, oldValue ) => {
   else {
     return
   }
+
 })
 
 
@@ -634,6 +691,23 @@ const getDistritos = async (depp) => {
   distritos.value = res.data.datos
 }
 
+const id_pasos = ref(null)
+const avance_current = ref(null)
+const getPasos = async (depp) => {
+  let res = await axios.post( "get-pasos-proceso", 
+    { postulante: datos_personales.value.id,
+      proceso: 4
+    });
+    if (res.data.datos.length > 0){
+      avance_current.value = res.data.datos[0].avance  
+      id_pasos.value = null
+      pagina_pre.value = res.data.datos[0].nro + 1
+      avance.value = res.data.datos[0].avance 
+    }else{
+      pagina_pre.value = 1;
+    }
+
+}
 
 const notificacion = (type, titulo, mensaje) => {
   notification[type]({
@@ -662,33 +736,6 @@ const datos_preinscripcion = ref({
 
 const certificado = ref(null);
 
-// const onChange = (e) => {
-//   console.log("Selected file", e.target.files[0])
-//   certificado.value = e.target.files[0];
-// }
-
-const preInscribir = async () => {
-  let fd = new FormData();
-
-  fd.append('img', certificado.value)
-  fd.append('modalidad', datos_preinscripcion.value.modalidad)
-  fd.append('programa', datos_preinscripcion.value.programa)
-  fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
-
-  await axios.post("pre-inscribir", {
-    fd,
-    // certificado: fd,
-    // modalidad: datos_preinscripcion.value.modalidad,
-    // programa: datos_preinscripcion.value.programa,
-    // tipo_certificado: datos_preinscripcion.tipo_certificado,
-    // codigo_medico: datos_preinscripcion.codigo_medico,
-    // codigo_certificado: datos_preinscripcion.codigo_certificado
-   }).then(res=>{
-    // showToast("success","2",res.data.menssje);
-    // getResoluciones()
-  }).catch(err=>console.log(err))
-}
-
 const imagen = ref(null);
 const onChange = (e) => {
   console.log("Selected file", e.target.files[0])
@@ -704,39 +751,52 @@ const submit = async () => {
   fd.append('codigo_medico', datos_preinscripcion.value.codigo_medico)
   fd.append('id_postulante', datos_personales.value.id)
   await axios.post("save-pre-inscripcion", fd).then(res=>{
+    if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 100) } else{ next() }
     showToast("success","2",res.data.menssje);
     getResoluciones()
   }).catch(err=>console.log(err))
 }
-
+const presionado = ref(0);
+watch(presionado, ( newValue, oldValue ) => {
+  if ( presionado.value === 1){
+    getPasos()
+    presionado.value = 0
+  }
+})
 
 </script>
 
 <script>
 import Colegio from "./components/datos_colegio.vue"
 import Apoderado from "./components/apoderado.vue"
+import Vocacional from "./components/exvocacional.vue"
+
 export default {
   components: {
-    Colegio, Apoderado
+    Colegio, Apoderado, Vocacional  
   },
   data() {
     return { 
       pagina_pre_temp: 3,
       pagina_pre_temp_padre: 4,
       pagina_pre_temp_madre: 5,
+      nc:0
     }
   },
+
   methods: {
-    ejecutarMetodoHijo() {
-      this.$refs.hijoComponent.ejecutarMetodo();
+
+    async guardarColegio() {
+      this.nc = await this.$refs.hijoComponent.ejecutarMetodo();
       this.pagina_pre_temp = 4;
+      console.log(this.nc);
     },
-    guardarApoderadoPadre() {
-      this.$refs.padreComponent.saveApoderado();
+    async guardarApoderadoPadre() {
+      this.nc = await this.$refs.padreComponent.saveApoderado();
       this.pagina_pre_temp_padre = 5;
     },
-    guardarApoderadoMadre() {
-      this.$refs.madreComponent.saveApoderadoMadre();
+    async guardarApoderadoMadre() {
+      this. nc = await this.$refs.madreComponent.saveApoderadoMadre();
       this.pagina_pre_temp_madre = 6;
     }
   },

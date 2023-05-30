@@ -20,7 +20,9 @@ use App\Http\Controllers\PostulanteController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\SeleccionDataController;
 use App\Http\Controllers\ColegioController;
+use App\Http\Controllers\PreguntaController;
 use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\DetalleExamenVocacionalController;
 
 
 Route::get('/', function () {
@@ -131,12 +133,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 //PREINSCRIPCION
 Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
+Route::post('save-pasos-preinscripcion', [PreinscripcionController::class, 'savePasos']);
 Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
 Route::post('/save-postulante', [PostulanteController::class, 'savePostulante']);
 Route::post('/save-postulante-residencia', [PostulanteController::class, 'saveResidencia']);
 Route::post('/save-postulante-colegio', [PostulanteController::class, 'saveColegio']);
 Route::post('/save-postulante-apoderado', [ApoderadoController::class, 'saveApoderado']);
 Route::post('save-pre-inscripcion', [PreinscripcionController::class, 'preinscribir']);
+
+
+
 
 Route::post('/get-departamentos-codigo', [SeleccionDataController::class, 'getDepartamentoCodigo']);
 Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
@@ -146,6 +152,12 @@ Route::post('/get-colegio-distrito', [ColegioController::class, 'getColegiosDist
 
 Route::post('/get-colegio-distrito', [ColegioController::class, 'getColegiosDistrito']);
 Route::post('/get-apoderado', [ApoderadoController::class, 'getApoderado']);
+Route::post('/get-pasos-proceso', [SeleccionDataController::class, 'getPasos']);
+Route::post('/get-preguntas', [PreguntaController::class, 'getPreguntasPrograma']);
+
+Route::post('/get-datos-examen', [PreguntaController::class, 'getDatosExamen']);
+Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'saveVocacional']);
+
 
 
 Route::get('/test', fn () => Inertia::render('Prueba/test'));

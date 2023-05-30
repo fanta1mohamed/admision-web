@@ -3,7 +3,7 @@
 <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
 <div>
 
-<div style="margin-bottom: 25px; margin-top: 10px; ">
+<div style="margin-bottom: 25px; margin-top: 10px;">
     <h1 style="font-size: 1.1rem;" v-if="tipex === 1" > Datos del padre</h1>
     <h1 style="font-size: 1.1rem;" v-else> Datos de la madre</h1>
 </div>
@@ -56,7 +56,7 @@ import { ref, watch } from 'vue';
 import { DownOutlined } from '@ant-design/icons-vue';
 
 export default {
-  props: ['id_postulante','tipex'],
+  props: ['id_postulante','tipex','actualiza'],
   
   data() {
     return {
@@ -65,7 +65,10 @@ export default {
       dni: null,
       nombres: null,
       paterno: null,
-      materno: null 
+      materno: null,
+
+      actualizar: this.actualiza,
+      proceso: 4
     };
   },
   
@@ -87,7 +90,11 @@ export default {
 
 
     async saveApoderado() {
-      console.log("Método del Hijo ejecutado");
+      let avn  = 65;
+      if (this.tipo_apoderado === 3){
+        avn = 80;
+      }
+
       try {
         const response = await axios.post('save-postulante-apoderado', {
             id: this.id ,
@@ -95,10 +102,20 @@ export default {
             dni: this.dni,
             nombres: this.nombres,
             paterno: this.paterno,
-            materno: this.materno
+            materno: this.materno,
+            id_postulante: this.id_postulante,
+            actualizar: this.actualiza,
+            proceso: 4,
+            name:"Registro de datos del padre o tutor",
+            nro:4,
+            avance: avn
         });
-        // Manejar la respuesta del servidor
-        //console.log(response.data);
+        if (this.actualiza === 'si') {
+          return  1 ;
+        } else {
+          return 0 ;
+        }
+    
       } catch (error) {
         // Manejar el error en caso de que la solicitud falle
         //console.error(error);
@@ -106,7 +123,7 @@ export default {
     },
 
     async saveApoderadoMadre() {
-      console.log("Método del Hijo ejecutado");
+
       try {
         const response = await axios.post('save-postulante-apoderado', {
             id: this.id ,
@@ -114,10 +131,20 @@ export default {
             dni: this.dni,
             nombres: this.nombres,
             paterno: this.paterno,
-            materno: this.materno
+            materno: this.materno,
+            id_postulante: this.id_postulante,
+            actualizar: this.actualiza,
+            proceso: 4,
+            name:"Registro de datos de la madre",
+            nro:5,
+            avance: 80
         });
-        // Manejar la respuesta del servidor
-        //console.log(response.data);
+        if (this.actualiza === 'si') {
+          return  1 ;
+        } else {
+          return 0 ;
+        }
+
       } catch (error) {
         // Manejar el error en caso de que la solicitud falle
         //console.error(error);

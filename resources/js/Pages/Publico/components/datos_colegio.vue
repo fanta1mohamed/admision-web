@@ -133,7 +133,7 @@ import { ref, watch } from 'vue';
 import { DownOutlined } from '@ant-design/icons-vue';
 
 export default {
-  props: ['id_postulante'],
+  props: ['id_postulante', 'actualiza'],
   
   data() {
     return {
@@ -154,6 +154,10 @@ export default {
       buscarDist: "",
       distseleccionado: '', 
       colegios: [],  
+    
+      actualizar: this.actualiza,
+      proceso: 4
+
     };
   },
   
@@ -229,21 +233,29 @@ export default {
     }, 
 
     async ejecutarMetodo() {
-      console.log("Método del Hijo ejecutado");
-
       try {
         const response = await axios.post('save-postulante-colegio', {
           id:  this.id_postulante,
           anio_egreso: this.anio_egreso,
-          colegio: this.colegio 
+          colegio: this.colegio,
+          
+          actualizar: this.actualiza,
+          proceso: 4
           // Datos a enviar en el cuerpo de la solicitud POST
         });
-        // Manejar la respuesta del servidor
-        console.log(response.data);
+
+        if (this.actualiza === 'si') {
+          return  1 ;
+        } else {
+          return 0 ;
+        }
+    
       } catch (error) {
-        // Manejar el error en caso de que la solicitud falle
+        
         console.error(error);
       }
+
+
     },
 
   }

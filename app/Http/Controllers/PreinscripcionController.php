@@ -7,6 +7,7 @@ use App\Models\Proceso;
 use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
 use App\Models\Documento;
+use App\Models\Paso;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -137,5 +138,42 @@ class PreinscripcionController extends Controller
     return response()->json($this->response, 200);
   }
 
+
+
+  public function savePasos(Request $request ) {
+
+      $pasos = null;
+      if (!$request->id) {
+          $pasos = Paso::create([
+              'nombre' => $request->nombre,
+              'nro' => $request->nro,
+              'avance' => $request->avance, 
+              'anvance_general' => $request->avance_general,
+              'postulante' => $request->postulante,
+              'proceso' => $request->proceso,
+          ]);
+          $this->response['tipo'] = 'success';
+          $this->response['titulo'] = 'PASO REGISTRADO';
+          $this->response['mensaje'] = 'Proceso '.$pasos->nombre.' creado con exito';
+          $this->response['estado'] = true;
+          $this->response['datos'] = $pasos;
+          
+      } else {
+          $pasos = Paso::find($request->id);
+          $pasos->nombre = $request->nombre;
+          $pasos->nro = $request->nro;
+          $pasos->avance = $request->avance; 
+          $pasos->avance_general = $request->avance_general;
+          $pasos->postulante = $request->postulante;
+          $pasos->proceso = $request->proceso;
+          $pasos->save();
+            $this->response['tipo'] = 'info';
+            $this->response['titulo'] = 'PASO ACTUALIZADO';
+            $this->response['mensaje'] = 'Datos del '.$pasos->nombre.' actualizados';
+            $this->response['estado'] = true;
+            $this->response['datos'] = $pasos;
+          }
+    
+    }
 
 }
