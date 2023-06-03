@@ -6,7 +6,7 @@
 
     *{margin:0;}
     .fondo{
-        background-image: url('{{ public_path("imagenes/Fondovocacional.png")}}');
+        background-image: url('imagenes/Fondovocacional.png');
         background-size: cover;
         opacity: 0.9;
         font-family: 'Gill Sans Extrabold', Helvetica, sans-serif;
