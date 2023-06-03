@@ -1,48 +1,25 @@
 <template>
 <div>
-    <div class="headVocalional">
-        <div class="logoVocalional">  
-            <div> <img src="../../../../assets/imagenes/logotiny.png" width="45"/> </div>
-            <div class="x"> 
-                <div class="container-pre"><span style="letter-spacing: 0.1rem;">DIRECCIÓN DE</span>
-            </div> 
-            <h1 class="logoVocalionalAD" > ADMISIÓN </h1> </div>
-            <div> <img src="../../../../assets/imagenes/logoDAD.png" width="45" /> </div>
+    <div v-if="datos.length > 0" class="">
+       <h1>Nombre: {{ datos[0].nombres }} {{ datos[0].primer_apellido }} {{ datos[0].segundo_apellido }} </h1> 
+       <h1>Programa: {{ datos[0].nombre }} </h1> 
+    </div>
+
+    <div class="mb-3" v-for="(item, index) in preguntas" :key="item.id">
+        <h3 >{{ index + 1 }}. {{  item.pregunta }}</h3>
+
+        <div v-for="respuesta in item.respuestas" :key="respuesta.ide">
+            <a-radio-group v-model:value="respuestas[index]">
+                <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
+            </a-radio-group>
         </div>
-        <div class="flex justify-center titulo-pre ">
-            <div>  
-                <span> Examen Vocacional </span>
-                <div class="flex justify-center items-center"> <hr class="line-preV"><div style="font-weight: bold; color: white; font-size: 1.1rem"> CEPREUNA </div>  <hr class="line-preV"> </div>
-            </div>
-        </div>
-
-
-
-        <div style="background:white; border-radius: 20px 20px 0px 0px; margin-top:20px;  padding: 20px; padding-top:30px;">
-            <div class="mb-3" v-for="(item, index) in preguntas" :key="item.id">
-                <h3 >{{ index + 1 }}. {{  item.pregunta }}</h3>
-
-                <div v-for="respuesta in item.respuestas" :key="respuesta.ide">
-                    <a-radio-group v-model:value="respuestas[index]">
-                        <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
-                    </a-radio-group>
-                </div>
-
-            </div>
-
-            <div> 
-                <a-button type="primary" @click="saveVocacional()"> Terminsar examen vocacional </a-button>
-            </div>
-        </div>
-
-
-
-        <!-- {{ respuestas }}
-
-        {{ datos }} -->
-
 
     </div>
+
+    <!-- <div> 
+        <a-button type="primary" @click="saveVocacional()"> Terminsar examen vocacional </a-button>
+    </div> -->
+
 </div>
 </template>
 
@@ -52,13 +29,13 @@ import { ref, watch } from 'vue';
 import { DownOutlined } from '@ant-design/icons-vue';
 
 export default {
-  props: ['id_postulante'],
+  props: ['id_postulante', 'actualiza'],
   
   data() {
     return {
       preguntas: null,
       respuestas: [],
-      datos: null
+      datos: []
     };
   },
   

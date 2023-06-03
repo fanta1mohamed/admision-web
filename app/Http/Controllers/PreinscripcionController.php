@@ -8,6 +8,7 @@ use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
 use App\Models\Documento;
 use App\Models\Paso;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -175,5 +176,24 @@ class PreinscripcionController extends Controller
           }
     
     }
+
+    public function pdf(){
+
+        $data = "";
+        $pdf = Pdf::loadView('preinscripcion.pdf', compact('data'));
+        
+        return $pdf->stream();
+        
+    }
+
+    public function pdfvocacional( ) {
+        $data = "";
+        $pdf = Pdf::loadView('vocacional.constanciavocacional', compact('data'));
+        return $pdf->stream();
+    }
+
+
+
+
 
 }

@@ -2,8 +2,8 @@
 <Head title="Preinscipción"/>
 <Layout v-if="examen === 0">	
 	<div style="width: 100%; min-height: calc(100vh - 220px); padding: 20px 20px; margin-top: 0px;">
-
-    <!-- {{ nc }} -->
+<!-- 
+    {{ nc }} -->
     <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
 
     <div class="flex mt-3 justify-center align-center" style=" width: 100%; min-height: calc(100vh - 215px)">
@@ -441,6 +441,26 @@
       </div>
 
 
+      <div v-if="pagina_pre === 8">
+        <div style="width: 100%; height:calc(100vh - 300px); display:flex; align-items:center; ">
+          <a-card style="padding-top: 5px; padding-bottom:0px; background: #24c1ff25;">
+            <div class="">
+              <div class="flex justify-center">
+                <div  style="text-align:center; max-width: 350px;" >
+                  <div>FINALIZASTE CON EXITO</div>
+                  DESCARGA TU EXAMEN VOCACIONAL 
+                </div>
+              </div>
+              <div class="flex justify-center mt-4 mb-4">
+                <a-button style="background: #020b61;" type="primary"> DESCARGAR </a-button>
+              </div>
+            </div>
+          </a-card>
+          </div>
+      </div>
+
+
+
       </div>
 
 
@@ -449,7 +469,7 @@
 
     </div>
     <a-affix v-if="pagina_pre !== 0" :offset-bottom="bottom" style="margin-top: 0px;">
-      <div>
+      <div v-if="pagina_pre !== 7 && pagina_pre !== 8">
         <a-progress :percent="avance"/>
       </div>
 
@@ -485,10 +505,46 @@
 </Layout>
 
 <div v-if="examen === 1">
-  <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :actualiza="'si'"/>
-  <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datos_personales.id"  :actualiza="'no'"/>
-</div>
+  {{  pagina_pre }}
+  <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
+  <div class="headVocalional" v-if="pagina_pre === 7" >
+        <div class="logoVocalional">  
+            <div> <img src="../../../assets/imagenes/logotiny.png" width="45"/> </div>
+            <div class="x"> 
+                <div class="container-pre"><span style="letter-spacing: 0.1rem;">DIRECCIÓN DE</span>
+            </div> 
+            <h1 class="logoVocalionalAD" > ADMISIÓN </h1> </div>
+            <div> <img src="../../../assets/imagenes/logoDAD.png" width="45" /> </div>
+        </div>
+        <div class="flex justify-center titulo-pre ">
+            <div>  
+                <span> Examen Vocacional </span>
+                <div class="flex justify-center items-center"> <hr class="line-preV"><div style="font-weight: bold; color: white; font-size: 1.1rem"> CEPREUNA </div>  <hr class="line-preV"> </div>
+            </div>
+        </div>
 
+        <div style="background: white; border-radius: 20px 20px 0px 0px; margin-top:20px; margin-bottom:-15px;  padding: 20px; padding-top:20px; padding-right:0px;">
+          
+    <!-- {{ nc }} -->
+          <div class="vocacional">
+            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :actualiza="'si'"/>
+            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datos_personales.id"  :actualiza="'no'"/>
+            <div style="display:none;">{{ pagina_pre = pagina_pre_temp_vocacional }}</div>
+            <div style="display:none;">{{ pagina_pre_temp_vocacional = 7 }}</div>
+          </div>
+        </div>
+
+        <div class="flex" style="justify-content: flex-end;">
+          <a-button class="btn-vocacional" @click=" guardarVocacional()"  >Terminar examen</a-button>
+        </div>  
+        
+      </div>
+
+    <!-- <div>
+    <a-button @click="guardarColegio()" class="boton-siguiente" type="primary" >Terminar examen</a-button>
+  </div> -->
+
+</div>
 
 </template>
 <script setup>
@@ -780,6 +836,7 @@ export default {
       pagina_pre_temp: 3,
       pagina_pre_temp_padre: 4,
       pagina_pre_temp_madre: 5,
+      pagina_pre_temp_vocacional: 7,
       nc:0
     }
   },
@@ -798,6 +855,11 @@ export default {
     async guardarApoderadoMadre() {
       this. nc = await this.$refs.madreComponent.saveApoderadoMadre();
       this.pagina_pre_temp_madre = 6;
+    },
+
+    async guardarVocacional() {
+      this. nc = await this.$refs.vocacionalComponent.saveVocacional();
+      this.pagina_pre_temp_vocacional = 8;
     }
   },
 }
@@ -818,17 +880,50 @@ input[type=file]::file-selector-button {
 input[type=file]::file-selector-button:hover {
   background: #13136b;
 }
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f100; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bbbbbb; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa; 
+}
+
+.btn-vocacional{
+  background: #13136b; 
+  color: white;
+}
+
+/* Handle on hover */
+.btn-vocacional:hover {
+  background: #1f1faf; 
+
+}
+
 
 .boton-anterior { width: 175px; height: 38px; }
-.boton-siguiente { width: 175px; height: 38px; }  
+.boton-siguiente { width: 175px; height: 38px; border-radius: 5px; background: #020b61 }  
 .datos-postulacion { display: flex}
 .selector-modalidad { width: 250px }
+.vocacional {height:calc(100vh - 227px); overflow-y:scroll;}
 @media (max-width: 480px), screen and (orientation: portrait) { 
   .cardInicio { margin-top: -10px; border:none; } 
   .boton-anterior { width: 50%; }
   .boton-siguiente { width: 50%; }  
   .datos-postulacion { display: block;}
   .selector-modalidad { width: 100%; margin-bottom: 10px }
+  .vocacional {height:calc(100vh - 200px); overflow-y:scroll;}
+  .btn-vocacional { width:100%;}
 }
 
 </style>

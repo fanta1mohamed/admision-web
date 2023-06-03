@@ -140,9 +140,7 @@ Route::post('/save-postulante-residencia', [PostulanteController::class, 'saveRe
 Route::post('/save-postulante-colegio', [PostulanteController::class, 'saveColegio']);
 Route::post('/save-postulante-apoderado', [ApoderadoController::class, 'saveApoderado']);
 Route::post('save-pre-inscripcion', [PreinscripcionController::class, 'preinscribir']);
-
-
-
+Route::get('pdf', [PreinscripcionController::class, 'pdf']);
 
 Route::post('/get-departamentos-codigo', [SeleccionDataController::class, 'getDepartamentoCodigo']);
 Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
@@ -157,6 +155,11 @@ Route::post('/get-preguntas', [PreguntaController::class, 'getPreguntasPrograma'
 
 Route::post('/get-datos-examen', [PreguntaController::class, 'getDatosExamen']);
 Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'saveVocacional']);
+
+
+Route::get('/pdf-vocacional', [PreinscripcionController::class, 'pdfvocacional']);
+
+
 
 
 

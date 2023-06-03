@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ApixController;
+use App\Http\Controllers\LoginController;
+
 
 
 /*
@@ -16,8 +19,17 @@ use App\Http\Controllers\BlogController;
 |
 */
 
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/postulante/{dni}', [ApixController::class, 'getPostulante']);
+});
+
+Route::post('/login', [LoginController::class, 'login']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::get('/get-puntaje/{dni}', [BlogController::class, 'getPuntajes']);
+
+
