@@ -216,6 +216,24 @@ class SeleccionDataController extends Controller
   }
 
 
+  public function getComprobantesDNI(Request $request){
+
+    $res = Comprobante::select(
+      'comprobante.id', 'comprobante.codigo', 'comprobante.monto', 'nro_operacion','comprobante.ndoc_postulante', 
+      'comprobante.fecha', 'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido' 
+    )
+    ->join('postulante','postulante.nro_doc','comprobante.ndoc_postulante')
+    ->where('estado','=',1)
+    ->where('comprobante.ndoc_postulante','=',$request->dni)
+    ->get(); 
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+
+  }
+
+
   public function getPasos(Request $request)
   {
     $res = Paso::select(

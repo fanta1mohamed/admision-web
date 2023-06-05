@@ -137,6 +137,9 @@ Route::prefix('revisor')->middleware('auth')->group(function () {
     Route::post('/get-certificados-revision', [DocumentoController::class, 'getCertificadosRevision']);
 
     Route::post('/cambiar-estado', [DocumentoController::class, 'cambiarEstado']);
+    Route::post('/get-comprobantes', [SeleccionDataController::class, 'getComprobantesDNI']);
+
+    
 });
 
 

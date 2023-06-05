@@ -1,18 +1,19 @@
 <template>
 <AuthenticatedLayout>
   <div>
-    <a-card style="background: white;" class="m-0 p-0">
-      <a-row :gutter="16">
+    <a-card style="background: white;" class="mb-0 p-0">
+      <a-row :gutter="16" class="mb-3">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end; align-items: end;" >
-            <a-input placeholder="Buscar" v-model:value="buscar"  style="max-width: 300px; margin-right: -8px; ">
+            <a-input ref="myInput" placeholder="Dni" v-model:value="buscar"  style="max-width: 300px; margin-right: -8px; ">
               <template #suffix>
-                <search-outlined />
+                <credit-card-outlined />
               </template>
             </a-input>
+
         </a-col>
       </a-row>
 
-      <a-row :gutter="16">
+      <!-- <a-row :gutter="16">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end; align-items: end;" >
           <div class="flex justify-between" style="background: #d9d9d9; width: 100%; margin-right: -8px;">
             <div v-for="(option, index) in options" :key="option.value">
@@ -24,7 +25,7 @@
 
           </div>
         </a-col>
-      </a-row>
+      </a-row> -->
 
       <a-row :gutter="16">
         <a-col :span="24" :sm="24" :md="8" :lg="6">
@@ -39,12 +40,24 @@
             
           </div>
         </a-col>
-        <a-col :span="24" :sm="24" :md="16" :lg="18" style="border: 1px solid #d9d9d9;">
-          sd
+        <a-col :span="24" :sm="24" :md="16" :lg="18" style="border: 1px solid #d9d9d9; min-width: 600px;" class="m-0 p-0">
+          <div style="margin-right: -8px; margin-left: -8px; min-width: 600px;">
+
+            <a-tabs v-model:activeKey="activeKey" type="card" style="">
+              <a-tab-pane key="1" tab="Solicitud" class="pl-2 pr-2">
+
+              </a-tab-pane>
+              <a-tab-pane key="2" tab="Voucher" class="pl-2 pr-2"><Vouchers dni="70757838"/></a-tab-pane>
+              <a-tab-pane key="3" tab="Certificado">Content of Tab Pane 3</a-tab-pane>
+              <a-tab-pane key="4" tab="Ex vocacional">Content of Tab Pane 4</a-tab-pane>
+              <a-tab-pane key="5" tab="Cert Cepre">Content of Tab Pane 5</a-tab-pane>
+            </a-tabs>
+
+          </div>
         </a-col>
       </a-row>
     <a-form-item>
-      <a-button type="primary" @click="submitForm">Enviar</a-button>
+      <a-button type="primary"  @click="focusInput">Enviar</a-button>
     </a-form-item>
 
     </a-card>
@@ -56,10 +69,16 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { FormOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue';
+import { FormOutlined, DeleteOutlined, CreditCardOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
+import Vouchers from './components/voucher.vue'
 
+const myInput = ref(null);
+
+function focusInput() {
+  myInput.value.focus();
+}
 const checkedList = ref([]);
 const options = [
   { label: 'Solicitud', value: 1 },
