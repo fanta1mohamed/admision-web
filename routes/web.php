@@ -127,7 +127,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/get-departamentos-codigo', [SeleccionDataController::class, 'getDepartamentoCodigo']);
     Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
     Route::post('/get-distritos-codigo', [SeleccionDataController::class, 'getDistritosCodigo']);
-    
+
+});
+
+Route::prefix('revisor')->middleware('auth')->group(function () {
+    Route::get('/', fn () => Inertia::render('Revisor/revisor'))->name('revisor');
+    Route::get('/validacion', fn () => Inertia::render('Revisor/validacion'))->name('revisor-validacion');
+    Route::get('/documentos', fn () => Inertia::render('Revisor/documentos'))->name('revisor-documentos');
+    Route::post('/get-certificados-revision', [DocumentoController::class, 'getCertificadosRevision']);
+
+    Route::post('/cambiar-estado', [DocumentoController::class, 'cambiarEstado']);
 });
 
 
@@ -158,6 +167,7 @@ Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'save
 
 
 Route::get('/pdf-vocacional', [PreinscripcionController::class, 'pdfvocacional']);
+Route::get('/pdf-solicitud', [PreinscripcionController::class, 'pdfsolicitud']);
 
 
 

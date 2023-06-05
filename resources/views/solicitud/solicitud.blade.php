@@ -1,134 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CEPREUNA</title>
+    <title>SOLICITUD</title>
     <style>
 
     *{margin:0;}
     .fondo{
-        background-image: url('imagenes/Fondovocacional.png');
-        background-size: cover;
-        opacity: 0.9;
+        
         font-family: 'Gill Sans Extrabold', Helvetica, sans-serif;
-        *{margin:2cm 2cm; padding:65px 80px 0px 85px; }
+        *{margin:2cm 2cm; padding:65px 65px 0px 90px; }
     }           
 
     </style>
 </head>
-<body class="fondo"  style="" >
-    <div style="margin-top:55px;">
+<body class="fondo" >
+    <div style="margin-top:0px; background: #ffffff">
         <div>
             <table style="width:100%;">
                 <tr style="">
-                    <td rowspan="1" style="" width="45" >
-                        <div align="center" rowspan="1" >
-                            <div style="width: 55px;">
-                                <img src="{{ public_path('imagenes/logotiny.png')}}"  width="55">
-                            </div>
-                        </div>
+                    <td style="width: 50%"></td>
+                    <td style="width: 50%">
+                        <p style="text-align: justify; line-height:1.5rem;">
+                            <span style="font-weight: bold;">Solicito:</span> Inscripción para participar en el examen CEPREUNA 2023-II</p></td>
+                </tr>
+            </table>    
+        </div>
+        <div style="margin-top: 16px;">
+            <table>
+                <tr style="">
+                    <td style="width: 100%">
+                        <div style="margin-bottom: 5px;"><span style="font-weight:bold">Dr. Hector Luciano Velásquez Sagua</span></div>
+                        <div>Director de la Dirección de Admisión</div>
                     </td>
-                    <td align="left" style="font-size:11pt; font-weight:700;">
-                        <div style="margin-top:5px;">UNIVERSIDAD NACIONAL DEL ALTIPLANO</div>
-                        <div>VICERECTORADO ACADÉMICO</div>
-                        <div>DIRECCIÓN DE ADMISIÓN</div>
+                </tr>
+            </table>
+        </div>
+
+        <div style="margin-top: 16px;">
+            <table style="width:100%;">
+                <tr style="">
+                    <td style="width: 50%"></td>
+                    <td style="width: 50%">
+                        <p style="text-align: justify; line-height:1.5rem;">
+                            Yo, JHON ARIEL LUQUE CUSACANI, identificado con DNI N° 70757838, 
+                            con domicilio en Av. Circunvalación Sur – Ilave. Ante Ud. 
+                            respetuosamente me presento y expongo:
+                        </p>
                     </td>
-                    {{-- <td align="center" rowspan="1"> <img src="{{ public_path('imagenes/logoDAD.jpg')}}"  width="85"></td> --}}
                 </tr>
             </table>    
         </div>
 
-        <div style="margin-top: 65px; margin-bottom:28px">  
-            <table style="width: 100%">
-                <tr>
-                    <td align="left">
-                        <div style="text-align: left">
-                            <span style="font-size:26pt; font-weight:bold">CONSTANCIA DE</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center"><div style="text-align: left; margin-top:-8px;"><span style="font-size:28pt;">EXAMEN VOCACIONAL</span></div></td>
-                </tr>
-                {{-- <tr>
-                    <td align="center"><div style="text-align: center"><span style="font-size:18pt; font-weight:bold">PRE - INSCRIPCIÓN</span></div></td>
-                </tr> --}}
-            </table>
-        </div>
-
-
-        <div style="margin-top:90px">
-            <table style="width:100%;">
-                <tr style="height:85px; padding:0;">
-                    <td align="center">
-                        <div style="text-align: left; margin-bottom:7px;">
-                            <span style="font-size:15pt;">Certificado otorgado a:</span>
-                        </div>
-                    </td>
-
-                    
-                </tr>
-
-                <tr style="height:85px; padding:0;">
-                    <td align="center">
-                        <div style="text-align: left">
-                            <span style="font-size:24pt; font-weight:700;">
-                                JHON ARIEL LUQUE CUSACANI
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-
-            </table>
-        </div>
-
-        <div style="margin-top:30px">
-            <table style="font-size:11pt;  width:100%;">
-
-                <tr style="height:85px; padding:0;">
-                    <td>
-                        <div style="text-align: justify;">
-                            <div style="margin-bottom: 0px;">
-                                LA DIRECCIÓN DE ADMISIÓN DE LA UNA PUNO HACE CONSTAR:
-                            </div>    
-                            <p style="line-height:2rem;">
-                                Que el Sr(a). <span style="font-weight: bold;">JHON ARIEL LUQUE CUSACANI</span>, identificado con DNI: N° 70757838, 
-                                cumplió satisfactoriamente con rendir el EXAMEN VOCACIONAL para el PROGRAMA 
-                                DE INGENIERÍA DE SISTEMAS quedando apto para continuar su inscripción. 
+        <div style="margin-top: 16px;">
+            <table>
+                <tr style="">
+                    <td style="width: 100%">
+                        <div style="text-align: justify">
+                            <p style="line-height:1.5rem;">
+                                Que habiendo culminado mis estudios en el colegio 
+                                Nuestra señora del Carmen de la ciudad Ilave el 2023, 
+                                presento mi solicitud para participar en el 
+                                EXAMEN CEPREUNA que se llevará a cabo los días 22 y 23 de Julio, 
+                                donde postularé al programa de estudio de Ing. De Sistemas. 
+                                Para lo cual he dedicado mucho tiempo y esfuerzo preparándome.
                             </p>
                         </div>
-                    </td>   
+                        <div  style="margin-top: 16px;">
+                            Adjunto a esta solicitud los siguientes documentos:
+                        </div>
+                        <div style="padding-left:20px; margin-top: 16px;">
+                            <div  style="margin-top: 5px;">1.	Solicitud</div>
+                            <div  style="margin-top: 5px;">2.	Comprobante de pago original y copia</div>
+                            <div  style="margin-top: 5px;">3.	Documento de identidad Original y Copia</div>
+                            <div  style="margin-top: 5px;">4.	Certificado de estudios</div>
+                            <div  style="margin-top: 5px;">5.	Constancia de no adeudo</div>
+                        </div>
+                    </td>
                 </tr>
             </table>
         </div>
 
-        <div style="margin-top:0px">
+        <div style="margin-top: 16px;">
+            <table style="width: 100%;">
+                <tr>
+                    <td style=""  >
+                        <div style="text-align: right; width: 100%;">
+                            Puno, {{$date}}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="margin-top:150px">
 
             <table style="width:100%; bakcground:orange; margin-top:0px">
-                <tr style="">
-                    <td align="left"> 
-                        <div style="margin-top: -40px;"> <span style="font-weight: bold; font-size:1.1rem;" >FECHA y HORA:</span></div>
-                        <span>10-12-23 10:43:22</span>
-                    </td> 
+                <tr>
+                    <td align="center"  style="vertical-align: bottom;">
+                        <div style="text-align: center; border-top:1px black solid;">
+                            FIRMA
+                        </div> 
+                        <div><span>JHON ARIEL LUQUE CUSACANI</span></div>
+                        <span>DNI: 70757838</span>
+                        {{-- <div>966637192</div> --}}
+                    </td>  
                     <td style="width: 50%"> 
-                        <div style=" margin-left: 160px; height: 180px; text-align:center;">
-                            <span style="font-size:6pt;"><?php echo DNS2D::getBarcodeHTML('https://admision.unap.edu.pe/verificar/70757373', 'QRCODE',5.5,5.5);?> </span>
+                        <div style=" margin-left: 160px; height: 150px; text-align:center;">
+                            <span style="font-size:6pt;"><?php echo DNS2D::getBarcodeHTML('https://admision.unap.edu.pe/verificar-solicitud/70757373', 'QRCODE',4,4);?> </span>
                         </div>
                         <div style=" margin-left: 140px; height: text-align:center;">
-                            <span style="font-size:6pt;"><?php echo DNS1D::getBarcodeHTML('70757373', 'C128',2.6,44);?> </span>
+                            <span style="font-size:6pt;"><?php echo DNS1D::getBarcodeHTML('70757373', 'C128',2.2,44);?> </span>
                         </div>
-
-                    </td> 
-                </tr> 
-                <tr>
-                    <td align="center" style=""> 
-                        <div style="text-align:left; margin-left:20px;"> <img src="{{ public_path('imagenes/firma_doctor.png')}}"  width="150"></div>
-                        <div style="margin-top: -40px"><span>Dr. HECTOR VELÁSQUEZ</span></div>
-                        <span>DIRECTOR</span>
-                    </td>  
-                    <td align="center">
-                        <div style=" margin-left:120px; height: 140px; margin-top:15px;" ><img src="{{ public_path('imagenes/firma_ariel.png')}}"  width="170"></div> 
-                        <div style="margin-left:120px; margin-top: -20px"><span>Br. ARIEL LUQUE</span></div>
-                        <div style="margin-left:120px;"><span>JEFE DE COMPUTO</span></div>
                     </td> 
                 </tr>
             </table>

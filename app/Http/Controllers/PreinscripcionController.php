@@ -11,6 +11,8 @@ use App\Models\Paso;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 
 
@@ -189,6 +191,17 @@ class PreinscripcionController extends Controller
     public function pdfvocacional( ) {
         $data = "";
         $pdf = Pdf::loadView('vocacional.constanciavocacional', compact('data'));
+        return $pdf->stream();
+    }
+
+    public function pdfsolicitud( ) {
+        $data = "";
+        setlocale(LC_TIME, 'es_ES.utf8'); // Establece la configuración regional en español
+
+        // $date = strftime('%d de %B del %Y');
+        $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+        //$date = date('d \d\e F \d\e\l Y');
+        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date'));
         return $pdf->stream();
     }
 
