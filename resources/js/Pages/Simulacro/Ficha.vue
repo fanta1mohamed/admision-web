@@ -312,6 +312,7 @@ const abrir = () => {
   paterno.value = ""
   materno.value = ""
   area_examen.value = 4
+  marcadas.value = []
 }
 
 const dni = ref("")
