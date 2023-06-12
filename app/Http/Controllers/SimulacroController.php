@@ -171,42 +171,48 @@ class SimulacroController extends Controller
 
     public function saveRespuestas(Request $request ) {
 
-      // return count($request->respuestas);
+      DB::beginTransaction();
 
-      $participante = ParticipanteSimulacro::create([
-        'nro_doc' => $request->dni,
-        'primer_apellido' => $request->paterno,
-        'segundo_apellido' => $request->materno,
-        'nombres' => $request->nombres
-      ]);
+      try {
 
-      $res = DB::select('SELECT id_examen, nro_pregunta, respuesta, ponderacion from respuestas_simulacro 
-      WHERE id_examen = '. $request->area);
+          $participante = ParticipanteSimulacro::create([
+            'nro_doc' => $request->dni,
+            'primer_apellido' => $request->paterno,
+            'segundo_apellido' => $request->materno,
+            'nombres' => $request->nombres
+          ]);
+
+          $res = DB::select('SELECT id_examen, nro_pregunta, respuesta, ponderacion from respuestas_simulacro 
+          WHERE id_examen = '. $request->area);
 
 
-      foreach($request->respuestas as $index => $item ) {
-        if($item === null){
-          $this->guardarRespuesta($request->area, $request->dni, $index, "-", 2 * $res[$index]->ponderacion);
-        }else {
+          foreach($request->respuestas as $index => $item ) {
+            if($item === null){
+              $this->guardarRespuesta($request->area, $request->dni, $index, "-", 2 * $res[$index]->ponderacion);
+            }else {
 
-          if(count($item) === 0){
-            $this->guardarRespuesta($request->area, $request->dni, $index, "-", 2 * $res[$index]->ponderacion);
+              if(count($item) === 0){
+                $this->guardarRespuesta($request->area, $request->dni, $index, "-", 2 * $res[$index]->ponderacion);
+              }
+              if(count($item) > 1 ){
+                $str = implode(', ', $item);
+                $this->guardarRespuesta($request->area, $request->dni, $index, $str, 0);
+              }
+              if(count($item) === 1 ){
+                if( $item[0] === $res[$index]->respuesta){
+                  $this->guardarRespuesta($request->area, $request->dni, $index, $item[0],10 * $res[$index]->ponderacion );
+                }else{
+                  $this->guardarRespuesta($request->area, $request->dni, $index, $item[0],0);
+                }          
+              }
+            }
+
           }
-          if(count($item) > 1 ){
-            $str = implode(', ', $item);
-            $this->guardarRespuesta($request->area, $request->dni, $index, $str, 0);
-          }
-          if(count($item) === 1 ){
-            if( $item[0] === $res[$index]->respuesta){
-              $this->guardarRespuesta($request->area, $request->dni, $index, $item[0],10 * $res[$index]->ponderacion );
-            }else{
-              $this->guardarRespuesta($request->area, $request->dni, $index, $item[0],0);
-            }          
-          }
-        }
-        // $string = implode(', ', $item);
-        // return $string;
-        // $this->guardarRespuesta($request->id_examen_simulacro, $request->id_participante, $index, $item );
+
+          DB::commit();
+      } catch (\Exception $e) {
+        DB::rollback();
+        throw $e;
       }
 
       return $request;
