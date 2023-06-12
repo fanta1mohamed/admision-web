@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if( auth()->user()->id_rol == 2 ) { return redirect('/revisor'); }
+        if( auth()->user()->id_rol == 6 ) { return redirect('/simulacro'); }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

@@ -193,6 +193,7 @@ class SimulacroController extends Controller
             $this->guardarRespuesta($request->area, $request->dni, $index, "-", 2 * $res[$index]->ponderacion);
           }
           if(count($item) > 1 ){
+            $str = implode(', ', $item);
             $this->guardarRespuesta($request->area, $request->dni, $index, $str, 0);
           }
           if(count($item) === 1 ){
