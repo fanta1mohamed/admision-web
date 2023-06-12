@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
-
+use Illuminate\Support\Facades\File;
 
 
 class PreinscripcionController extends Controller
@@ -64,9 +64,15 @@ class PreinscripcionController extends Controller
 
       try{
           if($request->hasFile('img')){
-              $file = $request->file('img');
+            // $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$res[0]->dni);
+
+            // if (!File::exists($rutaCarpeta)) {
+            //     File::makeDirectory($rutaCarpeta, 0755, true, true);
+            // }
+
+            $file = $request->file('img');
               $file_name =$file->getClientoriginalName();
-              $file->move(public_path('documentos/certificados/'.$request->programa.'/'), time().'-'.$file_name);
+              //$file->move(public_path('documentos/cepre2023-II/'.$request->programa.'/'.$request->), time().'-'.'$file_name');
 
               //2023 
               $doc = Documento::create([
@@ -195,14 +201,51 @@ class PreinscripcionController extends Controller
     }
 
     public function pdfsolicitud( ) {
-        $data = "";
-        setlocale(LC_TIME, 'es_ES.utf8'); // Establece la configuración regional en español
 
+        $res = Preinscripcion::select(
+            'postulante.nro_doc as dni', 
+            'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido',
+            'postulante.anio_egreso AS egreso',
+            'colegios.nombre AS colegio',
+            'modalidad.nombre as modalidad', 
+            'distritos.nombre AS distrito',
+            'procesos.nombre AS proceso',
+            'programa.nombre AS programa' 
+        )
+          ->join ('postulante', 'postulante.id', '=','pre_inscripcion.id_postulante')
+          ->join ('procesos', 'procesos.id', '=','pre_inscripcion.id_proceso')
+          ->join ('programa', 'programa.id', '=','pre_inscripcion.id_programa')
+          ->join ('modalidad', 'modalidad.id', '=','pre_inscripcion.id_modalidad')
+          ->join ('colegios', 'colegios.id', '=','postulante.id_colegio')
+          ->join ('ubigeo', 'ubigeo.ubigeo', '=','colegios.ubigeo')
+          ->join ('distritos', 'distritos.id', '=','ubigeo.id_distrito')
+          ->where('postulante.nro_doc','=', '70757838')->get();
+
+        $pos = DB::select('SELECT tipo_documento_identidad.nombre AS tipo_doc, postulante.direccion, distritos.nombre AS distrito_residencia FROM postulante
+        JOIN ubigeo ON postulante.ubigeo_residencia = ubigeo.ubigeo
+        JOIN distritos ON ubigeo.id_distrito = distritos.id
+        JOIN tipo_documento_identidad ON tipo_documento_identidad.id = postulante.tipo_doc
+        WHERE postulante.nro_doc = ' .'70757838');
+
+        $data = $res[0];
+        $dataP = $pos[0]; 
+        setlocale(LC_TIME, 'es_ES.utf8'); // Establece la configuración regional en español
         // $date = strftime('%d de %B del %Y');
         $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
         //$date = date('d \d\e F \d\e\l Y');
-        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date'));
+        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date','dataP'));
+        $pdf->setPaper('A4', 'portrait');
+        $output = $pdf->output();
+
+        $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$res[0]->dni);
+
+        if (!File::exists($rutaCarpeta)) {
+            File::makeDirectory($rutaCarpeta, 0755, true, true);
+        }
+
+        file_put_contents(public_path('/documentos/cepre2023-II/'.$res[0]->dni.'/').'solicitud.pdf', $output);
         return $pdf->stream();
+
     }
 
 

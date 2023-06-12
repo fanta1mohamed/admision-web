@@ -800,6 +800,7 @@ const onChange = (e) => {
 const submit = async () => {
   let fd = new FormData();
   fd.append('img', imagen.value)
+  fd.append('dni', datos_personales.value.nro_doc)
   fd.append('modalidad', datos_preinscripcion.value.modalidad)
   fd.append('programa', datos_preinscripcion.value.programa)
   fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)

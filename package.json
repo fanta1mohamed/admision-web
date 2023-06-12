@@ -23,6 +23,8 @@
         "@ant-design/icons-vue": "^6.1.0",
         "ant-design-vue": "^3.2.20",
         "date-fns": "^2.30.0",
-        "dayjs": "^1.11.7"
+        "dayjs": "^1.11.7",
+        "json-as-xlsx": "^2.5.3",
+        "xlsx": "^0.18.5"
     }
 }

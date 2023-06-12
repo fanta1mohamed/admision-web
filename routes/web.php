@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\SimulacroController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
@@ -130,7 +130,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 });
 
-Route::prefix('revisor')->middleware('auth')->group(function () {
+Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/', fn () => Inertia::render('Revisor/revisor'))->name('revisor');
     Route::get('/validacion', fn () => Inertia::render('Revisor/validacion'))->name('revisor-validacion');
     Route::get('/documentos', fn () => Inertia::render('Revisor/documentos'))->name('revisor-documentos');
@@ -138,8 +138,21 @@ Route::prefix('revisor')->middleware('auth')->group(function () {
 
     Route::post('/cambiar-estado', [DocumentoController::class, 'cambiarEstado']);
     Route::post('/get-comprobantes', [SeleccionDataController::class, 'getComprobantesDNI']);
+});
 
-    
+
+
+Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
+    Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('revisor');
+    Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
+    Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
+
+    Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
+    Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacros']);
+    Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
+    Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
+    Route::post('/save-respuestas', [SimulacroController::class, 'saveRespuestas']);    
+
 });
 
 
