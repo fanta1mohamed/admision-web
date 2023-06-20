@@ -26,10 +26,10 @@ class PostulanteController extends Controller
       'provincia.nombre as provincia','provincia.codigo as prov', 
       'distritos.nombre as distrito', 'distritos.codigo as dist' 
     )
-    ->join('ubigeo','postulante.ubigeo_residencia','ubigeo.ubigeo')
-    ->join('departamento','ubigeo.id_departamento','departamento.id') 
-    ->join('provincia','ubigeo.id_provincia','provincia.id') 
-    ->join('distritos','distritos.id','ubigeo.id_distrito') 
+    ->leftjoin('ubigeo','postulante.ubigeo_residencia','ubigeo.ubigeo')
+    ->leftjoin('departamento','ubigeo.id_departamento','departamento.id') 
+    ->leftjoin('provincia','ubigeo.id_provincia','provincia.id') 
+    ->leftjoin('distritos','distritos.id','ubigeo.id_distrito') 
     ->where('postulante.nro_doc','=',$request->nro_doc)->get(); 
 
     $this->response['estado'] = true;
@@ -38,9 +38,20 @@ class PostulanteController extends Controller
   
   }
 
+  public function saveDniPostulante(Request $request) {
+    $postulante = Postulante::create([
+        'tipo_doc' => $request->tipo_doc,
+        'nro_doc' => $request->nro_doc,
+        'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+    ]);
+    $this->response['tipo'] = 'success';
+    $this->response['titulo'] = 'REGISTRO NUEVO';
+    $this->response['estado'] = true;
+    $this->response['datos'] = $postulante;
+    return response()->json($this->response, 200);
+  }
 
-  public function savePostulante(Request $request ) {
-
+  public function savePostulante(Request $request) {
     $solo_unapellido = 1;
     if($request->segundo_apellido === null){
       $solo_unapellido = 0;

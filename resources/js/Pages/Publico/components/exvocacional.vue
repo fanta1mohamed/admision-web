@@ -1,8 +1,9 @@
 <template>
 <div>
     <div v-if="datos.length > 0" class="">
-       <h1>Nombre: {{ datos[0].nombres }} {{ datos[0].primer_apellido }} {{ datos[0].segundo_apellido }} </h1> 
-       <h1>Programa: {{ datos[0].nombre }} </h1> 
+      <h1>DNI: {{ datos[0].nro_doc }} </h1>  
+      <h1>Nombre: {{ datos[0].nombres }} {{ datos[0].primer_apellido }} {{ datos[0].segundo_apellido }} </h1> 
+      <h1>Programa: {{ datos[0].nombre }} </h1> 
     </div>
 
     <div class="mb-3" v-for="(item, index) in preguntas" :key="item.id">
@@ -29,7 +30,7 @@ import { ref, watch } from 'vue';
 import { DownOutlined } from '@ant-design/icons-vue';
 
 export default {
-  props: ['id_postulante', 'actualiza'],
+  props: ['id_postulante', 'actualiza', 'dni'],
   
   data() {
     return {
@@ -45,7 +46,7 @@ export default {
   
   methods: {    
     async getPreguntas() {
-      const res = await axios.post("get-preguntas", { id_postulante: this.id_postulante, id_programa: this.datos[0].id_vocacional });
+      const res = await axios.post("get-preguntas", { id_postulante: this.id_postulante, id_programa: this.datos[0].id_vocacional});
       this.preguntas = res.data.datos;
     },
 
@@ -64,8 +65,9 @@ export default {
             respuestas: this.respuestas,
             actualizar: this.actualiza,
             proceso: 4,
-            name:"Registro de datos del padre o tutor",
+            name:"Examen vocacional completado",
             nro:7,
+            dni: this.datos[0].nro_doc,
             avance: avn
         });
         if (this.actualiza === 'si') {

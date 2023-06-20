@@ -16,6 +16,7 @@ class Documento extends Model
         'id_tipo_documento',
         'estado',
         'url',
+        'numero',
         'observacion'
     ];
 

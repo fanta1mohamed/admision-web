@@ -61,7 +61,7 @@
                 <tr style="height:85px; padding:0;">
                     <td align="center">
                         <div style="text-align: left; margin-bottom:7px;">
-                            <span style="font-size:15pt;">Certificado otorgado a:</span>
+                            <span style="font-size:15pt;">Constancia otorgado a:</span>
                         </div>
                     </td>
 
@@ -71,8 +71,8 @@
                 <tr style="height:85px; padding:0;">
                     <td align="center">
                         <div style="text-align: left">
-                            <span style="font-size:24pt; font-weight:700;">
-                                JHON ARIEL LUQUE CUSACANI
+                            <span style="font-size:24pt; font-weight:700; text-transform: uppercase;">
+                                {{ $data->nombres}} {{ $data->primer_apellido }} {{ $data->segundo_apellido }}
                             </span>
                         </div>
                     </td>
@@ -91,9 +91,11 @@
                                 LA DIRECCIÓN DE ADMISIÓN DE LA UNA PUNO HACE CONSTAR:
                             </div>    
                             <p style="line-height:2rem;">
-                                Que el Sr(a). <span style="font-weight: bold;">JHON ARIEL LUQUE CUSACANI</span>, identificado con DNI: N° 70757838, 
-                                cumplió satisfactoriamente con rendir el EXAMEN VOCACIONAL para el PROGRAMA 
-                                DE INGENIERÍA DE SISTEMAS quedando apto para continuar su inscripción. 
+                                Que el Sr(a). <span style="font-weight: bold; text-transform: uppercase;">{{ $data->nombres}} {{ $data->primer_apellido }} {{ $data->segundo_apellido }}</span>, 
+                                identificado con DNI: N° <span style="font-weight: bold;">70757838</span>, cumplió satisfactoriamente con 
+                                rendir el <span style="font-weight: bold;">EXAMEN VOCACIONAL</span> del 
+                                <span style="font-weight: bold;">PROGRAMA DE {{ $data->programa }},</span>
+                                requisito para participar en el <span style="font-weight: bold;">EXAMEN {{ $data->proceso }}</span>.
                             </p>
                         </div>
                     </td>   
@@ -107,7 +109,7 @@
                 <tr style="">
                     <td align="left"> 
                         <div style="margin-top: -40px;"> <span style="font-weight: bold; font-size:1.1rem;" >FECHA y HORA:</span></div>
-                        <span>10-12-23 10:43:22</span>
+                        <span>{{ date('d-m-Y H:m:s')}}</span>
                     </td> 
                     <td style="width: 50%"> 
                         <div style=" margin-left: 160px; height: 180px; text-align:center;">

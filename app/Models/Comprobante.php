@@ -18,6 +18,8 @@ class Comprobante extends Model
         'codigo',
         'monto',
         'estado',
-        'ndoc_postulante'
+        'ndoc_postulante',
+        'verificado',
+        'id_usuario'
     ];
 }

@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\File;
+use setasign\Fpdi\Fpdi;
 
 
 class PreinscripcionController extends Controller
@@ -50,7 +51,6 @@ class PreinscripcionController extends Controller
     return response()->json($this->response, 200);
   }
 
-
   public function preinscribir(Request $request)
   {
       $pre = Preinscripcion::create([
@@ -62,26 +62,23 @@ class PreinscripcionController extends Controller
         'codigo_seguridad' => date('Y')
       ]);
 
+      $this->pdfsolicitud($request->dni);
+
       try{
           if($request->hasFile('img')){
-            // $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$res[0]->dni);
-
-            // if (!File::exists($rutaCarpeta)) {
-            //     File::makeDirectory($rutaCarpeta, 0755, true, true);
-            // }
-
             $file = $request->file('img');
               $file_name =$file->getClientoriginalName();
-              //$file->move(public_path('documentos/cepre2023-II/'.$request->programa.'/'.$request->), time().'-'.'$file_name');
+              $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$request->dni);
+              $file->move(public_path('/documentos/cepre2023-II/'.$request->dni), 'certificado-1.pdf');
 
               //2023 
               $doc = Documento::create([
-                  'codigo' => 'PRE'.$request->id_postulante, 
+                'codigo' => '23-2-C-E-'.$request->dni.'-1',  
                   'nombre' => $file_name,
                   'id_postulante' => $request->id_postulante,
-                  'id_tipo_documento' => 2,
+                  'id_tipo_documento' => 1,
                   'estado' => 1,
-                  'url' => 'documentos/certificados/'.$request->programa.'/'.time().'-'.$file_name,
+                  'url' => 'documentos/cepre2023-II/'.$request->dni.'/certificado-1.pdf',
                   'fecha' => date('Y-m-d'),
                   'observacion' => $request->tipo_certificado
               ]);
@@ -89,7 +86,7 @@ class PreinscripcionController extends Controller
           }
       }catch(\Exception $e){
           return response()->json([
-              'mssage'=>$e->getMessage()
+              'message'=>$e->getMessage()
           ]);
       }
 
@@ -150,24 +147,23 @@ class PreinscripcionController extends Controller
 
 
   public function savePasos(Request $request ) {
-
-      $pasos = null;
-      if (!$request->id) {
-          $pasos = Paso::create([
-              'nombre' => $request->nombre,
-              'nro' => $request->nro,
-              'avance' => $request->avance, 
-              'anvance_general' => $request->avance_general,
-              'postulante' => $request->postulante,
-              'proceso' => $request->proceso,
-          ]);
-          $this->response['tipo'] = 'success';
-          $this->response['titulo'] = 'PASO REGISTRADO';
-          $this->response['mensaje'] = 'Proceso '.$pasos->nombre.' creado con exito';
-          $this->response['estado'] = true;
-          $this->response['datos'] = $pasos;
-          
-      } else {
+    $pasos = null;
+    if (!$request->id) {
+        $pasos = Paso::create([
+            'nombre' => $request->nombre,
+            'nro' => $request->nro,
+            'avance' => $request->avance, 
+            'anvance_general' => $request->avance_general,
+            'postulante' => $request->postulante,
+            'proceso' => $request->proceso,
+        ]);
+        $this->response['tipo'] = 'success';
+        $this->response['titulo'] = 'PASO REGISTRADO';
+        $this->response['mensaje'] = 'Proceso '.$pasos->nombre.' creado con exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $pasos;
+        
+    } else {
           $pasos = Paso::find($request->id);
           $pasos->nombre = $request->nombre;
           $pasos->nro = $request->nro;
@@ -183,26 +179,60 @@ class PreinscripcionController extends Controller
             $this->response['datos'] = $pasos;
           }
     
-    }
+  }
 
-    public function pdf(){
+  public function pdf(){
 
-        $data = "";
-        $pdf = Pdf::loadView('preinscripcion.pdf', compact('data'));
+    $data = "";
+    $pdf = Pdf::loadView('preinscripcion.pdf', compact('data'));
+    
+    return $pdf->stream();
         
-        return $pdf->stream();
-        
-    }
+  }
 
-    public function pdfvocacional( ) {
-        $data = "";
+    public function pdfvocacional($dni) {
+        $res = Preinscripcion::select(
+            'postulante.id as idP',
+            'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
+            'postulante.nombres', 'programa.nombre AS programa', 'procesos.nombre AS proceso')
+        ->join ('postulante','postulante.id','pre_inscripcion.id_postulante')
+        ->join ('procesos','procesos.id','pre_inscripcion.id_proceso')
+        ->join ('programa','programa.id','pre_inscripcion.id_programa')
+        ->where('postulante.nro_doc','=', $dni)
+        ->get();
+        
+
+        $data = $res[0];
         $pdf = Pdf::loadView('vocacional.constanciavocacional', compact('data'));
+        $pdf->setPaper('A4', 'portrait');
+        $output = $pdf->output();
+
+
+        $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$res[0]->nro_doc);
+
+        if (!File::exists($rutaCarpeta)) {
+            File::makeDirectory($rutaCarpeta, 0755, true, true);
+        }
+
+        $doc = Documento::create([
+            'codigo' => '23-2-VOC-'.$res[0]->nro_doc.'-1', 
+            'nombre' => 'CONSTANCIA VOCACIONAL',
+            'numero' => 1,
+            'id_postulante' => $res[0]->idP,
+            'id_tipo_documento' => 7,
+            'estado' => 1,
+            'url' => 'documentos/cepre2023-II/'.$res[0]->nro_doc.'/'.'constancia vocacional-1.pdf',
+            'fecha' => date('Y-m-d')
+        ]);
+
+        file_put_contents(public_path('/documentos/cepre2023-II/'.$res[0]->nro_doc.'/').'constancia vocacional-1.pdf', $output);
         return $pdf->stream();
     }
 
-    public function pdfsolicitud( ) {
+    public function pdfsolicitud($dni) {
 
         $res = Preinscripcion::select(
+            'postulante.id as idP',
             'postulante.nro_doc as dni', 
             'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido',
             'postulante.anio_egreso AS egreso',
@@ -212,20 +242,20 @@ class PreinscripcionController extends Controller
             'procesos.nombre AS proceso',
             'programa.nombre AS programa' 
         )
-          ->join ('postulante', 'postulante.id', '=','pre_inscripcion.id_postulante')
+          ->leftjoin ('postulante', 'postulante.id', '=','pre_inscripcion.id_postulante')
           ->join ('procesos', 'procesos.id', '=','pre_inscripcion.id_proceso')
           ->join ('programa', 'programa.id', '=','pre_inscripcion.id_programa')
           ->join ('modalidad', 'modalidad.id', '=','pre_inscripcion.id_modalidad')
           ->join ('colegios', 'colegios.id', '=','postulante.id_colegio')
           ->join ('ubigeo', 'ubigeo.ubigeo', '=','colegios.ubigeo')
           ->join ('distritos', 'distritos.id', '=','ubigeo.id_distrito')
-          ->where('postulante.nro_doc','=', '70757838')->get();
+          ->where('postulante.nro_doc','=', $dni)->get();
 
         $pos = DB::select('SELECT tipo_documento_identidad.nombre AS tipo_doc, postulante.direccion, distritos.nombre AS distrito_residencia FROM postulante
         JOIN ubigeo ON postulante.ubigeo_residencia = ubigeo.ubigeo
         JOIN distritos ON ubigeo.id_distrito = distritos.id
         JOIN tipo_documento_identidad ON tipo_documento_identidad.id = postulante.tipo_doc
-        WHERE postulante.nro_doc = ' .'70757838');
+        WHERE postulante.nro_doc = ' .$dni);
 
         $data = $res[0];
         $dataP = $pos[0]; 
@@ -237,14 +267,53 @@ class PreinscripcionController extends Controller
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
+
         $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$res[0]->dni);
 
         if (!File::exists($rutaCarpeta)) {
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
 
-        file_put_contents(public_path('/documentos/cepre2023-II/'.$res[0]->dni.'/').'solicitud.pdf', $output);
+        $doc = Documento::create([
+            'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
+            'nombre' => 'SOLICITUD DE POSTULACIÓN',
+            'numero' => 1,
+            'id_postulante' => $res[0]->idP,
+            'id_tipo_documento' => 6,
+            'estado' => 1,
+            'url' => 'documentos/cepre2023-II/'.$res[0]->dni.'/'.'solicitud-1.pdf',
+            'fecha' => date('Y-m-d')
+        ]);
+
+        file_put_contents(public_path('/documentos/cepre2023-II/'.$res[0]->dni.'/').'solicitud-1.pdf', $output);
         return $pdf->stream();
+
+    }
+
+    public function UnirPDF($dni){
+
+        $pdf = new Fpdi();
+        
+        $files = [
+            public_path('/documentos/cepre2023-II/'.$dni.'/').'solicitud-1.pdf',
+            public_path('/documentos/cepre2023-II/'.$dni.'/').'constancia vocacional-1.pdf',
+            public_path('/documentos/cepre2023-II/'.$dni.'/').'certificado-1.pdf'
+        ];
+
+        foreach ($files as $file) {
+            $pageCount = $pdf->setSourceFile($file);
+            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                $template = $pdf->importPage($pageNo);
+                $pdf->AddPage();
+                $pdf->useTemplate($template);
+            }
+        }
+
+        $outputFilePath = public_path('/documentos'.'/'.$dni.'.pdf');
+        $pdf->Output($outputFilePath, 'F');
+
+        return response()->download($outputFilePath);
+        // return response()->download($outputFilePath)->deleteFileAfterSend();
 
     }
 

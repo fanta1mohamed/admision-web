@@ -42,19 +42,15 @@ class ApoderadoController extends Controller {
     $tipo_doc = 1;
     if( Str::length($request->dni) == 12 ) { $tipo_doc = 2; }
 
-    // $solo_unapellido = 1;
-    // if($request->segundo_apellido === null){
-    //   $solo_unapellido = 0;
-    // }
-
     $apoderado = null;
     if (!$request->id) {
         $apoderado = Apoderado::create([
             'tipo_doc' => $tipo_doc,
-            'nro_doc' => $request->dni,
+            'nro_documento' => $request->dni,
             'paterno' => $request->paterno, 
             'materno' => $request->materno,
             'nombres' => $request->nombres,
+            'id_postulante' => $request->id_postulante,
             'tipo_apoderado' => $request->tipo_apoderado,
         ]);
 

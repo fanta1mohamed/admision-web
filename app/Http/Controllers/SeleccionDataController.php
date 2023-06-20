@@ -9,15 +9,18 @@ use App\Models\Distrito;
 use App\Models\Pais;
 use App\Models\Paso;
 use App\Models\Filial;
+use App\Models\Postulante;
+use App\Models\Requisito;
+use App\Models\RequisitoDetalle;
 use App\Models\Comprobante;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use App\Rules\UniqueColumns;
+use Illuminate\Support\Facades\Validator;
 
 class SeleccionDataController extends Controller
 {
-
   protected $provincia;
-
 
   public function __construct()
   {
@@ -103,8 +106,8 @@ class SeleccionDataController extends Controller
     return response()->json($this->response, 200);
   }
   
-  public function getDepartamento(Request $request)
-  {
+  public function getDepartamento(Request $request) {
+
     $query_where = [];
     $res = Departamento::select(
         'id as key', 'nombre as value' 
@@ -220,7 +223,8 @@ class SeleccionDataController extends Controller
 
     $res = Comprobante::select(
       'comprobante.id', 'comprobante.codigo', 'comprobante.monto', 'nro_operacion','comprobante.ndoc_postulante', 
-      'comprobante.fecha', 'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido' 
+      'comprobante.fecha', 'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido',
+      'comprobante.verificado'
     )
     ->join('postulante','postulante.nro_doc','comprobante.ndoc_postulante')
     ->where('estado','=',1)
@@ -250,5 +254,147 @@ class SeleccionDataController extends Controller
     return response()->json($this->response, 200);
   
   }
+
+
+  public function getRequisitos( ){
+    $res = Requisito::select(
+      'nombre as label', 'id as value',  
+    )
+    ->where('requisitos.id_proceso','=',auth()->user()->id_proceso)
+    ->get(); 
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+  public function verificarComprobante(Request $request){
+
+    $comprobante = Comprobante::find($request->id);
+    $comprobante->verificado = $request->estado;
+    $comprobante->id_usuario = auth()->id();
+    $comprobante->save();
+
+    $this->response['titulo'] = '!REGISTRO MODIFICADO!';
+    $this->response['mensaje'] = 'Filial '.$comprobante->nombre.' modificado con exito';
+    $this->response['estado'] = true;
+    $this->response['datos'] = $comprobante;
+    return response()->json($this->response, 200);
+  }
+
+  public function saveReq(Request $request){
+    $idRD = DB::select('select id from requisito_detalle where dni_postulante = ' . $request->dni ); 
+    $jsonRequisitos = json_encode($request->requisitos);
+
+    if (count($idRD) < 1 ) {
+      $requisitoDetalle = RequisitoDetalle::create([
+        'requisitos' => $jsonRequisitos,
+        'dni_postulante' => $request->dni,
+        'id_usuario' => auth()->id(),
+        'id_proceso' => auth()->user()->id_proceso
+      ]);
+      $this->response['titulo'] = 'REGISTRO NUEVO';
+      $this->response['mensaje'] = 'Filial creada con exito';
+      $this->response['estado'] = true;
+      $this->response['datos'] = $requisitoDetalle;
+      return response()->json($this->response, 200);
+    } else {
+      $requisito = RequisitoDetalle::find($idRD[0]->id);
+      $requisito->requisitos = $jsonRequisitos;
+      $requisito->save();
+
+      $this->response['titulo'] = '!REGISTRO MODIFICADO!';
+      $this->response['mensaje'] = 'Filial  modificado con exito';
+      $this->response['estado'] = true;
+      $this->response['datos'] = $requisito;
+      return response()->json($this->response, 200);
+    }
+
+
+  }
+ 
+
+
+  public function getPostulantes(Request $request)
+  {
+      $query_where = [];
+      $res = Postulante::select( 
+          'postulante.nro_doc as value', 
+          DB::raw("CONCAT( postulante.nombres,' ',postulante.primer_apellido, postulante.primer_apellido) as label")
+      )
+      ->where($query_where)
+      ->where(function ($query) use ($request) {
+          return $query
+            ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%');
+        })->orderBy('postulante.id', 'DESC')
+        ->paginate(10);
+
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+      return response()->json($this->response, 200);
+  }
+
+
+  public function getPostulanteByDni( Request $request){
+        
+    $res = DB::select('SELECT 
+    postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
+    postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento
+    FROM postulante
+    WHERE postulante.nro_doc = ' . $request->dni);
+    if(count($res) > 0 ){
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res[0];
+        return response()->json($this->response, 200);
+    }
+    else{
+        $this->response['estado'] = true;
+        $this->response['datos'] = null;
+        return response()->json($this->response, 200);
+    }
+
+  }
+
+  public function getPostulanteRequisitos( Request $request){
+
+    $res = RequisitoDetalle::select('dni_postulante','requisitos')
+    ->where('dni_postulante','=',$request->dni)
+    ->get();
+    if(count($res) > 0 ){
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res[0];
+      return response()->json($this->response, 200);
+    }else{
+      $this->response['estado'] = false;
+      return response()->json($this->response, 200);
+    }
+  }
+
+
+  public function getRequisitoPostulantes(Request $request) {
+    
+    
+    $res = RequisitoDetalle::select(
+      'postulante.nombres', 'postulante.primer_apellido as paterno', 'postulante.segundo_apellido as materno', 'postulante.nro_doc as dni', 
+      'postulante.nro_doc', 'requisito_detalle.requisitos')
+    ->join('postulante','requisito_detalle.dni_postulante','postulante.nro_doc')
+    ->where(function ($query) use ($request) {
+      return $query
+        ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
+        ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
+        ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%');
+      })->paginate($request->paginasize);
+  
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  
+  }
+
+
+
 
 }

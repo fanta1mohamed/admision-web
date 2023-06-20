@@ -1,15 +1,38 @@
 <template>
+<Head title="Revisión de documentos"/>
 <AuthenticatedLayout>
   <div>
-    <a-card style="background: white;" class="mb-0 p-0">
+    <a-card style="background: white; height: calc(100vh - 90px); overflow: hidden;" class="mb-0 p-0" >
       <a-row :gutter="16" class="mb-3">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end; align-items: end;" >
-            <a-input ref="myInput" placeholder="Dni" v-model:value="buscar"  style="max-width: 300px; margin-right: -8px; ">
-              <template #suffix>
-                <credit-card-outlined />
-              </template>
-            </a-input>
-
+          <div>
+            <!-- {{ dniseleccionado }}
+            {{ postulante }} -->
+          <label style="margin-right: 10px;"> Buscar:</label>
+          <a-auto-complete
+            v-model:value="dniseleccionado"
+            :options="postulantes"
+            style="width: 300px"
+            @select="onSelect"
+            @search="onSearch"
+          >
+          <a-input
+            ref="dniInput"
+            placeholder="Buscar"
+            v-model:value="dni"
+            @keypress="handleKeyPress"
+          />
+          <template #suffix>
+            <credit-card-outlined />
+          </template>
+          <template #option="{ value: val, label:lab }" style="background-color: blue;">
+            <div style="height: 34px;">
+              <div><span style="font-weight: 700; color: black; font-size: .7rem;">{{ val }}</span></div>
+              <div style="margin-top: -10px;"><span style="font-size: .8rem; text-transform: uppercase;">{{ lab }}</span></div>
+            </div>
+          </template>
+          </a-auto-complete>
+        </div>
         </a-col>
       </a-row>
 
@@ -26,39 +49,78 @@
           </div>
         </a-col>
       </a-row> -->
-
       <a-row :gutter="16">
         <a-col :span="24" :sm="24" :md="8" :lg="6">
-          <div>
+          <div style="height: 240px;">
+            {{ dniseleccionado }}
             <h1 style="font-weight: bold;">Requisitos</h1>
             <a-checkbox v-model:checked="checkAll" class="first-item" @change="onCheckAllChange">Todo</a-checkbox>
             <a-checkbox-group v-model:value="checkedList" class="checkbox-group-vertical">
-              <a-checkbox v-for="(option, index) in options" :key="option.value" :value="option.value" :class="{ 'first-item': index === 0 }" class="checkbox-item">
+              <a-checkbox v-for="(option, index) in requisitos" :key="option.value" :value="option.value" :class="{ 'first-item': index === 0 }" class="checkbox-item">
                 {{ option.label }}
               </a-checkbox>
-            </a-checkbox-group>
-            
+            </a-checkbox-group>            
           </div>
+          <!-- <div>
+            <h1 style="font-weight: bold;">Observación</h1>
+            <a-textarea type="text" style="height: 180px;" />
+          </div> -->
         </a-col>
         <a-col :span="24" :sm="24" :md="16" :lg="18" style="border: 1px solid #d9d9d9; min-width: 600px;" class="m-0 p-0">
           <div style="margin-right: -8px; margin-left: -8px; min-width: 600px;">
 
             <a-tabs v-model:activeKey="activeKey" type="card" style="">
               <a-tab-pane key="1" tab="Solicitud" class="pl-2 pr-2">
-
+                <div>
+                  <div style="width:100%; height:380px; position:relative; overflow:hidden">
+                    <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
+                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                    </div>
+                </div>
+                </div>
               </a-tab-pane>
-              <a-tab-pane key="2" tab="Voucher" class="pl-2 pr-2"><Vouchers dni="70757838"/></a-tab-pane>
-              <a-tab-pane key="3" tab="Certificado">Content of Tab Pane 3</a-tab-pane>
-              <a-tab-pane key="4" tab="Ex vocacional">Content of Tab Pane 4</a-tab-pane>
-              <a-tab-pane key="5" tab="Cert Cepre">Content of Tab Pane 5</a-tab-pane>
+              <a-tab-pane key="2" tab="Voucher" class="pl-2 pr-2">
+                <div class="" style="width: 100%; height: 380px;">
+                  <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
+                    <Vouchers :dni="dniseleccionado"/>
+                  </div>
+                </div>
+              </a-tab-pane>
+              <a-tab-pane key="3" tab="Certificado">
+                <div style="height:380px;">
+                  <div style="width:100%; height:380px; position:relative; overflow:hidden">
+                    <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
+                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/certificado-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </a-tab-pane>
+              <a-tab-pane key="4" tab="Ex vocacional">
+                <div>
+                  <div style="width:100%; height:380px; position:relative; overflow:hidden">
+                    <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
+                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </a-tab-pane>
+              <a-tab-pane key="5" tab="Cert Cepre">
+                <div>
+                  <div style="width:100%; height:380px; position:relative; overflow:hidden">
+                    <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
+                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                    </div>
+                  </div>
+                </div>  
+              </a-tab-pane>
             </a-tabs>
 
           </div>
         </a-col>
       </a-row>
-    <a-form-item>
-      <a-button type="primary"  @click="focusInput">Enviar</a-button>
-    </a-form-item>
+      <div class="mt-4 flex justify-end" style="margin-right: -10px;">
+        <a-button type="primary"  @click="save()">Enviar</a-button>
+      </div>
 
     </a-card>
   </div>
@@ -74,10 +136,14 @@ import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import Vouchers from './components/voucher.vue'
 
-const myInput = ref(null);
+const dni = ref(null);
+const dniseleccionado = ref(null)
+
+const postulantes = ref([]) 
 
 function focusInput() {
-  myInput.value.focus();
+  save()
+
 }
 const checkedList = ref([]);
 const options = [
@@ -99,6 +165,58 @@ const onCheckboxChange = (checkedValues) => {
   checkedList.value = checkedValues;
   checkAll.value = checkedValues.length === options.length;
 };
+
+const requisitos = ref([]);
+const getRequisitos = async () => {
+  let res = await axios.get('get-requisitos');
+  requisitos.value = res.data.datos;
+}
+
+const dniInput = ref(null)
+const save = async () => {
+  dniInput.value.focus()
+  let res = await axios.post('save-requisito',{
+    dni: dniseleccionado.value, requisitos: checkedList.value 
+  });
+  dniseleccionado.value = null
+  checkedList.value = []
+}
+
+const getPostulantes =  async (term = "", page = 1) => {
+  let res = await axios.post(
+      "get-postulantes?page=" + page,
+      { term: dni.value }
+  );
+  postulantes.value = res.data.datos.data;
+}
+
+const getPostulanteRequisitos = async () => {
+  checkedList.value = [];
+  let res = await axios.post("get-postulante-requisitos",{ dni: dniseleccionado.value });
+  if(res.data.estado === true ){
+    checkedList.value = JSON.parse(res.data.datos.requisitos);
+  }
+}
+
+getPostulanteRequisitos()
+
+const getPostulantesByDni = async () => {
+  let res = await axios.post("get-postulante-dni",{ dni: dniseleccionado.value });
+  postulante.value.id = res.data.datos.id_postulante;   
+  postulante.value.dni_temp = res.data.datos.dni
+}
+
+watch(dni, (newValue, oldValue ) => {
+  getPostulantes();
+})
+
+watch(dniseleccionado, (newValue, oldValue ) => {
+    getPostulanteRequisitos();
+})
+
+
+getRequisitos()
+
 
 </script>
 

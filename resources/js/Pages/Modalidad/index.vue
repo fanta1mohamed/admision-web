@@ -1,8 +1,7 @@
 <template>
     <Head title="Modalidades"/>
     <AuthenticatedLayout>
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-    
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">    
     <!-- {{ buscar }} -->
     <row class="flex justify-between mb-4" >
         <div class="mr-3">
@@ -96,18 +95,16 @@
     const showModalPrograma = () => { visible.value = true; };
     
     watch(buscar, ( newValue, oldValue ) => { getModalidades() })
-    
 
     watch(visible, ( newValue, oldValue ) => {
-    if(visible.value == false && modalidad.value.id != null ){
-        modalidad.value.id = null;
-        modalidad.value.codigo = null;
-        modalidad.value.nombre = null;
-    }
+        if(visible.value == false && modalidad.value.id != null ){
+            modalidad.value.id = null;
+            modalidad.value.codigo = null;
+            modalidad.value.nombre = null;
+        }
     })
 
     watch(pagina, ( newValue, oldValue ) => { getModalidades(); })
-    
     
     const layout = {
         labelCol: {
@@ -230,6 +227,4 @@
     };
     
     getModalidades()
-
-    
     </script>

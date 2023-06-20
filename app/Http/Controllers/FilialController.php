@@ -10,11 +10,8 @@ class FilialController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Filial/filial');
-        
+        return Inertia::render('Filial/filial'); 
     }  
-
-
 
     public function getFiliales(Request $request)
     {

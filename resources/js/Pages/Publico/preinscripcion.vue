@@ -267,7 +267,6 @@
       </div>
 
       <div v-if="pagina_pre === 5">
-
         <div style="width: 100%; margin-top: 5px; ">
           <Apoderado v-if="avance_current < 80" ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2" :actualiza="'si'"/>
           <Apoderado v-if="avance_current >= 80" ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2" :actualiza="'no'"/>
@@ -452,14 +451,12 @@
                 </div>
               </div>
               <div class="flex justify-center mt-4 mb-4">
-                <a-button style="background: #020b61;" type="primary"> DESCARGAR </a-button>
+                <a-button @click="getDocs()" style="background: #020b61;" type="primary"> DESCARGAR </a-button>
               </div>
             </div>
           </a-card>
           </div>
       </div>
-
-
 
       </div>
 
@@ -505,7 +502,7 @@
 </Layout>
 
 <div v-if="examen === 1">
-  {{  pagina_pre }}
+  <div v-if="pagina_pre === 8" style="display:none;">{{  pagina_pre }} {{  examen = 0 }} </div>
   <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
   <div class="headVocalional" v-if="pagina_pre === 7" >
         <div class="logoVocalional">  
@@ -527,8 +524,8 @@
           
     <!-- {{ nc }} -->
           <div class="vocacional">
-            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :actualiza="'si'"/>
-            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datos_personales.id"  :actualiza="'no'"/>
+            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :dni="dni.value" :actualiza="'si'"/>
+            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :dni="dni.value" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_vocacional }}</div>
             <div style="display:none;">{{ pagina_pre_temp_vocacional = 7 }}</div>
           </div>
@@ -538,8 +535,7 @@
           <a-button class="btn-vocacional" @click=" guardarVocacional()"  >Terminar examen</a-button>
         </div>  
         
-      </div>
-
+  </div>
     <!-- <div>
     <a-button @click="guardarColegio()" class="boton-siguiente" type="primary" >Terminar examen</a-button>
   </div> -->
@@ -602,26 +598,32 @@ const onSelectDistritos = (value, option) => {
 
 const getDatosPersonales = async () => {
   let res = await axios.post( "get-postulante-datos-personales", {nro_doc: dni.value});
-  datos_personales.value.id = res.data.datos[0].id
-  datos_personales.value.primer_apellido = res.data.datos[0].primer_apellido
-  datos_personales.value.segundo_apellido = res.data.datos[0].segundo_apellido
-  datos_personales.value.nombres = res.data.datos[0].nombres
-  //datos_personales.value.estado_civil = res.data.datos[0].estado_civil
-  //datos_personales.value.sexo = res.data.datos[0].sexo
-  datos_personales.value.correo = res.data.datos[0].correo
-  datos_personales.value.celular = res.data.datos[0].celular
-  datos_personales.value.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento)
-  datos_personales.value.ubigeo = res.data.datos[0].ubigeo
-  datos_personales.value.direccion = res.data.datos[0].direccion
-  depseleccionado.value = res.data.datos[0].dep;
-  dep.value = res.data.datos[0].departamento
-  provseleccionada.value = res.data.datos[0].prov;
-  prov.value = res.data.datos[0].provincia
-  distseleccionado.value = res.data.datos[0].dist;
-  dist.value = res.data.datos[0].distrito
-  datos_personales.value.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
-  datos_personales.value.direccion = res.data.datos[0].direccion
-  getPasos();
+  if(res.data.datos.length > 0 ) {
+    datos_personales.value.id = res.data.datos[0].id
+    datos_personales.value.primer_apellido = res.data.datos[0].primer_apellido
+    datos_personales.value.segundo_apellido = res.data.datos[0].segundo_apellido
+    datos_personales.value.nombres = res.data.datos[0].nombres
+    //datos_personales.value.estado_civil = res.data.datos[0].estado_civil
+    //datos_personales.value.sexo = res.data.datos[0].sexo
+    datos_personales.value.correo = res.data.datos[0].correo
+    datos_personales.value.celular = res.data.datos[0].celular
+    datos_personales.value.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento)
+    datos_personales.value.ubigeo = res.data.datos[0].ubigeo
+    datos_personales.value.direccion = res.data.datos[0].direccion
+    depseleccionado.value = res.data.datos[0].dep;
+    dep.value = res.data.datos[0].departamento
+    provseleccionada.value = res.data.datos[0].prov;
+    prov.value = res.data.datos[0].provincia
+    distseleccionado.value = res.data.datos[0].dist;
+    dist.value = res.data.datos[0].distrito
+    datos_personales.value.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
+    datos_personales.value.direccion = res.data.datos[0].direccion
+    getPasos();
+  } else {
+    saveDNI()
+    pagina_pre.value = 1
+  }
+
 
 } 
 
@@ -657,9 +659,18 @@ const savePasos =  async (namex, num, avan ) => {
   getPasos()
 }
 
+const saveDNI =  async () => {
+  let res = await axios.post( "save-postulante-dni", 
+  {  
+    tipo_doc: datos_personales.value.tipo_doc,
+    nro_doc: dni.value,
+    id: datos_personales.value.id,
+    ubigeo_nacimiento: datos_personales.value.ubigeo,
+  });
+  getDatosPersonales()
+}
 
 const saveDatosPersonales =  async () => {
-
   // if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
   //   //console.log(depseleccionado.value + provseleccionada.value + distseleccionado.value)
   //   datos_personales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
@@ -688,7 +699,6 @@ const saveDatosPersonales =  async () => {
   if(res.data.estado === true ){  
     notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
   }
-
 // roles.value = res.data.datos.data;
 }
 
@@ -800,7 +810,7 @@ const onChange = (e) => {
 const submit = async () => {
   let fd = new FormData();
   fd.append('img', imagen.value)
-  fd.append('dni', datos_personales.value.nro_doc)
+  fd.append('dni', dni.value)
   fd.append('modalidad', datos_preinscripcion.value.modalidad)
   fd.append('programa', datos_preinscripcion.value.programa)
   fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
@@ -820,6 +830,11 @@ watch(presionado, ( newValue, oldValue ) => {
     presionado.value = 0
   }
 })
+
+const getDocs = async () => {
+  window.open("documentos-pdfs/"+dni.value, '_blank');
+}
+
 
 </script>
 

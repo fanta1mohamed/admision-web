@@ -46,8 +46,6 @@ class DocumentoController extends Controller {
     $documento->id_usuario = auth()->id();
     $documento->save();
 
-
-
     $this->response['titulo'] = '!CERTIFICADO ACTUALIZADO!';
     $this->response['mensaje'] = 'Estado Cambiado con exito';
     $this->response['estado'] = true;

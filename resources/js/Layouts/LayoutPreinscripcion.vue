@@ -7,11 +7,18 @@
         </div>
       </a-layout-header> -->
       <div class="headPre" style="height: 200px;">
-        <div class="logoPre">  
-            <div> <img src="./../../assets/imagenes/logotiny.png" width="45" /> </div>
-            <div class="x"> <div class="container-pre"><span style="letter-spacing: 0.1rem;">DIRECCIÓN DE</span></div> <h1 class="logoPreAD" > ADMISIÓN </h1> </div>
-            <div> <img src="./../../assets/imagenes/logoDAD.png" width="45" /> </div>
+        <div class="flex justify-between" >  
+            <div class="logoPre">
+                <div style="margin-top: -10px;"> <img src="./../../assets/imagenes/logotiny.png" width="45" /> </div>
+                <div class="x"> <div class="container-pre"><span style="letter-spacing: 0.1rem;">DIRECCIÓN DE</span></div> <h1 class="logoPreAD" > ADMISIÓN </h1> </div>
+                <div style="margin-top: -10px;"> <img src="./../../assets/imagenes/logoDAD.png" width="45" /> </div>
+            </div>
+            <!-- <div style="padding-top: 10px;">
+                <strong style="color: #a410e9; font-size: 1.5rem; 140px; margin-right: 30px;">CEPREUNA</strong>                
+            </div> -->
         </div>
+
+
         <div class="flex justify-center titulo-pre ">
             <div>  
                 <span> Preinscripción </span>
@@ -38,14 +45,14 @@
     }
     .logoPre{
         display: flex;
-        margin-top: 10px;
+        margin-top: 5px;
         margin-left: 10px;
         justify-content: left;
         align-items: center;
         color: white;
     }
     .logoPreAD {
-        font-weight: 700; color: white; font-size: 1.36rem;
+        font-weight: 700; color: white; font-size: 1.6rem;
     }
     .container-pre{
         margin-bottom: -8px; margin-top: 10px;
