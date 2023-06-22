@@ -1,12 +1,8 @@
 <template>
-    <Head title="Users" />
-
-    <AuthenticatedLayout>
-        <template #header>
-            Users
-        </template>
-
-        <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
+    <Head title="Usuarios" />
+    <AuthenticatedLayout >
+    <div>
+        <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md ">
             <div class="flex w-12 items-center justify-center bg-blue-500">
                 <svg class="h-6 w-6 fill-current text-white" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -50,7 +46,9 @@
                 <pagination :links="users.links" />
             </div>
         </div>
+    </div>
     </AuthenticatedLayout>
+    
 </template>
 
 <script setup>

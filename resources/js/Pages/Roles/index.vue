@@ -1,9 +1,9 @@
 <template>
 <Head title="Roles"/>
 <AuthenticatedLayout>
-<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-<h1> Roles </h1>
-<a-button type="primary" @click="showModalRol">Nuevo</a-button>
+<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5  ">
+
+<a-button class="mb-3" type="primary" @click="showModalRol">Nuevo</a-button>
 <a-table 
   :columns="columnsRoles" 
   :data-source="roles"

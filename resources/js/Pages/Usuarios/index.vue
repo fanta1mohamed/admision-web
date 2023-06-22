@@ -1,10 +1,9 @@
 <template>
   <Head title="Usuarios"/>
   <AuthenticatedLayout>
-  <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-  <h1> Usuarios </h1>
+  <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5">
   <!-- <pre>{{ permisos}}</pre> -->
-  <a-button type="primary" @click="showModalRol">Nuevo</a-button>
+  <a-button class="mb-3"  type="primary" @click="showModalRol">Nuevo</a-button>
 
   <a-table bordered :data-source="users" :columns="columns" size="small">
 
