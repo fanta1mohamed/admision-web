@@ -16,7 +16,6 @@
             @keypress="handleKeyPress"
           />  
         </div> -->
-        
         <div>
             <label style="margin-right: 10px;"> Buscar:</label>
             <a-auto-complete
@@ -453,7 +452,7 @@ const getInscripciones =  async () => {
 
 
 const Inscribir =  async () => {
-  let res = await axios.post( "/admin/inscripciones/inscribir", { postulante: postulante.value } );
+  let res = await axios.post( "/admin/inscripciones/inscribir", { postulante: postulante.value });
   //postulantes.value = res.data.datos.data;
 }
 

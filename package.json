@@ -22,9 +22,12 @@
         "@ant-design/icons": "^5.0.1",
         "@ant-design/icons-vue": "^6.1.0",
         "ant-design-vue": "^3.2.20",
+        "cropperjs": "^1.5.13",
         "date-fns": "^2.30.0",
         "dayjs": "^1.11.7",
+        "html2canvas": "^1.4.1",
         "json-as-xlsx": "^2.5.3",
+        "webrtc-adapter": "^8.2.3",
         "xlsx": "^0.18.5"
     }
 }

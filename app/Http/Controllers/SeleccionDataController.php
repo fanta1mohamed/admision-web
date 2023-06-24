@@ -81,7 +81,8 @@ class SeleccionDataController extends Controller
         return $query
             ->orWhere('provincia.codigo', 'LIKE', '%' . $request->term . '%')
               ->orWhere('provincia.nombre', 'LIKE', '%' . $request->term . '%');
-      })->orderBy('provincia.nombre', 'ASC')->get();
+      })->distinct()
+      ->orderBy('provincia.nombre', 'ASC')->get();
 
     $this->response['estado'] = true;
     $this->response['datos'] = $res;

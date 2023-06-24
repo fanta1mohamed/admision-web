@@ -1,52 +1,120 @@
 <template>
-    <div>
-      <video ref="videoElement" autoplay></video>
-      <canvas ref="canvasElement" style="display: none;"></canvas>
-      <button @click="capturePhoto">Tomar foto</button>
+<Head title="Inscripciones-impresión"/>
+<AuthenticatedLayout>
+    <div class="flex" style="padding: 20px;">
+      <div ref="captureContainer" style="position: relative;">
+        <video ref="videoElement" autoplay></video>
+        <div    
+          v-if="cargando === true"
+          ref="cropArea"
+          :style="`position: absolute; top: ${cropAreaTop}px; left: ${cropAreaLeft}px; width: ${cropAreaWidth}px; height: ${cropAreaHeight}px; border: 1px dashed blue;`"
+        ></div>
+        <div v-if="cargando === true" class="flex justify-center" style="margin-top: -50px;" >
+            <a-button type="primary" @click="capturePhoto">Capturar Foto</a-button>
+        </div>
+
+      </div>
+      <div v-if="capturedPhoto" style="margin-bottom: -40px;">
+            <img :src="capturedPhoto" alt="Foto Capturada">
+      </div>
     </div>
-  </template>
+    <div v-if="cargando === true" class="flex justify-between mt-3" style="padding: 0px 20px;">
+        <div style="width: 300px;">
+            <a-input v-model:value="dni" placeholder="Ingrese DNI" />
+        </div>
+        <!-- <div>
+            <a-button v-if="capturedPhoto" @click="saveCroppedPhoto()">Guardar</a-button>
+            <a-button type="primary" v-else @click="saveCroppedPhoto()" disabled>Guardar</a-button>
+        </div> -->
+    </div>
 
-<script>
-export default {
-  mounted() {
-    // Acceder a la cámara
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        const videoElement = this.$refs.videoElement;
-        videoElement.srcObject = stream;
-        videoElement.play();
-      })
-      .catch(error => {
-        console.error('Error al acceder a la cámara: ', error);
-      });
-  },
-  methods: {
-    capturePhoto() {
-      const videoElement = this.$refs.videoElement;
-      const canvasElement = this.$refs.canvasElement;
-      const context = canvasElement.getContext('2d');
 
-      // Establecer el tamaño del lienzo
-      canvasElement.width = videoElement.videoWidth;
-      canvasElement.height = videoElement.videoHeight;
-
-      // Dibujar la imagen del video en el lienzo
-      context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-
-      // Obtener la imagen como base64
-      const base64Image = canvasElement.toDataURL('image/png');
-      
-      // Enviar la imagen a Laravel o hacer cualquier otra acción
-      // Aquí puedes usar Axios o cualquier otra biblioteca de manejo de solicitudes HTTP
-      // Ejemplo:
-      axios.post('/guardar-imagen', { image: base64Image })
-        .then(response => {
-          console.log('Imagen guardada correctamente');
-        })
-        .catch(error => {
-          console.error('Error al guardar la imagen: ', error);
-        });
-    }
-  }
-}
+</AuthenticatedLayout>
+</template>
+<script setup>
+    import { Head } from '@inertiajs/vue3';
+    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'    
+    import {ref, watch} from 'vue'
+    import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons-vue';
 </script>
+<script>
+  import axios from 'axios';
+  export default {
+    data() {
+      return {
+        dni:null,
+        capturedPhoto: null,
+        cropAreaTop: 0, // Posición vertical del área de recorte
+        cropAreaLeft: 120, // Posición horizontal del área de recorte
+        cropAreaWidth: 400, // Ancho del área de recorte
+        cropAreaHeight: 480, // Alto del área de recorte
+        cargando: false
+      };
+    },
+    watch: {
+        dni(newValue, oldValue) {
+            if(this.dni.length === 8){
+                this.capturePhoto()
+
+            }
+        }
+    },
+    mounted() {
+      this.initializeCamera();
+    },
+    beforeUnmount() {
+      this.stopCamera();
+    },
+    methods: {
+      async initializeCamera() {
+        try {
+          const constraints = { video: true };
+          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+          this.$refs.videoElement.srcObject = stream;
+          this.cargando = true;
+        } catch (error) {
+          console.error('Error al acceder a la cámara: ', error);
+        }
+      },
+
+      stopCamera() {
+        const stream = this.$refs.videoElement.srcObject;
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+        }
+      },
+      capturePhoto() {
+        const video = this.$refs.videoElement;
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const cropArea = this.$refs.cropArea;
+        const width = cropArea.offsetWidth;
+        const height = cropArea.offsetHeight;
+        const x = cropArea.offsetLeft - video.offsetLeft;
+        const y = cropArea.offsetTop - video.offsetTop;
+        canvas.width = width;
+        canvas.height = height;
+        context.drawImage(video, x, y, width, height, 0, 0, width, height);
+  
+        const capturedPhotoURL = canvas.toDataURL();
+        this.capturedPhoto = capturedPhotoURL;
+        this.saveCroppedPhoto()
+      },
+
+        saveCroppedPhoto() {
+            if (this.capturedPhoto) {
+            axios.post('guardar-foto-inscripcion', { dni:this.dni, photo: this.capturedPhoto })
+                .then(response => {
+                console.log('Foto recortada guardada correctamente');
+                // Realiza cualquier acción adicional después de guardar la foto recortada
+                })
+                .catch(error => {
+                console.error('Error al guardar la foto recortada: ', error);
+                });
+            }
+        }
+
+    }
+  };
+  </script>
+  

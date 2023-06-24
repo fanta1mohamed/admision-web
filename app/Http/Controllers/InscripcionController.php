@@ -24,7 +24,6 @@ class InscripcionController extends Controller
             'postulante.nro_doc as value', 
             DB::raw("CONCAT( postulante.nombres,' ',postulante.primer_apellido, postulante.primer_apellido) as label")
         )
-
             ->where($query_where)
             ->where(function ($query) use ($request) {
                 return $query
@@ -151,7 +150,7 @@ class InscripcionController extends Controller
             'id_usuario' => auth()->id() 
         ]);
 
-        return $inscripcion;
+        return redirect('http://admision-web.test/admin/pdf-inscripción/70757838');
          
     }
 
@@ -166,7 +165,7 @@ class InscripcionController extends Controller
 
         $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$dni);
         file_put_contents(public_path('/documentos/cepre2023-II/'.$dni.'/').'inscripcion-1.pdf', $output);
-        return $pdf->stream();
+        return $pdf->download();
 
     }
 

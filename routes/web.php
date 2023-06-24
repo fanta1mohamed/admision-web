@@ -25,6 +25,8 @@ use App\Http\Controllers\DocumentoController;
 use App\Http\Controllers\DetalleExamenVocacionalController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\FotoController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -101,7 +103,11 @@ Route::prefix('admin')->middleware('auth','revisor')->group(function () {
     Route::post('/save-programa', [ProgramaController::class, 'savePrograma']);
     Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);
     Route::get('/eliminar-programa/{id}', [ProgramaController::class, 'deletePrograma']);
+
     
+    //APODERADOS    
+    Route::post('/get-apoderados-admin', [ApoderadoController::class, 'getApoderadoAdmin']);
+    Route::post('/save-apoderados-admin', [ApoderadoController::class, 'saveApoderadoAdmin']);
 
     //MODALIDAD
     Route::get('/modalidad', [ModalidadController::class, 'index'])->name('modalidad-index');
@@ -148,13 +154,12 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/get-postulante-requisitos', [SeleccionDataController::class, 'getPostulanteRequisitos']);
     Route::post('/get-postulantes-requisitos', [SeleccionDataController::class, 'getRequisitoPostulantes']);
 
-   
     Route::get('/avance', [TestController::class, 'saveAvance']);
 
-    
-
-    
-
+    Route::get('/foto-inscripcion', fn () => Inertia::render('Foto/foto'))->name('foto-inscripcion');
+    Route::get('/foto-biometrico', fn () => Inertia::render('Foto/fotobiometrico'))->name('foto-biometrico');    
+    Route::post('/guardar-foto-inscripcion', [FotoController::class, 'guardarFotoInscripcion']);
+    Route::post('/guardar-foto-biometrico', [FotoController::class, 'guardarFotoBiometrico']);
 
 });
 
@@ -186,8 +191,6 @@ Route::post('/save-postulante-apoderado', [ApoderadoController::class, 'saveApod
 Route::post('save-pre-inscripcion', [PreinscripcionController::class, 'preinscribir']);
 Route::get('pdf', [PreinscripcionController::class, 'pdf']);
 
-Route::get('/foto', fn () => Inertia::render('Foto/foto'))->name('foto-postulante');
-
 Route::post('/get-departamentos-codigo', [SeleccionDataController::class, 'getDepartamentoCodigo']);
 Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
 Route::post('/get-distritos-codigo', [SeleccionDataController::class, 'getDistritosCodigo']);
@@ -210,9 +213,23 @@ Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF'
 
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
 
+
+
+
+//Editor
+Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'));
+
+
+
+
+
+
 //Seguimiento
 Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);
 Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
 
 require __DIR__.'/auth.php';
+
+
+
