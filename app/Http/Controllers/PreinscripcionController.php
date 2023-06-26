@@ -275,7 +275,7 @@ class PreinscripcionController extends Controller
         }
 
         $doc = Documento::create([
-            'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
+            'codigo' => $request->codigo_certificado, 
             'nombre' => 'SOLICITUD DE POSTULACIÓN',
             'numero' => 1,
             'id_postulante' => $res[0]->idP,
@@ -291,7 +291,7 @@ class PreinscripcionController extends Controller
     }
 
     public function UnirPDF($dni){
-
+        
         $pdf = new Fpdi();
         
         $files = [

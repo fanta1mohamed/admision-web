@@ -45,8 +45,8 @@
         dni:null,
         capturedPhoto: null,
         cropAreaTop: 0, // Posición vertical del área de recorte
-        cropAreaLeft: 120, // Posición horizontal del área de recorte
-        cropAreaWidth: 400, // Ancho del área de recorte
+        cropAreaLeft: 105, // Posición horizontal del área de recorte
+        cropAreaWidth: 430, // Ancho del área de recorte
         cropAreaHeight: 480, // Alto del área de recorte
         cargando: false
       };

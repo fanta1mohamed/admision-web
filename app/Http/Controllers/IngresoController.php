@@ -19,15 +19,22 @@ use setasign\Fpdi\Fpdi;
 
 class IngresoController extends Controller
 {
-
-
+    
     public function pdf(){
-
         $data = "";
-        $pdf = Pdf::loadView('ingreso.constancia', compact('data'));
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data'));
         return $pdf->stream();
-            
     }
+
+    // public function pdf(){
+
+    //     $data = "";
+    //     $pdf = Pdf::loadView('ingreso.constancia', compact('data'));
+    //     return $pdf->stream();
+            
+    // }
+
+
 
     public function pdfvocacional($dni) {
         $res = Preinscripcion::select(

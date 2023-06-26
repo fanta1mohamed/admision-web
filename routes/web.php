@@ -211,6 +211,7 @@ Route::get('/pdf-ingreso/{dni}', [IngresoController::class, 'pdf']);
 
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 
+
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
 
 
