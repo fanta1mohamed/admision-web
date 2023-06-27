@@ -138,6 +138,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/', fn () => Inertia::render('Revisor/revisor'))->name('revisor');
     Route::get('/validacion', fn () => Inertia::render('Revisor/validacion'))->name('revisor-validacion');
     Route::get('/documentos', fn () => Inertia::render('Revisor/documentos'))->name('revisor-documentos');
+    Route::get('/imprimir', fn () => Inertia::render('Revisor/imprimir'))->name('revisor-imprimir');
     Route::get('/postulantes', fn () => Inertia::render('Revisor/postulantes'))->name('revisor-postulantes');
     
     Route::post('/get-certificados-revision', [DocumentoController::class, 'getCertificadosRevision']);
@@ -181,6 +182,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 //PREINSCRIPCION
 //Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
 Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
+Route::get('/preinscripcion-general', fn () => Inertia::render('Publico/preinscripciongeneral'))->name('preinscripcion-general');
 Route::post('save-pasos-preinscripcion', [PreinscripcionController::class, 'savePasos']);
 Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
 Route::post('/save-postulante-dni', [PostulanteController::class, 'saveDniPostulante']);
@@ -211,11 +213,7 @@ Route::get('/pdf-ingreso/{dni}', [IngresoController::class, 'pdf']);
 
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 
-
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
-
-
-
 
 //Editor
 Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'));

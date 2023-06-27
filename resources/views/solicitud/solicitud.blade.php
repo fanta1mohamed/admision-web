@@ -75,7 +75,12 @@
                             <div  style="margin-top: 5px;">2.	Comprobante de pago</div>
                             <div  style="margin-top: 5px;">3.	Documento de identidad Copia</div>
                             <div  style="margin-top: 5px;">4.	Certificado de estudios</div>
-                            <div  style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA</div>
+
+                            @if($data->id_proceso = 4)
+                                <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA</div>
+                            @else
+                                <div></div>
+                            @endif
                         </div>
                     </td>
                 </tr>

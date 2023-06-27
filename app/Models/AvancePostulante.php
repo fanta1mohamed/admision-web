@@ -12,14 +12,12 @@ class AvancePostulante extends Model
     protected $table = 'avance_postulante';
 
     protected $fillable = [
-
         'dni_postulante',
         'id_proceso',
         'id_usuario',
         'avance',
+        'observacion'
     ];
 
-    protected $casts = [
-        'avance' => 'json',
-    ];
+
 }

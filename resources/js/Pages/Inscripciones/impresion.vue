@@ -146,6 +146,7 @@
                     ref="select"
                     v-model:value="postulante.programa"
                     style="width: 100%"
+                    :disabled="true"
                   >
                     <a-select-option :value="1">Administración</a-select-option>
                     <a-select-option :value="2">Antropología</a-select-option>
@@ -209,8 +210,16 @@
       </div>
 
       <div style="display: flex; justify-content: flex-end; margin-top:-10px;">
-        <a-button type="primary" @click="Inscribir">Imprimir</a-button>
+        <div v-if="botomm == false">
+          <a-button type="primary" @click="Inscribir">Inscribir</a-button>
+        </div>
+
+        <div v-else>
+          <a-button type="primary" disabled @click="Inscribir">Inscribir</a-button>
+        </div>
+
       </div>
+
     </div>
 
   </a-tab-pane>
@@ -343,9 +352,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import {ref, watch} from 'vue'
 import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons-vue';
 
-const props = defineProps({
-  baseUrl: String,
-});
+const botomm = ref(false);
+const props = defineProps({  baseUrl: String });
 
 
 const dni = ref("")
@@ -413,6 +421,8 @@ const getPostulantesByDni =  async () => {
     postulante.value.id_proceso = res.data.datos.id_proceso;
     postulante.value.id_modalidad = res.data.datos.id_modalidad;
     postulante.value.dni_temp = res.data.datos.dni;
+
+    botomm.value = buscarPostulante(res.data.datos.id_postulante, postulante.value.id_proceso);
 }
 
 const getApoderados =  async () => {
@@ -454,6 +464,43 @@ const getInscripciones =  async () => {
 const Inscribir =  async () => {
   let res = await axios.post( "/admin/inscripciones/inscribir", { postulante: postulante.value });
   //postulantes.value = res.data.datos.data;
+
+  imprimirPDF(dniseleccionado.value)
+  dniseleccionado.value = "";
+  dni.value = "";
+
+  // postulante.value.id = null;    
+  // postulante.value.nombres = null;
+  // postulante.value.primer_apellido = null;
+  // postulante.value.segundo_apellido = null;
+  // postulante.value.sexo = null;
+  // postulante.value.colegio = null;
+  // postulante.value.procedencia = null;
+  // postulante.value.proceso = null;
+  // postulante.value.modalidad = null;
+  // postulante.value.programa = null;
+  // postulante.value.id_programa = null;
+  // postulante.value.id_proceso = null;
+  // postulante.value.id_modalidad = null;
+  // postulante.value.dni_temp = null;
+
+  postulante.value = { 
+    id:"",
+    nombres:"", 
+    primer_apellido:"",
+    segundo_apellido:"", 
+    sexo:'Masculino', 
+    fec_nacimiento:"",
+    colegio: "",
+    procedencia: "",
+    proceso: "",
+    id_proceso:"",
+    modalidad: "",
+    id_modalidad:"",
+    programa:"",
+    id_programa:"",
+    dni_temp:""
+  }
 }
 
 watch(dni, ( newValue, oldValue ) => {
@@ -462,7 +509,10 @@ watch(dni, ( newValue, oldValue ) => {
   getPostulantes();
 })
 
+
+
 watch(dniseleccionado, ( newValue, oldValue ) => {
+    getInscripciones()
     getPostulantesByDni()
     getVouchers()
     getDocumentos()
@@ -485,6 +535,16 @@ watch(tabactive, ( newValue, oldValue ) => {
     getPreinscripciones()
   }
 })
+
+const imprimirPDF =  (dnni) => {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = "none";
+    iframe.src = 'https://admision-web.test/documentos/cepre2023-II/'+dnni+'/inscripcion-1.pdf';
+    document.body.appendChild(iframe);
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+
+}
 
 const colApoderados = [
   { title: 'DNI', dataIndex: 'nro_documento', key: 'nro_documento',},
@@ -510,6 +570,19 @@ const colDocumentos =  [
   { title: 'estado', dataIndex: 'estado', key: 'estado',},
   { title: 'Acciones', dataIndex: 'acciones'}  
 ]
+
+const buscarPostulante = (postul, proc ) => {
+  const postulanteEnProceso = inscripciones.value.find(item => {
+    return item.id_postulante === postul && item.id_proceso === proc;
+  });
+
+  if (postulanteEnProceso) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 
 // const colInscripciones =  [
 //   { title: 'Name', dataIndex: 'name', key: 'name',},

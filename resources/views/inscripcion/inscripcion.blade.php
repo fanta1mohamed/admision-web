@@ -9,7 +9,7 @@
             <table>
                 <tr>
                     <td width="100"></td>
-                    <td align="center"><div style="text-align: center"><span style="font-weight:bold"> CONSTANCIA DE INSCRIPCIÓN AL EXAMEN CEPREUNA 2023-II</span></div></td>
+                    <td align="center"><div style="text-align: center"><span style="font-weight:bold"> CONSTANCIA DE INSCRIPCIÓN AL EXAMEN {{$data->proceso}}</span></div></td>
                     <td width="100"></td>
                 </tr>
             </table>
@@ -20,7 +20,7 @@
                 <tr style="height:85px; padding:0;">
                     <td style="" width="195px" align="left" valign="top">MODALIDAD</td>
                     <td style="" width="5px" align="left" valign="top">:</td>
-                    <td style="" align="left" valign="top"><div style="text-align: justify; font-weight: regular;"><span>CEPREUNA</span></div></td>
+                    <td style="" align="left" valign="top"><div style="text-align: justify; font-weight: regular;"><span>{{$data->modalidad}}</span></div></td>
                     <td style="" rowspan="7" align="right"  width="150px" valign="top">
                         <div style="border:solid 1px #d9d9d9; padding:5px; width:125px; overflow-hidden;" >
                             <div style="overflow: hidden; height:150px; width:125px;">
@@ -33,7 +33,7 @@
                 <tr style="margin-bottom:-12px;">
                     <td width="195px" align="left" valign="top"><div style="margin-top: -6px;">PROGRAMA DE ESTUDIOS</div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -6px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -6px;"><span style="text-transform: uppercase;"> INGENIERÍA DE SISTEMAS </span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -6px;"><span style="text-transform: uppercase;"> {{ $data->programa }} </span></div></td>
                 </tr>
                 <tr>
                     <td width="195px" align="left" valign="top"><div style="margin-top: -12px;"> NRO. DE DOCUMENTO:</div></td>

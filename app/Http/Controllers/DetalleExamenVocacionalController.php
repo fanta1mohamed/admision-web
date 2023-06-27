@@ -15,6 +15,7 @@ use setasign\Fpdi\Fpdi;
 use App\Models\Proceso;
 use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
+use App\Models\AvancePostulante;
 use App\Models\Documento;
 
 class DetalleExamenVocacionalController extends Controller
@@ -28,11 +29,17 @@ class DetalleExamenVocacionalController extends Controller
             }
             else{
                 $this->saveDetalleVocacional($request->id_examen, $respuesta['ideP'], $request->id_postulante, $respuesta['ide']); 
+
             }
 
         }
+        $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
+        $avancePostulante->avance = 2;
+        $avancePostulante->save();
+
         $this->savePasos($request->name, $request->nro, $request->avance, $request->id_postulante, $request->proceso);
         $this->pdfvocacional($request->dni);
+
 
         $this->response['tipo'] = 'success';
         $this->response['titulo'] = 'PASO REGISTRADO';
@@ -77,7 +84,6 @@ class DetalleExamenVocacionalController extends Controller
         ->where('postulante.nro_doc','=', $dni)
         ->get();
         
-
         $data = $res[0];
         $pdf = Pdf::loadView('vocacional.constanciavocacional', compact('data'));
         $pdf->setPaper('A4', 'portrait');

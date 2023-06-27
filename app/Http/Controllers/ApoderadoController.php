@@ -114,7 +114,7 @@ class ApoderadoController extends Controller {
         ]);
 
         if($request->actualizar == 'si'){
-          $this->savePasos($request->name, $request->nro, $request->avance, $request->id_postulante, $request->proceso);
+          $this->savePasos($request->name, $request->nro, $request->avance, $request->id_postulante, $request->proceso, $request->tipo_apoderado);
         }
 
         $this->response['tipo'] = 'success';
@@ -135,7 +135,7 @@ class ApoderadoController extends Controller {
         $apoderado->save();
 
         if($request->actualizar == 'si'){
-          $this->savePasos($request->name, $request->nro, $request->avance, $request->id_postulante, $request->proceso);
+          $this->savePasos($request->name, $request->nro, $request->avance, $request->id_postulante, $request->proceso, $request->tipo_apoderado);
         }
         if( $temp == $apoderado ) {
           $this->response['estado'] = false;
@@ -154,12 +154,18 @@ class ApoderadoController extends Controller {
     }
 
 
-    private function savePasos($nom, $num, $avan, $pos, $pro) {
+    private function savePasos($nom, $num, $avan, $pos, $pro, $t) {
+      $numero = 0;
+      if($t == 3) { 
+        $numero = 5;
+      } else { 
+        $numero = $num;
+      } 
 
       $pasos = null;
       $pasos = Paso::create([
           'nombre' => $nom,
-          'nro' => $num,
+          'nro' => $numero,
           'avance' => $avan, 
           'postulante' => $pos,
           'proceso' => $pro

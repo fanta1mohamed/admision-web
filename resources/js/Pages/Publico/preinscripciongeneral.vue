@@ -296,7 +296,8 @@
                         placeholder="Seleccionar modalidad"
                         class="selector-modalidad"
                       >
-                        <a-select-option :value="9">CEPREUNA</a-select-option>
+                        <a-select-option :value="8">EXAMEN GENERAL</a-select-option>
+                        <a-select-option :value="7">CONADIS</a-select-option>
                       </a-select>
                   </div>
                 </div>
@@ -437,7 +438,7 @@
               <div class="flex justify-center">
                 <div  style="text-align:center; max-width: 350px;" >
                   <div>FINALIZASTE CON EXITO</div>
-                  DESCARGA TUS DOCUMENTOS PRESIONANDO EN DESCARGAR 
+                  DESCARGA TUS DOCUMENTOS
                 </div>
               </div>
               <div class="flex justify-center mt-4 mb-4">
@@ -783,7 +784,7 @@ const funcionHijoEjecutada = () => {
 };
 
 const datos_preinscripcion = ref({
-  modalidad: 9,
+  modalidad: null,
   programa:null,
   tipo_certificado:null,
   codigo_medico: null,

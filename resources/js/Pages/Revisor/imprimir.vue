@@ -70,6 +70,13 @@
           <div style="margin-right: -8px; margin-left: -8px; min-width: 600px;">
 
             <a-tabs v-model:activeKey="activeKey" type="card" style="">
+              <a-tab-pane key="2" tab="Voucher" class="pl-2 pr-2">
+                <div class="" style="width: 100%; height: 380px;">
+                  <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
+                    <Vouchers :dni="dniseleccionado"/>
+                  </div>
+                </div>
+              </a-tab-pane>
               <a-tab-pane key="1" tab="Solicitud" class="pl-2 pr-2">
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
@@ -77,13 +84,6 @@
                       <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
                     </div>
                 </div>
-                </div>
-              </a-tab-pane>
-              <a-tab-pane key="2" tab="Voucher" class="pl-2 pr-2">
-                <div class="" style="width: 100%; height: 380px;">
-                  <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                    <Vouchers :dni="dniseleccionado"/>
-                  </div>
                 </div>
               </a-tab-pane>
               <a-tab-pane key="3" tab="Certificado">
@@ -111,6 +111,11 @@
                       <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
+                </div>  
+              </a-tab-pane>
+
+              <a-tab-pane key="6" tab="D. Biométricos">
+                <div>
                 </div>  
               </a-tab-pane>
             </a-tabs>

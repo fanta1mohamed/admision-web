@@ -113,7 +113,7 @@
 
               <a-select
                 v-model:value="colegio"
-                style="width: 120px"
+                style="min-width: 300px"
                 :options="colegios"
                 @change="handleChangeCole"
               ></a-select>
