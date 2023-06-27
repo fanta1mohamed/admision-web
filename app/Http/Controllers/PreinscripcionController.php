@@ -93,7 +93,6 @@ class PreinscripcionController extends Controller
   }
 
   
-
   public function saveProceso(Request $request ) {
 
         $proceso = null;

@@ -6,8 +6,6 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ApixController;
 use App\Http\Controllers\LoginController;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,9 +17,10 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/postulante/{dni}', [ApixController::class, 'getPostulante']);
+    Route::get('/get-ingresante/{dni}/{proceso}', [ApixController::class, 'getIngresante']);
+    Route::get('/get-postulante-pago/{dni}/{proceso}', [ApixController::class, 'getPostulantePago']);
+    Route::get('/get-postulante-biometrico/{codigo}', [ApixController::class, 'getBiometrico']);
 });
 
 Route::post('/login', [LoginController::class, 'login']);

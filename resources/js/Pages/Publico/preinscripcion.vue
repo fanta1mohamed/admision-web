@@ -660,6 +660,7 @@ const savePasos =  async (namex, num, avan ) => {
 }
 
 const saveDNI =  async () => {
+  
   let res = await axios.post( "save-postulante-dni", 
   {  
     tipo_doc: datos_personales.value.tipo_doc,
