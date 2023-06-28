@@ -162,13 +162,15 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/guardar-foto-inscripcion', [FotoController::class, 'guardarFotoInscripcion']);
     Route::post('/guardar-foto-biometrico', [FotoController::class, 'guardarFotoBiometrico']);
 
+    Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
+
 });
 
 Route::post('/get-avance-postulante', [TestController::class, 'getAvancePostulante']);
 
 
 Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
-    Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('revisor');
+    Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacro');
     Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
     Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
 
@@ -209,7 +211,9 @@ Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'save
 
 Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocacional']);
 Route::get('/pdf-solicitud/{dni}', [PreinscripcionController::class, 'pdfsolicitud']);
-Route::get('/pdf-ingreso/{dni}', [IngresoController::class, 'pdf']);
+
+Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
+
 
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 

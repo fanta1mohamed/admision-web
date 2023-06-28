@@ -8,7 +8,7 @@
         <div>
             <table style="width: 100%">
                 <tr>
-                    <td align="center"><div style="text-align: center"><span style="font-weight:bold">CEPREUNA 2023-II</span></div></td>
+                    <td align="center"><div style="text-align: center"><span style="font-weight:bold">{{ $data->proceso }}</span></div></td>
                 </tr>
 
                 <tr>
@@ -23,7 +23,7 @@
                     <td style="">
                         <div style="text-align: right">
                             <span style="">
-                                Fecha: Puno, 24 de Julio de 2023
+                                Fecha: Puno, {{ $date }}
                             </span>
                         </div>
                     </td>
@@ -39,10 +39,10 @@
                         <div style="text-align: justify">
                             <span style="line-height:1.4rem;">
                                 La Dirección de admisión de la Universidad Nacional del Altiplano de Puno,
-                                conforme al cumplimento del reglamento general del Examen CEPREUNA 2023-II,
-                                certifica que Jhon Ariel Luque Cusacani, con DNI N° 70757838, 
-                                es ingresante al programa de estudios de INGENIERÍA DE SISTEMAS, 
-                                bajo la modalidad CEPREUNA, en el examen realizado el 23 de Julio del 2023.
+                                conforme al cumplimento del reglamento general del Examen {{ $data->proceso}},
+                                certifica que {{ $data->nombres }} {{$data->paterno}} {{$data->materno}}, con DNI N° {{ $data->dni }}, 
+                                es ingresante al programa de estudios de {{$data->programa}}, 
+                                bajo la modalidad {{ $data->modalidad}}, en el examen realizado el {{ $dateI }}.
                             </span>
                         </div>
                     </td>
@@ -52,8 +52,8 @@
                     <td>
                         <div style="text-align: justify; margin-top:15px;">
                             <span style="line-height:1.4rem;">
-                                El ingresante está ubicado en el puesto número 15 
-                                entre los ingresantes al programa de estudios de Ingeniería de Sistemas,
+                                El ingresante está ubicado en el puesto número {{ $data->puesto}} 
+                                entre los ingresantes al programa de estudios de {{ $data->programa}},
                                 Así mismo, se adjuntan 
                                 los datos biométricos del estudiante registrados en la etapa de inscripción, 
                                 ingreso el día del examen y control biométrico. Estos datos garantizan 

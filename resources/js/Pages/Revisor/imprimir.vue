@@ -81,7 +81,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
                     </div>
                 </div>
                 </div>
@@ -90,7 +90,7 @@
                 <div style="height:380px;">
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/certificado-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/certificado-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>
@@ -99,7 +99,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>
@@ -108,7 +108,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <!-- <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe> -->
                     </div>
                   </div>
                 </div>  
@@ -124,7 +124,7 @@
         </a-col>
       </a-row>
       <div class="mt-4 flex justify-end" style="margin-right: -10px;">
-        <a-button type="primary"  @click="save()">Enviar</a-button>
+        <a-button type="primary"  @click="abrirVentana()">Imprimir</a-button>
       </div>
 
     </a-card>
@@ -140,16 +140,15 @@ import { FormOutlined, DeleteOutlined, CreditCardOutlined } from '@ant-design/ic
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import Vouchers from './components/voucher.vue'
+const baseUrl = window.location.origin;
 
 const dni = ref(null);
 const dniseleccionado = ref(null)
 
 const postulantes = ref([]) 
 
-function focusInput() {
-  save()
 
-}
+function focusInput() { save() }
 const checkedList = ref([]);
 const options = [
   { label: 'Solicitud', value: 1 },
@@ -219,10 +218,28 @@ watch(dniseleccionado, (newValue, oldValue ) => {
     getPostulanteRequisitos();
 })
 
+const abrirVentana = async () => {
+  let res = await axios.post("control-biometrico",{ dni: dniseleccionado.value });
+  imprimirPDF(res.data.datos);
+
+  // postulante.value.id = res.data.datos.id_postulante;   
+  // postulante.value.dni_temp = res.data.datos.dni
+  // const url = 'https://admision-web.test/pdf-ingreso/'+dniseleccionado.value;
+  // window.open(url, '_blank');
+}
+
+
+
+const imprimirPDF =  (dnni) => {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = "none";
+    iframe.src = baseUrl+'/documentos/cepre2023-II/'+dnni+'/control-biometrico-unido.pdf';
+    document.body.appendChild(iframe);
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+}
 
 getRequisitos()
-
-
 </script>
 
 

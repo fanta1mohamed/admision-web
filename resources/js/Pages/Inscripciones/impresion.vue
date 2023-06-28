@@ -41,14 +41,6 @@
       </div>
     
        <div style=" width:100%; border: solid 1px #f3f3f3; margin: 20px 0px">
-      <!--  <a-row type="flex">
-          <a-col :span="6" :xs="{ order: 3 }" :sm="{ order: 4 }" :md="{ order: 2 }" :lg="{ order: 2 }" style="background: blue;">
-            3 col-order-responsive
-          </a-col>
-          <a-col :span="6" :xs="{ order: 4 }" :sm="{ order: 3 }" :md="{ order: 1 }" :lg="{ order: 1 }" style="background: green;">
-            4 col-order-responsive
-          </a-col>
-        </a-row> -->
       
         <div class="container-principal">
 
@@ -129,15 +121,9 @@
                     v-model:value="postulante.modalidad"
                     style="width: 100%"
                   >
-                    <a-select-option :value="1">Titulados y graduados</a-select-option>
-                    <a-select-option :value="2">Traslados Internos</a-select-option>
-                    <a-select-option :value="3">Traslados Externos</a-select-option>
-                    <a-select-option :value="4">Primeros Puestos y Coar</a-select-option>
-                    <a-select-option :value="5">Deportistas calificados</a-select-option>
-                    <a-select-option :value="6">Becas</a-select-option>
-                    <a-select-option :value="7">Personas con dispacidad</a-select-option>
-                    <a-select-option :value="8">Examen general</a-select-option>
-                    <a-select-option :value="9">Cepreuna</a-select-option>
+                    <a-select-option :value="7">PERSONAS CON DISCAPACIDAD</a-select-option>
+                    <a-select-option :value="8">EXAMEN GENERAL</a-select-option>
+                    <a-select-option :value="9">CEPREUNA</a-select-option>
                   </a-select>
                 </div>
                 <div>
@@ -221,7 +207,6 @@
       </div>
 
     </div>
-
   </a-tab-pane>
   <a-tab-pane key="2" tab="Apoderados">
     <a-table :dataSource="apoderados" :columns="colApoderados">
@@ -234,7 +219,6 @@
             <a-tag color="pink">Madre</a-tag>            
           </div>
         </template>
- 
         <template v-if="column.dataIndex === 'acciones'">
           <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
           <template #icon><form-outlined/></template>
@@ -469,21 +453,6 @@ const Inscribir =  async () => {
   dniseleccionado.value = "";
   dni.value = "";
 
-  // postulante.value.id = null;    
-  // postulante.value.nombres = null;
-  // postulante.value.primer_apellido = null;
-  // postulante.value.segundo_apellido = null;
-  // postulante.value.sexo = null;
-  // postulante.value.colegio = null;
-  // postulante.value.procedencia = null;
-  // postulante.value.proceso = null;
-  // postulante.value.modalidad = null;
-  // postulante.value.programa = null;
-  // postulante.value.id_programa = null;
-  // postulante.value.id_proceso = null;
-  // postulante.value.id_modalidad = null;
-  // postulante.value.dni_temp = null;
-
   postulante.value = { 
     id:"",
     nombres:"", 
@@ -543,7 +512,6 @@ const imprimirPDF =  (dnni) => {
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
-
 }
 
 const colApoderados = [
