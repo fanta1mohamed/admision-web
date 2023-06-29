@@ -28,7 +28,7 @@ use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\FotoController;
 
 
-Route::get('/', function () {
+Route::middleware('auth')->get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
