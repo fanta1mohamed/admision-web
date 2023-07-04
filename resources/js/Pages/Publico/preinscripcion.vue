@@ -155,7 +155,7 @@
                 </a-col>
                 <a-col :span="24" :md="16" :lg="18  " :xl="16" :xxl="6">
                   <a-form-item>
-                    <div><label>Fec. Nacimiento:</label></div>
+                    <div><label>Fec. Nacimiento: "DD/MM/AA"</label></div>
                       <a-date-picker placeholder="Selecciona tu fecha de nacimiento" style="width: 100%" v-model:value="datospersonales.fec_nacimiento" format='DD/MM/YYYY' />
                   </a-form-item>
                 </a-col>
@@ -190,7 +190,7 @@
             <a-row :gutter="[16, 0]" class="form-row">
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
                 <a-form-item>
-                  <div><label>Departamento: {{ dep }}</label></div>
+                  <div><label>Departamento:</label></div>
      
 
                   <a-auto-complete
@@ -557,8 +557,8 @@
           
     <!-- {{ nc }} -->
           <div class="vocacional">
-            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="dni.value" :actualiza="'si'"/>
-            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="dni.value" :actualiza="'no'"/>
+            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="formState.value" :actualiza="'si'"/>
+            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="formState.value" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_vocacional }}</div>
             <div style="display:none;">{{ pagina_pre_temp_vocacional = 7 }}</div>
           </div>
@@ -662,10 +662,10 @@ const onSelectDistritos = (value, option) => {
 };
 
 const getDatosPersonales = async () => {
-  const values = await formRef.value.validateFields();
+  if(formRef.dni === '' ){
+    const values = await formRef.value.validateFields();
+  }
   let res = await axios.post( "get-postulante-datos-personales", {nro_doc: formState.dni});
-
-
   if(res.data.datos.length > 0 ) {
     datospersonales.id = res.data.datos[0].id
     datospersonales.primerapellido = res.data.datos[0].primer_apellido
@@ -692,7 +692,7 @@ const getDatosPersonales = async () => {
     pagina_pre.value = 1
   }
 
-  
+
 
 } 
 
@@ -761,15 +761,15 @@ const saveDatosPersonales =  async () => {
 const saveDatosResidencia =  async () => {
 
   if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
-    datospersonales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
+    datospersonales.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
   }
 
   let res = await axios.post(
     "save-postulante-residencia",
     {  
-      id: datospersonales.value.id,
-      ubigeo_residencia: datospersonales.value.ubigeo_residencia,
-      direccion: datospersonales.value.direccion 
+      id: datospersonales.id,
+      ubigeo_residencia: datospersonales.ubigeo_residencia,
+      direccion: datospersonales.direccion 
     }
   );
   if(res.data.estado === true ){  
@@ -866,13 +866,13 @@ const onChange = (e) => {
 const submit = async () => {
   let fd = new FormData();
   fd.append('img', imagen.value)
-  fd.append('dni', dni.value)
+  fd.append('dni', formState.dni)
   fd.append('modalidad', datos_preinscripcion.value.modalidad)
   fd.append('programa', datos_preinscripcion.value.programa)
   fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
   fd.append('codigo_certificado', datos_preinscripcion.value.codigo_certificado)
   fd.append('codigo_medico', datos_preinscripcion.value.codigo_medico)
-  fd.append('id_postulante', datospersonales.value.id)
+  fd.append('id_postulante', datospersonales.id)
   await axios.post("save-pre-inscripcion", fd).then(res=>{
     if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 100) } else{ next() }
     showToast("success","2",res.data.menssje);

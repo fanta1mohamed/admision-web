@@ -24,7 +24,7 @@
     <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
     <a-form-item>
         <div><label>Pre nombres:</label></div>
-        <a-input v-model:value="nombres" placeholder="Basic usage" />
+        <a-input v-model:value="nombres"/>
     </a-form-item>
     </a-col>
 

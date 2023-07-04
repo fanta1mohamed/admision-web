@@ -123,8 +123,8 @@
                 </tr> 
                 <tr>
                     <td align="center" style=""> 
-                        <div style="text-align:left; margin-left:20px;"> <img src="{{ public_path('imagenes/firma_doctor.png')}}"  width="150"></div>
-                        <div style="margin-top: -40px"><span>Dr. HECTOR VELÁSQUEZ</span></div>
+                        <div style="text-align:left; margin-left:20px;"> <img src=""  width="150"></div>
+                        <div style="margin-top: -40px"><span>Dr. JUAN CARLOS BENAVIDES</span></div>
                         <span>DIRECTOR</span>
                     </td>  
                     <td align="center">

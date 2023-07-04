@@ -109,7 +109,7 @@
       <a-row :gutter="[16, 0]" class="form-row">
         <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
           <a-form-item>
-            <div><label>Nombre de colegio: {{  colegio  }}</label></div>
+            <div><label>Nombre de colegio:</label></div>
 
               <a-select
                 v-model:value="colegio"

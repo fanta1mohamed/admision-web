@@ -317,7 +317,6 @@ class PreinscripcionController extends Controller
         $files = [
             public_path('/documentos/cepre2023-II/'.$dni.'/').'solicitud-1.pdf',
             public_path('/documentos/cepre2023-II/'.$dni.'/').'constancia vocacional-1.pdf',
-            public_path('/documentos/cepre2023-II/'.$dni.'/').'certificado-1.pdf'
         ];
 
         foreach ($files as $file) {

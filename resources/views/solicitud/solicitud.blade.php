@@ -21,7 +21,7 @@
                     <td style="width: 50%"></td>
                     <td style="width: 50%">
                         <p style="text-align: justify; line-height:1.5rem;">
-                            <span style="font-weight: bold;">Solicito:</span> Inscripción para participar en el examen {{ $data->proceso }}</p></td>
+                            <span style="font-weight: bold;">Solicito:</span> Inscripción para participar como postulante en el examen {{ $data->proceso }}</p></td>
                 </tr>
             </table>    
         </div>
@@ -29,7 +29,7 @@
             <table>
                 <tr style="">
                     <td style="width: 100%">
-                        <div style="margin-bottom: 5px;"><span style="font-weight:bold">Dr. Hector Luciano Velásquez Sagua</span></div>
+                        <div style="margin-bottom: 5px;"><span style="font-weight:bold">Dr. Juan Carlos Benavides Huanca</span></div>
                         <div>Director de la Dirección de Admisión</div>
                     </td>
                 </tr>
@@ -63,19 +63,18 @@
                                 presento mi solicitud para participar en el examen
                                 {{ $data->proceso }} que se llevará a cabo los días 22 y 23 de Julio, 
                                 donde postularé al programa de estudios de {{ $data->programa }}
-                                bajo la modalidad  {{{ $data->modalidad }}}. 
-                                Para lo cual he dedicado mucho tiempo y esfuerzo preparándome.
+                                bajo la modalidad  {{{ $data->modalidad }}}.
                             </p>
                         </div>
                         <div  style="margin-top: 16px;">
                             Adjunto a esta solicitud los siguientes documentos:
                         </div>
                         <div style="padding-left:20px; margin-top: 16px;">
-                            <div  style="margin-top: 5px;">1.	Solicitud</div>
-                            <div  style="margin-top: 5px;">2.	Comprobante de pago</div>
-                            <div  style="margin-top: 5px;">3.	Documento de identidad Copia</div>
-                            <div  style="margin-top: 5px;">4.	Certificado de estudios</div>
-
+                            <div  style="margin-top: 5px;">1.	Solicitud (origial y copia).</div>
+                            <div  style="margin-top: 5px;">2.	Comprobante de pago (origial y copia).</div>
+                            <div  style="margin-top: 5px;">3.	Documento de identidad (origial y copia).</div>
+                            <div  style="margin-top: 5px;">4.	Certificado de estudios (origial y copia).</div>
+                            <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA (origial y copia).</div>
                             @if($data->id_proceso = 4)
                                 <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA</div>
                             @else
