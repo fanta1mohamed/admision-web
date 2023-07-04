@@ -39,7 +39,7 @@ Route::middleware('auth')->get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified','revisor'])->name('dashboard');
+})->middleware(['auth', 'verified','revisor','admin'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
@@ -49,7 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('admin')->middleware('auth','revisor')->group(function () {
+Route::prefix('admin')->middleware('auth','admin')->group(function () {
+
+    Route::get('dashboard', fn () => Inertia::render('Dashboard'))->name('admin-dashboard');
     Route::resource('roles',RolController::class);
     Route::get('roles', fn () => Inertia::render('Roles/index'))->name('roles-index');
     Route::resource('usuarios',UsuarioController::class);
@@ -132,6 +134,7 @@ Route::prefix('admin')->middleware('auth','revisor')->group(function () {
     Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
     
     Route::post('/get-distritos-codigo', [SeleccionDataController::class, 'getDistritosCodigo']);
+
 });
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
@@ -224,6 +227,8 @@ Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'));
 
 
 
+Route::get('/ver-puntaje', fn () => Inertia::render('Publico/puntaje'));
+Route::get('/aleatorio', fn () => Inertia::render('Publico/aleatorio'));
 
 
 

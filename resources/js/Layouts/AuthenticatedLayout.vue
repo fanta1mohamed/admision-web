@@ -1,6 +1,6 @@
 <template>
-  <a-layout style="min-height: 100vh">
-    <a-layout-sider v-model:collapsed="collapsed" class="custom-scrollbar" width="230px" style="overflow-x: hidden; overflow-y: scroll; height: 100vh;  background:#476175; width: 230px; border-right: 1px solid #00000010;"  :trigger="null" :triggerSubMenuAcción="true" collapsible collapsed-width="0">
+  <a-layout style="min-height: 100vh;">
+    <a-layout-sider v-model:collapsed="collapsed" class="custom-scrollbar" width="230px" style="overflow-x: hidden; overflow-y: scroll; min-height: 100vh;  background:#476175; width: 230px; border-right: 1px solid #00000010;"  :trigger="null" :triggerSubMenuAcción="true" collapsible collapsed-width="0">
       <div style="display: flex; align-items: center; justify-content: left; margin-top: 6px; margin-left: 20px; margin-bottom: 6px;">
         <div>
             <img src="../../assets/imagenes/logotiny.png" width="35"/>

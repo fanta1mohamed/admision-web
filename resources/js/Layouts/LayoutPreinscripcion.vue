@@ -19,7 +19,7 @@
         </div>
 
 
-        <div class="flex justify-center titulo-pre ">
+        <div class="flex justify-center titulo-pre">
             <div>  
                 <span> Preinscripción </span>
                 <div class="flex justify-center"> <hr class="line-pre"> </div>
@@ -58,11 +58,11 @@
         margin-bottom: -8px; margin-top: 10px;
     }
 
-    .titulo-pre span{
+    .titulo-pre div span{
         color: white;
         font-weight: bold;
         text-transform: uppercase;
-        font-size: 2.1rem;
+        font-size: 2.7rem;
     }
 
     .line-pre{
@@ -77,8 +77,8 @@
         .logoPre span{ font-size: 0.6rem; letter-spacing: 0.001rem !important; }
         .logoPreAD{ font-size: 0.76rem; }
         .logoPre .container-pre{ margin-bottom: -8px; margin-top: 5px; }
-        .titulo-pre{ margin-top: 30px;}
-        .titulo-pre span{ font-size: 1.3rem;  }
+        .titulo-pre{ margin-top: 50px;}
+        .titulo-pre div span{ font-size: 1.7rem;  }
         .line-pre {         width: 50px; border: solid 1px #ff0015e8; }
 
     }

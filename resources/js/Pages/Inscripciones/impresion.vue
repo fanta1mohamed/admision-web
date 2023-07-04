@@ -336,6 +336,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import {ref, watch} from 'vue'
 import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons-vue';
 
+const baseUrl = window.location.origin;
+ 
 const botomm = ref(false);
 const props = defineProps({  baseUrl: String });
 

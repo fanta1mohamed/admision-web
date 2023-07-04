@@ -18,9 +18,8 @@ class Revisor
         if(auth()->user()->id_rol == 2){
             return $next($request);
         }else{
-            return redirect("/");
+            return redirect("/revisor");
         }
-
 
     }
 }

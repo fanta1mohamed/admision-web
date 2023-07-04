@@ -19,11 +19,11 @@
         </a-radio-group>
         
         <div style="margin-bottom: 7px;"><label>N° Documento</label></div>
-        <a-input v-model:value="dni" placeholder="N° Documento"/>
+        <a-input v-model:value="dni" @input="dniInput" placeholder="N° Documento"/>
 
         <div class="mb-4" v-if="datos_personales.tipo_doc === 1">
           <div class="mt-3"><label>N° Ubigeo</label></div>
-          <a-input v-model:value="datos_personales.ubigeo" placeholder="Ubigeo"/>
+          <a-input v-model:value="datos_personales.ubigeo" @input="ubigeoInput" :maxlength="6" placeholder="Ubigeo"/>
         </div>
         <a-card class="mt-3"> 
           <div class="mt-2" ></div>
@@ -552,6 +552,11 @@ const next = () => { pagina_pre.value++; }
 const prev = () => { pagina_pre.value--; }
 const dni = ref("70757838")
 
+const dniInput = (event) => { dni.value = event.target.value.replace(/\D/g, ''); };
+const ubigeoInput = (event) => { datos_personales.value.ubigeo = event.target.value.replace(/\D/g, ''); };
+
+
+
 
 const departamentos = ref([])
 const dep = ref(null);
@@ -587,6 +592,7 @@ const onSelectDistritos = (value, option) => {
 };
 
 const getDatosPersonales = async () => {
+  
   let res = await axios.post( "get-postulante-datos-personales", {nro_doc: dni.value});
   if(res.data.datos.length > 0 ) {
     datos_personales.value.id = res.data.datos[0].id
