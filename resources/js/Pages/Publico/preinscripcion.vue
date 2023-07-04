@@ -9,117 +9,160 @@
     <div class="flex mt-3 justify-center align-center" style=" width: 100%; min-height: calc(100vh - 215px)">
     <!-- INICIO -->
 			<a-card v-if="pagina_pre === 0"  style="width: 100%;  max-width: 350px; max-height:360px" class="pl-3 pr-3 cardInicio" > 
-			
+		
         <div>
           <h1 style="font-size: 1.1rem;">Datos de validación</h1>
         </div>
-        <a-radio-group v-model:value="datos_personales.tipo_doc" class="flex justify-end" style="display: flex; width: yellow;" name="radioGroup">
-          <a-radio :value="1">Dni</a-radio>
-          <a-radio :value="3">Carnet Ext.</a-radio>
-        </a-radio-group>
-        
-        <div style="margin-bottom: 7px;"><label>N° Documento</label></div>
-        <a-input v-model:value="dni" @input="dniInput" placeholder="N° Documento"/>
+        <a-form
+            ref="formRef" :model="formState"
+            name="inicio_dni"
+            @finish="onFinish"
+            @finishFailed="onFinishFailed"
+          >
+          <a-radio-group v-model:value="datospersonales.tipo_doc" class="flex justify-end" style="display: flex; width: yellow;" name="radioGroup">
+            <a-radio :value="1">Dni</a-radio>
+            <a-radio :value="3">Carnet Ext.</a-radio>
+          </a-radio-group>
+          
+          <div style="margin-bottom: 7px;"><label>N° Documento</label></div>
+          <a-form-item
+              name="dni"
+              :rules="[{ required: true, message: 'Por favor ingresa tu DNI', trigger: 'change' }]"
+            >
+            <a-input v-model:value="formState.dni" @input="dniInput" :maxlength="12" placeholder="N° Documento"/>
+          </a-form-item>
 
-        <div class="mb-4" v-if="datos_personales.tipo_doc === 1">
-          <div class="mt-3"><label>N° Ubigeo</label></div>
-          <a-input v-model:value="datos_personales.ubigeo" @input="ubigeoInput" :maxlength="6" placeholder="Ubigeo"/>
-        </div>
-        <a-card class="mt-3"> 
-          <div class="mt-2" ></div>
-        </a-card>
-        <div style="display: flex; justify-content: center; margin-top: 20px;">
-          <a-button type="primary" @click="getDatosPersonales()">Iniciar Postulación</a-button>
-        </div>
 
+          <div class="mb-4" v-if="datospersonales.tipo_doc === 1">
+            <div class="mt-3"><label>N° Ubigeo</label></div>
+            <a-form-item
+              name="ubigeo"
+              :rules="[{ required: true, message: 'Por favor ingresa tu ubigeo', trigger: 'change' }]"
+              >
+              <a-input v-model:value="formState.ubigeo" @input="ubigeoInput" :maxlength="6" placeholder="Ubigeo"/>
+            </a-form-item>
+          </div>
+          <a-card class="mt-3"> 
+            <div class="mt-2" ></div>
+          </a-card>
+          <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <a-button type="primary" @click="getDatosPersonales()">Iniciar Postulación</a-button>
+          </div>
+        </a-form>
 		  </a-card>
   	<!-- END INICIO-->
 
+
+
       <div v-if="pagina_pre === 1">
-        <!-- {{ datos_personales }} -->
+        <!-- {{ datospersonales }} -->
 
         <div style="width: 100%; margin-top: 5px; margin-bottom: -30px; ">
 
         <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
-          <div>
-          
-            <div style="margin-bottom: 0px; margin-top: 0px;">
-              <h1 style="font-size: 1.1rem;"> Datos de personales</h1>
-            </div>
-
-            <div class="flex align-center justify-end mb-2">
-              <div>
-                <div class="mb-1"> Sexo </div>
-                <a-radio-group v-model:value="datos_personales.tipo_doc" class="flex justify-end" name="radioGroup">
-                  <a-radio :value="1">M</a-radio>
-                  <a-radio :value="2">F</a-radio>
-                </a-radio-group>
-              </div>
-              <div style="height: 50px; border-right: solid 1px #d4d0d0 ;"></div>
-              <div class="ml-3" >
-                <div> Estado civil </div>
-                <a-select
-                  ref="select"
-                  v-model:value="datos_personales.estado_civil"
-                  style="width: 90px"
-                >
-                  <a-select-option :value="1">Soltero</a-select-option>
-                  <a-select-option :value="2">Casado</a-select-option>
-                  <a-select-option :value="3">Viudo</a-select-option>
-                  <a-select-option :value="4">Divorciado</a-select-option>
-                </a-select>
+          <a-form
+            ref="formDatosPersonales" :model="datospersonales"
+            name="datosPersonales"
+            @finish="onFinish"
+            @finishFailed="onFinishFailed"
+          >
+            <div>
+            
+              <div style="margin-bottom: 0px; margin-top: 0px;">
+                <h1 style="font-size: 1.1rem;"> Datos de personales</h1>
               </div>
 
+              <div class="flex align-center justify-end mb-1">
+                <div>
+                  <div class="mb-1"> Sexo </div>
+                  <a-radio-group v-model:value="datospersonales.tipo_doc" class="flex justify-end" name="radioGroup">
+                    <a-radio :value="1">M</a-radio>
+                    <a-radio :value="2">F</a-radio>
+                  </a-radio-group>
+                </div>
+                <div style="height: 50px; border-right: solid 1px #d4d0d0 ;"></div>
+                <div class="ml-3" >
+                  <div> Estado civil </div>
+                  <a-select
+                    ref="select"
+                    v-model:value="datospersonales.estado_civil"
+                    style="width: 90px"
+                  >
+                    <a-select-option :value="1">Soltero</a-select-option>
+                    <a-select-option :value="2">Casado</a-select-option>
+                    <a-select-option :value="3">Viudo</a-select-option>
+                    <a-select-option :value="4">Divorciado</a-select-option>
+                  </a-select>
+                </div>
+
+              </div>
+
+              <a-row :gutter="[16, 0]" class="form-row mb-0" >
+                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                    <div><label>Primer apellido:</label></div>
+                    <a-form-item
+                      name="primerapellido"
+                      :rules="[{ required: true, message: 'Ingresa tu Primer Apellido', trigger: 'change'}]"
+                    >
+                      <a-input @input="pimerapellidoInput" v-model:value="datospersonales.primerapellido"/>
+                    </a-form-item>
+                </a-col>
+                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                  <a-form-item>
+                    <div><label>Segundo apellido:</label></div>
+                    <a-input v-model:value="datospersonales.segundo_apellido" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                  <a-form-item>
+                    <div><label>Pre nombres:</label></div>
+                    <a-form-item
+                      name="nombres"
+                      :rules="[{ required: true, message: 'Ingresa tus Prenombres', trigger: 'change'}]"
+                    >
+                      <a-input @input="nombresInput" v-model:value="datospersonales.nombres" />
+                    </a-form-item>
+                  </a-form-item>
+                </a-col>
+              </a-row>
+
+              <a-row :gutter="[16, 0]" class="form-row">
+                <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                  <a-form-item
+                      name="correo"
+                      :rules="[
+                        { required: true, message: 'Ingresa un correo valido', trigger: 'change'},
+                        { type: 'email', message: 'Ingresa un correo valido' },
+                      ]"
+                    >
+                    <div><label>Correo:</label></div>
+                    <a-input type="email" @input="correoInput"  v-model:value="datospersonales.correo" />
+                  </a-form-item>
+                </a-col>
+              </a-row>
+
+              <a-row :gutter="[16, 0]" class="form-row">
+                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                  <a-form-item
+                      name="celular"
+                      :rules="[
+                        { required: true, message: 'Ingresa tu celular', trigger: 'change'},
+                      ]"
+                    >
+                    <div><label>Numero de celular:</label></div>
+                    <a-input @input="celularInput" :maxlength="9" v-model:value="datospersonales.celular" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24" :md="16" :lg="18  " :xl="16" :xxl="6">
+                  <a-form-item>
+                    <div><label>Fec. Nacimiento:</label></div>
+                      <a-date-picker placeholder="Selecciona tu fecha de nacimiento" style="width: 100%" v-model:value="datospersonales.fec_nacimiento" format='DD/MM/YYYY' />
+                  </a-form-item>
+                </a-col>
+              </a-row>
+
             </div>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-
-                  <div><label>Primer apellido:</label></div>
-                  <a-input v-model:value="datos_personales.primer_apellido" />
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-                  <div><label>Segundo apellido:</label></div>
-                  <a-input v-model:value="datos_personales.segundo_apellido" />
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-                  <div><label>Pre nombres:</label></div>
-                  <a-input v-model:value="datos_personales.nombres" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                <a-form-item>
-                  <div><label>Correo:</label></div>
-                  <a-input v-model:value="datos_personales.correo" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-            <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
-                  <div><label>Numero de celular:</label></div>
-                  <a-input v-model:value="datos_personales.celular" />
-                </a-form-item>
-              </a-col>
-              <a-col :span="24" :md="16" :lg="18  " :xl="16" :xxl="6">
-                <a-form-item>
-                  <div><label>Fec. Nacimiento:</label></div>
-                    <a-date-picker style="width: 100%" v-model:value="datos_personales.fec_nacimiento" format='DD/MM/YYYY' />
-                </a-form-item>
-              </a-col>
-            </a-row>
-
-          </div>
-
+          </a-form>
         </a-card>
       </div>
       </div>
@@ -139,7 +182,7 @@
               <h1 style="font-size: 1.1rem;"> Datos de residencia</h1>
             </div>
 
-            <!-- {{ datos_personales.ubigeo_residencia }}
+            <!-- {{ datospersonales.ubigeo_residencia }}
             dep {{ depseleccionado }}
             {{ provseleccionada }}
             {{ distseleccionado }} -->
@@ -225,7 +268,7 @@
               <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
                 <a-form-item>
                   <div><label>Dirección:</label></div>
-                  <a-input v-model:value="datos_personales.direccion" />
+                  <a-input v-model:value="datospersonales.direccion" />
                 </a-form-item>
               </a-col>
             </a-row>
@@ -247,8 +290,8 @@
 
       <div v-if="pagina_pre === 3">
 
-        <Colegio v-if="avance_current < 48"  ref="hijoComponent" :id_postulante="datos_personales.id" :actualiza="'si'" />
-        <Colegio v-if="avance_current >= 48" ref="hijoComponent" :id_postulante="datos_personales.id" :actualiza="'no'"/>
+        <Colegio v-if="avance_current < 48"  ref="hijoComponent" :id_postulante="datospersonales.id" :actualiza="'si'" />
+        <Colegio v-if="avance_current >= 48" ref="hijoComponent" :id_postulante="datospersonales.id" :actualiza="'no'"/>
         <div style="display:none;">{{  pagina_pre = pagina_pre_temp }}</div>
         <div style="display:none;">{{  pagina_pre_temp = 3 }}</div>
 
@@ -258,8 +301,8 @@
       <div v-if="pagina_pre === 4">
 
         <div style="width: 100%; margin-top: 5px; ">
-          <Apoderado v-if="avance_current < 65" ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1" :actualiza="'si'"/>
-          <Apoderado v-if="avance_current >= 65" ref="padreComponent" :id_postulante="datos_personales.id" :tipex="1" :actualiza="'no'"/>
+          <Apoderado v-if="avance_current < 65" ref="padreComponent" :id_postulante="datospersonales.id" :tipex="1" :actualiza="'si'"/>
+          <Apoderado v-if="avance_current >= 65" ref="padreComponent" :id_postulante="datospersonales.id" :tipex="1" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_padre }}</div>
             <div style="display:none;">{{ pagina_pre_temp_padre = 4 }}</div>
 
@@ -268,8 +311,8 @@
 
       <div v-if="pagina_pre === 5">
         <div style="width: 100%; margin-top: 5px; ">
-          <Apoderado v-if="avance_current < 80" ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2" :actualiza="'si'"/>
-          <Apoderado v-if="avance_current >= 80" ref="madreComponent" :id_postulante="datos_personales.id" :tipex="2" :actualiza="'no'"/>
+          <Apoderado v-if="avance_current < 80" ref="madreComponent" :id_postulante="datospersonales.id" :tipex="2" :actualiza="'si'"/>
+          <Apoderado v-if="avance_current >= 80" ref="madreComponent" :id_postulante="datospersonales.id" :tipex="2" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_madre }}</div>
             <div style="display:none;">{{ pagina_pre_temp_madre = 5 }}</div>
         </div>
@@ -514,8 +557,8 @@
           
     <!-- {{ nc }} -->
           <div class="vocacional">
-            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :dni="dni.value" :actualiza="'si'"/>
-            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datos_personales.id" :dni="dni.value" :actualiza="'no'"/>
+            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="dni.value" :actualiza="'si'"/>
+            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="dni.value" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_vocacional }}</div>
             <div style="display:none;">{{ pagina_pre_temp_vocacional = 7 }}</div>
           </div>
@@ -535,11 +578,13 @@
 </template>
 <script setup>
 import Layout from '@/Layouts/LayoutPreinscripcion.vue'    
-import { watch, getCurrentInstance, provide, computed, ref, unref, onMounted } from 'vue';
+import { watch, getCurrentInstance, provide, reactive, computed, ref, unref, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
+
+
 //import Colegio from "./components/datos_colegio.vue"
 
 const examen = ref(0);
@@ -552,10 +597,35 @@ const next = () => { pagina_pre.value++; }
 const prev = () => { pagina_pre.value--; }
 const dni = ref("70757838")
 
-const dniInput = (event) => { dni.value = event.target.value.replace(/\D/g, ''); };
-const ubigeoInput = (event) => { datos_personales.value.ubigeo = event.target.value.replace(/\D/g, ''); };
 
 
+const formRef = ref();
+const formState = reactive({
+  dni: '',
+  ubigeo: '',
+});
+const formDatosPersonales = ref();
+const datospersonales = reactive({
+  id: null,
+  tipo_doc:1,
+  primerapellido: "",
+  segundo_apellido: "",
+  nombres:"",
+  estado_civil:1,
+  sexo:1,
+  correo:"",
+  celular:'',
+  fec_nacimiento:"",
+  ubigeo:"",
+  ubigeo_residencia:"",
+  direccion:""
+});
+
+const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
+const ubigeoInput = (event) => { formState.ubigeo = event.target.value.replace(/\D/g, ''); };
+const nombresInput = (event) => { datospersonales.nombres = event.target.value.replace(/[^A-Za-z\s]/g, '');};
+const pimerapellidoInput = (event) => { datospersonales.primerapellido = event.target.value.replace(/[^A-Za-z]/g, '');};
+const celularInput = (event) => { datospersonales.celular = event.target.value.replace(/\D/g, ''); };
 
 
 const departamentos = ref([])
@@ -592,28 +662,30 @@ const onSelectDistritos = (value, option) => {
 };
 
 const getDatosPersonales = async () => {
-  
-  let res = await axios.post( "get-postulante-datos-personales", {nro_doc: dni.value});
+  const values = await formRef.value.validateFields();
+  let res = await axios.post( "get-postulante-datos-personales", {nro_doc: formState.dni});
+
+
   if(res.data.datos.length > 0 ) {
-    datos_personales.value.id = res.data.datos[0].id
-    datos_personales.value.primer_apellido = res.data.datos[0].primer_apellido
-    datos_personales.value.segundo_apellido = res.data.datos[0].segundo_apellido
-    datos_personales.value.nombres = res.data.datos[0].nombres
-    //datos_personales.value.estado_civil = res.data.datos[0].estado_civil
-    //datos_personales.value.sexo = res.data.datos[0].sexo
-    datos_personales.value.correo = res.data.datos[0].correo
-    datos_personales.value.celular = res.data.datos[0].celular
-    datos_personales.value.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento)
-    datos_personales.value.ubigeo = res.data.datos[0].ubigeo
-    datos_personales.value.direccion = res.data.datos[0].direccion
+    datospersonales.id = res.data.datos[0].id
+    datospersonales.primerapellido = res.data.datos[0].primer_apellido
+    datospersonales.segundo_apellido = res.data.datos[0].segundo_apellido
+    datospersonales.nombres = res.data.datos[0].nombres
+    //datospersonales.estado_civil = res.data.datos[0].estado_civil
+    //datospersonales.sexo = res.data.datos[0].sexo
+    datospersonales.correo = res.data.datos[0].correo
+    datospersonales.celular = res.data.datos[0].celular
+    if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }
+    formState.ubigeo = res.data.datos[0].ubigeo
+    datospersonales.direccion = res.data.datos[0].direccion
     depseleccionado.value = res.data.datos[0].dep;
     dep.value = res.data.datos[0].departamento
     provseleccionada.value = res.data.datos[0].prov;
     prov.value = res.data.datos[0].provincia
     distseleccionado.value = res.data.datos[0].dist;
     dist.value = res.data.datos[0].distrito
-    datos_personales.value.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
-    datos_personales.value.direccion = res.data.datos[0].direccion
+    datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
+    datospersonales.direccion = res.data.datos[0].direccion
     getPasos();
   } else {
     saveDNI()
@@ -623,21 +695,7 @@ const getDatosPersonales = async () => {
 
 } 
 
-const datos_personales = ref({
-  id: null,
-  tipo_doc:1,
-  primer_apellido: "",
-  segundo_apellido: "",
-  nombres:"",
-  estado_civil:1,
-  sexo:1,
-  correo:"",
-  celular:"",
-  fec_nacimiento:"",
-  ubigeo:"",
-  ubigeo_residencia:"",
-  direccion:""
-});
+
 
 const savePasos =  async (namex, num, avan ) => {
 
@@ -648,7 +706,7 @@ const savePasos =  async (namex, num, avan ) => {
       nombre: namex, 
       nro: num,
       avance: avan,
-      postulante: datos_personales.value.id,
+      postulante: datospersonales.id,
       proceso: 4
     }
   );
@@ -656,13 +714,12 @@ const savePasos =  async (namex, num, avan ) => {
 }
 
 const saveDNI =  async () => {
-
   let res = await axios.post( "save-postulante-dni", 
   {  
-    tipo_doc: datos_personales.value.tipo_doc,
-    nro_doc: dni.value,
-    id: datos_personales.value.id,
-    ubigeo_nacimiento: datos_personales.value.ubigeo,
+    tipo_doc: datospersonales.tipo_doc,
+    nro_doc: formState.dni,
+    id: datospersonales.id,
+    ubigeo_nacimiento: datospersonales.ubigeo,
   });
   getDatosPersonales()
 }
@@ -670,26 +727,27 @@ const saveDNI =  async () => {
 const saveDatosPersonales =  async () => {
   // if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
   //   //console.log(depseleccionado.value + provseleccionada.value + distseleccionado.value)
-  //   datos_personales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
+  //   datospersonales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
   // }
+  const values = await formDatosPersonales.value.validateFields();
 
   let res = await axios.post(
     "save-postulante",
     {  
-      tipo_doc: datos_personales.value.tipo_doc,
-      nro_doc: dni.value,
-      id: datos_personales.value.id,
-      primer_apellido: datos_personales.value.primer_apellido, 
-      segundo_apellido: datos_personales.value.segundo_apellido,  
-      nombres: datos_personales.value.nombres, 
-      correo: datos_personales.value.correo, 
-      celular: datos_personales.value.celular, 
-      sexo: datos_personales.value.sexo,
-      estado_civil: datos_personales.value.estado_civil,  
-      fec_nacimiento: format(new Date(datos_personales.value.fec_nacimiento), 'yyyy-MM-dd'),
-      ubigeo_nacimiento: datos_personales.value.ubigeo,
-      // ubigeo_residencia: datos_personales.value.ubigeo_residencia,
-      direccion: datos_personales.value.direccion 
+      tipo_doc: datospersonales.tipo_doc,
+      nro_doc: formState.dni,
+      id: datospersonales.id,
+      primer_apellido: datospersonales.primerapellido, 
+      segundo_apellido: datospersonales.segundo_apellido,  
+      nombres: datospersonales.nombres, 
+      correo: datospersonales.correo, 
+      celular: datospersonales.celular, 
+      sexo: datospersonales.sexo,
+      estado_civil: datospersonales.estado_civil,  
+      fec_nacimiento: format(new Date(datospersonales.fec_nacimiento), 'yyyy-MM-dd'),
+      ubigeo_nacimiento: formState.ubigeo,
+      // ubigeo_residencia: datospersonales.ubigeo_residencia,
+      direccion: datospersonales.direccion 
     }
   );
   if( avance_current.value < 16){ savePasos("Registro de datos personales", 1, 16) } else{ next() }
@@ -702,15 +760,15 @@ const saveDatosPersonales =  async () => {
 const saveDatosResidencia =  async () => {
 
   if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
-    datos_personales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
+    datospersonales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
   }
 
   let res = await axios.post(
     "save-postulante-residencia",
     {  
-      id: datos_personales.value.id,
-      ubigeo_residencia: datos_personales.value.ubigeo_residencia,
-      direccion: datos_personales.value.direccion 
+      id: datospersonales.value.id,
+      ubigeo_residencia: datospersonales.value.ubigeo_residencia,
+      direccion: datospersonales.value.direccion 
     }
   );
   if(res.data.estado === true ){  
@@ -758,7 +816,7 @@ const id_pasos = ref(null)
 const avance_current = ref(null)
 const getPasos = async (depp) => {
   let res = await axios.post( "get-pasos-proceso", 
-    { postulante: datos_personales.value.id,
+    { postulante: datospersonales.id,
       proceso: 4
     });
     if (res.data.datos.length > 0){
@@ -813,7 +871,7 @@ const submit = async () => {
   fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
   fd.append('codigo_certificado', datos_preinscripcion.value.codigo_certificado)
   fd.append('codigo_medico', datos_preinscripcion.value.codigo_medico)
-  fd.append('id_postulante', datos_personales.value.id)
+  fd.append('id_postulante', datospersonales.value.id)
   await axios.post("save-pre-inscripcion", fd).then(res=>{
     if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 100) } else{ next() }
     showToast("success","2",res.data.menssje);
@@ -829,7 +887,7 @@ watch(presionado, ( newValue, oldValue ) => {
 })
 
 const getDocs = async () => {
-  window.open("documentos-pdfs/"+dni.value, '_blank');
+  window.open("documentos-pdfs/"+formState.dni, '_blank');
 }
 
 
