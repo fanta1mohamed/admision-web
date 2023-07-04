@@ -692,6 +692,7 @@ const getDatosPersonales = async () => {
     pagina_pre.value = 1
   }
 
+  
 
 } 
 
