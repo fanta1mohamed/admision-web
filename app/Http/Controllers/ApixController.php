@@ -10,6 +10,7 @@ class ApixController extends Controller {
 
     public function getIngresante($dni, $proceso){
         $res = Postulante::select(
+            'control_biometrico.codigo_ingreso',
             'filial.codigo as codigo_sede_filial', 'tipo_proceso.id AS tipo_proceso',
             DB::raw("CONCAT( procesos.anio,'-',procesos.ciclo) as proceso_admision"),
             'procesos.nro_convocatoria AS numero_convocatoria', 
@@ -35,6 +36,7 @@ class ApixController extends Controller {
         ->join('procesos','procesos.id','inscripciones.id_proceso')
         ->join('filial','filial.id','procesos.id_sede_filial')
         ->join('tipo_proceso','tipo_proceso.id','procesos.id_tipo_proceso')
+        ->join('control_bimetrico','control_biometrico.id_postulante','postulante.id')
         ->where('resultados.apto', '=','SI')
         ->where('procesos.id', '=',$proceso)
         ->where('nro_doc','=',$dni)->get();
