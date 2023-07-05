@@ -27,7 +27,8 @@
           <div style="margin-bottom: 7px;"><label>N° Documento</label></div>
           <a-form-item
               name="dni"
-              :rules="[{ required: true, message: 'Por favor ingresa tu DNI', trigger: 'change' }]"
+              :rules="[{ required: true, message: 'Por favor ingresa tu DNI', trigger: 'change' },
+              { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]"
             >
             <a-input v-model:value="formState.dni" @input="dniInput" :maxlength="12" placeholder="N° Documento"/>
           </a-form-item>
@@ -37,7 +38,7 @@
             <div class="mt-3"><label>N° Ubigeo</label></div>
             <a-form-item
               name="ubigeo"
-              :rules="[{ required: true, message: 'Por favor ingresa tu ubigeo', trigger: 'change' }]"
+              :rules="[{ required: true, message: 'Por favor ingresa tu ubigeo', trigger: 'change' }, { min: 6, message: 'El ubigeo debe tener 6 caracteres', trigger: 'blur',}]"
               >
               <a-input v-model:value="formState.ubigeo" @input="ubigeoInput" :maxlength="6" placeholder="Ubigeo"/>
             </a-form-item>
@@ -51,8 +52,6 @@
         </a-form>
 		  </a-card>
   	<!-- END INICIO-->
-
-
 
       <div v-if="pagina_pre === 1">
         <!-- {{ datospersonales }} -->
@@ -102,7 +101,7 @@
                     <div><label>Primer apellido:</label></div>
                     <a-form-item
                       name="primerapellido"
-                      :rules="[{ required: true, message: 'Ingresa tu Primer Apellido', trigger: 'change'}]"
+                      :rules="[{ required: true, message: 'Ingresa tu Primer Apellido', trigger: 'change'},]"
                     >
                       <a-input @input="pimerapellidoInput" v-model:value="datospersonales.primerapellido"/>
                     </a-form-item>
@@ -115,7 +114,7 @@
                 </a-col>
                 <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
                   <a-form-item>
-                    <div><label>Pre nombres:</label></div>
+                    <div><label>Prenombres:</label></div>
                     <a-form-item
                       name="nombres"
                       :rules="[{ required: true, message: 'Ingresa tus Prenombres', trigger: 'change'}]"
@@ -147,6 +146,7 @@
                       name="celular"
                       :rules="[
                         { required: true, message: 'Ingresa tu celular', trigger: 'change'},
+                        { min: 9, message: 'El Celular debe tener 9 digitos', trigger: 'blur',}
                       ]"
                     >
                     <div><label>Numero de celular:</label></div>
@@ -154,7 +154,12 @@
                   </a-form-item>
                 </a-col>
                 <a-col :span="24" :md="16" :lg="18  " :xl="16" :xxl="6">
-                  <a-form-item>
+                  <a-form-item
+                      name="celular"
+                      :rules="[
+                        { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},
+                      ]"
+                    >
                     <div><label>Fec. Nacimiento: "DD/MM/AA"</label></div>
                       <a-date-picker placeholder="Selecciona tu fecha de nacimiento" style="width: 100%" v-model:value="datospersonales.fec_nacimiento" format='DD/MM/YYYY' />
                   </a-form-item>
@@ -170,31 +175,33 @@
 
       <div v-if="pagina_pre === 2">
 
-
         <div style="width: 100%; margin-top: 5px; ">
 
         <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
           <div>
           
+          <a-form
+            ref="formDatosResidencia" :model="datosresidencia"
+            name="datosResidencia"
+            @finish="onFinish"
+            @finishFailed="onFinishFailed"
+            >
             <!-- //DATOS DE RESIDENCIA -->
-
             <div style="margin-bottom: 25px; margin-top: 10px; ">
               <h1 style="font-size: 1.1rem;"> Datos de residencia</h1>
             </div>
 
-            <!-- {{ datospersonales.ubigeo_residencia }}
-            dep {{ depseleccionado }}
-            {{ provseleccionada }}
-            {{ distseleccionado }} -->
+            <div style="display: none;">{{ getDepartamentos() }}</div>
 
             <a-row :gutter="[16, 0]" class="form-row">
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
+                <a-form-item
+                  name="dep"
+                  :rules="[{ required: true, message: 'Selecciona tu departamento', trigger: 'blur'},]"
+                  >
                   <div><label>Departamento:</label></div>
-     
-
                   <a-auto-complete
-                      v-model:value="dep"                
+                      v-model:value="datosresidencia.dep"                
                       :options="departamentos"
                       @select="onSelectDepartamentos"
                   >
@@ -205,21 +212,21 @@
                       >
                       <template #suffix>
                       <a-tooltip title="Extra information">
-                        <down-outlined />
+                        <down-outlined/>
                       </a-tooltip>
                     </template>
                     </a-input>
                   </a-auto-complete>
-
-
-
                 </a-form-item>
               </a-col>
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
+                <a-form-item
+                  name="prov"
+                  :rules="[{ required: true, message: 'Selecciona tu provincia', trigger: 'blur'},]"
+                  >
                   <div><label>Provincia:</label></div>
                   <a-auto-complete
-                      v-model:value="prov"                
+                      v-model:value="datosresidencia.prov"                
                       :options="provincias"
                       @select="onSelectProvincias"
                   >
@@ -238,11 +245,14 @@
                 </a-form-item>
               </a-col>
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
-                <a-form-item>
+                <a-form-item
+                  name="dist"
+                  :rules="[{ required: true, message: 'Selecciona tu distrito', trigger: 'blur'},]"
+                  >
                   <div><label>Distrito:</label></div>
 
                   <a-auto-complete
-                      v-model:value="dist"                
+                      v-model:value="datosresidencia.dist"                
                       :options="distritos"
                       @select="onSelectDistritos"
                   >
@@ -266,9 +276,12 @@
 
             <a-row :gutter="[16, 0]" class="form-row">
               <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                <a-form-item>
+                <a-form-item
+                  name="direccion"
+                  :rules="[{ required: true, message: 'Ingresa tu dirección', trigger: 'blur'},]"
+                  >
                   <div><label>Dirección:</label></div>
-                  <a-input v-model:value="datospersonales.direccion" />
+                  <a-input v-model:value="datosresidencia.direccion" />
                 </a-form-item>
               </a-col>
             </a-row>
@@ -282,20 +295,17 @@
               </a-col>
             </a-row>
 
+          </a-form>
           </div>
-
         </a-card>
       </div>
       </div>
 
       <div v-if="pagina_pre === 3">
-
         <Colegio v-if="avance_current < 48"  ref="hijoComponent" :id_postulante="datospersonales.id" :actualiza="'si'" />
         <Colegio v-if="avance_current >= 48" ref="hijoComponent" :id_postulante="datospersonales.id" :actualiza="'no'"/>
         <div style="display:none;">{{  pagina_pre = pagina_pre_temp }}</div>
         <div style="display:none;">{{  pagina_pre_temp = 3 }}</div>
-
-
       </div>
 
       <div v-if="pagina_pre === 4">
@@ -305,7 +315,6 @@
           <Apoderado v-if="avance_current >= 65" ref="padreComponent" :id_postulante="datospersonales.id" :tipex="1" :actualiza="'no'"/>
             <div style="display:none;">{{ pagina_pre = pagina_pre_temp_padre }}</div>
             <div style="display:none;">{{ pagina_pre_temp_padre = 4 }}</div>
-
         </div>
       </div>
 
@@ -583,8 +592,7 @@ import { Head } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
-
-
+import { DownOutlined } from '@ant-design/icons-vue';
 //import Colegio from "./components/datos_colegio.vue"
 
 const examen = ref(0);
@@ -618,8 +626,15 @@ const datospersonales = reactive({
   fec_nacimiento:"",
   ubigeo:"",
   ubigeo_residencia:"",
-  direccion:""
 });
+const formDatosResidencia = ref();
+const datosresidencia = reactive({
+  dep: null,
+  prov: null,
+  dist: null,
+  direccion:''
+});
+
 
 const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
 const ubigeoInput = (event) => { formState.ubigeo = event.target.value.replace(/\D/g, ''); };
@@ -629,7 +644,7 @@ const celularInput = (event) => { datospersonales.celular = event.target.value.r
 
 
 const departamentos = ref([])
-const dep = ref(null);
+// const dep = ref(null);
 const buscarDep = ref("")
 const  depseleccionado = ref('')
 watch(buscarDep, ( newValue, oldValue ) => {
@@ -641,7 +656,7 @@ const onSelectDepartamentos = (value, option) => {
 };
 
 const provincias = ref([])
-const prov = ref(null);
+// const prov = ref(null);
 const buscarProv = ref("")
 const provseleccionada = ref(null)
 watch(buscarProv, ( newValue, oldValue ) => {
@@ -653,7 +668,7 @@ const onSelectProvincias = (value, option) => {
 };
 
 const distritos = ref([])
-const dist = ref(null);
+// const dist = ref(null);
 const buscarDist = ref("")
 const distseleccionado = ref('')
 const onSelectDistritos = (value, option) => {
@@ -677,15 +692,15 @@ const getDatosPersonales = async () => {
     datospersonales.celular = res.data.datos[0].celular
     if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }
     formState.ubigeo = res.data.datos[0].ubigeo
-    datospersonales.direccion = res.data.datos[0].direccion
+    datosresidencia.direccion = res.data.datos[0].direccion
     depseleccionado.value = res.data.datos[0].dep;
-    dep.value = res.data.datos[0].departamento
+    datosresidencia.dep = res.data.datos[0].departamento
     provseleccionada.value = res.data.datos[0].prov;
-    prov.value = res.data.datos[0].provincia
+    datosresidencia.prov = res.data.datos[0].provincia
     distseleccionado.value = res.data.datos[0].dist;
-    dist.value = res.data.datos[0].distrito
+    datosresidencia.dist = res.data.datos[0].distrito
     datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
-    datospersonales.direccion = res.data.datos[0].direccion
+    datosresidencia.direccion = res.data.datos[0].direccion
     getPasos();
   } else {
     saveDNI()
@@ -748,7 +763,7 @@ const saveDatosPersonales =  async () => {
       fec_nacimiento: format(new Date(datospersonales.fec_nacimiento), 'yyyy-MM-dd'),
       ubigeo_nacimiento: formState.ubigeo,
       // ubigeo_residencia: datospersonales.ubigeo_residencia,
-      direccion: datospersonales.direccion 
+      direccion: datosresidencia.direccion 
     }
   );
   if( avance_current.value < 16){ savePasos("Registro de datos personales", 1, 16) } else{ next() }
@@ -760,6 +775,7 @@ const saveDatosPersonales =  async () => {
 
 const saveDatosResidencia =  async () => {
 
+  const values = await formDatosResidencia.value.validateFields();
   if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
     datospersonales.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
   }
@@ -769,7 +785,7 @@ const saveDatosResidencia =  async () => {
     {  
       id: datospersonales.id,
       ubigeo_residencia: datospersonales.ubigeo_residencia,
-      direccion: datospersonales.direccion 
+      direccion: datosresidencia.direccion 
     }
   );
   if(res.data.estado === true ){  

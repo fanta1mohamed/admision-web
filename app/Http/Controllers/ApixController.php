@@ -10,22 +10,27 @@ class ApixController extends Controller {
 
     public function getIngresante($dni, $proceso){
         $res = Postulante::select(
+            
+            'postulante.nombres',
+            'postulante.segundo_apellido',
+            'postulante.primer_apellido',
+            'postulante.tipo_doc AS tipo_documento',
+            'postulante.nro_doc AS nro_documento',
+            'postulante.sexo',
+            'postulante.estado_civil',
+            'postulante.celular',
+            'postulante.fec_nacimiento AS fecha_nacimiento',
+            'postulante.email',
+            'postulante.ubigeo_residencia',
+            'postulante.ubigeo_nacimiento',
+            'postulante.direccion',
+            'postulante.discapacidad',
+            'paises.codigo AS pais_nacimiento', 'paises.nacionalidad',
             'control_biometrico.codigo_ingreso',
             'filial.codigo as codigo_sede_filial', 'tipo_proceso.id AS tipo_proceso',
             DB::raw("CONCAT( procesos.anio,'-',procesos.ciclo) as proceso_admision"),
-            'procesos.nro_convocatoria AS numero_convocatoria', 
-            'postulante.tipo_doc AS tipo_documento', 'postulante.nro_doc AS nro_documento', 'postulante.nombres', 'postulante.primer_apellido',
-            'postulante.segundo_apellido', 'postulante.apellido_casada', 'postulante.solo_un_apellido',  'postulante.sexo', 
-            'postulante.fec_nacimiento AS fecha_nacimiento', 'paises.codigo AS pais_nacimiento', 'paises.nacionalidad',
-            'postulante.ubigeo_residencia', 'postulante.ubigeo_nacimiento', 'postulante.discapacidad', 
-            'postulante.tipo_discapacidad', 'postulante.celular', 'postulante.email', 
-            'facultad.codigo AS codigo_facultad', 'programa.codigo AS codigo_programa', 'inscripciones.fecha AS fecha_postulacion',
-            'resultados.puntaje', 
-            'modalidad.codigo AS modalidad_admision',
-            'procesos.id_modalidad_estudio AS modalidad_estudio',
-            'resultados.apto AS es_ingresante', 
-            'facultad.codigo AS codigo_facultad_unidad_ingreso',
-            'programa.codigo AS codigo_programa_ingreso', 'resultados.fecha AS fecha_ingreso'
+            'facultad.codigo AS codigo_facultad', 
+            'programa.codigo AS codigo_programa',
         )
         ->leftjoin('paises','paises.id','postulante.id_pais')
         ->leftjoin('inscripciones','inscripciones.id_postulante','postulante.id')

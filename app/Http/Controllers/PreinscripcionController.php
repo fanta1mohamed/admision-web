@@ -157,8 +157,6 @@ class PreinscripcionController extends Controller
     return response()->json($this->response, 200);
   }
 
-
-
   public function savePasos(Request $request) {
     $pasos = null;
     if (!$request->id) {
@@ -335,9 +333,5 @@ class PreinscripcionController extends Controller
         // return response()->download($outputFilePath)->deleteFileAfterSend();
 
     }
-
-
-
-
 
 }
