@@ -101,6 +101,7 @@ class ApoderadoController extends Controller {
     $tipo_doc = 1;
     if( Str::length($request->dni) == 12 ) { $tipo_doc = 2; }
 
+
     $apoderado = null;
     if (!$request->id) {
         $apoderado = Apoderado::create([
@@ -179,10 +180,8 @@ class ApoderadoController extends Controller {
       return response()->json($this->response, 200);
     }
 
-
     public function saveApoderadoAdmin(Request $request ) {
       $tipo_doc = 1;
-      if( Str::length($request->dni) == 12 ) { $tipo_doc = 2; }
   
       $apoderado = null;
       if (!$request->id) {

@@ -74,7 +74,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
                     </div>
                 </div>
                 </div>
@@ -90,7 +90,7 @@
                 <div style="height:380px;">
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/certificado-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/certificado-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>
@@ -99,7 +99,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>
@@ -108,7 +108,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="'http://admision-web.test/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>  
@@ -135,6 +135,7 @@ import { FormOutlined, DeleteOutlined, CreditCardOutlined } from '@ant-design/ic
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import Vouchers from './components/voucher.vue'
+const baseUrl = window.location.origin;
 
 const dni = ref(null);
 const dniseleccionado = ref(null)

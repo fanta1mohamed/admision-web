@@ -74,7 +74,7 @@ const buscar = ref("")
 
 const totalpaginas = ref(0) 
 const pagina = ref(1)
-const paginasize = ref(2)
+const paginasize = ref(10)
 
 
 const abrirmodal = ( url) => {

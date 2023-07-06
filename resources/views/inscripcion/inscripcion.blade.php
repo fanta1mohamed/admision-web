@@ -24,7 +24,7 @@
                     <td style="" rowspan="7" align="right"  width="150px" valign="top">
                         <div style="border:solid 1px #d9d9d9; padding:5px; width:125px; overflow-hidden;" >
                             <div style="overflow: hidden; height:150px; width:125px;">
-                                <img src="{{ public_path('fotos/inscripcion/70757838.jpg')}} " alt="" height="165">
+                                <img src="{{ public_path('fotos/inscripcion/'.$data->dni.'.jpg')}} " alt="" height="165">
                                 <img src="" alt="" height="150">
                             </div>
                         </div>
@@ -38,28 +38,28 @@
                 <tr>
                     <td width="195px" align="left" valign="top"><div style="margin-top: -12px;"> NRO. DE DOCUMENTO:</div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -18px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -12px;"><span style="text-transform: uppercase;">70757838</span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -12px;"><span style="text-transform: uppercase;">{{$data->dni}}</span></div></td>
                 </tr>
                 <tr>
                     <td width="195px" align="left" valign="top"><div style="margin-top: -18px;"> PRIMER APELLIDO </div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -18px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -18px;"><span style="text-transform: uppercase;"> LUQUE </span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -18px;"><span style="text-transform: uppercase;"> {{$data->paterno}} </span></div></td>
                 </tr>
                 <tr>
                     <td width="195px" align="left" valign="top"><div style="margin-top: -24px;"> SEGUNDO APELLIDO </div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -24px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -24px;"><span style="text-transform: uppercase;"> CUSACANI </span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -24px;"><span style="text-transform: uppercase;"> {{$data->materno}} </span></div></td>
                 </tr>
                 <tr>
                     <td width="195px" align="left" valign="top"><div style="margin-top: -30px;"> PRENOMBRES </div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -30px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -30px;"><span style="text-transform: uppercase;"> JHON ARIEL </span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -30px;"><span style="text-transform: uppercase;"> {{ $data->nombre }} </span></div></td>
                 </tr>
                 <tr>
                     <td width="195px" align="left" valign="top"><div style="margin-top: -36px;"> FECHA DE IMPRESION </div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -36px;">:</div></td>
                     {{-- <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;">{{$fecha}}</span></div></td> --}}
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;"> 12 DE ENERO DEL 2023</span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;"> 06 julio de 2023</span></div></td>
                 </tr>
             </table>
         </div>
@@ -77,7 +77,7 @@
                             <p>
                                 El que suscribe declara bajo juramento que la información consignada en el proceso
                                 de inscripción presencial es verdadera y de mi entera responsabilidad. Conozco y acepto lo 
-                                dispuesto en el Reglamento del <span style="font-weight:bold;">EXAMEN DE ADMISIÓN GENERAL 2023-I</span> y acepto la revisión física estricta exhaustiva para el ingreso a la 
+                                dispuesto en el Reglamento del <span style="font-weight:bold;">EXAMEN DE ADMISIÓN GENERAL 2023-II</span> y acepto la revisión física estricta exhaustiva para el ingreso a la 
                                 Ciudad Universitaria a rendir el examen de admisión. En caso de alcanzar una 
                                 vacante, me comprometo a cumplir con lo dispuesto en el Reglamento. En señal de 
                                 conformidad firmo la presente constancia de inscripción.
@@ -111,11 +111,11 @@
                     <td valign="top">
                         <div>
                             <div style=" width 80px; height: 95px;">
-                                <img src="{{ public_path('huellas/inscripcion/70757838.jpg')}} " alt="" width="75"> 
+                                <img src="{{ public_path('huellas/inscripcion/'.$data->dni.'.jpg')}} " alt="" width="75"> 
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
-                                <img src="{{ public_path('huellas/inscripcion/70757838x.jpg')}} " alt="" height="95">
+                                <img src="{{ public_path('huellas/inscripcion/'.$data->dni.'x.jpg')}} " alt="" height="95">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
                         </div>

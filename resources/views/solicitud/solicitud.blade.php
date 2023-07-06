@@ -21,7 +21,7 @@
                     <td style="width: 50%"></td>
                     <td style="width: 50%">
                         <p style="text-align: justify; line-height:1.5rem;">
-                            <span style="font-weight: bold;">Solicito:</span> Inscripción para participar como postulante en el examen {{ $data->proceso }}</p></td>
+                            <span style="font-weight: bold;">Solicito:</span> Inscripción para postular en el examen {{ $data->proceso }}.</p></td>
                 </tr>
             </table>    
         </div>
@@ -42,11 +42,11 @@
                     <td style="width: 50%"></td>
                     <td style="width: 50%">
                         <p style="text-align: justify; line-height:1.5rem;">
-                            Yo, {{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }}, 
+                            Yo, <span style="text-transform: uppercase;">{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }} </span>, 
                             identificado con {{$dataP->tipo_doc }} numero {{ $data->dni}}, 
-                            con domicilio en {{$dataP->direccion }} de  {{ $dataP->distrito_residencia }}, Ante Ud. 
+                            con domicilio en {{$dataP->direccion }} de {{ $dataP->distrito_residencia }}, Ante Ud. 
                             respetuosamente me presento y expongo:
-                        </p>
+                        </span>
                     </td>
                 </tr>
             </table>    
@@ -70,17 +70,24 @@
                             Adjunto a esta solicitud los siguientes documentos:
                         </div>
                         <div style="padding-left:20px; margin-top: 16px;">
-                            <div  style="margin-top: 5px;">1.	Solicitud (origial y copia).</div>
-                            <div  style="margin-top: 5px;">2.	Comprobante de pago (origial y copia).</div>
-                            <div  style="margin-top: 5px;">3.	Documento de identidad (origial y copia).</div>
-                            <div  style="margin-top: 5px;">4.	Certificado de estudios (origial y copia).</div>
-                            <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA (origial y copia).</div>
+                            <div  style="margin-top: 5px;">1.	Comprobante de pago (origial y copia).</div>
+                            <div  style="margin-top: 5px;">2.	Documento de identidad (origial y copia).</div>
+                            <div  style="margin-top: 5px;">3.	Certificado de estudios (origial y copia).</div>
+                            {{-- <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA (origial y copia).</div> --}}
                             @if($data->id_proceso = 4)
                                 <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA</div>
                             @else
                                 <div></div>
                             @endif
                         </div>
+
+                        <div style="text-align: justify; margin-top:16px;" >
+                            <p style="line-height:1.5rem;">
+                                Agradezco su atención y le informo que estáre participanto en la inscripción 
+                                10 y 11 para biomédicas, 12 y 13 para ingenierías, 14 y 17 para sociales.
+                            </p>
+                        </div>
+
                     </td>
                 </tr>
             </table>

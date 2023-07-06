@@ -80,6 +80,20 @@ class PreguntaController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function getDatosExamen2(Request $request)
+    {
+        $res = DB::select(
+            'SELECT examen_vocacional.id as id_vocacional,   programa.nombre, postulante.*  FROM pre_inscripcion
+            JOIN postulante ON postulante.id = pre_inscripcion.id_postulante
+            JOIN programa ON pre_inscripcion.id_programa  = programa.id
+            JOIN examen_vocacional ON pre_inscripcion.id_programa = examen_vocacional.programa
+            WHERE postulante.nro_doc = '.$request->dni.';');
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
     
 
 

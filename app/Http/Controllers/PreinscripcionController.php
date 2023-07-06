@@ -24,7 +24,8 @@ class PreinscripcionController extends Controller
   }
 
   public function getProcesos(Request $request)
-  {    $proceso = 0;
+  {   
+    $proceso = 0;
     $query_where = [];
     $res = Proceso::select(
         'procesos.id', 'procesos.nombre','procesos.estado','procesos.anio',
@@ -52,57 +53,71 @@ class PreinscripcionController extends Controller
 
   public function preinscribir(Request $request)
   {
-    $proceso = 0;
-    $p_name = 'cepre2023-II';
-    if($request->modalidad == 9) { $proceso = 4; }
-    if($request->modalidad == 8 || $request->modalidad == 7){ $proceso = 5; }
+    DB::beginTransaction();
 
-      $pre = Preinscripcion::create([
-        'id_postulante'=> $request->id_postulante,
-        'id_programa' => $request->programa,
-        'id_proceso' => $proceso,
-        'id_modalidad' => $request->modalidad,
-        'estado' => 1,
-        'codigo_seguridad' => date('Y')
-      ]);
+    try {
+    
+            $proceso = 0;
+            $p_name = 'cepre2023-II';
+            if($request->modalidad == 9) { $proceso = 4; }
+            if($request->modalidad == 8 || $request->modalidad == 7){ $proceso = 5; }
 
-      $pre = AvancePostulante::create([
-        'dni_postulante'=> $request->dni,
-        'id_proceso' => $proceso,
-        'avance' => 1,
-      ]);
+            $pre = Preinscripcion::create([
+                'id_postulante'=> $request->id_postulante,
+                'id_programa' => $request->programa,
+                'id_proceso' => $proceso,
+                'id_modalidad' => $request->modalidad,
+                'estado' => 1,
+                'codigo_seguridad' => date('Y')
+            ]);
 
-      $this->pdfsolicitud($request->dni);
+            $pre = AvancePostulante::create([
+                'dni_postulante'=> $request->dni,
+                'id_proceso' => $proceso,
+                'avance' => 1,
+            ]);
 
-      try{
-          if($request->hasFile('img')){
-            $file = $request->file('img');
-              $file_name =$file->getClientoriginalName();
-              $rutaCarpeta = public_path('/documentos/'.$p_name.'/'.$request->dni);
-              if (!File::exists($rutaCarpeta)) {
-                File::makeDirectory($rutaCarpeta, 0755, true, true);
-              }
+            try{
+                if($request->hasFile('img')){
+                    $file = $request->file('img');
+                    $file_name =$file->getClientoriginalName();
+                    $rutaCarpeta = public_path('/documentos/'.$p_name.'/'.$request->dni);
+                    if (!File::exists($rutaCarpeta)) {
+                        File::makeDirectory($rutaCarpeta, 0755, true, true);
+                    }
 
-              $file->move(public_path('/documentos/'.$p_name.'/'.$request->dni), 'certificado-1.pdf');
+                    $file->move(public_path('/documentos/'.$p_name.'/'.$request->dni), 'certificado-1.pdf');
 
-              //2023 
-              $doc = Documento::create([
-                  'codigo' => $request->codigo_certificado,
-                  'nombre' => $file_name,
-                  'id_postulante' => $request->id_postulante,
-                  'id_tipo_documento' => 1,
-                  'estado' => 1,
-                  'url' => 'documentos/'.$p_name.'/'.$request->dni.'/certificado-1.pdf',
-                  'fecha' => date('Y-m-d'),
-                  'observacion' => $request->tipo_certificado
-              ]);
-              return response()->json(['menssje'=>'file upload success'], 200);
-          }
-      }catch(\Exception $e){
-          return response()->json([
-              'message'=>$e->getMessage()
-          ]);
-      }
+                    //2023 
+                    $doc = Documento::create([
+                        'codigo' => $request->codigo_certificado,
+                        'nombre' => $file_name,
+                        'id_postulante' => $request->id_postulante,
+                        'id_tipo_documento' => 1,
+                        'estado' => 1,
+                        'url' => 'documentos/'.$p_name.'/'.$request->dni.'/certificado-1.pdf',
+                        'fecha' => date('Y-m-d'),
+                        'observacion' => $request->tipo_certificado
+                    ]);
+                    return response()->json(['menssje'=>'file upload success'], 200);
+                }
+            }catch(\Exception $e){
+                return response()->json([
+                    'message'=>$e->getMessage()
+                ]);
+            }
+
+
+        } 
+        catch (\Exception $e) {
+            // En caso de error, deshacer la transacción
+            DB::rollBack();
+        
+            echo "Error en la transacción: " . $e->getMessage();
+        }
+
+
+        $this->pdfsolicitud($request->dni);
 
   }
 
@@ -168,6 +183,7 @@ class PreinscripcionController extends Controller
             'postulante' => $request->postulante,
             'proceso' => $request->proceso,
         ]);
+
         $this->response['tipo'] = 'success';
         $this->response['titulo'] = 'PASO REGISTRADO';
         $this->response['mensaje'] = 'Proceso '.$pasos->nombre.' creado con exito';
@@ -292,19 +308,20 @@ class PreinscripcionController extends Controller
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
 
-        $doc = Documento::create([
-            'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
-            'nombre' => 'SOLICITUD DE POSTULACIÓN',
-            'numero' => 1,
-            'id_postulante' => $res[0]->idP,
-            'id_tipo_documento' => 6,
-            'estado' => 1,
-            'url' => 'documentos/'.$name.'/'.$res[0]->dni.'/'.'solicitud-1.pdf',
-            'fecha' => date('Y-m-d')
-        ]);
+        // $doc = Documento::create([
+        //     'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
+        //     'nombre' => 'SOLICITUD DE POSTULACIÓN',
+        //     'numero' => 1,
+        //     'id_postulante' => $res[0]->idP,
+        //     'id_tipo_documento' => 6,
+        //     'estado' => 1,
+        //     'url' => 'documentos/'.$name.'/'.$res[0]->dni.'/'.'solicitud-1.pdf',
+        //     'fecha' => date('Y-m-d')
+        // ]);
 
         file_put_contents(public_path('/documentos/'.$name.'/'.$res[0]->dni.'/').'solicitud-1.pdf', $output);
-        return $pdf->stream();
+        return $pdf->download();
+        
 
     }
 
@@ -314,7 +331,6 @@ class PreinscripcionController extends Controller
         
         $files = [
             public_path('/documentos/cepre2023-II/'.$dni.'/').'solicitud-1.pdf',
-            public_path('/documentos/cepre2023-II/'.$dni.'/').'constancia vocacional-1.pdf',
         ];
 
         foreach ($files as $file) {

@@ -151,9 +151,9 @@ class InscripcionController extends Controller
             'id_usuario' => auth()->id() 
         ]);
 
-        $avancePostulante = AvancePostulante::where('dni_postulante', $request['postulante']['dni_temp'])->first();
-        $avancePostulante->avance = 3;
-        $avancePostulante->save();
+        // $avancePostulante = AvancePostulante::where('dni_postulante', $request['postulante']['dni_temp'])->first();
+        // $avancePostulante->avance = 3;
+        // $avancePostulante->save();
 
         $this->pdfInscripcion($request['postulante']['dni_temp']);
 
@@ -170,7 +170,9 @@ class InscripcionController extends Controller
     public function pdfInscripcion($dni) {
 
         $datos = DB::select('SELECT 
-        postulante.nro_doc AS dni, postulante.nombres AS nombre, postulante.primer_apellido AS paterno,
+        postulante.nro_doc AS dni, 
+        postulante.nombres AS nombre, 
+        postulante.primer_apellido AS paterno,
         postulante.segundo_apellido AS materno,
         programa.nombre AS programa,
         modalidad.nombre AS modalidad,
@@ -192,6 +194,5 @@ class InscripcionController extends Controller
         return $pdf->download();
 
     }
-
 
 }

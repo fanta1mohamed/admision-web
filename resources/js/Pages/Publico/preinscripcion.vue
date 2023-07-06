@@ -487,13 +487,12 @@
           <a-card style="padding-top: 5px; padding-bottom:0px; background: #24c1ff25;">
             <div class="">
               <div class="flex justify-center">
-                <div  style="text-align:center; max-width: 350px;" >
-                  <div>FINALIZASTE CON EXITO</div>
-                  DESCARGA TUS DOCUMENTOS PRESIONANDO EN DESCARGAR 
+                <div  style="text-align:center; max-width: 300px;" >
+                  <div>FINALIZASTE CON EXITO EL REGISTRO DE TUS DATOS</div> 
                 </div>
               </div>
               <div class="flex justify-center mt-4 mb-4">
-                <a-button @click="getDocs()" style="background: #020b61;" type="primary"> DESCARGAR </a-button>
+                <a-button @click="getDocs()" style="background: #020b61;" type="primary"> DESCARGAR SOLICITUD </a-button>
               </div>
             </div>
           </a-card>
@@ -574,7 +573,7 @@
         </div>
 
         <div class="flex" style="justify-content: flex-end;">
-          <a-button class="btn-vocacional" @click=" guardarVocacional()"  >Terminar examen</a-button>
+          <a-button class="btn-vocacional" @click=" guardarVocacional()">Terminar examen</a-button>
         </div>  
         
   </div>
@@ -677,7 +676,8 @@ const onSelectDistritos = (value, option) => {
 };
 
 const getDatosPersonales = async () => {
-  if(formRef.dni === '' ){
+  
+  if(pagina_pre.value == 0 ){
     const values = await formRef.value.validateFields();
   }
   let res = await axios.post( "get-postulante-datos-personales", {nro_doc: formState.dni});
@@ -890,21 +890,21 @@ const submit = async () => {
   fd.append('codigo_medico', datos_preinscripcion.value.codigo_medico)
   fd.append('id_postulante', datospersonales.id)
   await axios.post("save-pre-inscripcion", fd).then(res=>{
-    if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 100) } else{ next() }
+    if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 7, 110) } else{ next() }
     showToast("success","2",res.data.menssje);
     getResoluciones()
   }).catch(err=>console.log(err))
 }
 const presionado = ref(0);
-watch(presionado, ( newValue, oldValue ) => {
-  if ( presionado.value === 1){
-    getPasos()
-    presionado.value = 0
-  }
-})
+// watch(presionado, ( newValue, oldValue ) => {
+//   if ( presionado.value === 1){
+//     getPasos()
+//     presionado.value = 0
+//   }
+// })
 
 const getDocs = async () => {
-  window.open("documentos-pdfs/"+formState.dni, '_blank');
+  window.open("/pdf-solicitud/"+formState.dni, '_blank');
 }
 
 

@@ -106,7 +106,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);
     Route::get('/eliminar-programa/{id}', [ProgramaController::class, 'deletePrograma']);
 
-    
     //APODERADOS    
     Route::post('/get-apoderados-admin', [ApoderadoController::class, 'getApoderadoAdmin']);
     Route::post('/save-apoderados-admin', [ApoderadoController::class, 'saveApoderadoAdmin']);
@@ -134,6 +133,11 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-provincias-codigo', [SeleccionDataController::class, 'getProvinciasCodigo']);
     
     Route::post('/get-distritos-codigo', [SeleccionDataController::class, 'getDistritosCodigo']);
+
+    Route::get('/foto-inscripcion', fn () => Inertia::render('Foto/foto'))->name('admin-foto-inscripcion');
+    Route::get('/foto-biometrico', fn () => Inertia::render('Foto/fotobiometrico'))->name('admin-foto-biometrico');    
+    Route::post('/guardar-foto-inscripcion', [FotoController::class, 'guardarFotoInscripcion']);
+    Route::post('/guardar-foto-biometrico', [FotoController::class, 'guardarFotoBiometrico']);
 
 });
 
@@ -188,6 +192,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 //Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
 Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
 Route::get('/preinscripcion-general', fn () => Inertia::render('Publico/preinscripciongeneral'))->name('preinscripcion-general');
+Route::get('/examen-vocacional', fn () => Inertia::render('Publico/exvocacional'))->name('ex-vocacional');
 Route::post('save-pasos-preinscripcion', [PreinscripcionController::class, 'savePasos']);
 Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
 Route::post('/save-postulante-dni', [PostulanteController::class, 'saveDniPostulante']);
@@ -210,6 +215,7 @@ Route::post('/get-pasos-proceso', [SeleccionDataController::class, 'getPasos']);
 Route::post('/get-preguntas', [PreguntaController::class, 'getPreguntasPrograma']);
 
 Route::post('/get-datos-examen', [PreguntaController::class, 'getDatosExamen']);
+Route::post('/get-datos-examen2', [PreguntaController::class, 'getDatosExamen2']);
 Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'saveVocacional']);
 
 Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocacional']);
@@ -217,9 +223,7 @@ Route::get('/pdf-solicitud/{dni}', [PreinscripcionController::class, 'pdfsolicit
 
 Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 
-
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
-
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
 
 //Editor

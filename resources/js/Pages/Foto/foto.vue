@@ -33,7 +33,7 @@
 </template>
 <script setup>
     import { Head } from '@inertiajs/vue3';
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'    
+    import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'    
     import {ref, watch} from 'vue'
     import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons-vue';
 </script>

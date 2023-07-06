@@ -112,7 +112,7 @@
           </div>
 
           <a-menu-item style="margin-left: -10px; width: 250px; background: #ff000000;">
-            <nav-link :href="route('foto-inscripcion')" :active="route().current('foto-inscripcion')" style="margin: 0px; margin-left: -25px; ">
+            <nav-link :href="route('admin-foto-inscripcion')" :active="route().current('admin-foto-inscripcion')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
                 <printer-filled style=""/>
                 <span>Foto Inscripción</span>
@@ -136,7 +136,7 @@
         </div>
 
           <a-menu-item style="margin-left: -10px; width: 250px; background: #ff000000;">
-            <nav-link :href="route('foto-biometrico')" :active="route().current('foto-biometrico')" style="margin: 0px; margin-left: -25px;">
+            <nav-link :href="route('admin-foto-biometrico')" :active="route().current('admin-foto-biometrico')" style="margin: 0px; margin-left: -25px;">
               <div class="flex" style="justify-content: center; width: 100%; align-items: center;">
                 <camera-filled style=""/>
                 <span>Fotos Biométrico</span>

@@ -93,7 +93,7 @@ export default {
   methods: {    
     async getApoderado() {
       const res = await axios.post("get-apoderado", { id_postulante: this.id_postulante, tipo: this.tipex });
-      if( res[0]){
+      if(!res[0]){
         this.form.id = res.data.datos[0].id;
         this.form.tipo_apoderado = res.data.datos[0].tipo_apoderado;
         this.form.dni = res.data.datos[0].nro_documento;
@@ -117,13 +117,13 @@ export default {
 
       try {
         const response = await axios.post('save-postulante-apoderado', {
-            id: this.form.id ,
+            id: this.form.id,
             tipo_apoderado :this.form.tipo_apoderado,
             dni: this.form.dni,
             nombres: this.form.nombres,
             paterno: this.form.paterno,
             materno: this.form.materno,
-            id_postulante: this.form.id_postulante,
+            id_postulante: this.id_postulante,
             actualizar: this.actualiza,
             proceso: 4,
             name:"Registro de datos del padre o tutor",
@@ -143,15 +143,14 @@ export default {
     },
 
     async saveApoderadoMadre() {
-
       try {
         const response = await axios.post('save-postulante-apoderado', {
-            id: this.id ,
+            id: this.form.id,
             tipo_apoderado: this.tipex,
-            dni: this.dni,
-            nombres: this.nombres,
-            paterno: this.paterno,
-            materno: this.materno,
+            dni: this.form.dni,
+            nombres: this.form.nombres,
+            paterno: this.form.paterno,
+            materno: this.form.materno,
             id_postulante: this.id_postulante,
             actualizar: this.actualiza,
             proceso: 4,

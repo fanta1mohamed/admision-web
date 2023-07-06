@@ -92,6 +92,7 @@
           </NavLink>
         </li>
 
+        <div class="ml-6" style="margin-top: 40px; margin-bottom: 10px;"> <span style="font-weight: 700; letter-spacing: normal; font-family: Arial, Helvetica, sans-serif;"> INSCRIPCION </span> </div>
 
         <li class="relative px-0" :class="[route().current('revisor-documentos')? 'activado':'']"  style="margin-bottom: -15px;">
           <NavLink :href="route('revisor-documentos')" :active="route().current('revisor-documentos')" style="padding: 10px 20px;">
@@ -102,6 +103,34 @@
             </template>
             <span>
               Revisar documentos
+            </span>
+          </NavLink>
+        </li>
+
+        <li class="relative px-0" :class="[route().current('foto-inscripcion')? 'activado':'']"  style="margin-bottom: -15px;">
+          <NavLink :href="route('foto-inscripcion')" :active="route().current('foto-inscripcion')" style="padding: 10px 20px;">
+            <template #icon>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              </span>
+            </template>
+            <span>
+              Foto inscripcion
+            </span>
+          </NavLink>
+        </li>
+
+        <div class="ml-6" style="margin-top: 40px; margin-bottom: 10px;"> <span style="font-weight: 700; letter-spacing: normal; font-family: Arial, Helvetica, sans-serif;"> CONTROL BIOMETRICO </span> </div>
+
+        <li class="relative px-0" :class="[route().current('foto-biometrico')? 'activado':'']"  style="margin-bottom: -15px;">
+          <NavLink :href="route('foto-biometrico')" :active="route().current('foto-biometrico')" style="padding: 10px 20px;">
+            <template #icon>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              </span>
+            </template>
+            <span>
+              Foto biometrico
             </span>
           </NavLink>
         </li>
