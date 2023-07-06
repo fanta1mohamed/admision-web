@@ -53,10 +53,7 @@ class PreinscripcionController extends Controller
 
   public function preinscribir(Request $request)
   {
-    DB::beginTransaction();
 
-    try {
-    
             $proceso = 0;
             $p_name = 'cepre2023-II';
             if($request->modalidad == 9) { $proceso = 4; }
@@ -107,14 +104,6 @@ class PreinscripcionController extends Controller
                 ]);
             }
 
-
-        } 
-        catch (\Exception $e) {
-            // En caso de error, deshacer la transacción
-            DB::rollBack();
-        
-            echo "Error en la transacción: " . $e->getMessage();
-        }
 
 
         $this->pdfsolicitud($request->dni);

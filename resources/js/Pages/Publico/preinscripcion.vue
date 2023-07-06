@@ -32,8 +32,7 @@
             >
             <a-input v-model:value="formState.dni" @input="dniInput" :maxlength="12" placeholder="N° Documento"/>
           </a-form-item>
-
-
+          
           <div class="mb-4" v-if="datospersonales.tipo_doc === 1">
             <div class="mt-3"><label>N° Ubigeo</label></div>
             <a-form-item
