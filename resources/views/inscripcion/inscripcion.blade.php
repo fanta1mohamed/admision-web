@@ -24,7 +24,7 @@
                     <td style="" rowspan="7" align="right"  width="150px" valign="top">
                         <div style="border:solid 1px #d9d9d9; padding:5px; width:125px; overflow-hidden;" >
                             <div style="overflow: hidden; height:150px; width:125px;">
-                                <img src="{{ public_path('fotos/inscripcion/'.$data->dni.'.jpg')}} " alt="" height="165">
+                                <img src="{{ public_path('fotos/inscripcion/00000006.jpg')}} " alt="" height="165">
                                 <img src="" alt="" height="150">
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                     <td valign="top">
                         <div>
                             <div style=" width 80px; height: 95px;">
-                                <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="75"> 
+                                <img src="{{ public_path('huellascepre/00000006.jpg')}} " alt="" width="75"> 
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
