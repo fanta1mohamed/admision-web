@@ -115,11 +115,12 @@
                     <td valign="top">
                         <div>
                             <div style=" width 80px; height: 95px;">
-                                <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="75"> 
+                                <span style="font-size: .6rem;"> {{ public_path('imagenes/'.$data->dni.'.jpg')}} </span>
+                                <img src="{{ public_path('imagenes/'.$data->dni.'.jpg')}} " alt="" width="75"> 
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
-                                <img src="{{ public_path('huellascepre/'.$data->dni.'x.jpg')}} " alt="" height="95">
+                                <img src="{{ public_path('imagenes/'.$data->dni.'x.jpg')}} " alt="" height="95">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
                         </div>
