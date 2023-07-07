@@ -182,7 +182,7 @@
             <!-- {{ baseUrl+'/huellas/inscripcion/'+dniseleccionado+'.jpg' }} -->
             <div class="mt-4 container-huellas">
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%; overflow-y: hidden;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/huellashuellas/'+postulante.dni_temp+'.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/huellascepre/'+postulante.dni_temp+'.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%;">
