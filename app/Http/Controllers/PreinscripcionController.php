@@ -51,21 +51,20 @@ class PreinscripcionController extends Controller
     return response()->json($this->response, 200);
   }
 
-  public function preinscribir(Request $request)
+  public function preinscribir(Request $request) 
   {
-
+    try {
+        DB::beginTransaction();
+            
             $proceso = 0;
-            $p_name = 'cepre2023-II';
-            if($request->modalidad == 9) { $proceso = 4; }
-            if($request->modalidad == 8 || $request->modalidad == 7){ $proceso = 5; }
+            if ($request->modalidad == 9) { $proceso = 4; } elseif ($request->modalidad == 8 || $request->modalidad == 7) { $proceso = 5; }
 
             $pre = Preinscripcion::create([
                 'id_postulante'=> $request->id_postulante,
                 'id_programa' => $request->programa,
                 'id_proceso' => $proceso,
                 'id_modalidad' => $request->modalidad,
-                'estado' => 1,
-                'codigo_seguridad' => date('Y')
+                'estado' => 1
             ]);
 
             $pre = AvancePostulante::create([
@@ -74,39 +73,29 @@ class PreinscripcionController extends Controller
                 'avance' => 1,
             ]);
 
-            try{
-                if($request->hasFile('img')){
-                    $file = $request->file('img');
-                    $file_name =$file->getClientoriginalName();
-                    $rutaCarpeta = public_path('/documentos/'.$p_name.'/'.$request->dni);
-                    if (!File::exists($rutaCarpeta)) {
-                        File::makeDirectory($rutaCarpeta, 0755, true, true);
-                    }
-
-                    $file->move(public_path('/documentos/'.$p_name.'/'.$request->dni), 'certificado-1.pdf');
-
-                    //2023 
-                    $doc = Documento::create([
-                        'codigo' => $request->codigo_certificado,
-                        'nombre' => $file_name,
-                        'id_postulante' => $request->id_postulante,
-                        'id_tipo_documento' => 1,
-                        'estado' => 1,
-                        'url' => 'documentos/'.$p_name.'/'.$request->dni.'/certificado-1.pdf',
-                        'fecha' => date('Y-m-d'),
-                        'observacion' => $request->tipo_certificado
-                    ]);
-                    return response()->json(['menssje'=>'file upload success'], 200);
-                }
-            }catch(\Exception $e){
-                return response()->json([
-                    'message'=>$e->getMessage()
-                ]);
-            }
-
-
-
-        $this->pdfsolicitud($request->dni);
+        
+        DB::commit();
+        return response()->json(['message' => 'Preinscripción exitosa'], 200);
+    
+    }
+    catch (\Exception $e) {
+        DB::rollBack();
+    
+        // Obtener información completa del error
+        $errorMessage = $e->getMessage();
+        $errorFile = $e->getFile();
+        $errorLine = $e->getLine();
+    
+        // Crear una respuesta con los detalles del error
+        $errorResponse = [
+            'error' => $errorMessage,
+            'file' => $errorFile,
+            'line' => $errorLine
+        ];
+    
+        // Devolver la respuesta con los detalles del error
+        return response()->json($errorResponse, 500);
+    }
 
   }
 
@@ -251,6 +240,8 @@ class PreinscripcionController extends Controller
     public function pdfsolicitud($dni) {
 
         $res = Preinscripcion::select(
+            'tipo_documento_identidad.nombre AS tipo_doc',
+            'postulante.direccion', 
             'postulante.id as idP',
             'postulante.nro_doc as dni', 
             'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido',
@@ -269,49 +260,38 @@ class PreinscripcionController extends Controller
           ->join ('colegios', 'colegios.id', '=','postulante.id_colegio')
           ->join ('ubigeo', 'ubigeo.ubigeo', '=','colegios.ubigeo')
           ->join ('distritos', 'distritos.id', '=','ubigeo.id_distrito')
+          ->join ('tipo_documento_identidad','tipo_documento_identidad.id', '=', 'postulante.tipo_doc')
           ->where('postulante.nro_doc','=', $dni)->get();
 
-        $pos = DB::select('SELECT tipo_documento_identidad.nombre AS tipo_doc, postulante.direccion, distritos.nombre AS distrito_residencia FROM postulante
-        JOIN ubigeo ON postulante.ubigeo_residencia = ubigeo.ubigeo
-        JOIN distritos ON ubigeo.id_distrito = distritos.id
-        JOIN tipo_documento_identidad ON tipo_documento_identidad.id = postulante.tipo_doc
-        WHERE postulante.nro_doc = ' .$dni);
-
         $name = "cepre2023-II";
-        // if($res[0]->modalidad == 8 || $res[0]->modalidad == 7 ){$name = "general2023-II"; }
 
         $data = $res[0];
-        $dataP = $pos[0]; 
-        setlocale(LC_TIME, 'es_ES.utf8'); // Establece la configuración regional en español
-        // $date = strftime('%d de %B del %Y');
+        setlocale(LC_TIME, 'es_ES.utf8'); 
         $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
-        //$date = date('d \d\e F \d\e\l Y');
-        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date','dataP'));
+        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
-
-
+    
         $rutaCarpeta = public_path('/documentos/'.$name.'/'.$res[0]->dni);
 
         if (!File::exists($rutaCarpeta)) {
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
 
-        // $doc = Documento::create([
-        //     'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
-        //     'nombre' => 'SOLICITUD DE POSTULACIÓN',
-        //     'numero' => 1,
-        //     'id_postulante' => $res[0]->idP,
-        //     'id_tipo_documento' => 6,
-        //     'estado' => 1,
-        //     'url' => 'documentos/'.$name.'/'.$res[0]->dni.'/'.'solicitud-1.pdf',
-        //     'fecha' => date('Y-m-d')
-        // ]);
+        $doc = Documento::create([
+            'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
+            'nombre' => 'SOLICITUD DE POSTULACIÓN',
+            'numero' => 1,
+            'id_postulante' => $res[0]->idP,
+            'id_tipo_documento' => 6,
+            'estado' => 1,
+            'url' => 'documentos/'.$name.'/'.$res[0]->dni.'/'.'solicitud-1.pdf',
+            'fecha' => date('Y-m-d')
+        ]);
 
         file_put_contents(public_path('/documentos/'.$name.'/'.$res[0]->dni.'/').'solicitud-1.pdf', $output);
         return $pdf->download();
         
-
     }
 
     public function UnirPDF($dni){

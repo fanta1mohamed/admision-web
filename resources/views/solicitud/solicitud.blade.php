@@ -43,8 +43,8 @@
                     <td style="width: 50%">
                         <p style="text-align: justify; line-height:1.5rem;">
                             Yo, <span style="text-transform: uppercase;">{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }} </span>, 
-                            identificado con {{$dataP->tipo_doc }} numero {{ $data->dni}}, 
-                            con domicilio en {{$dataP->direccion }} de {{ $dataP->distrito_residencia }}, Ante Ud. 
+                            identificado con {{$data->tipo_doc }} numero {{ $data->dni}}, 
+                            con domicilio en {{$data->direccion }} de {{ $data->distrito }}, Ante Ud. 
                             respetuosamente me presento y expongo:
                         </span>
                     </td>
@@ -75,7 +75,7 @@
                             <div  style="margin-top: 5px;">3.	Certificado de estudios (origial y copia).</div>
                             {{-- <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA (origial y copia).</div> --}}
                             @if($data->id_proceso = 4)
-                                <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA</div>
+                                <div style="margin-top: 5px;">4.	Constancia de no adeudo a la CEPREUNA</div>
                             @else
                                 <div></div>
                             @endif
@@ -114,7 +114,7 @@
                             FIRMA
                         </div> 
                         <div><span>{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }}</span></div>
-                        <span>{{ $dataP->tipo_doc }}: {{ $data->dni}}</span>
+                        <span>{{ $data->tipo_doc }}: {{ $data->dni}}</span>
                         {{-- <div>966637192</div> --}}
                     </td>  
                     <td style="width: 50%"> 

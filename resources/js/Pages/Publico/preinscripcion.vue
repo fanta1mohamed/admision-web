@@ -1,6 +1,20 @@
 <template style="background:pink;">
 <Head title="Preinscipción"/>
 <Layout v-if="examen === 0">	
+  <a-modal v-model:visible="ejemplo" :footer="false" @ok="handleOk">
+    <a-tabs v-model:activeKey="activeKey" :size="size">
+      <a-tab-pane key="1" tab="CERT. AMARILLO">
+        <div style="max-height:400px; overflow-y:scroll;"> <img src="../../../assets/imagenes/certificados/amarillo.jpg"> </div>
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="CERT. BLANCO">
+        <div> <img src="../../../assets/imagenes/certificados/blanco.jpg"> </div>
+      </a-tab-pane>
+      <a-tab-pane key="3" tab="CONST. DE LOGROS">
+        <div> <img src="../../../assets/imagenes/certificados/constancia.jpg"> </div>  
+      </a-tab-pane>
+    </a-tabs>
+
+  </a-modal>
 	<div style="width: 100%; min-height: calc(100vh - 220px); padding: 20px 20px; margin-top: 0px;">
 <!-- 
     {{ nc }} -->
@@ -154,12 +168,10 @@
                 </a-col>
                 <a-col :span="24" :md="16" :lg="18  " :xl="16" :xxl="6">
                   <a-form-item
-                      name="celular"
-                      :rules="[
-                        { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},
-                      ]"
+                      name="fec_nacimiento"
+                      :rules="[ { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},]"
                     >
-                    <div><label>Fec. Nacimiento: "DD/MM/AA"</label></div>
+                    <div><label>Fec. Nacimiento: "DD/MM/AAAA"</label></div>
                       <a-date-picker placeholder="Selecciona tu fecha de nacimiento" style="width: 100%" v-model:value="datospersonales.fec_nacimiento" format='DD/MM/YYYY' />
                   </a-form-item>
                 </a-col>
@@ -175,7 +187,6 @@
       <div v-if="pagina_pre === 2">
 
         <div style="width: 100%; margin-top: 5px; ">
-
         <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
           <div>
           
@@ -245,9 +256,7 @@
               </a-col>
               <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
                 <a-form-item
-                  name="dist"
-                  :rules="[{ required: true, message: 'Selecciona tu distrito', trigger: 'blur'},]"
-                  >
+                  name="dist" :rules="[{ required: true, message: 'Selecciona tu distrito', trigger: 'blur'},]" >
                   <div><label>Distrito:</label></div>
 
                   <a-auto-complete
@@ -301,28 +310,288 @@
       </div>
 
       <div v-if="pagina_pre === 3">
-        <Colegio v-if="avance_current < 48"  ref="hijoComponent" :id_postulante="datospersonales.id" :actualiza="'si'" />
-        <Colegio v-if="avance_current >= 48" ref="hijoComponent" :id_postulante="datospersonales.id" :actualiza="'no'"/>
-        <div style="display:none;">{{  pagina_pre = pagina_pre_temp }}</div>
-        <div style="display:none;">{{  pagina_pre_temp = 3 }}</div>
+        <div>
+          <div style="width: 100%; margin-top: 5px; ">
+              <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
+                <a-form
+                    ref="formDatosColegio" :model="datoscolegio"
+                    name="form-colegio"
+                  >
+                      <div>
+                        <div style="margin-bottom: 25px; margin-top: 10px; ">
+                          <h1 style="font-size: 1.1rem;"> Datos del colegio</h1>
+                        </div>
+                    
+                        <a-row :gutter="[16, 0]" class="form-row">
+                          <a-col :span="24" :md="16" :lg="12" :xl="16" :xxl="6">
+                            <a-form-item
+                            name="egreso"
+                            :rules="[{ required: true, message: 'Ingrese año de egreso', trigger: 'change' },
+                            { min: 4, message: 'Debe tener 4 digitos', trigger: 'blur',},]"
+                            >
+                              <div><label>Año de egreso: </label></div>
+                              <a-input v-model:value="datoscolegio.egreso" :maxlength="4" placeholder="Año egreso" />
+                            </a-form-item>
+                          </a-col>
+                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                            <a-form-item
+                              name="pais"
+                              :rules="[{ required: true, message: 'Seleccione el pain', trigger: 'change' }]"
+                            >
+                              <div><label>Pais:</label></div>
+                                <a-select
+                                    ref="select"
+                                    v-model:value="datoscolegio.pais"
+                                    style="width: 100%" >
+                                    <a-select-option :value="125">PERÚ</a-select-option>
+                                </a-select>  
+                            </a-form-item>
+                          </a-col>
+                        </a-row>
+                    
+                        <a-row :gutter="[16, 0]" class="form-row">
+                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                            <a-form-item>
+                              <div><label>Departamento: </label></div>
+                    
+                              <a-auto-complete
+                                  v-model:value="datoscolegio.dep"                
+                                  :options="departamentoscolegio"
+                                  @select="onSelectDepartamentosC"
+                                  >
+                                  <a-input
+                                      placeholder="Departamento"
+                                      v-model:value="buscarDepC"
+                                      @keypress="handleKeyPress"
+                                      >
+                                  <template #suffix>
+                                  <a-tooltip title="Extra information">
+                                    <down-outlined />
+                                  </a-tooltip>
+                                </template>
+                                </a-input>
+                              </a-auto-complete>
+                    
+                            </a-form-item>
+                          </a-col>
+                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                            <a-form-item>
+                              <div><label>Provincia:</label></div>
+                              <a-auto-complete
+                                  v-model:value="datoscolegio.prov"                
+                                  :options="provinciasC"
+                                  @select="onSelectProvinciasC"
+                              >
+                                  <a-input
+                                      placeholder="Provincia"
+                                      v-model:value="buscarProvC"
+                                      @keypress="handleKeyPress"
+                                  >
+                                  <template #suffix>
+                                  <a-tooltip title="Extra information">
+                                    <down-outlined />
+                                  </a-tooltip>
+                                </template>
+                                </a-input>
+                              </a-auto-complete>
+                            </a-form-item>
+                          </a-col>
+                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                            <a-form-item>
+                              <div><label>Distrito:</label></div>
+                    
+                              <a-auto-complete
+                                  v-model:value="datoscolegio.dist"                
+                                  :options="distritosC"
+                                  @select="onSelectDistritosC"
+                              >
+                                  <a-input
+                                      placeholder="Provincia"
+                                      v-model:value="buscarDistC"
+                                      @keypress="handleKeyPress"
+                                  >
+                                  <template #suffix>
+                                  <a-tooltip title="Extra information">
+                                    <down-outlined />
+                                  </a-tooltip>
+                                </template>
+                                </a-input>
+                              </a-auto-complete>
+                            </a-form-item>
+                          </a-col>
+                        </a-row>
+                    
+                        <a-row :gutter="[16, 0]" class="form-row">
+                          <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                            <a-form-item
+                            name="colegio"
+                            :rules="[{ required: true, message: 'Seleccione el colegio', trigger: 'change' }]"
+                            >
+                              <div><label>Nombre de colegio:</label></div>
+                                <a-select
+                                  v-model:value="datoscolegio.colegio"
+                                  style="min-width: 300px"
+                                  :options="colegios"
+                                  @change="handleChangeCole"
+                                ></a-select>
+                                
+                            </a-form-item>
+                          </a-col>
+                        </a-row>
+                    
+                      </div>
+                </a-form>
+              </a-card>
+            </div>
+        </div>
       </div>
+
+
+
+
+
+
+
+
+
 
       <div v-if="pagina_pre === 4">
 
         <div style="width: 100%; margin-top: 5px; ">
-          <Apoderado v-if="avance_current < 65" ref="padreComponent" :id_postulante="datospersonales.id" :tipex="1" :actualiza="'si'"/>
-          <Apoderado v-if="avance_current >= 65" ref="padreComponent" :id_postulante="datospersonales.id" :tipex="1" :actualiza="'no'"/>
-            <div style="display:none;">{{ pagina_pre = pagina_pre_temp_padre }}</div>
-            <div style="display:none;">{{ pagina_pre_temp_padre = 4 }}</div>
+
+          <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
+                <a-form
+                  ref="formDatosPadre" :model="datospadre"
+                  name="datospadre"
+                  @finish="onFinish"
+                  @finishFailed="onFinishFailed"
+                >
+                  <div>
+                    <div style="margin-bottom: 25px; margin-top: 10px;">
+                        <h1 style="font-size: 1.1rem;"> Datos del padre</h1>
+                    </div>
+
+                    <a-radio-group v-model:value="datospadre.tipo_apoderado" class="flex justify-end" style="display: flex; width: yellow;" name="radioGroup">
+                        <a-radio :value="1">Padre</a-radio>
+                        <a-radio :value="3">Tutor</a-radio>
+                    </a-radio-group>
+
+                    <a-row :gutter="[16, 0]" class="form-row">
+                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                          <a-form-item
+                            name="dni"
+                            :rules="[{ required: true, message: 'Ingresa el DNI', trigger: 'change' },
+                            { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]"
+                            >
+                            <div><label>N° Documento</label></div>
+                            <a-input ref="myDni" v-model:value="datospadre.dni" :maxlength="12" placeholder="" />
+                        </a-form-item>
+                        </a-col>
+                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                          <a-form-item
+                            name="nombres"
+                            :rules="[{ required: true, message: 'Ingresa los nombres', trigger: 'blur' }]"
+                            >
+                            <div><label>Pre nombres:</label></div>
+                            <a-input v-model:value="datospadre.nombres"/>
+                          </a-form-item>
+                        </a-col>
+
+                        <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                          <a-form-item
+                            name="paterno"
+                            :rules="[{ required: true, message: 'Ingresa el primer apellido', trigger: 'blur' }]"
+                            >
+                            <div><label>Primer apellido:</label></div>
+                            <a-input v-model:value="datospadre.paterno" />
+                        </a-form-item>
+                        </a-col>
+                    </a-row>
+
+                    <a-row :gutter="[16, 0]" class="form-row">
+                        <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                          <a-form-item>
+                            <div><label>Segundo Apellido:</label></div>
+                            <a-input v-model:value="datospadre.materno" />
+                        </a-form-item>
+                        </a-col>
+                    </a-row>
+
+                  </div>
+
+                </a-form>
+
+              </a-card>
+
         </div>
       </div>
 
+
+
+
+
+
+
+
       <div v-if="pagina_pre === 5">
         <div style="width: 100%; margin-top: 5px; ">
-          <Apoderado v-if="avance_current < 80" ref="madreComponent" :id_postulante="datospersonales.id" :tipex="2" :actualiza="'si'"/>
-          <Apoderado v-if="avance_current >= 80" ref="madreComponent" :id_postulante="datospersonales.id" :tipex="2" :actualiza="'no'"/>
-            <div style="display:none;">{{ pagina_pre = pagina_pre_temp_madre }}</div>
-            <div style="display:none;">{{ pagina_pre_temp_madre = 5 }}</div>
+
+          <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
+                <a-form
+                  ref="formDatosMadre" :model="datosmadre"
+                  name="datosmadre"
+                  @finish="onFinish"
+                  @finishFailed="onFinishFailed"
+                >
+                  <div>
+                    <div style="margin-bottom: 25px; margin-top: 10px;">
+                        <h1 style="font-size: 1.1rem;" > Datos de la madre</h1>
+                    </div>
+
+                    <a-row :gutter="[16, 0]" class="form-row">
+                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                          <a-form-item
+                            name="dni"
+                            :rules="[{ required: true, message: 'Ingresa el DNI', trigger: 'change' },
+                            { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]"
+                            >
+                            <div><label>N° Documento</label></div>
+                            <a-input ref="myDni" v-model:value="datosmadre.dni" :maxlength="12" placeholder="" />
+                        </a-form-item>
+                        </a-col>
+                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                          <a-form-item
+                            name="nombres"
+                            :rules="[{ required: true, message: 'Ingresa los nombres', trigger: 'blur' }]"
+                            >
+                            <div><label>Pre nombres:</label></div>
+                            <a-input v-model:value="datosmadre.nombres"/>
+                          </a-form-item>
+                        </a-col>
+
+                        <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                          <a-form-item
+                            name="paterno"
+                            :rules="[{ required: true, message: 'Ingresa el primer apellido', trigger: 'blur' }]"
+                            >
+                            <div><label>Primer apellido:</label></div>
+                            <a-input v-model:value="datosmadre.paterno" />
+                        </a-form-item>
+                        </a-col>
+                    </a-row>
+
+                    <a-row :gutter="[16, 0]" class="form-row">
+                        <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                          <a-form-item>
+                            <div><label>Segundo Apellido:</label></div>
+                            <a-input v-model:value="datosmadre.materno" />
+                        </a-form-item>
+                        </a-col>
+                    </a-row>
+                  </div>
+                </a-form>
+              </a-card>
+
         </div>
       </div>
 
@@ -331,10 +600,7 @@
 
           <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
             <div>
-
               <div>
-
-
               <div class="justify-between datos-postulacion" >
                   <div style="margin-bottom: 25px; margin-top: 10px; ">
                     <h1 style="font-size: 1.1rem;"> Datos Postulación</h1>
@@ -420,7 +686,7 @@
                 </a-col>
                 <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="6">
                   <a-form-item>
-                    <div><label>Tipo de certificado:</label></div>
+                    <div class="flex justify-between" style="font-weight:bold;"><label>Tipo certificado:</label></div>
                     <a-select
                         ref="select"
                         v-model:value="datos_preinscripcion.tipo_certificado"
@@ -434,23 +700,10 @@
                 </a-col>
                 <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="6">
                   <a-form-item>
-                    <div><label>Codigo de certificado:</label></div>
+                    <div class="flex justify-between"><label>Codigo certificado</label> <span @click="ejemplo = true" style="color:blue; cursor:pointer;">ver ejemplo</span></div>
                     <a-input v-model:value="datos_preinscripcion.codigo_certificado" />
                   </a-form-item>
                 </a-col>
-              </a-row>
-
-              <a-row :gutter="[16, 0]" class="form-row">
-                <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="6">
-                  <form @submit.prevent="preInscribir">
-                    <div class="flex justify-between">
-                      <input type="file" @change="onChange"/>
-
-                    </div>
-                  </form>
-                </a-col>
-
-
               </a-row>
 
             </div>
@@ -460,28 +713,6 @@
       </div>
 
       <div v-if="pagina_pre === 7">
-        <div style="width: 100%; ">
-          <a-card style="padding-top: 5px; padding-bottom:0px; background: #24c1ff25;" >
-            <div class="">
-              <div class="flex justify-center"  >
-                <img src="../../../assets/imagenes/check.png" width="160"/>
-              </div>
-              <div class="flex justify-center">
-                <div  style="text-align:center; max-width: 350px;" >
-                  Felicidades sus datos han sido regisrados con exito, complete el examen vocacional y obtenga 
-                  su constancia vocacional su hoja de preinscripción
-                </div>
-              </div>
-              <div class="flex justify-center mt-4 mb-4">
-                <a-button @click="examen = 1" style="background: #020b61;" type="primary"> Iniciar examen vocacional</a-button>
-              </div>
-            </div>
-          </a-card>
-          </div>
-      </div>
-
-
-      <div v-if="pagina_pre === 8">
         <div style="width: 100%; height:calc(100vh - 300px); display:flex; align-items:center; ">
           <a-card style="padding-top: 5px; padding-bottom:0px; background: #24c1ff25;">
             <div class="">
@@ -499,14 +730,12 @@
       </div>
 
       </div>
-
-
     </div>
     <div>
 
     </div>
     <a-affix v-if="pagina_pre !== 0" :offset-bottom="bottom" style="margin-top: 0px;">
-      <div v-if="pagina_pre !== 7 && pagina_pre !== 8">
+      <div v-if="pagina_pre !== 8">
         <a-progress :percent="avance"/>
       </div>
 
@@ -522,16 +751,16 @@
 
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 3">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button @click="guardarColegio()" class="boton-siguiente" type="primary" >Siguiente</a-button>
-      </div>
+        <a-button @click="savecolegio()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+      </div>  
 
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 4">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button @click="guardarApoderadoPadre()" class="boton-siguiente" type="primary" >Siguiente</a-button>    
+        <a-button @click="saveApoderado()" class="boton-siguiente" type="primary" >Siguiente</a-button>    
       </div>
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 5">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button @click="guardarApoderadoMadre()" class="boton-siguiente" type="primary" >Siguiente</a-button>    
+        <a-button @click="saveApoderadoM()" class="boton-siguiente" type="primary" >Siguiente</a-button>    
       </div>
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
@@ -539,48 +768,11 @@
       </div>
     </a-affix>
 	
+
+
+
+
 </Layout>
-
-<div v-if="examen === 1">
-  <div v-if="pagina_pre === 8" style="display:none;">{{  pagina_pre }} {{  examen = 0 }} </div>
-  <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
-  <div class="headVocalional" v-if="pagina_pre === 7" >
-        <div class="logoVocalional">  
-            <div> <img src="../../../assets/imagenes/logotiny.png" width="45"/> </div>
-            <div class="x"> 
-                <div class="container-pre"><span style="letter-spacing: 0.1rem;">DIRECCIÓN DE</span>
-            </div> 
-            <h1 class="logoVocalionalAD" > ADMISIÓN </h1> </div>
-            <div> <img src="../../../assets/imagenes/logoDAD.png" width="45" /> </div>
-        </div>
-        <div class="flex justify-center titulo-pre ">
-            <div>  
-                <span> Examen Vocacional </span>
-                <div class="flex justify-center items-center"> <hr class="line-preV"><div style="font-weight: bold; color: white; font-size: 1.1rem"> CEPREUNA </div>  <hr class="line-preV"> </div>
-            </div>
-        </div>
-
-        <div style="background: white; border-radius: 20px 20px 0px 0px; margin-top:20px; margin-bottom:-15px;  padding: 20px; padding-top:20px; padding-right:0px;">
-          
-    <!-- {{ nc }} -->
-          <div class="vocacional">
-            <Vocacional v-if="avance_current < 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="formState.value" :actualiza="'si'"/>
-            <Vocacional v-if="avance_current >= 110" ref="vocacionalComponent" :id_postulante="datospersonales.id" :dni="formState.value" :actualiza="'no'"/>
-            <div style="display:none;">{{ pagina_pre = pagina_pre_temp_vocacional }}</div>
-            <div style="display:none;">{{ pagina_pre_temp_vocacional = 7 }}</div>
-          </div>
-        </div>
-
-        <div class="flex" style="justify-content: flex-end;">
-          <a-button class="btn-vocacional" @click=" guardarVocacional()">Terminar examen</a-button>
-        </div>  
-        
-  </div>
-    <!-- <div>
-    <a-button @click="guardarColegio()" class="boton-siguiente" type="primary" >Terminar examen</a-button>
-  </div> -->
-
-</div>
 
 </template>
 <script setup>
@@ -591,10 +783,10 @@ import dayjs from 'dayjs';
 import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
 import { DownOutlined } from '@ant-design/icons-vue';
-//import Colegio from "./components/datos_colegio.vue"
+ 
+const ejemplo = ref(false);
 
 const examen = ref(0);
-const modvocacional = true;
 const avance = ref(0)
 const bottom = ref(2)
 
@@ -603,12 +795,10 @@ const next = () => { pagina_pre.value++; }
 const prev = () => { pagina_pre.value--; }
 const dni = ref("70757838")
 
-
-
 const formRef = ref();
 const formState = reactive({
-  dni: '',
-  ubigeo: '',
+  dni: '00000002',
+  ubigeo: '200101',
 });
 const formDatosPersonales = ref();
 const datospersonales = reactive({
@@ -632,6 +822,49 @@ const datosresidencia = reactive({
   dist: null,
   direccion:''
 });
+const formDatosColegio = ref();
+const datoscolegio = reactive({
+  egreso: null,
+  pais: 125,
+  dep: null,
+  prov: null,
+  dist: null,
+  colegio:'',
+});
+
+
+
+
+
+
+
+
+
+
+
+
+const formDatosPadre = ref();
+const datospadre = reactive({
+  tipo_apoderado: 1,
+  dni: null,
+  nombres: null,
+  paterno: null,
+  materno: null,
+});
+
+const formDatosMadre = ref();
+const datosmadre = reactive({
+  tipo_apoderado: 2,
+  dni: null,
+  nombres: null,
+  paterno: null,
+  materno: null,
+});
+
+
+
+
+
 
 
 const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
@@ -640,39 +873,59 @@ const nombresInput = (event) => { datospersonales.nombres = event.target.value.r
 const pimerapellidoInput = (event) => { datospersonales.primerapellido = event.target.value.replace(/[^A-Za-z]/g, '');};
 const celularInput = (event) => { datospersonales.celular = event.target.value.replace(/\D/g, ''); };
 
-
 const departamentos = ref([])
+const departamentoscolegio = ref([])
 // const dep = ref(null);
 const buscarDep = ref("")
-const  depseleccionado = ref('')
-watch(buscarDep, ( newValue, oldValue ) => {
-    getDepartamentos()
-})
+const buscarDepC = ref("")
+const depseleccionado = ref('')
+const depseleccionadoC = ref('')
+watch(buscarDep, ( newValue, oldValue ) => { getDepartamentos() })
+watch(buscarDepC, ( newValue, oldValue ) => { getDepartamentosColegio() })
 const onSelectDepartamentos = (value, option) => {
     depseleccionado.value = option.key;
-    getProvincias()
+    getProvincias();
+};
+const onSelectDepartamentosC = (value, option) => {
+    depseleccionadoC.value = option.key;
+    getProvinciasColegio();
+    provseleccionadaC.value = null;
+    datoscolegio.prov = null;
+    datoscolegio.dist = null;
+    distritosC.value = [];
+    datoscolegio.colegio = null;
+    colegios.value = [];
 };
 
 const provincias = ref([])
-// const prov = ref(null);
+const provinciasC = ref([])
 const buscarProv = ref("")
+const buscarProvC = ref("")
 const provseleccionada = ref(null)
-watch(buscarProv, ( newValue, oldValue ) => {
-    getProvincias()
-})
+const provseleccionadaC = ref(null)
+watch(buscarProv, ( newValue, oldValue ) => { getProvincias() })
+watch(buscarProvC, ( newValue, oldValue ) => { getProvinciasColegio() })
 const onSelectProvincias = (value, option) => {
     provseleccionada.value = option.key;
-    getDistritos()
+    getDistritos();
+};
+const onSelectProvinciasC = (value, option) => {
+    provseleccionadaC.value = option.key;
+    datoscolegio.dist = null;
+    getDistritosColegio();
+    datoscolegio.colegio = null;
+    colegios.value = [];
 };
 
 const distritos = ref([])
-// const dist = ref(null);
+const distritosC = ref([])
 const buscarDist = ref("")
+const buscarDistC = ref("")
 const distseleccionado = ref('')
-const onSelectDistritos = (value, option) => {
-    distseleccionado.value = option.key;
-    //getDistritos()
-};
+const distseleccionadoC = ref('')
+const onSelectDistritos = (value, option) => { distseleccionado.value = option.key;  };
+const onSelectDistritosC = (value, option) => { distseleccionadoC.value = option.key; getColegios(); datoscolegio.colegio = null;};
+const colegios = ref([]);
 
 const getDatosPersonales = async () => {
   
@@ -706,14 +959,11 @@ const getDatosPersonales = async () => {
     pagina_pre.value = 1
   }
 
-
-
 } 
 
 
 
 const savePasos =  async (namex, num, avan ) => {
-
   let res = await axios.post(
     "save-pasos-preinscripcion",
     { 
@@ -740,12 +990,7 @@ const saveDNI =  async () => {
 }
 
 const saveDatosPersonales =  async () => {
-  // if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
-  //   //console.log(depseleccionado.value + provseleccionada.value + distseleccionado.value)
-  //   datospersonales.value.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
-  // }
   const values = await formDatosPersonales.value.validateFields();
-
   let res = await axios.post(
     "save-postulante",
     {  
@@ -769,11 +1014,9 @@ const saveDatosPersonales =  async () => {
   if(res.data.estado === true ){  
     notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
   }
-// roles.value = res.data.datos.data;
 }
 
 const saveDatosResidencia =  async () => {
-
   const values = await formDatosResidencia.value.validateFields();
   if(depseleccionado.value !== null && provseleccionada.value !== null && distseleccionado.value !== null ) {
     datospersonales.ubigeo_residencia = depseleccionado.value + provseleccionada.value + distseleccionado.value
@@ -791,9 +1034,7 @@ const saveDatosResidencia =  async () => {
     notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
   }
   if( avance_current.value < 32){ savePasos("Registro de datos de residencia", 2, 32) } else{ next() }
-
 }
-
 
 watch(pagina_pre, ( newValue, oldValue ) => {
 
@@ -801,32 +1042,174 @@ watch(pagina_pre, ( newValue, oldValue ) => {
     getDatosPersonales();
     getDepartamentos();
   }
-  else {
-    return
+  if(newValue === 3 ){
+      getDepartamentosColegio();
+      getUbigeo();
   }
-
+  if(newValue === 4 ){
+    getApoderado();
+  }
+  if(newValue === 5 ){
+    getApoderadoM();
+  }
 })
 
 
-const getDepartamentos = async () => {
+const getDepartamentos = async () => { 
   let res = await axios.post( "get-departamentos-codigo?page=", { term: buscarDep.value});
   departamentos.value = res.data.datos.data
 } 
-
+const getDepartamentosColegio = async () => {
+  let res = await axios.post( "get-departamentos-codigo?page=", { term: buscarDepC.value});
+  departamentoscolegio.value = res.data.datos.data
+}
 const getProvincias = async (depp) => {
   let res = await axios.post( "get-provincias-codigo?page=", {departamento: depseleccionado.value });
   provincias.value = res.data.datos
 } 
-
+const getProvinciasColegio = async (depp) => {
+  let res = await axios.post( "get-provincias-codigo?page=", {departamento: depseleccionadoC.value });
+  provinciasC.value = res.data.datos
+} 
 const getDistritos = async (depp) => {
   let res = await axios.post( "get-distritos-codigo?page=", 
-    { 
-      departamento: depseleccionado.value,
-      provincia: provseleccionada.value    
-    }
+    { departamento: depseleccionado.value, provincia: provseleccionada.value }
   );
   distritos.value = res.data.datos
 }
+const getDistritosColegio = async (depp) => {
+  let res = await axios.post( "get-distritos-codigo?page=",  {  departamento: depseleccionadoC.value, provincia: provseleccionadaC.value });
+  distritosC.value = res.data.datos
+}
+const getColegios = async () => {
+  const res = await axios.post("get-colegio-distrito", {  ubigeo_cole: depseleccionadoC.value + provseleccionadaC.value + distseleccionado.value });
+  colegios.value = res.data.datos;
+}
+const getUbigeo = async () => {
+  const res = await axios.post("get-ubigeo-colegio", { id_postulante: datospersonales.id });
+  if(res[0] !== []){
+    datoscolegio.egreso = res.data.datos[0].egreso;
+    datoscolegio.colegio = res.data.datos[0].id;
+    datoscolegio.dep = res.data.datos[0].departamento;
+    depseleccionadoC.value = res.data.datos[0].dep;
+    datoscolegio.prov = res.data.datos[0].provincia;
+    provseleccionadaC.value = res.data.datos[0].prov;
+    datoscolegio.dist = res.data.datos[0].distrito;
+    distseleccionadoC.value = res.data.datos[0].dist;
+  }
+}
+
+const savecolegio = async () => {
+  const values = await formDatosColegio.value.validateFields();
+  let ac = 'si'; 
+  if (avance_current.value >= 48){ ac = 'no'; } 
+  try {
+    const response = await axios.post('save-postulante-colegio', {
+      id:  datospersonales.id,
+      anio_egreso: datoscolegio.egreso,
+      colegio: datoscolegio.colegio,     
+      actualizar: ac,
+      proceso: 4
+    },
+    getPasos());
+  } catch (error) {      
+    console.error(error);
+  }
+}
+
+
+
+
+//formDatosPadre
+const getApoderado = async () => {
+  const res = await axios.post("get-apoderado", { id_postulante: datospersonales.id, tipo: 1 });
+  if(res[0] !== []){
+    datospadre.id = res.data.datos[0].id;
+    datospadre.tipo_apoderado = res.data.datos[0].tipo_apoderado;
+    datospadre.dni = res.data.datos[0].nro_documento;
+    datospadre.nombres = res.data.datos[0].nombres;
+    datospadre.paterno = res.data.datos[0].paterno;
+    datospadre.materno = res.data.datos[0].materno;
+  }
+}
+const getApoderadoM = async () => {
+  const res = await axios.post("get-apoderado", { id_postulante: datospersonales.id, tipo: 2 });
+  if(res[0] !== []){
+    datosmadre.id = res.data.datos[0].id;
+    datosmadre.dni = res.data.datos[0].nro_documento;
+    datosmadre.nombres = res.data.datos[0].nombres;
+    datosmadre.paterno = res.data.datos[0].paterno;
+    datosmadre.materno = res.data.datos[0].materno;
+  }
+}
+
+const saveApoderado = async () => {
+  const values = await formDatosPadre.value.validateFields();
+  let avn  = 65;
+  let ac = 'si'; 
+  if (avance_current.value >= 65){ ac = 'no'; } 
+  if (datospadre.tipo_apoderado === 3){ avn = 80; }
+  try {
+    const response = await axios.post('save-postulante-apoderado', {
+        id: datospadre.id,
+        tipo_apoderado: datospadre.tipo_apoderado,
+        dni: datospadre.dni,
+        nombres: datospadre.nombres,
+        paterno: datospadre.paterno,
+        materno: datospadre.materno,
+        id_postulante: datospersonales.id,
+        actualizar: ac,
+        proceso: 4,
+        name:"Registro de datos del padre o tutor",
+        nro:4,
+        avance: avn
+    });
+    getPasos();
+  } catch (error) {
+    // Manejar el error en caso de que la solicitud falle
+    console.error(error);
+  }
+}
+
+const saveApoderadoM = async () => {
+  const values = await formDatosMadre.value.validateFields();
+  let avn  = 80;
+  let ac = 'si'; 
+  if (avance_current.value >= 80){ ac = 'no'; } 
+  try {
+    const response = await axios.post('save-postulante-apoderado', {
+        id: datosmadre.id,
+        tipo_apoderado: datosmadre.tipo_apoderado,
+        dni: datosmadre.dni,
+        nombres: datosmadre.nombres,
+        paterno: datosmadre.paterno,
+        materno: datosmadre.materno,
+        id_postulante: datospersonales.id,
+        actualizar: ac,
+        proceso: 4,
+        name:"Registro de datos de la madre",
+        nro:5,
+        avance: avn
+    });
+    getPasos();
+  } catch (error) {
+    // Manejar el error en caso de que la solicitud falle
+    console.error(error);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const id_pasos = ref(null)
 const avance_current = ref(null)
@@ -853,11 +1236,8 @@ const notificacion = (type, titulo, mensaje) => {
   });
 };
 
-// Define los eventos que puede emitir el componente padre
-// Define los eventos que puede emitir el componente padre
 const emits = defineEmits(['ejecutarFuncionHijo']);
 
-// Función del componente padre para manejar el evento emitido por el componente hijo
 const funcionHijoEjecutada = () => {
   console.log('Función del componente hijo ejecutada en el componente padre');
 };
@@ -870,17 +1250,10 @@ const datos_preinscripcion = ref({
   codigo_certificado:null,
 })
 
-
-const certificado = ref(null);
-
 const imagen = ref(null);
-const onChange = (e) => {
-  console.log("Selected file", e.target.files[0])
-  imagen.value = e.target.files[0];
-}
+
 const submit = async () => {
   let fd = new FormData();
-  fd.append('img', imagen.value)
   fd.append('dni', formState.dni)
   fd.append('modalidad', datos_preinscripcion.value.modalidad)
   fd.append('programa', datos_preinscripcion.value.programa)
@@ -889,67 +1262,19 @@ const submit = async () => {
   fd.append('codigo_medico', datos_preinscripcion.value.codigo_medico)
   fd.append('id_postulante', datospersonales.id)
   await axios.post("save-pre-inscripcion", fd).then(res=>{
-    if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 7, 110) } else{ next() }
+    if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 110) } else{ next() }
     showToast("success","2",res.data.menssje);
     getResoluciones()
   }).catch(err=>console.log(err))
 }
 const presionado = ref(0);
-// watch(presionado, ( newValue, oldValue ) => {
-//   if ( presionado.value === 1){
-//     getPasos()
-//     presionado.value = 0
-//   }
-// })
 
 const getDocs = async () => {
   window.open("/pdf-solicitud/"+formState.dni, '_blank');
 }
 
 
-</script>
 
-<script>
-import Colegio from "./components/datos_colegio.vue"
-import Apoderado from "./components/apoderado.vue"
-import Vocacional from "./components/exvocacional.vue"
-
-export default {
-  components: {
-    Colegio, Apoderado, Vocacional  
-  },
-  data() {
-    return { 
-      pagina_pre_temp: 3,
-      pagina_pre_temp_padre: 4,
-      pagina_pre_temp_madre: 5,
-      pagina_pre_temp_vocacional: 7,
-      nc:0
-    }
-  },
-
-  methods: {
-
-    async guardarColegio() {
-      this.nc = await this.$refs.hijoComponent.ejecutarMetodo();
-      this.pagina_pre_temp = 4;
-      console.log(this.nc);
-    },
-    async guardarApoderadoPadre() {
-      this.nc = await this.$refs.padreComponent.saveApoderado();
-      this.pagina_pre_temp_padre = 5;
-    },
-    async guardarApoderadoMadre() {
-      this. nc = await this.$refs.madreComponent.saveApoderadoMadre();
-      this.pagina_pre_temp_madre = 6;
-    },
-
-    async guardarVocacional() {
-      this. nc = await this.$refs.vocacionalComponent.saveVocacional();
-      this.pagina_pre_temp_vocacional = 8;
-    }
-  },
-}
 </script>
 
 <style scope>
