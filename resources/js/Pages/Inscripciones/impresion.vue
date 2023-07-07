@@ -510,7 +510,7 @@ watch(tabactive, ( newValue, oldValue ) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = 'https://admision-web.test/documentos/cepre2023-II/'+dnni+'/inscripcion-1.pdf';
+    iframe.src = baseUrl+'/documentos/cepre2023-II/'+dnni+'/inscripcion-1.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();

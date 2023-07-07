@@ -797,8 +797,8 @@ const dni = ref("70757838")
 
 const formRef = ref();
 const formState = reactive({
-  dni: '00000002',
-  ubigeo: '200101',
+  dni: '',
+  ubigeo: '',
 });
 const formDatosPersonales = ref();
 const datospersonales = reactive({
@@ -831,15 +831,6 @@ const datoscolegio = reactive({
   dist: null,
   colegio:'',
 });
-
-
-
-
-
-
-
-
-
 
 
 

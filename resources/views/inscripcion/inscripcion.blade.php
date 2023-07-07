@@ -75,12 +75,16 @@
                         </div>
                         <div style="text-align: justify;">
                             <p>
-                                El que suscribe declara bajo juramento que la información consignada en el proceso
-                                de inscripción presencial es verdadera y de mi entera responsabilidad. Conozco y acepto lo 
-                                dispuesto en el Reglamento del <span style="font-weight:bold;">EXAMEN DE ADMISIÓN GENERAL 2023-II</span> y acepto la revisión física estricta exhaustiva para el ingreso a la 
-                                Ciudad Universitaria a rendir el examen de admisión. En caso de alcanzar una 
-                                vacante, me comprometo a cumplir con lo dispuesto en el Reglamento. En señal de 
-                                conformidad firmo la presente constancia de inscripción.
+                                El que suscribe declara bajo juramento que la información 
+                                proporcionada durante el proceso de inscripción presencial es veraz y 
+                                de mi entera responsabilidad. Reconozco y 
+                                acepto los términos estipulados en el Reglamento del 
+                                EXAMEN DE ADMISIÓN CEPREUNA 2023-II, así como someterme 
+                                a una rigurosa revisión física exhaustiva para acceder 
+                                a la Ciudad Universitaria y realizar el examen de admisión. 
+                                En caso de obtener una vacante, me comprometo a cumplir con 
+                                lo estipulado en el Reglamento. Como muestra de conformidad, 
+                                firmo la presente constancia de inscripción.
                             </p>
                         </div>
                     </td>
@@ -111,11 +115,11 @@
                     <td valign="top">
                         <div>
                             <div style=" width 80px; height: 95px;">
-                                <img src="{{ public_path('huellas/inscripcion/'.$data->dni.'.jpg')}} " alt="" width="75"> 
+                                <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="75"> 
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
-                                <img src="{{ public_path('huellas/inscripcion/'.$data->dni.'x.jpg')}} " alt="" height="95">
+                                <img src="{{ public_path('huellascepre/'.$data->dni.'x.jpg')}} " alt="" height="95">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
                         </div>
