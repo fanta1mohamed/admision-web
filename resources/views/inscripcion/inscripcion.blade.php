@@ -108,6 +108,7 @@
                                 <div><span>- </span><span>Venir con buzo, cabello recogido, visible el cuello y orejas</span></div>
                                 <div><span>- </span><span>Barbijos y tablero serán entregados por la Dirección de Admisión</span></div>
                                 <div style="margin-top: 16px"><span style="font-weight:bold">!Importante: de no presentar lo indicado no podrá ingresar a rendir su examen!</span></div>
+                                <img src="{{ public_path('imagenes/'.$data->dni.'x.png')}} " alt="" height="95">
                             </div>
                         </div>
                     </td>
@@ -119,7 +120,7 @@
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
-                                <img src="{{ public_path('imagenes/'.$data->dni.'x.jpg')}} " alt="" height="95">
+                                <img src="{{ public_path('imagenes/'.$data->dni.'.jpg')}} " alt="" height="95">
                                 <img src="{{ public_path('imagenes/'.$data->dni.'x.png')}} " alt="" height="95">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
