@@ -24,7 +24,7 @@
                     <td style="" rowspan="7" align="right"  width="150px" valign="top">
                         <div style="border:solid 1px #d9d9d9; padding:5px; width:125px; overflow-hidden;" >
                             <div style="overflow: hidden; height:150px; width:125px;">
-                                <img src="{{ asset('https://inscripciones.admision.unap.edu.pe/fotos/inscripcion/00000006.jpg') }} " alt="" height="165">
+                                <img src="{{ public_path('fotos/inscripcion/'.$data->dni.'.jpg') }}" alt="foto" width="75"> 
                                 <img src="" alt="" height="150">
                             </div>
                         </div>
@@ -108,7 +108,6 @@
                                 <div><span>- </span><span>Venir con buzo, cabello recogido, visible el cuello y orejas</span></div>
                                 <div><span>- </span><span>Barbijos y tablero serán entregados por la Dirección de Admisión</span></div>
                                 <div style="margin-top: 16px"><span style="font-weight:bold">!Importante: de no presentar lo indicado no podrá ingresar a rendir su examen!</span></div>
-                                <img src="{{ public_path('imagenes/'.$data->dni.'x.png')}} " alt="" height="95">
                             </div>
                         </div>
                     </td>
@@ -116,12 +115,11 @@
                     <td valign="top">
                         <div>
                             <div style=" width 80px; height: 95px;">
-                                <img src="{{ public_path('imagenes/logotiny.png')}}"  width="55">
+                                <img src="{{ public_path('huellascepre/00000006.jpg')}} " alt="" width="75"> 
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
-                                <img src="{{ public_path('huellascepre/logotiny.png')}}"  width="55">
-                                <img src="{{ public_path('imagenes/'.$data->dni.'x.png')}} " alt="" height="95">
+                                <img src="{{ public_path('huellascepre/'.$data->dni.'x.jpg')}} " alt="" height="95">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
                         </div>
