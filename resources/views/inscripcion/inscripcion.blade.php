@@ -114,11 +114,12 @@
                     <td valign="top">
                         <div>
                             <div style=" width 80px; height: 95px;">
-                                <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="75"> 
+                                {{-- <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="95">  --}}
+                                <img src="{{ public_path('fotos/huella/'.$data->dni.'.jpg') }}" alt="foto" width="125"> 
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
-                                <img src="{{ public_path('huellascepre/'.$data->dni.'x.jpg')}} " alt="" height="75">
+                                <img src="{{ public_path('huellascepre/'.$data->dni.'x.jpg')}} " alt="" height="95">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
                         </div>
