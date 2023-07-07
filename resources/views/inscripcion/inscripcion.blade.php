@@ -120,7 +120,7 @@
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
                             <div style="width 80px; heightpx; margin-top:10px;">
-                                <img src="{{ public_path('imagenes/'.$data->dni.'.jpg')}} " alt="" height="95">
+                                <img src="{{ public_path('huellascepre/logotiny.png')}}"  width="55">
                                 <img src="{{ public_path('imagenes/'.$data->dni.'x.png')}} " alt="" height="95">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
