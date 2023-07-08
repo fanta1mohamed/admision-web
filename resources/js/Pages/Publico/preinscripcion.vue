@@ -44,7 +44,8 @@
               :rules="[{ required: true, message: 'Por favor ingresa tu DNI', trigger: 'change' },
               { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]"
             >
-            <a-input v-model:value="formState.dni" @input="dniInput" :maxlength="12" placeholder="N° Documento"/>
+            <a-input v-if="datospersonales.tipo_doc === 1" v-model:value="formState.dni" @input="dniInput" :maxlength="8" placeholder="N° Documento"/>
+            <a-input v-else v-model:value="formState.dni" @input="dniInput" :maxlength="12" placeholder="N° Documento"/>
           </a-form-item>
           
           <div class="mb-4" v-if="datospersonales.tipo_doc === 1">
@@ -110,7 +111,7 @@
               </div>
 
               <a-row :gutter="[16, 0]" class="form-row mb-0" >
-                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                     <div><label>Primer apellido:</label></div>
                     <a-form-item
                       name="primerapellido"
@@ -119,13 +120,13 @@
                       <a-input @input="pimerapellidoInput" v-model:value="datospersonales.primerapellido"/>
                     </a-form-item>
                 </a-col>
-                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item>
                     <div><label>Segundo apellido:</label></div>
                     <a-input v-model:value="datospersonales.segundo_apellido" />
                   </a-form-item>
                 </a-col>
-                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item>
                     <div><label>Prenombres:</label></div>
                     <a-form-item
@@ -138,7 +139,7 @@
                 </a-col>
               </a-row>
 
-              <a-row :gutter="[16, 0]" class="form-row">
+              <a-row :gutter="[16, 0]" class="form-row" style="margin-top: -20px;">
                 <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
                   <a-form-item
                       name="correo"
@@ -154,7 +155,7 @@
               </a-row>
 
               <a-row :gutter="[16, 0]" class="form-row">
-                <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="12">
                   <a-form-item
                       name="celular"
                       :rules="[
@@ -166,7 +167,7 @@
                     <a-input @input="celularInput" :maxlength="9" v-model:value="datospersonales.celular" />
                   </a-form-item>
                 </a-col>
-                <a-col :span="24" :md="16" :lg="18  " :xl="16" :xxl="6">
+                <a-col :span="24" :md="24" :lg="18  " :xl="16" :xxl="12">
                   <a-form-item
                       name="fec_nacimiento"
                       :rules="[ { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},]"
@@ -204,7 +205,7 @@
             <div style="display: none;">{{ getDepartamentos() }}</div>
 
             <a-row :gutter="[16, 0]" class="form-row">
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+              <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                 <a-form-item
                   name="dep"
                   :rules="[{ required: true, message: 'Selecciona tu departamento', trigger: 'blur'},]"
@@ -229,7 +230,7 @@
                   </a-auto-complete>
                 </a-form-item>
               </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+              <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                 <a-form-item
                   name="prov"
                   :rules="[{ required: true, message: 'Selecciona tu provincia', trigger: 'blur'},]"
@@ -254,7 +255,7 @@
                   </a-auto-complete>
                 </a-form-item>
               </a-col>
-              <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+              <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                 <a-form-item
                   name="dist" :rules="[{ required: true, message: 'Selecciona tu distrito', trigger: 'blur'},]" >
                   <div><label>Distrito:</label></div>
@@ -323,7 +324,7 @@
                         </div>
                     
                         <a-row :gutter="[16, 0]" class="form-row">
-                          <a-col :span="24" :md="16" :lg="12" :xl="16" :xxl="6">
+                          <a-col :span="24" :md="24" :lg="12" :xl="16" :xxl="8">
                             <a-form-item
                             name="egreso"
                             :rules="[{ required: true, message: 'Ingrese año de egreso', trigger: 'change' },
@@ -333,7 +334,7 @@
                               <a-input v-model:value="datoscolegio.egreso" :maxlength="4" placeholder="Año egreso" />
                             </a-form-item>
                           </a-col>
-                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                          <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="16">
                             <a-form-item
                               name="pais"
                               :rules="[{ required: true, message: 'Seleccione el pain', trigger: 'change' }]"
@@ -350,7 +351,7 @@
                         </a-row>
                     
                         <a-row :gutter="[16, 0]" class="form-row">
-                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                          <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                             <a-form-item>
                               <div><label>Departamento: </label></div>
                     
@@ -374,7 +375,7 @@
                     
                             </a-form-item>
                           </a-col>
-                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                          <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                             <a-form-item>
                               <div><label>Provincia:</label></div>
                               <a-auto-complete
@@ -396,7 +397,7 @@
                               </a-auto-complete>
                             </a-form-item>
                           </a-col>
-                          <a-col :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                          <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                             <a-form-item>
                               <div><label>Distrito:</label></div>
                     
@@ -477,7 +478,7 @@
                     </a-radio-group>
 
                     <a-row :gutter="[16, 0]" class="form-row">
-                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                        <a-col :span="24" :md="26" :lg="12" :xl="12" :xxl="8">
                           <a-form-item
                             name="dni"
                             :rules="[{ required: true, message: 'Ingresa el DNI', trigger: 'change' },
@@ -487,7 +488,7 @@
                             <a-input ref="myDni" v-model:value="datospadre.dni" :maxlength="12" placeholder="" />
                         </a-form-item>
                         </a-col>
-                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                        <a-col :span="24" :md="24" :lg="12" :xl="12" :xxl="16">
                           <a-form-item
                             name="nombres"
                             :rules="[{ required: true, message: 'Ingresa los nombres', trigger: 'blur' }]"
@@ -549,7 +550,7 @@
                     </div>
 
                     <a-row :gutter="[16, 0]" class="form-row">
-                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                        <a-col :span="24" :md="24" :lg="12" :xl="12" :xxl="8">
                           <a-form-item
                             name="dni"
                             :rules="[{ required: true, message: 'Ingresa el DNI', trigger: 'change' },
@@ -559,7 +560,7 @@
                             <a-input ref="myDni" v-model:value="datosmadre.dni" :maxlength="12" placeholder="" />
                         </a-form-item>
                         </a-col>
-                        <a-col :span="24" :md="16" :lg="12" :xl="12" :xxl="6">
+                        <a-col :span="24" :md="24" :lg="12" :xl="12" :xxl="16">
                           <a-form-item
                             name="nombres"
                             :rules="[{ required: true, message: 'Ingresa los nombres', trigger: 'blur' }]"
@@ -621,7 +622,7 @@
 
 
               <a-row :gutter="[16, 0]" class="form-row">
-                <a-col :span="24" :md="16" :lg="12" :xl="24" :xxl="6">
+                <a-col :span="24" :md="24" :lg="12" :xl="24" :xxl="8">
                   <a-form-item>
                     <div><label>Programa de estudios</label></div>  
                     <a-select
@@ -678,13 +679,13 @@
                   </a-form-item>
                 </a-col>
                 
-                <a-col v-if="datos_preinscripcion.programa === 38 || datos_preinscripcion.programa === 16" :span="24" :md="16" :lg="12" :xl="8" :xxl="6">
+                <a-col v-if="datos_preinscripcion.programa === 38 || datos_preinscripcion.programa === 16" :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item>
                     <div><label>Cod. de examen médico:</label></div>
                     <a-input placeholder="Cod cert Examen médico" v-model:value="datos_preinscripcion.codigo_medico"/>
                   </a-form-item>
                 </a-col>
-                <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="6">
+                <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="8">
                   <a-form-item>
                     <div class="flex justify-between" style="font-weight:bold;"><label>Tipo certificado:</label></div>
                     <a-select
@@ -698,7 +699,7 @@
                     </a-select>
                   </a-form-item>
                 </a-col>
-                <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="6">
+                <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="8">
                   <a-form-item>
                     <div class="flex justify-between"><label>Codigo certificado</label> <span @click="ejemplo = true" style="color:blue; cursor:pointer;">ver ejemplo</span></div>
                     <a-input v-model:value="datos_preinscripcion.codigo_certificado" />

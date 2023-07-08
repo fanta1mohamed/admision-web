@@ -21,8 +21,8 @@
               <div class="flex justify-between">
                 <span style="font-weight: bold; font-size: 0.9rem; margin-right: 8px;"> {{ record.cod }}  </span>
                 <a-tooltip title="copiar">
-                  <a-button @click="copyCodigo('cod')" style="height:22px; width: 20px;">
-                    <template #icon><CopyOutlined /></template>
+                  <a-button @click="toClipboard(record.cod)" style="height:22px; width: 20px;">
+                    <template #icon><CopyOutlined/></template>
                   </a-button>
                 </a-tooltip>
               </div>
@@ -32,7 +32,7 @@
             <div class="flex justify-between">
                 <span style="font-size: 0.9rem; margin-right: 8px;"> {{ record.dni }}  </span>
                 <a-tooltip title="Copiar DNI">
-                  <a-button style="height:22px; width: 20px;">
+                  <a-button @click="toClipboard(record.dni)" style="height:22px; width: 20px;">
                     <template #icon><CopyOutlined /></template>
                   </a-button>
                 </a-tooltip>
@@ -80,6 +80,8 @@ import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'
 import { watch, computed, ref, unref } from 'vue';
 import { CopyOutlined, SearchOutlined, EyeOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
+import { toClipboard } from '@soerenmartius/vue3-clipboard'
+
 import axios from 'axios';
 
 const certificados = ref([])
@@ -126,15 +128,6 @@ watch(paginasize, (newValue, oldValue) => {
 });
 
 
-const copyCodigo = (textToCopy) => {
-  navigator.clipboard.writeText(textToCopy)
-    .then(() => {
-      message.success('Texto copiado');
-    })
-    .catch(() => {
-      message.error('Error al copiar el texto');
-    });
-};
 
 const notificacion = (type, titulo, mensaje) => {
     notification[type]({

@@ -96,7 +96,10 @@ class InscripcionController extends Controller
     }
 
     public function getDocumentos($dni){
-        $res = DB::select('SELECT documento.codigo, documento.nombre, documento.url, documento.estado, tipo_documento.nombre  AS tipo  
+        $res = DB::select('SELECT 
+        documento.codigo, documento.nombre, 
+        documento.url, documento.estado, documento.verificado, 
+        tipo_documento.nombre  AS tipo  
         FROM documento
         left JOIN tipo_documento ON tipo_documento.id = documento.id_tipo_documento        
         JOIN postulante ON documento.id_postulante = postulante.id
@@ -125,11 +128,17 @@ class InscripcionController extends Controller
     }
 
     public function getInscripciones($dni){
+        
         $res = DB::select('SELECT 
-        inscripciones.id, inscripciones.id_postulante, inscripciones.id_programa,
-        inscripciones.id_proceso, inscripciones.id_modalidad, inscripciones.estado
+        inscripciones.estado AS estado,
+        programa.nombre AS programa, 
+        procesos.nombre AS proceso,
+        modalidad.nombre AS modalidad
         FROM inscripciones
-        JOIN postulante ON postulante.id = inscripciones.id_postulante
+        JOIN programa ON programa.id = inscripciones.id_programa
+        JOIN procesos ON procesos.id = inscripciones.id_proceso
+        JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
+        JOIN postulante ON postulante.id = inscripciones.id_postulante    
         WHERE postulante.nro_doc = ' . $dni);
         
         $this->response['estado'] = true;

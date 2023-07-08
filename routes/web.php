@@ -76,7 +76,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/inscripciones/get-documentos-postulante/{dni}', [InscripcionController::class, 'getDocumentos']);
     Route::get('/inscripciones/get-preinscripciones-postulante/{dni}', [InscripcionController::class, 'getPreinscipciones']);
     Route::get('/inscripciones/get-inscripciones-postulante/{dni}', [InscripcionController::class, 'getInscripciones']);
-
     Route::get('/pdf-inscripción/{dni}', [InscripcionController::class, 'pdfInscripcion']);
     Route::post('/inscripciones/inscribir', [InscripcionController::class, 'Inscribir']);
 
@@ -142,6 +141,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 });
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
+
     Route::get('/', fn () => Inertia::render('Revisor/revisor'))->name('revisor');
     Route::get('/validacion', fn () => Inertia::render('Revisor/validacion'))->name('revisor-validacion');
     Route::get('/documentos', fn () => Inertia::render('Revisor/documentos'))->name('revisor-documentos');
@@ -170,6 +170,16 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/guardar-foto-biometrico', [FotoController::class, 'guardarFotoBiometrico']);
 
     Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
+
+    Route::get('/impresion', fn () => Inertia::render('Revisor/impresion'))->name('revisor-impresion-inscripcion');
+    Route::get('/get-postulante-dni/{dni}', [InscripcionController::class, 'getPostulanteByDni']);
+    Route::get('/get-apoderados-postulante/{dni}', [InscripcionController::class, 'getApoderados']);
+    Route::get('/get-vouchers-postulante/{dni}', [InscripcionController::class, 'getVouchers']);
+    Route::get('/get-documentos-postulante/{dni}', [InscripcionController::class, 'getDocumentos']);
+    Route::get('/get-preinscripciones-postulante/{dni}', [InscripcionController::class, 'getPreinscipciones']);
+    Route::get('/get-inscripciones-postulante/{dni}', [InscripcionController::class, 'getInscripciones']);
+    Route::get('/pdf-inscripción/{dni}', [InscripcionController::class, 'pdfInscripcion']);
+    Route::post('/inscribir', [InscripcionController::class, 'Inscribir']);
 
 });
 
@@ -212,7 +222,9 @@ Route::post('/get-colegio-distrito', [ColegioController::class, 'getColegiosDist
 Route::post('/get-colegio-distrito', [ColegioController::class, 'getColegiosDistrito']);
 Route::post('/get-apoderado', [ApoderadoController::class, 'getApoderado']);
 Route::post('/get-pasos-proceso', [SeleccionDataController::class, 'getPasos']);
+
 Route::post('/get-preguntas', [PreguntaController::class, 'getPreguntasPrograma']);
+Route::post('/get-preguntas-perfiles', [PreguntaController::class, 'getPreguntasPerfiles']);
 
 Route::post('/get-datos-examen', [PreguntaController::class, 'getDatosExamen']);
 Route::post('/get-datos-examen2', [PreguntaController::class, 'getDatosExamen2']);
@@ -228,8 +240,6 @@ Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado
 
 //Editor
 Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'));
-
-
 
 Route::get('/ver-puntaje', fn () => Inertia::render('Publico/puntaje'));
 Route::get('/aleatorio', fn () => Inertia::render('Publico/aleatorio'));

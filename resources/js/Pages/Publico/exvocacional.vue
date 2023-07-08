@@ -7,6 +7,8 @@
         <h1>Programa: {{ datos[0].nombre }} </h1> 
       </div>
   
+      <!-- {{ preguntasperfiles }} -->
+
       <div class="mb-3" v-for="(item, index) in preguntas" :key="item.id">
           <h3 >{{ index + 1 }}. {{  item.pregunta }}</h3>
   
@@ -15,7 +17,15 @@
                   <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
               </a-radio-group>
           </div>
+      </div>
+      <div class="mb-3" v-for="(item, index) in preguntasperfiles" :key="item.id">
+          <h3 >{{ index + 11 }}. {{  item.pregunta }}</h3>
   
+          <div v-for="respuesta in item.respuestas" :key="respuesta.ide">
+              <a-radio-group v-model:value="respuestas[index+10]">
+                  <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
+              </a-radio-group>
+          </div>
       </div>
       <div> 
           <a-button type="primary" @click="saveVocacional()"> Terminsar examen vocacional </a-button>
@@ -42,6 +52,11 @@
     </div>
   </div>
 
+    <a-modal v-model:visible="visible" @ok="handleOk">
+      <h1>FELICITACIONES FINALIZÓ SU EXAMEN VOCACIIONALCON EXITO</h1>
+      <a-button @click="visible = false">OK</a-button>
+    </a-modal>
+
   </LayoutExVocacional>
   </template>
   
@@ -59,7 +74,9 @@
     
     data() {
       return {
+        visible: false,
         preguntas: null,
+        preguntasperfiles: null,
         respuestas: [],
         datos: [],
         ex: 0,
@@ -77,11 +94,16 @@
         const res = await axios.post("get-preguntas", { id_postulante: this.datos[0].id, id_programa: this.datos[0].id_vocacional});
         this.preguntas = res.data.datos;
       },
+      async getPreguntasPerfiles() {
+        const res = await axios.post("get-preguntas-perfiles", { id_postulante: this.datos[0].id });
+        this.preguntasperfiles = res.data.datos;
+      },
   
       async getDatos() {
         const res = await axios.post("get-datos-examen2", { dni: this.dni  });
         this.datos = res.data.datos;
         this.getPreguntas();
+        this.getPreguntasPerfiles()
         this.ex = 1;
       },
 
@@ -99,17 +121,24 @@
               dni: this.datos[0].nro_doc,
               avance: avn
           });
+          
+          this.respuestas = [];
+          this.ex = 0;
+          this.visible = true;
           if (this.actualiza === 'si') {
             return  1 ;
           } else {
             return 0 ;
           }
+
       
         } catch (error) {
           // Manejar el error en caso de que la solicitud falle
           //console.error(error);
         }
+
       },
+      
   
     }
   };

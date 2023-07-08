@@ -65,6 +65,72 @@ class PreguntaController extends Controller
         $this->response['datos'] = $preguntas;
         return response()->json($this->response, 200);
     }
+
+
+    public function getPreguntasPerfiles(Request $request)
+    {
+        $programa = $request->id_programa;
+        $preguntas = [];
+
+        $ids = DB::table('preguntas')
+        ->select('id')
+        ->where(function ($query) {
+            $query->whereBetween('id', [431, 435])
+                  ->orWhereBetween('id', [436, 440])
+                  ->orWhereBetween('id', [441, 447])
+                  ->orWhereBetween('id', [448, 452]);
+        })
+        ->inRandomOrder()
+        ->limit(10)
+        ->pluck('id');
+
+        $res = DB::table('examen_vocacional')
+            ->join('preguntas', 'examen_vocacional.id', '=', 'preguntas.id_examen_vocacional')
+            ->join('respuestas', 'respuestas.id_pregunta', '=', 'preguntas.id')
+            ->select('preguntas.id AS id_pregunta', 'preguntas.url', 'preguntas.pregunta', 'respuestas.respuesta', 'respuestas.id AS id_respuesta', 'respuestas.valor')
+            ->where('examen_vocacional.id', 44)
+            ->whereIn('preguntas.id', $ids)
+            ->get();
+
+        $alternativas = [];
+        $temp = $res[0]->id_pregunta;
+        $cont = 0;
+        $preguntas[0]['id'] = $temp; 
+        $preguntas[0]['pregunta'] = $res[0]->pregunta;
+        $preguntas[0]['url'] = $res[0]->url;
+
+        // $alternativas[0] = $res[0]->respuesta; 
+        foreach ($res as $key => $registro) {
+            if($temp !== $registro->id_pregunta ){
+                $preguntas[$cont]['respuestas'] = $alternativas;  
+                $temp = $registro->id_pregunta;
+                $cont++;
+                $preguntas[$cont]['id_pregunta'] = $registro->id_pregunta; 
+                $preguntas[$cont]['pregunta'] = $registro->pregunta;
+                $preguntas[$cont]['url'] = $registro->url;
+                $alternativas = [];
+                $item = new Respuesta();
+                $item['respuesta'] = $registro->respuesta;
+                $item['valor'] = $registro->valor;
+                $item['ide'] = $registro->id_respuesta;
+                $item['ideP'] = $registro->id_pregunta;
+                array_push($alternativas,$item);
+                // $alternativas[$key] = $registro->respuesta;
+            }
+            else{
+                $item = new Respuesta();
+                $item['respuesta'] = $registro->respuesta;
+                $item['valor'] = $registro->valor;
+                $item['ide'] = $registro->id_respuesta;
+                $item['ideP'] =$registro->id_pregunta;
+                array_push($alternativas,$item);
+                $preguntas[$cont]['respuestas'] = $alternativas;  
+            }
+        }
+        $this->response['estado'] = true;
+        $this->response['datos'] = $preguntas;
+        return response()->json($this->response, 200);
+    }
    
     public function getDatosExamen(Request $request)
     {

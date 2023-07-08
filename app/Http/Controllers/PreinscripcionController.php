@@ -67,7 +67,19 @@ class PreinscripcionController extends Controller
                 'estado' => 1
             ]);
 
-            $pre = AvancePostulante::create([
+            $doc = Documento::create([
+                'codigo' => $request->codigo_certificado, 
+                'nombre' => 'CERT. DE ESTUDIOS',
+                'numero' => 1,
+                'observacion' => $request->tipo_certificado,
+                'id_postulante' => $request->id_postulante,
+                'id_tipo_documento' => 1,
+                'estado' => 1,
+                'url' => '',
+                'fecha' => date('Y-m-d')
+            ]);
+
+            $ava = AvancePostulante::create([
                 'dni_postulante'=> $request->dni,
                 'id_proceso' => $proceso,
                 'avance' => 1,
