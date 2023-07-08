@@ -294,7 +294,7 @@ class PreinscripcionController extends Controller
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
 
-        if($preinscrito[0] == 0){
+        if($preinscrito[0]->cont == 0){
 
             $doc = Documento::create([
                 'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
