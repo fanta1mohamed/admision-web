@@ -58,7 +58,7 @@
                     <td width="195px" align="left" valign="top"><div style="margin-top: -36px;"> FECHA DE IMPRESION </div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -36px;">:</div></td>
                     {{-- <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;">{{$fecha}}</span></div></td> --}}
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;"> 06 julio de 2023</span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;"> 08 julio de 2023</span></div></td>
                 </tr>
             </table>
         </div>
@@ -103,10 +103,10 @@
     
                             <div style="margin-top: 16px">
                                 <div><span>- </span><span>Documento Nacional de Identidad (original)</span></div>
-                                <div><span>- </span><span>Lápiz 2B, borrador y tajador</span></div>
                                 <div><span>- </span><span>Constancia de Inscripción </span></div>
-                                <div><span>- </span><span>Venir con buzo, cabello recogido, visible el cuello y orejas</span></div>
-                                <div><span>- </span><span>Barbijos y tablero serán entregados por la Dirección de Admisión</span></div>
+                                <div><span>- </span><span>Lápiz 2B, borrador y tajador</span></div>
+                                <div><span>- </span><span>De preferencia vestir con buzo sin capucha ni metales.</span></div>
+                                <div><span>- </span><span>Visible el cuello, las orejas, cabello recogido (mujeres) y cabello corto (varones).</span></div>
                                 <div style="margin-top: 16px"><span style="font-weight:bold">!Importante: de no presentar lo indicado no podrá ingresar a rendir su examen!</span></div>
                             </div>
                         </div>
@@ -154,9 +154,6 @@
                     </td>
                     <td>
                         <div style="padding 20px; margin-top:-50px;">
-                            <div style="margin-left:20px; margin-right:20px; border-top: 1px solid black; text-align:center; padding-top:5px;">
-                                <span>DIRECTOR DE ADMISIÓN</span>
-                            </div>
                         </div>
                     </td>
                     <td>

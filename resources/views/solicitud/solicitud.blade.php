@@ -114,7 +114,7 @@
                             FIRMA
                         </div> 
                         <div><span>{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }}</span></div>
-                        <span>{{ $data->tipo_doc }}: {{ $data->dni}}</span>
+                        <span> DNI: {{ $data->dni}}</span>
                         {{-- <div>966637192</div> --}}
                     </td>  
                     <td style="width: 50%"> 

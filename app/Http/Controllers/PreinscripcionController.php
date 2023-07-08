@@ -251,6 +251,10 @@ class PreinscripcionController extends Controller
 
     public function pdfsolicitud($dni) {
 
+        $preinscrito = DB::select("SELECT COUNT(*) AS cont FROM pre_inscripcion
+        JOIN postulante ON postulante.id = pre_inscripcion.id_postulante
+        WHERE postulante.nro_doc = ".$dni);
+        
         $res = Preinscripcion::select(
             'tipo_documento_identidad.nombre AS tipo_doc',
             'postulante.direccion', 
@@ -290,16 +294,19 @@ class PreinscripcionController extends Controller
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
 
-        $doc = Documento::create([
-            'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
-            'nombre' => 'SOLICITUD DE POSTULACIÓN',
-            'numero' => 1,
-            'id_postulante' => $res[0]->idP,
-            'id_tipo_documento' => 6,
-            'estado' => 1,
-            'url' => 'documentos/'.$name.'/'.$res[0]->dni.'/'.'solicitud-1.pdf',
-            'fecha' => date('Y-m-d')
-        ]);
+        if($preinscrito[0] == 0){
+
+            $doc = Documento::create([
+                'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
+                'nombre' => 'SOLICITUD DE POSTULACIÓN',
+                'numero' => 1,
+                'id_postulante' => $res[0]->idP,
+                'id_tipo_documento' => 6,
+                'estado' => 1,
+                'url' => 'documentos/'.$name.'/'.$res[0]->dni.'/'.'solicitud-1.pdf',
+                'fecha' => date('Y-m-d')
+            ]);
+        }
 
         file_put_contents(public_path('/documentos/'.$name.'/'.$res[0]->dni.'/').'solicitud-1.pdf', $output);
         return $pdf->download();
