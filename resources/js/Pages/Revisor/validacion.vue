@@ -18,13 +18,30 @@
               <eye-outlined @click="abrirmodal(record)" class="custom-icon"/>
           </template>
           <template v-if="column.dataIndex === 'cod'" >
-              <div><span style="font-weight: bold; font-size: 0.9rem;"> {{ record.cod }}  </span></div>
+              <div class="flex justify-between">
+                <span style="font-weight: bold; font-size: 0.9rem; margin-right: 8px;"> {{ record.cod }}  </span>
+                <a-tooltip title="copiar">
+                  <a-button @click="copyCodigo('cod')" style="height:22px; width: 20px;">
+                    <template #icon><CopyOutlined /></template>
+                  </a-button>
+                </a-tooltip>
+              </div>
+          </template>
+
+          <template v-if="column.dataIndex === 'dni'" >
+            <div class="flex justify-between">
+                <span style="font-size: 0.9rem; margin-right: 8px;"> {{ record.dni }}  </span>
+                <a-tooltip title="Copiar DNI">
+                  <a-button style="height:22px; width: 20px;">
+                    <template #icon><CopyOutlined /></template>
+                  </a-button>
+                </a-tooltip>
+            </div>
           </template>
 
           <template v-if="column.dataIndex === 'nombres'" >
             <div class="flex">
-              <!-- <div style="margin-bottom: -5px;" class="mr-2"><span style="font-weight: bold; font-size: .9rem;"> {{ record.dni }}  </span></div> -->
-              <span style="text-transform: uppercase; font-size: .9rem;"> {{ record.dni}} {{ record.nombres }} {{ record.paterno }} {{ record.materno }}</span>
+              <span style="text-transform: uppercase; font-size: .9rem;"> {{ record.nombres }} {{ record.paterno }} {{ record.materno }}</span>
             </div>
           </template>
 
@@ -61,7 +78,7 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { SearchOutlined, EyeOutlined } from '@ant-design/icons-vue';
+import { CopyOutlined, SearchOutlined, EyeOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 
@@ -72,7 +89,7 @@ const verurl = ref("");
 const buscar = ref("")
 
 
-const totalpaginas = ref(0) 
+const totalpaginas =  ref(0) 
 const pagina = ref(1)
 const paginasize = ref(10)
 
@@ -109,6 +126,15 @@ watch(paginasize, (newValue, oldValue) => {
 });
 
 
+const copyCodigo = (textToCopy) => {
+  navigator.clipboard.writeText(textToCopy)
+    .then(() => {
+      message.success('Texto copiado');
+    })
+    .catch(() => {
+      message.error('Error al copiar el texto');
+    });
+};
 
 const notificacion = (type, titulo, mensaje) => {
     notification[type]({
@@ -129,13 +155,19 @@ const columns = [
     title: 'Codigo',
     dataIndex: 'cod',
     key: 'codigo',
-    align: 'center'
+    width:'100px'
   },
   {
     title: 'Tipo',
     dataIndex: 'tipo',
     key: 'tipo',
     align: 'center'
+  },
+  {
+    title: 'DNI',
+    dataIndex: 'dni',
+    align: 'left',
+    width:'110px'
   },
   {
     title: 'Postulante',

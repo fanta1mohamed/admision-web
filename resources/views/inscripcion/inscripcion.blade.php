@@ -75,7 +75,7 @@
                         <div style="text-align: justify;">
                             <p>
                                 El que suscribe declara bajo juramento que la información 
-                                proporcionada durante el proceso de inscripción presencial es veraz y 
+                                proporcionada durante el proceso de inscripción es veraz y 
                                 de mi entera responsabilidad. Reconozco y 
                                 acepto los términos estipulados en el Reglamento del 
                                 EXAMEN DE ADMISIÓN CEPREUNA 2023-II, así como someterme 
