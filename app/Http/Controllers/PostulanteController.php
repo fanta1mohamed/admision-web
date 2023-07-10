@@ -39,6 +39,21 @@ class PostulanteController extends Controller
   }
 
   public function saveDniPostulante(Request $request) {
+
+    // $validator = $request->validate([
+    //   'email' => 'required|email',
+    //   'tipo_doc' => 'required',
+    //   'nro_doc' => 'required',
+    //   'ubigeo_nacimiento' => 'required',
+    //   'sexo' => 'required',
+    //   'estado_civil' => 'required', 
+    //   'primer_apellido' => 'required', 
+    //   'segundo_apellido' => 'required',
+    //   'nombres' => 'required',
+    //   'celular' => 'required',
+    //   'ubigeo_residencia' => 'required'
+    // ]);
+
     $postulante = Postulante::create([
       'tipo_doc' => $request->tipo_doc,
       'nro_doc' => $request->nro_doc,
@@ -60,6 +75,18 @@ class PostulanteController extends Controller
   }
 
   public function savePostulante(Request $request) {
+
+    // $validator = $request->validate([
+    //   'sexo' => 'required',
+    //   'estado_civil' => 'required', 
+    //   'primer_apellido' => 'required', 
+    //   'segundo_apellido' => 'required',
+    //   'nombres' => 'required',
+    //   'correo' => 'required',
+    //   'celular' => 'required',
+    //   'fec_nacimiento' => 'required',
+    // ]);
+
     $solo_unapellido = 1;
     if($request->segundo_apellido === null){
       $solo_unapellido = 0;
@@ -121,6 +148,11 @@ class PostulanteController extends Controller
     }
 
     public function saveResidencia(Request $request ) {
+
+      // $validator = $request->validate([
+      //   'ubigeo_residencia' => 'required',
+      //   'direccion' => 'required', 
+      // ]);
 
       $postulante = Postulante::find($request->id);
       $temp = $postulante;

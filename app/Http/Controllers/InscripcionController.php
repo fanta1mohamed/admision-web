@@ -59,7 +59,7 @@ class InscripcionController extends Controller
         JOIN departamento ON ubigeo.id_departamento = departamento.id
         JOIN provincia ON ubigeo.id_provincia = provincia.id
         JOIN distritos ON ubigeo.id_distrito = distritos.id
-        WHERE postulante.nro_doc = ' . $dni);
+        WHERE postulante.nro_doc = ' . $dni.' AND postulante.estado = 1');
         if(count($res) > 0 ){
             $this->response['estado'] = true;
             $this->response['datos'] = $res[0];
@@ -145,8 +145,31 @@ class InscripcionController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+     
+
 
     public function Inscribir(Request $request){
+
+        $codes = [
+            'oqUhTgqB3p','cSxucLxYUH','2fxesKtnjX','R9vmhVbvsv','ocFf4TeNvh','Ao9r3QaZ93',
+            'GM5aKXWNWZ','wwtoJHgz7H','yLVk7CEVt9','M8z999Mx4s','JTuwzTfUhe','eynVMCMRKy',
+            'v8Cco663BM','R3rkCcACPd','XWdMyDnbzg','bSbHLSMDwW','x3EwgY6Mwo','NBip4mXrob',
+            'yZ6om8FvJG','JPKcrMX5oH','ekbXeWn749','N89X9hrTeA','aD3sY6UZZH','7wtFKykvFi',
+            'B2ubjFEsRK','eS6r9S752S','Ntk3Tabj7h','iGkSUbsdwU','6DqKrweSTG','zEmRZmvFsA',
+            'PiJSnhC7MY', 'tYuaS4hR2d', 'CJBrr6LCiN', 'VN9wHqWNPG', 'gE8tDTwrvq',
+            'TKPWjbU5sY','4jreJt9mF3', 'T5WxKBXkQb', 'gzGywQbuTq', 'DHHuCHwR3z',
+            'xbuwS7eRcD', 'sZJvUbcdPU', 'XZAoqBAYWr', 'h4MsHpKQmJ', '5pZfvbatmM',
+            'uubBABcb6P', '2UwBkRWbd3', 'inNzJ78Rt4', 'quAaMKLAGW', 'r6xCLZkpcT',     
+            'cPkfsZZXh4', 'YDSj4hQCEL', 'yeraLTRrBu', 'yFG8Qmsutx', 'nXZhWF3u98',
+            'T8cftcobJL', 'PEk4a3Jzga', 'UsPj2x9Gvq','BauZrMPaWg', 'iVLmrN3eAg',
+            'KGKrNe88HG', 'ainzB47e3g', 'iXbVkajGcW','4nCdV4j65c', '4dqJvicUnM',
+            'LK7aLDkdXv', '8bXeaDD8kV', '7LLFJpgPbm', '9qZHfhG5iP','y88c62EewS',
+            'YWRrEd5kjJ', 'eKqLpe29Sz', 'SKCvFcmaPV','CE6v5XZ6Yz','5ahAX3qWhr',
+            'Q7XCBAi9y2', 'uQppXdWtra', '7fnX3Nnj9c', 'cofMSMzyR3', 'vKabFeRE7G',
+            'FhFV2wdB3p', 'w9yNcxn5FD', 'xb6LdVj3ia', 'bRY3upcKTw', 'isD4P5WdFm',
+            'zqYzopDf8Y', 'VhgJ7i3APW', 'ZZtUMkpRsu', 'Fr3WWf5sQ7', 'ZGWvhCGMVQ'
+        ];
+       
         // 'id_pre_inscripcion',
         // 'id_examen_vocacional',
         $inscripcion = Inscripcion::create([

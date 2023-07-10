@@ -928,7 +928,7 @@ const getDatosCepre = async () => {
       Authorization: 'cepreuna_v1_api'
     }
   });
-  if(pagina_pre.value == 0 ){
+  if(pagina_pre.value == 1 ){
     const values = await formRef.value.validateFields();
   }
   if(res.data.length > 0 && res.data[0].habilitado == 0 ) {
