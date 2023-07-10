@@ -928,10 +928,10 @@ const getDatosCepre = async () => {
       Authorization: 'cepreuna_v1_api'
     }
   });
-  if(pagina_pre.value == 1 ){
+  if(pagina_pre.value == 0){
     const values = await formRef.value.validateFields();
   }
-  if(res.data.length > 0 && res.data[0].habilitado == 0 ) {
+  if(res.data.length > 0 && res.data[0].habilitado == 1 ) {
     datospersonales.primerapellido = res.data[0].paterno
     datospersonales.segundo_apellido = res.data[0].materno
     datospersonales.nombres = res.data[0].nombres
