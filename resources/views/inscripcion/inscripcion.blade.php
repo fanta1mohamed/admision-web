@@ -164,7 +164,7 @@
                     <td>
                         <div style="">
                             <div style="margin-left:20px; margin-right:20px; border-top: 1px solid black; text-align:center; padding-top:5px;">
-                                <span>INSCRIPTOR</span>
+                                <span>DIRECTOR DE ADMISIÓN</span>
                             </div>
                         </div>
                     </td>

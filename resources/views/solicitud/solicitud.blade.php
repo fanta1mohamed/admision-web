@@ -113,7 +113,7 @@
                         <div style="text-align: center; border-top:1px black solid;">
                             FIRMA
                         </div> 
-                        <div><span>{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }}</span></div>
+                        <div><span style="text-transform:uppercase">{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }}</span></div>
                         <span> DNI: {{ $data->dni}}</span>
                         {{-- <div>966637192</div> --}}
                     </td>  

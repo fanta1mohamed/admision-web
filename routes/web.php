@@ -45,9 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
@@ -138,6 +138,8 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/guardar-foto-inscripcion', [FotoController::class, 'guardarFotoInscripcion']);
     Route::post('/guardar-foto-biometrico', [FotoController::class, 'guardarFotoBiometrico']);
 
+    Route::get('/reporte', fn () => Inertia::render('Admin/Vocacional/index'))->name('admin-reporte');
+    Route::get('/resultados-vocacional', [PreguntaController::class, 'getResultado']);
 });
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
@@ -240,6 +242,7 @@ Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado
 
 //Editor
 Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'));
+
 
 Route::get('/ver-puntaje', fn () => Inertia::render('Publico/puntaje'));
 Route::get('/aleatorio', fn () => Inertia::render('Publico/aleatorio'));

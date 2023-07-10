@@ -162,6 +162,29 @@ class PreguntaController extends Controller
 
     
 
+    public function getResultado(){
+
+       $res = DB::select(
+        'SELECT 
+        postulante.nro_doc AS dni, postulante.nombres, postulante.primer_apellido,
+        postulante.segundo_apellido,
+        modalidad.nombre AS modalidad, modalidad.codigo AS mod_cod, 
+        programa.nombre AS programa, programa.codigo AS pro_cod,
+        SUM(respuestas.valor) AS nota 
+        FROM detalle_examen_vocacional
+        JOIN respuestas ON respuestas.id = detalle_examen_vocacional.id_respuesta
+        JOIN postulante ON postulante.id = detalle_examen_vocacional.id_postulante
+        JOIN inscripciones ON postulante.id = inscripciones.id_postulante
+        JOIN programa ON programa.id = inscripciones.id_programa
+        JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
+        GROUP BY postulante.nro_doc, modalidad.id, programa.id, inscripciones.id'
+       );
+
+       $this->response['estado'] = true;
+       $this->response['datos'] = $res;
+       return response()->json($this->response, 200);
+    }
+
 
 
 
@@ -222,6 +245,8 @@ class PreguntaController extends Controller
         }
         return $cont;
     }
+
+
 
 
 }

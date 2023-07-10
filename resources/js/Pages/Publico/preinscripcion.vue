@@ -170,7 +170,8 @@
                 <a-col :span="24" :md="24" :lg="18  " :xl="16" :xxl="12">
                   <a-form-item
                       name="fec_nacimiento"
-                      :rules="[ { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},]"
+                      :rules="[ { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},
+                       { validator: validateFechaNacimiento, trigger: 'change' }]"
                     >
                     <div><label>Fec. Nacimiento: "DD/MM/AAAA"</label></div>
                       <a-date-picker placeholder="Selecciona tu fecha de nacimiento" style="width: 100%" v-model:value="datospersonales.fec_nacimiento" format='DD/MM/YYYY' />
@@ -919,6 +920,7 @@ const onSelectDistritos = (value, option) => { distseleccionado.value = option.k
 const onSelectDistritosC = (value, option) => { distseleccionadoC.value = option.key; getColegios(); datoscolegio.colegio = null;};
 const colegios = ref([]);
 
+
 const getDatosPersonales = async () => {
   
   if(pagina_pre.value == 0 ){
@@ -1109,6 +1111,21 @@ const savecolegio = async () => {
   }
 }
 
+function validateFechaNacimiento(rule, value, callback) {
+  if (!value) {
+    callback(new Error(''));
+  } else {
+    const fechaNacimiento = new Date(value);
+    const fechaMinima = new Date();
+    fechaMinima.setFullYear(fechaMinima.getFullYear() - 16);
+
+    if (fechaNacimiento > fechaMinima) {
+      callback(new Error('Debes tener al menos 16 años'));
+    } else {
+      callback();
+    }
+  }
+}
 
 
 

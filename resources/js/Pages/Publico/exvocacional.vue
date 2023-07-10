@@ -1,6 +1,14 @@
 <template>
   <LayoutExVocacional>
+
   <div v-if="ex == 1" class="p-5" style="padding: 30px 60px ;">
+    <div class="counter" style="position: fixed; top: 5px; right: 20px; background: #00000052; height: 75px; padding: 0px 10px;">
+      <div style="font-weight: bold; font-size: 1.3rem; margin-bottom: -10px; color: white; margin-top: 0px;">Tiempo restante</div>
+      <div class="flex" style="font-weight: bold; font-size: 2.6rem; margin-top: -15px;">
+        <h1 style="color: white;" :class="{ 'contador-minutos': minutos > 0 }">00:{{ minutos.toString().padStart(2, '0') }}:</h1><h1 style="color: white;" :class="{ 'contador-segundos': segundos > 0 }">{{ segundos.toString().padStart(2, '0') }}</h1>
+      </div>
+    </div>
+
       <div v-if="datos.length > 0" class="">
         <h1>DNI: {{ datos[0].nro_doc }} </h1>  
         <h1>Nombre: {{ datos[0].nombres }} {{ datos[0].primer_apellido }} {{ datos[0].segundo_apellido }} </h1> 
@@ -13,7 +21,10 @@
           <h3 >{{ index + 1 }}. {{  item.pregunta }}</h3>
   
           <div v-for="respuesta in item.respuestas" :key="respuesta.ide">
-              <a-radio-group v-model:value="respuestas[index]">
+             <a-radio-group v-if="tiempoRestante > 0" v-model:value="respuestas[index]">
+                  <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
+              </a-radio-group>            
+              <a-radio-group v-else v-model:value="respuestas[index]" disabled>
                   <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
               </a-radio-group>
           </div>
@@ -22,13 +33,16 @@
           <h3 >{{ index + 11 }}. {{  item.pregunta }}</h3>
   
           <div v-for="respuesta in item.respuestas" :key="respuesta.ide">
-              <a-radio-group v-model:value="respuestas[index+10]">
+             <a-radio-group v-if="tiempoRestante > 0" v-model:value="respuestas[index+10]">
+                  <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
+              </a-radio-group>
+              <a-radio-group v-else v-model:value="respuestas[index+10]" disabled>
                   <a-radio :value="respuesta">{{ respuesta.respuesta }}</a-radio>
               </a-radio-group>
           </div>
       </div>
       <div> 
-          <a-button type="primary" @click="saveVocacional()"> Terminsar examen vocacional </a-button>
+        <a-button type="primary" @click="saveVocacional()"> FINALIZAR EXAMEN VOCACIONAL </a-button>
       </div>
   </div>
   
@@ -52,9 +66,23 @@
     </div>
   </div>
 
-    <a-modal v-model:visible="visible" @ok="handleOk">
-      <h1>FELICITACIONES FINALIZÓ SU EXAMEN VOCACIIONALCON EXITO</h1>
-      <a-button @click="visible = false">OK</a-button>
+    <a-modal v-model:visible="visible" @ok="handleOk" style="width: 330px;" :footer="false">
+      <div class="flex justify-center mt-4 mb-3">
+        <span style="color: #3caaf3; opacity: 1;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </span>
+      </div>
+      <div class="flex justify-center mt-1 mb-1">
+        <span style="font-size: 2.3rem;">Buen Trabajo</span>
+      </div>
+      <div class="flex justify-center" style="text-align: center;">
+        <span style="font-size: 1.1rem;">FINALIZÓ CON EXITO SU EXAMEN VOCACIONAL</span>
+      </div>
+
+      <div class="flex justify-center mt-4 mb-3"> 
+        <a-button type="primary" @click="visible = false">ACEPTAR</a-button>
+      </div>
+      
     </a-modal>
 
   </LayoutExVocacional>
@@ -64,11 +92,7 @@
   import LayoutExVocacional from '@/Layouts/LayoutExVocacional.vue';
 </script>
   
-  <script>
-  import { ref, watch } from 'vue';
-  import { DownOutlined } from '@ant-design/icons-vue';
-
-  
+<script>  
   export default {
     props: ['id_postulante', 'actualiza', 'dni'],
     
@@ -82,11 +106,24 @@
         ex: 0,
         dni:'',
         codigo:'',
+
+        tiempoRestante: 1 * 60, // 20 minutos en segundos
+        minutos: null,
+        segundos: '00',
+        contadorIniciado: false
       };
-    },
-    
+    },    
+
     mounted() {
-      // this.getDatos();
+      setInterval(() => {
+        if( this.contadorIniciado === true){
+          if (this.tiempoRestante >= 0) {
+            this.minutos = Math.floor(this.tiempoRestante / 60);
+            this.segundos = this.tiempoRestante % 60;
+            this.tiempoRestante--;
+          }
+        }
+      }, 1000);
     },
     
     methods: {    
@@ -97,6 +134,7 @@
       async getPreguntasPerfiles() {
         const res = await axios.post("get-preguntas-perfiles", { id_postulante: this.datos[0].id });
         this.preguntasperfiles = res.data.datos;
+        this.contadorIniciado = true;
       },
   
       async getDatos() {
@@ -137,6 +175,12 @@
           //console.error(error);
         }
 
+      },
+      formatNumber(value) {
+        if (value !== null && value !== undefined) {
+          return value.toString().padStart(2, '0');
+        }
+        return '';
       },
       
   
