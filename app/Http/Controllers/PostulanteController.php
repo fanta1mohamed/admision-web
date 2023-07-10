@@ -40,9 +40,17 @@ class PostulanteController extends Controller
 
   public function saveDniPostulante(Request $request) {
     $postulante = Postulante::create([
-        'tipo_doc' => $request->tipo_doc,
-        'nro_doc' => $request->nro_doc,
-        'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+      'tipo_doc' => $request->tipo_doc,
+      'nro_doc' => $request->nro_doc,
+      'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+      'sexo' => $request->sexo,
+      'estado_civil' => $request->e_civil, 
+      'primer_apellido' => $request->paterno, 
+      'segundo_apellido' => $request->materno,
+      'nombres' => $request->nombres,
+      'email' => $request->correo,
+      'celular' => $request->celular,
+      'ubigeo_residencia' => $request->ubigeo_residencia
     ]);
     $this->response['tipo'] = 'success';
     $this->response['titulo'] = 'REGISTRO NUEVO';

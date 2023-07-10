@@ -1,0 +1,1 @@
+import{i as t,w as e,o,d as r}from"./app-59076cb5.js";import{A as a}from"./LayoutDocente-260765d8.js";import"./DropdownLink-d4a67f61.js";import"./logotiny-c4b525af.js";import"./_plugin-vue_export-helper-c27b6911.js";const s=r("h1",null," Revisores ",-1),d={__name:"revisor",setup(i){return(c,_)=>(o(),t(a,null,{default:e(()=>[s]),_:1}))}};export{d as default};

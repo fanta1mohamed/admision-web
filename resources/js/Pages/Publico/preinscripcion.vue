@@ -16,17 +16,17 @@
 
   </a-modal>
 	<div style="width: 100%; min-height: calc(100vh - 220px); padding: 20px 20px; margin-top: 0px;">
-<!-- 
+  <!-- 
     {{ nc }} -->
     <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
 
     <div class="flex mt-3 justify-center align-center" style=" width: 100%; min-height: calc(100vh - 215px)">
     <!-- INICIO -->
 			<a-card v-if="pagina_pre === 0"  style="width: 100%;  max-width: 350px; max-height:360px" class="pl-3 pr-3 cardInicio" > 
-		
         <div>
           <h1 style="font-size: 1.1rem;">Datos de validación</h1>
         </div>
+         <!-- {{datospersonales}} -->
         <a-form
             ref="formRef" :model="formState"
             name="inicio_dni"
@@ -61,7 +61,7 @@
             <div class="mt-2" ></div>
           </a-card>
           <div style="display: flex; justify-content: center; margin-top: 20px;">
-            <a-button type="primary" @click="getDatosPersonales()">Iniciar Postulación</a-button>
+            <a-button type="primary" @click="getDatosCepre()">Iniciar Postulación</a-button>
           </div>
         </a-form>
 		  </a-card>
@@ -917,8 +917,48 @@ const buscarDistC = ref("")
 const distseleccionado = ref('')
 const distseleccionadoC = ref('')
 const onSelectDistritos = (value, option) => { distseleccionado.value = option.key;  };
-const onSelectDistritosC = (value, option) => { distseleccionadoC.value = option.key; getColegios(); datoscolegio.colegio = null;};
+const onSelectDistritosC = (value, option) => { distseleccionadoC.value = option.key; datoscolegio.colegio = null; getColegios(); };
 const colegios = ref([]);
+
+const tes = ref(null)
+
+const getDatosCepre = async () => {
+  let res = await axios.get('https://sistemas.cepreuna.edu.pe/api/v1/'+formState.dni, {
+    headers: {
+      Authorization: 'cepreuna_v1_api'
+    }
+  });
+  if(pagina_pre.value == 0 ){
+    const values = await formRef.value.validateFields();
+  }
+  if(res.data.length > 0 && res.data[0].habilitado == 1 ) {
+    datospersonales.primerapellido = res.data[0].paterno
+    datospersonales.segundo_apellido = res.data[0].materno
+    datospersonales.nombres = res.data[0].nombres
+    datospersonales.sexo = res.data[0].sexo
+    datospersonales.correo = res.data[0].correo
+    datospersonales.celular = res.data[0].celular
+    datospersonales.ubigeo_residencia = res.data[0].codigo_distrito
+    saveDNI();
+    pagina_pre.value = 1
+  } 
+}
+
+// const guardardatoscepre = async () => {
+//   let res = await axios.post(
+//     "save-datos-cepre", { 
+//       paterno: datospersonales.primerapellido,
+//       materno:datospersonales.segundo_apellido,
+//       nombres: datospersonales.nombres,
+//       e_civil: datospersonales.estado_civil,
+//       sexo: datospersonales.sexo,
+//       correo: datospersonales.correo,
+//       celular: datospersonales.celular,
+//       ubigeo: formState.ubigeo
+//     }
+//   );
+//   getPasos()
+// }
 
 
 const getDatosPersonales = async () => {
@@ -948,10 +988,11 @@ const getDatosPersonales = async () => {
     datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
     datosresidencia.direccion = res.data.datos[0].direccion
     getPasos();
-  } else {
-    saveDNI()
-    pagina_pre.value = 1
-  }
+  } 
+  // else {
+  //   saveDNI()
+  //   pagina_pre.value = 1
+  // }
 
 } 
 
@@ -977,8 +1018,15 @@ const saveDNI =  async () => {
   {  
     tipo_doc: datospersonales.tipo_doc,
     nro_doc: formState.dni,
-    id: datospersonales.id,
-    ubigeo_nacimiento: datospersonales.ubigeo,
+    ubigeo_nacimiento: formState.ubigeo,
+    paterno: datospersonales.primerapellido,
+    materno:datospersonales.segundo_apellido,
+    nombres: datospersonales.nombres,
+    e_civil: datospersonales.estado_civil,
+    sexo: datospersonales.sexo,
+    correo: datospersonales.correo,
+    celular: datospersonales.celular,
+    ubigeo_residencia: datospersonales.ubigeo_residencia
   });
   getDatosPersonales()
 }
@@ -1076,7 +1124,7 @@ const getDistritosColegio = async (depp) => {
   distritosC.value = res.data.datos
 }
 const getColegios = async () => {
-  const res = await axios.post("get-colegio-distrito", {  ubigeo_cole: depseleccionadoC.value + provseleccionadaC.value + distseleccionado.value });
+  const res = await axios.post("get-colegio-distrito", {  ubigeo_cole: depseleccionadoC.value + provseleccionadaC.value + distseleccionadoC.value });
   colegios.value = res.data.datos;
 }
 const getUbigeo = async () => {

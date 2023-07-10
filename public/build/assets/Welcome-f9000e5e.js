@@ -1,1 +1,0 @@
-import{i as e,u as r,o as t,X as o}from"./app-c39bd20a.js";const c={__name:"Welcome",props:{canLogin:{type:Boolean},canRegister:{type:Boolean},laravelVersion:{type:String,required:!0},phpVersion:{type:String,required:!0}},setup(n){return(a,p)=>(t(),e(r(o),{title:"Welcome"}))}};export{c as default};
