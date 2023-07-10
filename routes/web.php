@@ -183,9 +183,12 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/pdf-inscripción/{dni}', [InscripcionController::class, 'pdfInscripcion']);
     Route::post('/inscribir', [InscripcionController::class, 'Inscribir']);
 
+    Route::get('/seguimiento', fn () => Inertia::render('Revisor/seguimiento'))->name('revisor-seguimiento');
+
 });
 
 Route::post('/get-avance-postulante', [TestController::class, 'getAvancePostulante']);
+Route::post('/get-avance-postulante2', [TestController::class, 'getAvancePostulante2']);
 
 
 Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {

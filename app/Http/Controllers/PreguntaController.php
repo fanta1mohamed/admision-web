@@ -111,7 +111,6 @@ class PreguntaController extends Controller
                 $alternativas = [];
                 $item = new Respuesta();
                 $item['respuesta'] = $registro->respuesta;
-                $item['valor'] = $registro->valor;
                 $item['ide'] = $registro->id_respuesta;
                 $item['ideP'] = $registro->id_pregunta;
                 array_push($alternativas,$item);
@@ -120,7 +119,6 @@ class PreguntaController extends Controller
             else{
                 $item = new Respuesta();
                 $item['respuesta'] = $registro->respuesta;
-                $item['valor'] = $registro->valor;
                 $item['ide'] = $registro->id_respuesta;
                 $item['ideP'] =$registro->id_pregunta;
                 array_push($alternativas,$item);
@@ -170,7 +168,7 @@ class PreguntaController extends Controller
         postulante.segundo_apellido,
         modalidad.nombre AS modalidad, modalidad.codigo AS mod_cod, 
         programa.nombre AS programa, programa.codigo AS pro_cod,
-        SUM(respuestas.valor) AS nota 
+        SUM(respuestas.valor) AS nota
         FROM detalle_examen_vocacional
         JOIN respuestas ON respuestas.id = detalle_examen_vocacional.id_respuesta
         JOIN postulante ON postulante.id = detalle_examen_vocacional.id_postulante

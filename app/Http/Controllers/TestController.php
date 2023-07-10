@@ -33,6 +33,19 @@ class TestController extends Controller
         return response()->json($this->response, 200);
     }
 
+    public function getAvancePostulante2(Request $request)
+    {
+        $res = DB::select(
+            'SELECT dni_postulante, id_proceso, avance, avance_postulante.id_usuario, observacion 
+            FROM avance_postulante 
+            WHERE dni_postulante = '.$request->dni
+        );
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res[0];
+        return response()->json($this->response, 200);
+    }
+
 
   
 }

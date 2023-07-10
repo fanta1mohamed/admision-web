@@ -430,7 +430,6 @@
           </div>
       </div>
 
-
       <div v-if="pagina_pre === 8">
         <div style="width: 100%; height:calc(100vh - 300px); display:flex; align-items:center; ">
           <a-card style="padding-top: 5px; padding-bottom:0px; background: #24c1ff25;">
