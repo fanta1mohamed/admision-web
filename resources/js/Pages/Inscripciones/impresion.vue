@@ -404,6 +404,7 @@ const getPostulantesByDni =  async () => {
     postulante.value.modalidad = res.data.datos.modalidad;
     postulante.value.programa = res.data.datos.programa;
     postulante.value.id_programa = res.data.datos.id_programa;
+    postulante.value.cod_programa = res.data.datos.cod_programa;
     postulante.value.id_proceso = res.data.datos.id_proceso;
     postulante.value.id_modalidad = res.data.datos.id_modalidad;
     postulante.value.dni_temp = res.data.datos.dni;
@@ -470,6 +471,7 @@ const Inscribir =  async () => {
     id_modalidad:"",
     programa:"",
     id_programa:"",
+    cod_programa:"",
     dni_temp:""
   }
 }

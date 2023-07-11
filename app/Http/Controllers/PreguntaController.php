@@ -146,16 +146,32 @@ class PreguntaController extends Controller
 
     public function getDatosExamen2(Request $request)
     {
-        $res = DB::select(
-            'SELECT examen_vocacional.id as id_vocacional,   programa.nombre, postulante.*  FROM pre_inscripcion
-            JOIN postulante ON postulante.id = pre_inscripcion.id_postulante
-            JOIN programa ON pre_inscripcion.id_programa  = programa.id
-            JOIN examen_vocacional ON pre_inscripcion.id_programa = examen_vocacional.programa
-            WHERE postulante.nro_doc = '.$request->dni.';');
+        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2');
 
-        $this->response['estado'] = true;
-        $this->response['datos'] = $res;
-        return response()->json($this->response, 200);
+        if($examen[0]->vocacional == 0) {
+
+            $res = DB::select(
+                'SELECT examen_vocacional.id as id_vocacional, programa.nombre, postulante.*  
+                 FROM inscripciones
+                 JOIN postulante ON postulante.id = inscripciones.id_postulante
+                 JOIN programa ON inscripciones.id_programa  = programa.id
+                 JOIN examen_vocacional ON inscripciones.id_programa = examen_vocacional.programa
+                 WHERE postulante.nro_doc = '.$request->dni.' AND inscripciones.codigo = '.$request->codigo.';');
+     
+             $this->response['estado'] = true;
+             $this->response['datos'] = $res;
+             return response()->json($this->response, 200);
+
+        }else {
+
+            $this->response['estado'] = false;
+            $this->response['mensaje'] = "Ya rindió el examen vocacional";
+            return response()->json($this->response, 200);
+
+
+        }
+
+
     }
 
     

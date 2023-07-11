@@ -107,7 +107,7 @@
         dni:'',
         codigo:'',
 
-        tiempoRestante: 1 * 60, // 20 minutos en segundos
+        tiempoRestante: 20 * 60, // 20 minutos en segundos
         minutos: null,
         segundos: '00',
         contadorIniciado: false
@@ -138,7 +138,7 @@
       },
   
       async getDatos() {
-        const res = await axios.post("get-datos-examen2", { dni: this.dni  });
+        const res = await axios.post("get-datos-examen2", { dni: this.dni, codigo: this.codigo  });
         this.datos = res.data.datos;
         this.getPreguntas();
         this.getPreguntasPerfiles()
@@ -163,6 +163,8 @@
           this.respuestas = [];
           this.ex = 0;
           this.visible = true;
+          this.dni = '';
+          this.codigo= '';
           if (this.actualiza === 'si') {
             return  1 ;
           } else {

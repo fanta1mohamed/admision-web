@@ -44,7 +44,7 @@ class InscripcionController extends Controller
         $res = DB::select('SELECT 
         postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
         postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento,
-        programa.id AS id_programa, programa.nombre as programa,
+        programa.id AS id_programa, programa.nombre as programa, programa.codigo as cod_programa,
         colegios.id AS id_colegio, colegios.nombre AS colegio,
         modalidad.id AS id_modalidad, modalidad.nombre as modalidad,
         procesos.nombre AS proceso, procesos.id as id_proceso,
@@ -149,31 +149,15 @@ class InscripcionController extends Controller
 
 
     public function Inscribir(Request $request){
+     
+        $prog = $request['postulante']['cod_programa'];
 
-        $codes = [
-            'oqUhTgqB3p','cSxucLxYUH','2fxesKtnjX','R9vmhVbvsv','ocFf4TeNvh','Ao9r3QaZ93',
-            'GM5aKXWNWZ','wwtoJHgz7H','yLVk7CEVt9','M8z999Mx4s','JTuwzTfUhe','eynVMCMRKy',
-            'v8Cco663BM','R3rkCcACPd','XWdMyDnbzg','bSbHLSMDwW','x3EwgY6Mwo','NBip4mXrob',
-            'yZ6om8FvJG','JPKcrMX5oH','ekbXeWn749','N89X9hrTeA','aD3sY6UZZH','7wtFKykvFi',
-            'B2ubjFEsRK','eS6r9S752S','Ntk3Tabj7h','iGkSUbsdwU','6DqKrweSTG','zEmRZmvFsA',
-            'PiJSnhC7MY', 'tYuaS4hR2d', 'CJBrr6LCiN', 'VN9wHqWNPG', 'gE8tDTwrvq',
-            'TKPWjbU5sY','4jreJt9mF3', 'T5WxKBXkQb', 'gzGywQbuTq', 'DHHuCHwR3z',
-            'xbuwS7eRcD', 'sZJvUbcdPU', 'XZAoqBAYWr', 'h4MsHpKQmJ', '5pZfvbatmM',
-            'uubBABcb6P', '2UwBkRWbd3', 'inNzJ78Rt4', 'quAaMKLAGW', 'r6xCLZkpcT',     
-            'cPkfsZZXh4', 'YDSj4hQCEL', 'yeraLTRrBu', 'yFG8Qmsutx', 'nXZhWF3u98',
-            'T8cftcobJL', 'PEk4a3Jzga', 'UsPj2x9Gvq','BauZrMPaWg', 'iVLmrN3eAg',
-            'KGKrNe88HG', 'ainzB47e3g', 'iXbVkajGcW','4nCdV4j65c', '4dqJvicUnM',
-            'LK7aLDkdXv', '8bXeaDD8kV', '7LLFJpgPbm', '9qZHfhG5iP','y88c62EewS',
-            'YWRrEd5kjJ', 'eKqLpe29Sz', 'SKCvFcmaPV','CE6v5XZ6Yz','5ahAX3qWhr',
-            'Q7XCBAi9y2', 'uQppXdWtra', '7fnX3Nnj9c', 'cofMSMzyR3', 'vKabFeRE7G',
-            'FhFV2wdB3p', 'w9yNcxn5FD', 'xb6LdVj3ia', 'bRY3upcKTw', 'isD4P5WdFm',
-            'zqYzopDf8Y', 'VhgJ7i3APW', 'ZZtUMkpRsu', 'Fr3WWf5sQ7', 'ZGWvhCGMVQ'
-        ];
-       
-        // 'id_pre_inscripcion',
-        // 'id_examen_vocacional',
+        $res = DB::select("SELECT COALESCE(LPAD(MAX(CAST(SUBSTRING(codigo, 6) AS UNSIGNED)) + 1, 4, '0'), '0001') AS siguiente
+        FROM inscripciones
+        WHERE codigo LIKE '23".$prog."%'");
+
         $inscripcion = Inscripcion::create([
-            'codigo'=>$request['postulante']['dni_temp'],
+            'codigo'=>'23'.$request['postulante']['cod_programa'].$res[0]->siguiente,
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> $request['postulante']['id_proceso'],
             'id_programa' => $request['postulante']['id_programa'],
@@ -203,6 +187,7 @@ class InscripcionController extends Controller
 
         $datos = DB::select('SELECT 
         postulante.nro_doc AS dni, 
+        inscripciones.codigo as codigo,
         postulante.nombres AS nombre, 
         postulante.primer_apellido AS paterno,
         postulante.segundo_apellido AS materno,

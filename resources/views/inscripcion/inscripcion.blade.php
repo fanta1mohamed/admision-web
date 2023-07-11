@@ -15,15 +15,15 @@
             </table>
         </div>
 
-        <div style="margin-top:6px">
+        <div style="margin-top:6px; ">
             <table style="font-size:11pt; font-weight:bold; width:100%;">
                 <tr style="height:85px; padding:0;">
                     <td style="" width="195px" align="left" valign="top">MODALIDAD</td>
                     <td style="" width="5px" align="left" valign="top">:</td>
                     <td style="" align="left" valign="top"><div style="text-align: justify; font-weight: regular;"><span>{{$data->modalidad}}</span></div></td>
                     <td style="" rowspan="7" align="right"  width="150px" valign="top">
-                        <div style="border:solid 1px #d9d9d9; padding:5px; width:125px; overflow-hidden;" >
-                            <div style="overflow: hidden; height:150px; width:125px;">
+                        <div style="border:solid 1px #d9d9d9; padding:5px; width:140px; overflow-hidden; margin-right:-40px;" >
+                            <div style="overflow: hidden; height:160px; width:125px;">
                                 <img src="{{ public_path('fotos/inscripcion/'.$data->dni.'.jpg') }}" alt="foto" width="125"> 
                             </div>
                         </div>
@@ -149,20 +149,12 @@
         <div style="margin-top:110px">
             <table style="font-size:11pt;  width:100%;">
                 <tr>
-                    <td>
- 
-                    </td>
-                    <td>
-                        <div style="padding 20px; margin-top:-50px;">
-                        </div>
-                    </td>
-                    <td>
-                     </td>
+
                 </tr>
 
                 <tr>
                     <td>
-                        <div style="">
+                        <div style="width:260px;">
                             <div style="margin-left:20px; margin-right:20px; border-top: 1px solid black; text-align:center; padding-top:5px;">
                                 <span>DIRECTOR DE ADMISIÓN</span>
                             </div>
@@ -171,9 +163,20 @@
                     <td>
                      </td>
                     <td>
-                        <div style="padding 20px;">
+                        <div style="padding 20px; width:260px">
                             <div style="margin-left:20px; margin-right:20px; border-top: 1px solid black; text-align:center; padding-top:5px;">
                                 <span>POSTULANTE</span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div style="magin-rigth -20px; width:145px; margin-top:-120px;">
+                            <div style="text-align: center">
+                                <span style="font-size:12pt; text-align:center"><?php echo DNS1D::getBarcodeHTML($data->codigo ,'C128');?> </span>
+                            </div>
+                            <div style="margin-right:-14px; text-align: right; font-size:2.3rem;">
+                                {{$data->codigo}}
                             </div>
                         </div>
                     </td>
