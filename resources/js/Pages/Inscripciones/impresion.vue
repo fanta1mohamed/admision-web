@@ -365,6 +365,7 @@ const postulante = ref({
   modalidad: "",
   id_modalidad:"",
   programa:"",
+  cod_programa:"",
   id_programa:"",
   dni_temp:""
 })
