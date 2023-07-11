@@ -2,8 +2,11 @@
 <Head title="Inscripciones-impresión"/>
 <AuthenticatedLayout>
 <div>
+  
+
 <a-tabs v-model:activeKey="tabactive" type="card">
   <a-tab-pane key="1" tab="Inscripcion" >
+
     <div style="padding: 0px 15px;">
       <!-- {{ dniseleccionado }} {{ postulante }} -->
       <div class="flex justify-end" >
@@ -43,6 +46,7 @@
        <div style=" width:100%; border: solid 1px #f3f3f3; margin: 20px 0px">
       
         <div class="container-principal">
+
 
           <a-col flex="1 1">
             <div class="container-postulante">
@@ -325,6 +329,8 @@
     </a-table>
   </a-tab-pane>
 </a-tabs>
+
+{{ postulante }}
 </div>
 </AuthenticatedLayout>
 

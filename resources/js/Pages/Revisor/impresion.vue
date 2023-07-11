@@ -381,6 +381,7 @@ const postulante = ref({
   procedencia: "",
   proceso: "",
   id_proceso:"",
+  cod_programa:"",
   modalidad: "",
   id_modalidad:"",
   programa:"",
@@ -422,6 +423,7 @@ const getPostulantesByDni =  async () => {
     postulante.value.proceso = res.data.datos.proceso;
     postulante.value.modalidad = res.data.datos.modalidad;
     postulante.value.programa = res.data.datos.programa;
+    postulante.value.cod_programa = res.data.datos.cod_programa;
     postulante.value.id_programa = res.data.datos.id_programa;
     postulante.value.id_proceso = res.data.datos.id_proceso;
     postulante.value.id_modalidad = res.data.datos.id_modalidad;
