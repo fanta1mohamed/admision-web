@@ -43,7 +43,7 @@
                     <td style="width: 50%">
                         <p style="text-align: justify; line-height:1.5rem;">
                             Yo, <span style="text-transform: uppercase;">{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }} </span>, 
-                            identificado con {{$data->tipo_doc }} numero {{ $data->dni}}, 
+                            identificado con DNI numero {{ $data->dni}}, 
                             con domicilio en {{$data->direccion }} de {{ $data->distrito }}, Ante Ud. 
                             respetuosamente me presento y expongo:
                         </span>
@@ -59,7 +59,7 @@
                         <div style="text-align: justify">
                             <p style="line-height:1.5rem;">
                                 Que habiendo culminado mis estudios en el colegio 
-                                {{ $data->colegio}} de {{ $data->distrito }} el año {{ $data->egreso }}, 
+                                {{ $data->colegio}} en el año {{ $data->egreso }}, 
                                 presento mi solicitud para participar en el examen
                                 {{ $data->proceso }} que se llevará a cabo los días 22 y 23 de Julio, 
                                 donde postularé al programa de estudios de {{ $data->programa }}

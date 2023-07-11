@@ -263,7 +263,7 @@ class PreinscripcionController extends Controller
             'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido',
             'postulante.anio_egreso AS egreso',
             'colegios.nombre AS colegio',
-            'modalidad.nombre as modalidad', 
+            'modalidad.nombre as modalidad',
             'distritos.nombre AS distrito',
             'procesos.id as id_proceso',
             'procesos.nombre AS proceso',
@@ -274,7 +274,7 @@ class PreinscripcionController extends Controller
           ->join ('programa', 'programa.id', '=','pre_inscripcion.id_programa')
           ->join ('modalidad', 'modalidad.id', '=','pre_inscripcion.id_modalidad')
           ->join ('colegios', 'colegios.id', '=','postulante.id_colegio')
-          ->join ('ubigeo', 'ubigeo.ubigeo', '=','colegios.ubigeo')
+          ->join ('ubigeo', 'ubigeo.ubigeo', '=','postulante.ubigeo_residencia')
           ->join ('distritos', 'distritos.id', '=','ubigeo.id_distrito')
           ->join ('tipo_documento_identidad','tipo_documento_identidad.id', '=', 'postulante.tipo_doc')
           ->where('postulante.nro_doc','=', $dni)->get();
