@@ -131,6 +131,7 @@ class InscripcionController extends Controller
         
         $res = DB::select('SELECT 
         inscripciones.estado AS estado,
+        programa.codigo as cod_programa,
         programa.nombre AS programa, 
         procesos.nombre AS proceso,
         modalidad.nombre AS modalidad
