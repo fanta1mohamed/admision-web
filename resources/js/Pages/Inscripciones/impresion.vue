@@ -451,7 +451,6 @@ const getInscripciones =  async () => {
 const Inscribir =  async () => {
   let res = await axios.post( "/admin/inscripciones/inscribir", { postulante: postulante.value });
   //postulantes.value = res.data.datos.data;
-
   imprimirPDF(dniseleccionado.value)
   dniseleccionado.value = "";
   dni.value = "";
