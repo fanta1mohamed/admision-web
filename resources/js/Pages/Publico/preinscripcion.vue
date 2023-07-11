@@ -61,7 +61,7 @@
             <div class="mt-2" ></div>
           </a-card>
           <div style="display: flex; justify-content: center; margin-top: 20px;">
-            <a-button type="primary" @click="getDatosCepre()">Iniciar Postulación</a-button>
+            <a-button type="primary" @click="getDatosPersonales()">Iniciar Postulación</a-button>
           </div>
         </a-form>
 		  </a-card>
@@ -940,7 +940,7 @@ const getDatosCepre = async () => {
     datospersonales.celular = res.data[0].celular
     datospersonales.ubigeo_residencia = res.data[0].codigo_distrito
     saveDNI();
-    pagina_pre.value = 1
+
   } 
 }
 
@@ -989,10 +989,10 @@ const getDatosPersonales = async () => {
     datosresidencia.direccion = res.data.datos[0].direccion
     getPasos();
   } 
-  // else {
-  //   saveDNI()
-  //   pagina_pre.value = 1
-  // }
+  else {
+    getDatosCepre();
+    pagina_pre.value = 1;  
+  }
 
 } 
 
