@@ -145,9 +145,8 @@
                       name="correo"
                       :rules="[
                         { required: true, message: 'Ingresa un correo valido', trigger: 'change'},
-                        { type: 'email', message: 'Ingresa un correo valido' },
-                      ]"
-                    >
+                        { type: 'email', message: 'Ingresa un correo valido'}
+                      ]">
                     <div><label>Correo:</label></div>
                     <a-input type="email" @input="correoInput"  v-model:value="datospersonales.correo" />
                   </a-form-item>
@@ -769,10 +768,6 @@
         <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>    
       </div>
     </a-affix>
-	
-
-
-
 
 </Layout>
 
@@ -834,8 +829,6 @@ const datoscolegio = reactive({
   colegio:'',
 });
 
-
-
 const formDatosPadre = ref();
 const datospadre = reactive({
   tipo_apoderado: 1,
@@ -853,11 +846,6 @@ const datosmadre = reactive({
   paterno: null,
   materno: null,
 });
-
-
-
-
-
 
 
 const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
@@ -922,6 +910,17 @@ const colegios = ref([]);
 
 const tes = ref(null)
 
+const postcepre = ref(null)
+const getDatosCepreuna = async () => {
+  let res = await axios.get('https://sistemas.cepreuna.edu.pe/api/v1/'+formState.dni, {
+    headers: { Authorization: 'cepreuna_v1_api' }
+  });
+  if(res.data) {
+    postcepre.value = res.data[0]
+  } 
+}
+
+
 const getDatosCepre = async () => {
   let res = await axios.get('https://sistemas.cepreuna.edu.pe/api/v1/'+formState.dni, {
     headers: {
@@ -962,36 +961,40 @@ const getDatosCepre = async () => {
 
 
 const getDatosPersonales = async () => {
-  
+  getDatosCepreuna();
   if(pagina_pre.value == 0 ){
     const values = await formRef.value.validateFields();
   }
-  let res = await axios.post( "get-postulante-datos-personales", {nro_doc: formState.dni});
-  if(res.data.datos.length > 0 ) {
-    datospersonales.id = res.data.datos[0].id
-    datospersonales.primerapellido = res.data.datos[0].primer_apellido
-    datospersonales.segundo_apellido = res.data.datos[0].segundo_apellido
-    datospersonales.nombres = res.data.datos[0].nombres
-    //datospersonales.estado_civil = res.data.datos[0].estado_civil
-    //datospersonales.sexo = res.data.datos[0].sexo
-    datospersonales.correo = res.data.datos[0].correo
-    datospersonales.celular = res.data.datos[0].celular
-    if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }
-    formState.ubigeo = res.data.datos[0].ubigeo
-    datosresidencia.direccion = res.data.datos[0].direccion
-    depseleccionado.value = res.data.datos[0].dep;
-    datosresidencia.dep = res.data.datos[0].departamento
-    provseleccionada.value = res.data.datos[0].prov;
-    datosresidencia.prov = res.data.datos[0].provincia
-    distseleccionado.value = res.data.datos[0].dist;
-    datosresidencia.dist = res.data.datos[0].distrito
-    datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
-    datosresidencia.direccion = res.data.datos[0].direccion
-    getPasos();
-  } 
-  else {
-    getDatosCepre();
-    pagina_pre.value = 1;  
+
+  if(postcepre.value.habilitado == 1) {
+
+    let res = await axios.post( "get-postulante-datos-personales", {nro_doc: formState.dni});
+    if(res.data.datos.length > 0 ) {
+      datospersonales.id = res.data.datos[0].id
+      datospersonales.primerapellido = res.data.datos[0].primer_apellido
+      datospersonales.segundo_apellido = res.data.datos[0].segundo_apellido
+      datospersonales.nombres = res.data.datos[0].nombres
+      //datospersonales.estado_civil = res.data.datos[0].estado_civil
+      //datospersonales.sexo = res.data.datos[0].sexo
+      datospersonales.correo = res.data.datos[0].correo
+      datospersonales.celular = res.data.datos[0].celular
+      if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }
+      formState.ubigeo = res.data.datos[0].ubigeo
+      datosresidencia.direccion = res.data.datos[0].direccion
+      depseleccionado.value = res.data.datos[0].dep;
+      datosresidencia.dep = res.data.datos[0].departamento
+      provseleccionada.value = res.data.datos[0].prov;
+      datosresidencia.prov = res.data.datos[0].provincia
+      distseleccionado.value = res.data.datos[0].dist;
+      datosresidencia.dist = res.data.datos[0].distrito
+      datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
+      datosresidencia.direccion = res.data.datos[0].direccion
+      getPasos();
+    } 
+    else {
+      getDatosCepre();
+      pagina_pre.value = 1;  
+    }
   }
 
 } 

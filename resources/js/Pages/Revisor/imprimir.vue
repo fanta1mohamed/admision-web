@@ -186,6 +186,7 @@ const save = async () => {
   checkedList.value = []
 }
 
+
 const getPostulantes =  async (term = "", page = 1) => {
   let res = await axios.post(
       "get-postulantes?page=" + page,

@@ -330,7 +330,7 @@
   </a-tab-pane>
 </a-tabs>
 
-{{ postulante }}
+
 </div>
 </AuthenticatedLayout>
 
