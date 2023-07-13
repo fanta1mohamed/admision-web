@@ -5,17 +5,7 @@
 <a-tabs v-model:activeKey="tabactive" type="card">
   <a-tab-pane key="1" tab="Inscripcion" >
     <div style="padding: 0px 15px;">
-      <!-- {{ dniseleccionado }} {{ postulante }} -->
       <div class="flex justify-end">
-        <!-- <div>
-          <label style="margin-right: 10px;"> Dni:</label>
-          <a-input
-            style="width: 300px;"
-            placeholder="Dni"
-            v-model:value="dniseleccionado"
-            @keypress="handleKeyPress"
-          />  
-        </div> -->
         <div>
             <label style="margin-right: 10px;"> Buscar:</label>
             <a-auto-complete
@@ -68,22 +58,24 @@
                     </div>
 
                     <div class="flex">
-                      <div class="mr-3">
+                      <div class="mr-3" style="width:100%">
                         <a-label>Fecha Nac</a-label>
-                        <div>
-                          <a-date-picker v-model:value="fecha"/>
+                        <div style="width: 100%;">
+                          <a-date-picker style="width: 100%;" v-model:value="postulante.fec_nacimiento" format='DD/MM/YYYY'/>
                         </div>
                       </div>
-                      <div style="width: 100%;">
+                      <div style="width: 200px;">
                         <a-label>Sexo</a-label>
                         <a-select
                           ref="select"
                           v-model:value="postulante.sexo"
+                          value="value"
+                          label="label"
                           style="width: 100%"
                         >
                           <a-select-option value="1">Masculino</a-select-option>
-                          <a-select-option value="0">Femenino</a-select-option>
-                        </a-select>      
+                          <a-select-option value="2">Femenino</a-select-option>
+                        </a-select>
                       </div>
                     </div>
                   </div>
@@ -94,19 +86,19 @@
                 <div class="container-postulante mb-2">
                   <div style="width: 100%;">
                     <a-label>Colegio</a-label>
-                     <a-input v-model:value="postulante.colegio" placeholder="Colegio" />
+                     <a-input v-model:value="postulante.colegio" disabled placeholder="Colegio" />
                   </div>
                 </div>
                 <div class="container-postulante mb-2">
                   <div style="width: 100%;">
                     <a-label>Procedencia</a-label>
-                     <a-input v-model:value="postulante.procedencia" placeholder="Procedencia" />
+                     <a-input v-model:value="postulante.procedencia" disabled placeholder="Procedencia" />
                   </div>
                 </div>
                 <div class="container-postulante">
                   <div style="width: 100%;">
                     <a-label>Proceso</a-label>
-                     <a-input v-model:value="postulante.proceso" placeholder="Proceso" />
+                     <a-input v-model:value="postulante.proceso" disabled placeholder="Proceso" />
                   </div>
                 </div>
             </div>
@@ -120,6 +112,7 @@
                     ref="select"
                     v-model:value="postulante.modalidad"
                     style="width: 100%"
+                    disabled
                   >
                     <a-select-option :value="7">PERSONAS CON DISCAPACIDAD</a-select-option>
                     <a-select-option :value="8">EXAMEN GENERAL</a-select-option>
@@ -212,13 +205,19 @@
       </div>
 
       <div style="display: flex; justify-content: flex-end; margin-top:-10px;">
-        <div v-if="botomm == false">
-          <a-button type="primary" @click="Inscribir">Inscribir</a-button>
+        <div style="margin-right: 5px;"> 
+          <a-button type="" @click="actualizarPostulante">Actualizar Datos</a-button>          
+        </div>
+        <div>
+          <div v-if="botomm == false">
+            <a-button type="primary" @click="Inscribir">Inscribir</a-button>
+          </div>
+
+          <div v-else>
+            <a-button type="primary" disabled @click="Inscribir">Inscribir</a-button>
+          </div>
         </div>
 
-        <div v-else>
-          <a-button type="primary" disabled @click="Inscribir">Inscribir</a-button>
-        </div>
 
       </div>
 
@@ -306,7 +305,7 @@
           <a-divider type="vertical" />
             <a :href="'../../'+record.url" target="_blank">
               <a-button type="primary"  @click="eliminar(filiales[index])" shape="" size="small">
-                    <template #icon><eye-outlined/></template>
+                  <template #icon><eye-outlined/></template>
               </a-button>
             </a>  
         </template>
@@ -381,6 +380,9 @@ import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'
 import {ref, watch} from 'vue'
 import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons-vue';
+import dayjs from 'dayjs';
+import { format } from 'date-fns';
+import { notification } from 'ant-design-vue';
 
 const baseUrl = window.location.origin;
  
@@ -402,7 +404,7 @@ const postulante = ref({
   nombres:"", 
   primer_apellido:"",
   segundo_apellido:"", 
-  sexo:'Masculino', 
+  sexo: 'Masculino', 
   fec_nacimiento:"",
   colegio: "",
   procedencia: "",
@@ -437,6 +439,7 @@ const getPostulantes =  async (term = "", page = 1) => {
 }
 
 
+
 const postcepre = ref(null)
 const getDatosCepre = async () => {
   let res = await axios.get('https://sistemas.cepreuna.edu.pe/api/v1/'+dniseleccionado.value, {
@@ -456,6 +459,7 @@ const getPostulantesByDni =  async () => {
     postulante.value.primer_apellido = res.data.datos.primer_apellido;
     postulante.value.segundo_apellido = res.data.datos.segundo_apellido;
     postulante.value.sexo = res.data.datos.sexo;
+    postulante.value.fec_nacimiento = dayjs(res.data.datos.fec_nacimiento)
     postulante.value.colegio = res.data.datos.colegio;
     postulante.value.procedencia = res.data.datos.departamento +' / '+res.data.datos.provincia + ' / '+ res.data.datos.distrito;
     postulante.value.proceso = res.data.datos.proceso;
@@ -515,9 +519,6 @@ const Inscribir =  async () => {
   }
 
   //postulantes.value = res.data.datos.data;
-
-
-
   postulante.value = { 
     id:"",
     nombres:"", 
@@ -618,12 +619,28 @@ const buscarPostulante = (postul, proc ) => {
   }
 };
 
+const notificacion = (type, titulo, mensaje) => {
+  notification[type]({
+    message: titulo,
+    description: mensaje,
+  });
+};
 
-// const colInscripciones =  [
-//   { title: 'Name', dataIndex: 'name', key: 'name',},
-//   { title: 'Age', dataIndex: 'age', key: 'age',},
-//   { title: 'Address', dataIndex: 'address', key: 'address', },
-// ]
+const actualizarPostulante =  async () => {
+  let res = await axios.post( "actualizar-postulante", {
+    id: postulante.value.id,
+    nombres: postulante.value.nombres,
+    primer_apellido: postulante.value.primer_apellido,
+    segundo_apellido: postulante.value.segundo_apellido,
+    fec_nacimiento: format(new Date(postulante.value.fec_nacimiento), 'yyyy-MM-dd'),
+    sexo: postulante.value.sexo
+  });
+
+  if(res.data.estado === true ){  
+    notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
+  }
+}
+
 
 const colPreinscripciones =  [
   { title: 'Programa', dataIndex: 'programa', key: 'programa',},
@@ -632,6 +649,9 @@ const colPreinscripciones =  [
   { title: 'Estado', dataIndex: 'estado', key: 'estado', },
   { title: 'Ver', dataIndex: 'acciones', },
 ]
+
+
+
 
 getPostulantes()
 </script>

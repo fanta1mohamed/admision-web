@@ -106,6 +106,51 @@
 
         </a-sub-menu>
 
+
+
+        <hr style="border-top: 1px solid #FFFFFF23;">
+          <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
+            <span>Corrección de datos</span>
+          </div>
+
+          <a-menu-item style="margin-left: -10px; width: 250px; background: #ff000000;">
+            <nav-link :href="route('admin-apoderado-index')" :active="route().current('admin-apoderado-index')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <printer-filled style=""/>
+                <span>Apoderados</span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+            <nav-link :href="route('admin-postulante-index')" :active="route().current('admin-postulante-index')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <printer-filled style=""/>
+                <span>Postulantes</span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+            <nav-link :href="route('admin-colegio-index')" :active="route().current('admin-colegio-index')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <printer-filled style=""/>
+                <span>Colegios</span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+            <nav-link :href="route('admin-reporte')" :active="route().current('admin-reporte')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <printer-filled style=""/>
+                <span>Preinscripciones</span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+
+
           <hr style="border-top: 1px solid #FFFFFF23;">
           <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
             <span>Inscripcion</span>

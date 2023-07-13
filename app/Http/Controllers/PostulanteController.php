@@ -8,6 +8,7 @@ use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
 use App\Models\Postulante;
 use App\Models\Paso;
+use App\Models\Cambio;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -220,6 +221,161 @@ class PostulanteController extends Controller
     }
   
   //END PASO 1 PRE INSCRIPCION 
+
+
+  //REVISOR
+  public function actualizarDatos(Request $request) {
+
+
+      $registroActual = Postulante::find($request->id);
+      $cambios = [];
+
+      $fillable = ['primer_apellido', 'segundo_apellido', 'apellido_casada', 'nombres', 'sexo', 'fec_nacimiento'];
+
+      foreach ($fillable as $campo) {
+          if ($registroActual->$campo != $request->$campo) {
+              $cambios[$campo] = [
+                  'anterior' => $registroActual->$campo,
+                  'nuevo' => $request->$campo,
+              ];
+              $registroActual->$campo = $request->$campo;
+          }
+      }
+  
+      foreach ($cambios as $campo => $valores) {
+        if($valores['nuevo'] != null){
+          $this->saveCambios('usuarios',$campo, $valores['anterior'], $valores['nuevo'], $request->id);          
+        }
+      }
+
+      $registroActual->save();
+
+      $this->response['tipo'] = 'success';
+      $this->response['titulo'] = 'REGISTRO ACTUALIZADO';
+      $this->response['estado'] = true;
+      return response()->json($this->response, 200);
+  }
+
+  private function saveCambios($tabla, $campo, $anterior, $nuevo, $id ){
+    $cambio = Cambio::create([
+      'tabla' => $tabla,
+      'campo' => $campo,
+      'valor_anterior' => $anterior,
+      'valor_nuevo' => $nuevo,
+      'id_usuario' => auth()->id(), 
+      'id_registro' => $id
+    ]);
+  } 
+
+
+  //CRUD
+
+
+  public function getPostulantesAdmin(Request $request)
+  {
+    $query_where = [];
+
+    $res = Postulante::select(
+      'id', 'nro_doc', 'primer_apellido', 'segundo_apellido', 'apellido_casada', 'nombres', 'sexo', 'fec_nacimiento',
+      'ubigeo_nacimiento', 'ubigeo_residencia', 'celular', 'email', 'estado_civil','direccion','anio_egreso', 
+      'correo_institucional', 'cod_orcid', 'observaciones', 'id_colegio',
+    )
+    ->where($query_where)
+    ->where(function ($query) use ($request) {
+        return $query
+            ->orWhere('nro_doc', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('primer_apellido', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('segundo_apellido', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('nombres', 'LIKE', '%' . $request->term . '%');
+    })
+    ->paginate(20);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+  
+
+public function savePostulanteAdmin(Request $request ) {
+  
+      $modalidad = null;
+      if (!$request->id) {
+        $postulante = Postulante::create([
+          'primer_apellido' => $request->primer_apellido, 
+          'segundo_apellido' => $request->segundo_apellido,
+          'apellido_casada' => $request->apellido_casada,
+          'nombres' => $request->nombres,
+          'sexo' => $request->sexo,
+          'fec_nacimiento' => $request->fec_nacimiento,
+          'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+          'ubigeo_residencia' => $request->ubigeo_residencia,
+          'celular' => $request->celular,
+          'email' => $request->correo,
+          'estado_civil' => $request->estado_civil, 
+          'direccion' => $request->direccion,
+          'anio_egreso' => $request->egreso,
+          'nro_doc' => $request->nro_doc,
+          'observaciones' => $request->observaciones,
+          'id_colegio' => $request->colegio,
+        ]);
+        $this->response['tipo'] = 'success';
+        $this->response['titulo'] = 'REGISTRO NUEVO';
+        $this->response['mensaje'] = 'Proceso '.$postulante->nombre.' creado con exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $postulante;
+    } else {
+        $temp = Postulante::find($request->id);
+        $postulante = Postulante::find($request->id);
+
+        $postulante->primer_apellido = $request->primer_apellido; 
+        $postulante->segundo_apellido = $request->segundo_apellido;
+        $postulante->apellido_casada = $request->apellido_casada;
+        $postulante->nombres = $request->nombres;
+        $postulante->sexo = $request->sexo;
+        $postulante->fec_nacimiento = $request->fec_nacimiento;
+        $postulante->ubigeo_nacimiento = $request->ubigeo_nacimiento;
+        $postulante->ubigeo_residencia = $request->ubigeo_residencia;
+        $postulante->celular = $request->celular;
+        $postulante->email = $request->correo;
+        $postulante->estado_civil = $request->estado_civil; 
+        $postulante->direccion = $request->direccion;
+        $postulante->anio_egreso = $request->egreso;
+        $postulante->nro_doc = $request->nro_doc;
+        $postulante->observaciones = $request->observaciones;
+        $postulante->id_colegio = $request->colegio;
+        $postulante->id_usuario = auth()->id();
+        $postulante->save();
+
+        if( $temp == $postulante ) {
+          $this->response['estado'] = false;
+        }else 
+        {
+          $this->response['tipo'] = 'info';
+          $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
+          $this->response['mensaje'] = 'Datos del '.$postulante->nombres.' actualizados';
+          $this->response['estado'] = true;
+          $this->response['datos'] = $postulante;
+        }
+
+      }
+
+  return response()->json($this->response, 200);
+}
+
+public function deleteModalidad($id){
+  $modalidad = Modalidad::find($id);
+  $p = $modalidad;
+  $modalidad->delete();
+
+  $this->response['titulo'] = '!REGISTRO ELIMINADO!';
+  $this->response['mensaje'] = 'MODALIDAD '.$p->nombre.' ELIMINADA CON EXITO';
+  $this->response['estado'] = true;
+  $this->response['datos'] = $p;
+  return response()->json($this->response, 200);
+}
+
+
 
 
 }

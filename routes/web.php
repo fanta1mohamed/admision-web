@@ -140,6 +140,17 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     Route::get('/reporte', fn () => Inertia::render('Admin/Vocacional/index'))->name('admin-reporte');
     Route::get('/resultados-vocacional', [PreguntaController::class, 'getResultado']);
+
+
+    Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'))->name('admin-apoderado-index');
+    Route::get('/postulante', fn () => Inertia::render('Admin/Postulante/index'))->name('admin-postulante-index');
+    Route::get('/colegio', fn () => Inertia::render('Admin/Colegio/index'))->name('admin-colegio-index');
+    Route::post('/get-colegios-admin', [ColegioController::class, 'getColegiosAdmin']);
+    
+    Route::post('/get-postulantes-admin', [PostulanteController::class, 'getPostulantesAdmin']);
+    Route::post('/save-postulante-admin', [PostulanteController::class, 'savePostulanteAdmin']);
+    // Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
+    // Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);    
 });
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
@@ -184,6 +195,8 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/inscribir', [InscripcionController::class, 'Inscribir']);
 
     Route::get('/seguimiento', fn () => Inertia::render('Revisor/seguimiento'))->name('revisor-seguimiento');
+
+    Route::post('/actualizar-postulante', [PostulanteController::class, 'actualizarDatos']);
 
 });
 
@@ -233,6 +246,7 @@ Route::post('/get-preguntas-perfiles', [PreguntaController::class, 'getPreguntas
 
 Route::post('/get-datos-examen', [PreguntaController::class, 'getDatosExamen']);
 Route::post('/get-datos-examen2', [PreguntaController::class, 'getDatosExamen2']);
+
 Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'saveVocacional']);
 
 Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocacional']);
@@ -243,8 +257,10 @@ Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
 
+
+
+
 //Editor
-Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'));
 
 
 Route::get('/ver-puntaje', fn () => Inertia::render('Publico/puntaje'));

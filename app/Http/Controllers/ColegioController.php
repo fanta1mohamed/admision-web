@@ -42,6 +42,26 @@ class ColegioController extends Controller
       return response()->json($this->response, 200);
     }
 
+    public function getColegiosAdmin(Request $request)
+    {
+      $query_where = [];
+
+      $res = Colegio::select( 'id','nombre','cod_modular','ubigeo' )
+      ->where($query_where)
+      ->where(function ($query) use ($request) {
+          return $query
+            ->orWhere('nombre', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('ubigeo', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('cod_modular', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('ubigeo', 'LIKE', '%' . $request->term . '%');
+      })
+      ->paginate(20);
+  
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+      return response()->json($this->response, 200);
+    }
+
 
 
 
