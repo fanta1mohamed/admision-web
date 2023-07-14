@@ -113,7 +113,6 @@
                 });
             }
 
-            this.capturePhoto = null;
         }
 
     }
