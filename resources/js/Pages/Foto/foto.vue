@@ -112,6 +112,8 @@
                 console.error('Error al guardar la foto recortada: ', error);
                 });
             }
+
+            this.capturePhoto = null;
         }
 
     }
