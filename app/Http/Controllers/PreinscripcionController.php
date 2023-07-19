@@ -279,7 +279,8 @@ class PreinscripcionController extends Controller
           ->join ('tipo_documento_identidad','tipo_documento_identidad.id', '=', 'postulante.tipo_doc')
           ->where('postulante.nro_doc','=', $dni)->get();
 
-        $name = "general2023-II";
+        $name = "cepre2023-II";
+//        $name = "general2023-II";
 
         $data = $res[0];
         setlocale(LC_TIME, 'es_ES.utf8'); 

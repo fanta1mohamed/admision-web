@@ -2,7 +2,7 @@
 <Head title="Preinscipción"/>
 <Layout v-if="examen === 0">	
   
-  <a-button @click="abrirModalDatos()">abrir</a-button>
+  <!-- <a-button @click="abrirModalDatos()">abrir</a-button> -->
   <a-modal v-model:visible="open" style="width: 100%; max-width:1200px;" :footer="false" >
     <div>
       <h1 style="font-weight:bold; font-size:1.2rem;">Datos personales</h1> 
@@ -929,8 +929,8 @@
       </div>
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button @click="modalDatos = true" class="boton-siguiente" type="primary" >Finalizar</a-button>    
-        <!-- <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>     -->
+        <!-- <a-button @click="modalDatos = true" class="boton-siguiente" type="primary" >Finalizar</a-button>     -->
+        <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>    
       </div>
     </a-affix>
 
