@@ -258,9 +258,7 @@ Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF'
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
 
 
-
 Route::get('/get-expediente/{programa}/{dni}', [TestController::class, 'getNroConstancia']);
-
 
 
 //Editor

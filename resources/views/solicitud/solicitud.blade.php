@@ -61,7 +61,7 @@
                                 Que habiendo culminado mis estudios en el colegio 
                                 {{ $data->colegio}} en el año {{ $data->egreso }}, 
                                 presento mi solicitud para participar en el examen
-                                {{ $data->proceso }} que se llevará a cabo los días 22 y 23 de Julio, 
+                                {{ $data->proceso }} que se llevará a cabo los días 12 y 13 de Agosto, 
                                 donde postularé al programa de estudios de {{ $data->programa }}
                                 bajo la modalidad  {{{ $data->modalidad }}}.
                             </p>
@@ -72,19 +72,13 @@
                         <div style="padding-left:20px; margin-top: 16px;">
                             <div  style="margin-top: 5px;">1.	Comprobante de pago (original y copia).</div>
                             <div  style="margin-top: 5px;">2.	Documento de identidad (original y copia).</div>
-                            <div  style="margin-top: 5px;">3.	Certificado de estudios (original y copia).</div>
-                            {{-- <div style="margin-top: 5px;">5.	Constancia de no adeudo a la CEPREUNA (origial y copia).</div> --}}
-                            @if($data->id_proceso = 4)
-                                <div style="margin-top: 5px;">4.	Constancia de no adeudo a la CEPREUNA</div>
-                            @else
-                                <div></div>
-                            @endif
+                            <div  style="margin-top: 5px;">3.	Certificado de estudios (original y copia).</div> 
                         </div>
 
                         <div style="text-align: justify; margin-top:16px;" >
                             <p style="line-height:1.5rem;">
-                                Agradezco su atención y le informo que estáre participanto en la inscripción 
-                                10 y 11 para biomédicas, 12 y 13 para ingenierías, 14 y 17 para sociales.
+                                Agradezco su atención y le informo que estáre participando en la
+                                inscripción presencial el día que me corresponde según el último dígito de mi DNI.
                             </p>
                         </div>
 
@@ -105,7 +99,7 @@
             </table>
         </div>
 
-        <div style="margin-top:150px">
+        <div style="margin-top:150px">  
 
             <table style="width:100%; bakcground:orange; margin-top:0px">
                 <tr>

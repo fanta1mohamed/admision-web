@@ -31,7 +31,9 @@ class PostulanteController extends Controller
     ->leftjoin('departamento','ubigeo.id_departamento','departamento.id') 
     ->leftjoin('provincia','ubigeo.id_provincia','provincia.id') 
     ->leftjoin('distritos','distritos.id','ubigeo.id_distrito') 
-    ->where('postulante.nro_doc','=',$request->nro_doc)->get(); 
+    ->where('postulante.nro_doc','=',$request->nro_doc)
+    ->where('postulante.ubigeo_nacimiento','=',$request->ubigeo)
+    ->get(); 
 
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
@@ -41,32 +43,14 @@ class PostulanteController extends Controller
 
   public function saveDniPostulante(Request $request) {
 
-    // $validator = $request->validate([
-    //   'email' => 'required|email',
-    //   'tipo_doc' => 'required',
-    //   'nro_doc' => 'required',
-    //   'ubigeo_nacimiento' => 'required',
-    //   'sexo' => 'required',
-    //   'estado_civil' => 'required', 
-    //   'primer_apellido' => 'required', 
-    //   'segundo_apellido' => 'required',
-    //   'nombres' => 'required',
-    //   'celular' => 'required',
-    //   'ubigeo_residencia' => 'required'
-    // ]);
-
     $postulante = Postulante::create([
       'tipo_doc' => $request->tipo_doc,
       'nro_doc' => $request->nro_doc,
       'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
-      'sexo' => $request->sexo,
-      'estado_civil' => $request->e_civil, 
       'primer_apellido' => $request->paterno, 
       'segundo_apellido' => $request->materno,
       'nombres' => $request->nombres,
-      'email' => $request->correo,
-      'celular' => $request->celular,
-      'ubigeo_residencia' => $request->ubigeo_residencia
+      'ubigeo_residencia' => $request->ubigeo_nacimiento
     ]);
     $this->response['tipo'] = 'success';
     $this->response['titulo'] = 'REGISTRO NUEVO';
@@ -76,17 +60,6 @@ class PostulanteController extends Controller
   }
 
   public function savePostulante(Request $request) {
-
-    // $validator = $request->validate([
-    //   'sexo' => 'required',
-    //   'estado_civil' => 'required', 
-    //   'primer_apellido' => 'required', 
-    //   'segundo_apellido' => 'required',
-    //   'nombres' => 'required',
-    //   'correo' => 'required',
-    //   'celular' => 'required',
-    //   'fec_nacimiento' => 'required',
-    // ]);
 
     $solo_unapellido = 1;
     if($request->segundo_apellido === null){
