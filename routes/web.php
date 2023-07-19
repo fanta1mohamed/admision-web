@@ -218,7 +218,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 
 //PREINSCRIPCION
 //Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
-Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
+//Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
 Route::get('/preinscripcion-general', fn () => Inertia::render('Publico/preinscripciongeneral'))->name('preinscripcion-general');
 Route::get('/examen-vocacional', fn () => Inertia::render('Publico/exvocacional'))->name('ex-vocacional');
 Route::post('save-pasos-preinscripcion', [PreinscripcionController::class, 'savePasos']);
@@ -257,6 +257,9 @@ Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
 
+
+
+Route::get('/get-expediente/{programa}/{dni}', [TestController::class, 'getNroConstancia']);
 
 
 

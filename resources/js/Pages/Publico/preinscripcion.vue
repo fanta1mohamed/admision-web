@@ -1,6 +1,165 @@
 <template style="background:pink;">
 <Head title="Preinscipción"/>
 <Layout v-if="examen === 0">	
+  
+  <a-button @click="abrirModalDatos()">abrir</a-button>
+  <a-modal v-model:visible="open" style="width: 100%; max-width:1200px;" :footer="false" >
+    <div>
+      <h1 style="font-weight:bold; font-size:1.2rem;">Datos personales</h1> 
+      <hr>
+
+      <div class="datos-container" style="margin-bottom: 10px;">
+        <div class="datos-column">
+          <label for="name">Tipo doc: <span></span>  </label>
+          <input type="text" id="name" :value="tipo_docs[datospersonales.tipo_doc]"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">N° Documento: <span></span>  </label>
+          <input type="text" id="name" :value="formState.dni"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Primer apellido: <span></span>  </label>
+          <input type="text" id="name" :value="datospersonales.primerapellido"  />
+        </div>
+        
+        <div class="datos-column">
+          <label for="name">Segundo apellido: <span></span>  </label>
+          <input type="text" id="name" :value="datospersonales.segundo_apellido"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Prenombres: <span></span>  </label>
+          <input type="text" id="name" :value="datospersonales.nombres"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Estado civil: <span></span>  </label>
+          <input type="text" id="name" :value="estados_civil[datospersonales.estado_civil]"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Sexo: <span></span> </label>
+          <input type="text" id="name" :value="sexos[datospersonales.sexo]"  />
+        </div>
+        
+        <div class="datos-column">
+          <label for="name">Correo: <span></span>  </label>
+          <input type="text" id="name" :value="datospersonales.correo"  />
+        </div>
+        
+        <div class="datos-column">
+          <label for="name">Celular: <span></span>  </label>
+          <input type="text" id="name" :value="datospersonales.celular"  />
+        </div>
+        
+        <div class="datos-column">
+          <label for="name">Fec. nacimiento: <span></span>  </label>
+          <input type="text" id="name" :value="temp_date"/>
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Ubigeo de nacimiento: <span></span>  </label>
+          <input type="text" id="name" :value="formState.ubigeo"/>
+        </div>
+        <div class="datos-column">
+        </div>
+
+      </div>
+
+      <!-- {{ formState }}
+      {{ datospersonales }} -->
+    </div>
+
+    <div>
+      <h1 style="font-weight:bold; font-size:1.2rem;">Datos residencia</h1> 
+      <hr>
+
+      <div class="datos-container" style="margin-bottom: 10px;">
+        <div class="datos-column">
+          <label for="name">Departamento: <span></span>  </label>
+          <input type="text" id="name" :value="datosresidencia.dep"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Provincia: <span></span>  </label>
+          <input type="text" id="name" :value="datosresidencia.prov"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Distrito: <span></span>  </label>
+          <input type="text" id="name" :value="datosresidencia.dist"  />
+        </div>
+        
+        <div class="datos-column" style="width:100%;">
+          <label for="name">Dirección: <span></span>  </label>
+          <input type="text" id="name" :value="datosresidencia.direccion"  />
+        </div>
+
+      </div>
+      
+      <!-- {{ datosresidencia }} -->
+    </div>
+
+    <div>
+      <h1 style="font-weight:bold; font-size:1.2rem;">Datos del colegio</h1> 
+      <hr>
+      <div class="datos-container" style="margin-bottom: 10px;">
+        <div class="datos-column">
+          <label for="name">Año de egreso: <span></span>  </label>
+          <input type="text" id="name" :value="datoscolegio.egreso"  />
+        </div>
+        <div class="datos-column">
+          <label for="name">Departamento: <span></span>  </label>
+          <input type="text" id="name" :value="datoscolegio.dep"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Provincia: <span></span>  </label>
+          <input type="text" id="name" :value="datoscolegio.prov"  />
+        </div>
+
+        <div class="datos-column">
+          <label for="name">Distrito: <span></span>  </label>
+          <input type="text" id="name" :value="datoscolegio.dist"  />
+        </div>
+        
+        <div class="datos-column">
+          <label for="name">Dirección: <span></span>  </label>
+          <input type="text" id="name" :value="datosresidencia.direccion"  />
+        </div>
+
+        <div class="datos-column">
+        </div>
+
+      </div>
+      {{ colegios }}
+      {{ datoscolegio }}
+    </div>
+
+    <div>
+      <h1>Datos del padre o tutor</h1> 
+      <hr>
+      {{ datospadre }}
+    </div>
+
+    <div>
+      <h1>Datos de la madre</h1> 
+      <hr>
+      {{ datosmadre }}
+    </div>
+
+    <div>
+      <h1>Datos de Postulación</h1> 
+      <hr>
+      {{ datos_preinscripcion }}
+    </div>
+
+
+  </a-modal>
+  
+
   <a-modal v-model:visible="ejemplo" :footer="false" @ok="handleOk">
     <a-tabs v-model:activeKey="activeKey" :size="size">
       <a-tab-pane key="1" tab="CERT. AMARILLO">
@@ -596,10 +755,15 @@
         </div>
       </div>
 
+
+
+
       <div v-if="pagina_pre === 6">
+
         <div style="width: 100%; margin-top: 5px; ">
 
           <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
+
             <div>
               <div>
               <div class="justify-between datos-postulacion" >
@@ -765,23 +929,40 @@
       </div>
       <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
         <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-        <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>    
+        <a-button @click="modalDatos = true" class="boton-siguiente" type="primary" >Finalizar</a-button>    
+        <!-- <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>     -->
       </div>
     </a-affix>
+
+
 
 </Layout>
 
 </template>
 <script setup>
 import Layout from '@/Layouts/LayoutPreinscripcion.vue'    
-import { watch, getCurrentInstance, provide, reactive, computed, ref, unref, onMounted } from 'vue';
+import { watch, reactive, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
+import { es } from 'date-fns/locale';
 import { notification } from 'ant-design-vue';
 import { DownOutlined } from '@ant-design/icons-vue';
  
 const ejemplo = ref(false);
+const modalDatos = ref(true);
+const open = ref(false);
+const abrirModalDatos = () => { 
+  open.value = true
+  cambiarFormato() 
+  getUbigeo();
+  getApoderado()
+  getApoderadoM()
+  getColegios()
+  getColegioSeleccionado()
+}
+
+const activeKey = ref('1');
 
 const examen = ref(0);
 const avance = ref(0)
@@ -794,8 +975,8 @@ const dni = ref("70757838")
 
 const formRef = ref();
 const formState = reactive({
-  dni: '',
-  ubigeo: '',
+  dni: '75317022',
+  ubigeo: '200401',
 });
 const formDatosPersonales = ref();
 const datospersonales = reactive({
@@ -847,7 +1028,6 @@ const datosmadre = reactive({
   materno: null,
 });
 
-
 const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
 const ubigeoInput = (event) => { formState.ubigeo = event.target.value.replace(/\D/g, ''); };
 const nombresInput = (event) => { datospersonales.nombres = event.target.value.replace(/[^A-Za-z\s]/g, '');};
@@ -867,6 +1047,7 @@ const onSelectDepartamentos = (value, option) => {
     depseleccionado.value = option.key;
     getProvincias();
 };
+
 const onSelectDepartamentosC = (value, option) => {
     depseleccionadoC.value = option.key;
     getProvinciasColegio();
@@ -920,7 +1101,6 @@ const getDatosCepreuna = async () => {
   } 
 }
 
-
 const getDatosCepre = async () => {
   let res = await axios.get('https://sistemas.cepreuna.edu.pe/api/v1/'+formState.dni, {
     headers: {
@@ -966,34 +1146,35 @@ const getDatosPersonales = async () => {
     const values = await formRef.value.validateFields();
   }
 
-  if(postcepre.value.habilitado == 1) {
-
-    let res = await axios.post( "get-postulante-datos-personales", {nro_doc: formState.dni});
-    if(res.data.datos.length > 0 ) {
-      datospersonales.id = res.data.datos[0].id
-      datospersonales.primerapellido = res.data.datos[0].primer_apellido
-      datospersonales.segundo_apellido = res.data.datos[0].segundo_apellido
-      datospersonales.nombres = res.data.datos[0].nombres
-      //datospersonales.estado_civil = res.data.datos[0].estado_civil
-      //datospersonales.sexo = res.data.datos[0].sexo
-      datospersonales.correo = res.data.datos[0].correo
-      datospersonales.celular = res.data.datos[0].celular
-      if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }
-      formState.ubigeo = res.data.datos[0].ubigeo
-      datosresidencia.direccion = res.data.datos[0].direccion
-      depseleccionado.value = res.data.datos[0].dep;
-      datosresidencia.dep = res.data.datos[0].departamento
-      provseleccionada.value = res.data.datos[0].prov;
-      datosresidencia.prov = res.data.datos[0].provincia
-      distseleccionado.value = res.data.datos[0].dist;
-      datosresidencia.dist = res.data.datos[0].distrito
-      datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
-      datosresidencia.direccion = res.data.datos[0].direccion
-      getPasos();
-    } 
-    else {
-      getDatosCepre();
-      pagina_pre.value = 1;  
+  if(postcepre.value ){
+    if(postcepre.value.habilitado == 1) {
+      let res = await axios.post( "get-postulante-datos-personales", {nro_doc: formState.dni});
+      if(res.data.datos.length > 0 ) {
+        datospersonales.id = res.data.datos[0].id
+        datospersonales.primerapellido = res.data.datos[0].primer_apellido
+        datospersonales.segundo_apellido = res.data.datos[0].segundo_apellido
+        datospersonales.nombres = res.data.datos[0].nombres
+        //datospersonales.estado_civil = res.data.datos[0].estado_civil
+        //datospersonales.sexo = res.data.datos[0].sexo
+        datospersonales.correo = res.data.datos[0].correo
+        datospersonales.celular = res.data.datos[0].celular
+        if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }
+        formState.ubigeo = res.data.datos[0].ubigeo
+        datosresidencia.direccion = res.data.datos[0].direccion
+        depseleccionado.value = res.data.datos[0].dep;
+        datosresidencia.dep = res.data.datos[0].departamento
+        provseleccionada.value = res.data.datos[0].prov;
+        datosresidencia.prov = res.data.datos[0].provincia
+        distseleccionado.value = res.data.datos[0].dist;
+        datosresidencia.dist = res.data.datos[0].distrito
+        datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
+        datosresidencia.direccion = res.data.datos[0].direccion
+        getPasos();
+      } 
+      else {
+        getDatosCepre();
+        pagina_pre.value = 1;  
+      }
     }
   }
 
@@ -1333,6 +1514,30 @@ const getDocs = async () => {
   window.open("/pdf-solicitud/"+formState.dni, '_blank');
 }
 
+const tipo_docs = { 1: 'DNI', 2: 'PASAPORTE' }
+const estados_civil = { 1: 'SOLTERO', 2: 'CASADO', 3: 'VIUDO' }
+const sexos = { 1: 'MASCULINO', 2: 'FEMENINO' }
+
+const temp_date = ref(null);
+
+const cambiarFormato = () => {
+  const fecha = datospersonales.fec_nacimiento.$d;
+  const formattedDate = format(fecha, "dd 'de' MMMM 'del' yyyy", { locale: es });
+  temp_date.value = formattedDate; 
+};
+
+const college = ref(null)
+
+const getColegioSeleccionado = () => {
+  college.value = colegios.value.find(item => item.value === datoscolegio.colegio);
+  console.log(college.value.label)
+}
+
+
+
+
+
+
 
 
 </script>
@@ -1397,5 +1602,44 @@ input[type=file]::file-selector-button:hover {
   .vocacional {height:calc(100vh - 200px); overflow-y:scroll;}
   .btn-vocacional { width:100%;}
 }
+
+.datos-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .datos-column {
+    width: calc(33.33% - 10px);
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+
+  .datos-column label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .datos-column input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .datos-column {
+      width: calc(50% - 10px);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .datos-column {
+      width: 100%;
+    }
+  }
 
 </style>

@@ -57,27 +57,77 @@ class ApixController extends Controller {
 
     public function getPostulantePago($dni, $proceso){
         $res = [];
+        
         if($proceso == 4 ){
             $res = Postulante::select(
                 'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
-                'postulante.nombres', 'colegios.id_gestion',
-                DB::raw("IF(colegios.id_gestion = 1, 21, IF((colegios.id_gestion = 2 OR colegios.id_gestion = 3), 21, IF(colegios.id_gestion = 4, 21, 0))) AS Monto")  
+                'postulante.nombres', 'colegios.id_gestion', 'pre_inscripcion.id_programa',
+                DB::raw("CASE WHEN colegios.id_gestion IN (1, 2, 3, 4) THEN 20 ELSE 0 END AS Monto"),
+                DB::raw("CASE WHEN pre_inscripcion.id_programa IN (38, 16) THEN 30 ELSE 0 END AS ex_med") 
             )
             ->join('colegios','colegios.id','postulante.id_colegio')
+            ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
             ->where('nro_doc','=',$dni)->get();
         }
         if($proceso == 5){
             $res = Postulante::select(
                 'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
-                'postulante.nombres', 'colegios.id_gestion',
-                DB::raw("IF(colegios.id_gestion = 1, 200, IF((colegios.id_gestion = 2 OR colegios.id_gestion = 3), 350, IF(colegios.id_gestion = 4, 450, 0))) AS Monto")  
+                'postulante.nombres', 'colegios.id_gestion', 'pre_inscripcion.id_programa',
+                DB::raw("IF(colegios.id_gestion = 1, 200, IF((colegios.id_gestion = 2 OR colegios.id_gestion = 3), 350, IF(colegios.id_gestion = 4, 450, 0))) AS Monto"),
+                DB::raw("CASE WHEN pre_inscripcion.id_programa IN (38, 16) THEN 30 ELSE 0 END AS ex_med")   
             )
             ->join('colegios','colegios.id','postulante.id_colegio')
+            ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
             ->where('nro_doc','=',$dni)->get();
         }
 
+        $originalObjeto = $res[0];
+
+        if($res[0]->ex_med > 0) {
+
+            $nuevoObjeto = [
+                "nro_doc" => $originalObjeto["nro_doc"],
+                "primer_apellido" => $originalObjeto["primer_apellido"],
+                "segundo_apellido" => $originalObjeto["segundo_apellido"],
+                "nombres" => $originalObjeto["nombres"],
+                "id_gestion" => $originalObjeto["id_gestion"],
+                "id_programa" => $originalObjeto["id_programa"],
+                "pagos" => [
+                    [
+                        "cod" => 26,
+                        "total" => $originalObjeto["Monto"]
+                    ],
+                    [
+                        "cod" => 39,
+                        "total" => $originalObjeto["ex_med"]
+                    ]
+                ]
+            ];       
+
+        }else{
+
+            $nuevoObjeto = [
+                "nro_doc" => $originalObjeto["nro_doc"],
+                "primer_apellido" => $originalObjeto["primer_apellido"],
+                "segundo_apellido" => $originalObjeto["segundo_apellido"],
+                "nombres" => $originalObjeto["nombres"],
+                "id_gestion" => $originalObjeto["id_gestion"],
+                "id_programa" => $originalObjeto["id_programa"],
+                "pagos" => [
+                    [
+                        "cod" => 26,
+                        "total" => $originalObjeto["Monto"]
+                    ],
+                ]
+            ];       
+
+        }
+
+
+
+
         if (count($res) > 0 ){
-            return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $res[0]], 200);
+            return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $nuevoObjeto], 200);
         }else {
             return response()->json(['status' => false, 'mensaje'=>'Postulante no encontrado'], 203);
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AvancePostulante;
+use App\Models\Inscripcion;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 
@@ -44,6 +45,18 @@ class TestController extends Controller
         $this->response['estado'] = true;
         $this->response['datos'] = $res[0];
         return response()->json($this->response, 200);
+    }
+
+
+    public function getNroConstancia($carrera, $dni){
+
+        $resultado = Inscripcion::select('inscripciones.codigo', 'postulante.nro_doc', 'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido')
+        ->join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+        ->where('inscripciones.codigo', 'LIKE', $carrera.'%')
+        ->where('postulante.nro_doc', '=', $dni)
+        ->get();
+
+        return $resultado[0];
     }
 
 
