@@ -77,7 +77,7 @@
 
                         <div style="text-align: justify; margin-top:16px;" >
                             <p style="line-height:1.5rem;">
-                                Agradezco su atención y le informo que estáre participando en la
+                                Agradezco su atención y le informo que estaré participando en la
                                 inscripción presencial el día que me corresponde según el último dígito de mi DNI.
                             </p>
                         </div>

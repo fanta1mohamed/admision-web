@@ -32,7 +32,7 @@ class PostulanteController extends Controller
     ->leftjoin('provincia','ubigeo.id_provincia','provincia.id') 
     ->leftjoin('distritos','distritos.id','ubigeo.id_distrito') 
     ->where('postulante.nro_doc','=',$request->nro_doc)
-    // ->where('postulante.ubigeo_nacimiento','=',$request->ubigeo)
+    ->where('postulante.ubigeo_nacimiento','=',$request->ubigeo)
     ->get(); 
 
     $this->response['estado'] = true;

@@ -220,7 +220,8 @@ class PreinscripcionController extends Controller
         ->where('postulante.nro_doc','=', $dni)
         ->get();
         
-        $name = "cepre2023-II";
+        //$name = "cepre2023-II";
+        $name = "general2023-II";
         // if($res[0]->id_proceso == 5 ){ $name = "general2023-II"; }
         $data = $res[0];
         $pdf = Pdf::loadView('vocacional.constanciavocacional', compact('data'));
@@ -279,8 +280,8 @@ class PreinscripcionController extends Controller
           ->join ('tipo_documento_identidad','tipo_documento_identidad.id', '=', 'postulante.tipo_doc')
           ->where('postulante.nro_doc','=', $dni)->get();
 
-        $name = "cepre2023-II";
-//        $name = "general2023-II";
+        // $name = "cepre2023-II";
+        $name = "general2023-II";
 
         $data = $res[0];
         setlocale(LC_TIME, 'es_ES.utf8'); 

@@ -11,57 +11,57 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Tipo doc: <span></span>  </label>
-            <input type="text" id="name" disabled :value="tipo_docs[datospersonales.tipo_doc]"  />
+            <input type="text" disabled :value="tipo_docs[datospersonales.tipo_doc]"/>
           </div>
   
           <div class="datos-column">
             <label for="name">N° Documento: <span></span>  </label>
-            <input type="text" id="name" disabled :value="formState.dni"  />
+            <input type="text" disabled :value="formState.dni"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Primer apellido: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospersonales.primerapellido"  />
+            <input type="text" disabled :value="datospersonales.primerapellido"  />
           </div>
           
           <div class="datos-column">
             <label for="name">Segundo apellido: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospersonales.segundo_apellido"  />
+            <input type="text" disabled :value="datospersonales.segundo_apellido"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Prenombres: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospersonales.nombres"  />
+            <input type="text" disabled :value="datospersonales.nombres"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Estado civil: <span></span>  </label>
-            <input type="text" id="name" disabled :value="estados_civil[datospersonales.estado_civil]"  />
+            <input type="text" disabled :value="estados_civil[datospersonales.estado_civil]"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Sexo: <span></span> </label>
-            <input type="text" id="name" disabled :value="sexos[datospersonales.sexo]"  />
+            <input type="text" disabled :value="sexos[datospersonales.sexo]"  />
           </div>
           
           <div class="datos-column">
             <label for="name">Correo: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospersonales.correo"  />
+            <input type="text" disabled :value="datospersonales.correo"  />
           </div>
           
           <div class="datos-column">
             <label for="name">Celular: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospersonales.celular"  />
+            <input type="text" disabled :value="datospersonales.celular"  />
           </div>
           
           <div class="datos-column">
             <label for="name">Fec. nacimiento: <span></span>  </label>
-            <input type="text" id="name" disabled :value="temp_date"/>
+            <input type="text" disabled :value="temp_date"/>
           </div>
   
           <div class="datos-column">
             <label for="name">Ubigeo de nacimiento: <span></span>  </label>
-            <input type="text" id="name" disabled :value="formState.ubigeo"/>
+            <input type="text" disabled :value="formState.ubigeo"/>
           </div>
           <div class="datos-column">
         </div>
@@ -79,22 +79,22 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Departamento: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosresidencia.dep"  />
+            <input type="text" disabled :value="datosresidencia.dep"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Provincia: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosresidencia.prov"  />
+            <input type="text" disabled :value="datosresidencia.prov"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Distrito: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosresidencia.dist"  />
+            <input type="text" disabled :value="datosresidencia.dist"  />
           </div>
           
           <div class="datos-column" style="width:100%;">
             <label for="name">Dirección: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosresidencia.direccion"  />
+            <input type="text" disabled :value="datosresidencia.direccion"  />
           </div>
   
         </div>
@@ -108,26 +108,26 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Año de egreso: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datoscolegio.egreso"  />
+            <input type="text" disabled :value="datoscolegio.egreso"  />
           </div>
           <div class="datos-column">
             <label for="name">Departamento: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datoscolegio.dep"  />
+            <input type="text" disabled :value="datoscolegio.dep"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Provincia: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datoscolegio.prov"  />
+            <input type="text" disabled :value="datoscolegio.prov"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Distrito: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datoscolegio.dist"  />
+            <input type="text" disabled :value="datoscolegio.dist"  />
           </div>
           
           <div class="datos-column">
             <label for="name">Colegio: <span></span>  </label>
-            <input type="text" id="name" disabled :value="nombrecolegiox"  />
+            <input type="text" disabled :value="nombrecolegiox"  />
           </div>
   
           <div class="datos-column">
@@ -148,22 +148,22 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">DNI: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospadre.dni"  />
+            <input type="text" disabled :value="datospadre.dni"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Nombres: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospadre.nombres"  />
+            <input type="text" disabled :value="datospadre.nombres"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Primer apellido: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospadre.paterno"  />
+            <input type="text" disabled :value="datospadre.paterno"  />
           </div>
           
           <div class="datos-column" style="width:100%;">
             <label for="name">Segundo apellido: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datospadre.materno"  />
+            <input type="text" disabled :value="datospadre.materno"  />
           </div>
         </div>
 
@@ -175,22 +175,22 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">DNI: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosmadre.dni"  />
+            <input type="text" disabled :value="datosmadre.dni"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Nombres: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosmadre.nombres"  />
+            <input type="text" disabled :value="datosmadre.nombres"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Primer apellido: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosmadre.paterno"  />
+            <input type="text" disabled :value="datosmadre.paterno"  />
           </div>
           
           <div class="datos-column" style="width:100%;">
             <label for="name">Segundo apellido: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datosmadre.materno"  />
+            <input type="text" disabled :value="datosmadre.materno"  />
           </div>
         </div>
 
@@ -269,12 +269,12 @@
 
           <div v-if="datos_preinscripcion.programa === 38 || datos_preinscripcion.programa === 16" class="datos-column">
             <label for="name">Cod ex. medico:</label>
-            <input type="text" id="name" disabled :value="datos_preinscripcion.codigo_medico"  />
+            <input type="text" disabled :value="datos_preinscripcion.codigo_medico"  />
           </div>
   
           <div class="datos-column">
             <label for="name">Cod. certificado: <span></span>  </label>
-            <input type="text" id="name" disabled :value="datos_preinscripcion.codigo_certificado"  />
+            <input type="text" disabled :value="datos_preinscripcion.codigo_certificado"  />
           </div>
 
           <div>
@@ -491,7 +491,6 @@
           </a-card>
         </div>
         </div>
-  
   
         <div v-if="pagina_pre === 2">
   
@@ -755,15 +754,6 @@
           </div>
         </div>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
         <div v-if="pagina_pre === 4">
   
           <div style="width: 100%; margin-top: 5px; ">
@@ -835,13 +825,6 @@
           </div>
         </div>
   
-  
-  
-  
-  
-  
-  
-  
         <div v-if="pagina_pre === 5">
           <div style="width: 100%; margin-top: 5px; ">
   
@@ -911,118 +894,141 @@
           <div style="display:none;">{{  getColegios() }}</div> 
           <div style="width: 100%; margin-top: 5px; ">
   
-            <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
+            <a-card style="padding-top: -5px; max-width:900px; padding-bottom:0px;" class="cardInicio">
+
+              <a-form
+                ref="formPreinscripcion" :model="datos_preinscripcion"
+                name="preinscripcion"
+                @finish="onFinish"
+                @finishFailed="onFinishFailed"
+              >
   
-              <div>
                 <div>
-                <div class="justify-between datos-postulacion" >
-                    <div style="margin-bottom: 25px; margin-top: 10px; ">
-                      <h1 style="font-size: 1.1rem;"> Datos Postulación</h1>
-                    </div>
-                    <div class="mb-3">
-                      <div><label>Modalidad</label></div>
-                       <a-select
-                          ref="select"
-                          v-model:value="datos_preinscripcion.modalidad"
-                          placeholder="Seleccionar modalidad"
-                          class="selector-modalidad"
+                  <div>
+                  <div class="justify-between datos-postulacion" >
+                      <div style="margin-bottom: 25px; margin-top: 10px; ">
+                        <h1 style="font-size: 1.1rem;"> Datos Postulación</h1>
+                      </div>
+                      <div class="mb-3">
+                        <a-form-item
+                        name="modalidad"
+                        :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
                         >
-                          <a-select-option :value="8">EXAMEN GENERAL</a-select-option>
-                          <a-select-option :value="7">CONADIS</a-select-option>
-                        </a-select>
+                        <div><label>Modalidad</label></div>
+                        <a-select
+                            ref="select"
+                            v-model:value="datos_preinscripcion.modalidad"
+                            placeholder="Seleccionar modalidad"
+                            class="selector-modalidad"
+                          >
+                            <a-select-option :value="8">EXAMEN GENERAL</a-select-option>
+                            <a-select-option :value="7">CONADIS</a-select-option>
+                          </a-select>
+                        </a-form-item>
+                      </div>
                     </div>
                   </div>
+    
+    
+                  <a-row :gutter="[16, 0]" class="form-row">
+                    <a-col :span="24" :md="24" :lg="12" :xl="24" :xxl="24">
+                      <a-form-item
+                      name="programa"
+                      :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
+                      >
+                        <div><label>Programa de estudios</label></div>  
+                        <a-select
+                            ref="select"
+                            v-model:value="datos_preinscripcion.programa"
+                            placeholder="Seleccionar programa"
+                            class="selector-modalidad"
+                            style="min-width:360px;"
+                          >
+                            <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
+                            <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
+                            <a-select-option :value='3'>ARQUITECTURA Y URBANISMO</a-select-option>
+                            <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
+                            <a-select-option :value='5'>ARTE: DANZA</a-select-option>
+                            <a-select-option :value='6'>ARTE: MÚSICA</a-select-option>
+                            <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
+                            <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
+                            <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
+                            <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
+                            <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
+                            <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
+                            <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
+                            <a-select-option :value='15'>DERECHO</a-select-option>
+                            <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
+                            <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
+                            <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
+                            <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
+                            <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
+                            <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
+                            <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
+                            <a-select-option :value='23'>ENFERMERÍA</a-select-option>
+                            <a-select-option :value='24'>INGENIERÍA AGRÍCOLA</a-select-option>
+                            <a-select-option :value='25'>INGENIERÍA AGROINDUSTRIAL</a-select-option>
+                            <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
+                            <a-select-option :value='27'>INGENIERÍA CIVIL</a-select-option>
+                            <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
+                            <a-select-option :value='29'>INGENIERÍA DE SISTEMAS</a-select-option>
+                            <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
+                            <a-select-option :value='31'>INGENIERÍA ELECTRÓNICA</a-select-option>
+                            <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
+                            <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
+                            <a-select-option :value='34'>INGENIERÍA MECÁNICA ELÉCTRICA</a-select-option>
+                            <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
+                            <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
+                            <a-select-option :value='37'>INGENIERÍA TOPOGRÁFICA Y AGRIMENSURA</a-select-option>
+                            <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
+                            <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
+                            <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
+                            <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
+                            <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
+                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
+                            <a-select-option :value='44'>TURISMO</a-select-option>
+                        </a-select>
+    
+                      </a-form-item>
+                    </a-col>
+                    
+                    <a-col v-if="datos_preinscripcion.programa === 38 || datos_preinscripcion.programa === 16" :span="24" :md="24" :lg="12" :xl="24" :xxl="24">
+                      <a-form-item>
+                        <div><label>Cod. de examen médico:</label></div>
+                        <a-input placeholder="Cod Examen médico" v-model:value="datos_preinscripcion.codigo_medico"/>
+                      </a-form-item>
+                    </a-col>
+                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12">
+                      <a-form-item
+                      name="tipo_certificado"
+                      :rules="[{ required: true, message: 'Seleccine el tipo de certificado', trigger: 'change' },]"
+                      >
+                        <div class="flex justify-between" style="font-weight:bold;"><label>Tipo certificado:</label></div>
+                        <a-select
+                            ref="select"
+                            v-model:value="datos_preinscripcion.tipo_certificado"
+                            placeholder="Seleccionar tipo de certificado"
+                            class="selector-modalidad" >
+                            <a-select-option value='CERTIFICADO BLANCO'>CERTIFICADO BLANCO</a-select-option>
+                            <a-select-option value='CERTIFICADO AMARILLO'>CERTIFICADO AMARILLO</a-select-option>
+                            <a-select-option value='CONSTANCIA DE ESTUDIOS'>CONSTANCIA DE ESTUDIOS</a-select-option>
+                        </a-select>
+                      </a-form-item>
+                    </a-col>
+                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12">
+                      <a-form-item
+                      name="codigo_certificado"
+                      :rules="[{ required: true, message: 'Ingrese el cod. de certificado', trigger: 'change' },]"
+                      >
+                        <div class="flex justify-between"><label>Codigo certificado</label> <span @click="ejemplo = true" style="color:blue; cursor:pointer;">ver ejemplo</span></div>
+                        <a-input v-model:value="datos_preinscripcion.codigo_certificado" />
+                      </a-form-item>
+                    </a-col>
+                  </a-row>
+    
                 </div>
-  
-  
-                <a-row :gutter="[16, 0]" class="form-row">
-                  <a-col :span="24" :md="24" :lg="12" :xl="24" :xxl="8">
-                    <a-form-item>
-                      <div><label>Programa de estudios</label></div>  
-                      <a-select
-                          ref="select"
-                          v-model:value="datos_preinscripcion.programa"
-                          placeholder="Seleccionar programa"
-                          class="selector-modalidad"
-                        >
-                          <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
-                          <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
-                          <a-select-option :value='3'>ARQUITECTURA Y URBANISMO</a-select-option>
-                          <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
-                          <a-select-option :value='5'>ARTE: DANZA</a-select-option>
-                          <a-select-option :value='6'>ARTE: MÚSICA</a-select-option>
-                          <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
-                          <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
-                          <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
-                          <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                          <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
-                          <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
-                          <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
-                          <a-select-option :value='15'>DERECHO</a-select-option>
-                          <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                          <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                          <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                          <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
-                          <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
-                          <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
-                          <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
-                          <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                          <a-select-option :value='24'>INGENIERÍA AGRÍCOLA</a-select-option>
-                          <a-select-option :value='25'>INGENIERÍA AGROINDUSTRIAL</a-select-option>
-                          <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
-                          <a-select-option :value='27'>INGENIERÍA CIVIL</a-select-option>
-                          <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
-                          <a-select-option :value='29'>INGENIERÍA DE SISTEMAS</a-select-option>
-                          <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
-                          <a-select-option :value='31'>INGENIERÍA ELECTRÓNICA</a-select-option>
-                          <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
-                          <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
-                          <a-select-option :value='34'>INGENIERÍA MECÁNICA ELÉCTRICA</a-select-option>
-                          <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
-                          <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
-                          <a-select-option :value='37'>INGENIERÍA TOPOGRÁFICA Y AGRIMENSURA</a-select-option>
-                          <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
-                          <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                          <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                          <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                          <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                          <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                          <a-select-option :value='44'>TURISMO</a-select-option>
-                      </a-select>
-  
-                    </a-form-item>
-                  </a-col>
-                  
-                  <a-col v-if="datos_preinscripcion.programa === 38 || datos_preinscripcion.programa === 16" :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
-                    <a-form-item>
-                      <div><label>Cod. de examen médico:</label></div>
-                      <a-input placeholder="Cod cert Examen médico" v-model:value="datos_preinscripcion.codigo_medico"/>
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="8">
-                    <a-form-item>
-                      <div class="flex justify-between" style="font-weight:bold;"><label>Tipo certificado:</label></div>
-                      <a-select
-                          ref="select"
-                          v-model:value="datos_preinscripcion.tipo_certificado"
-                          placeholder="Seleccionar tipo de certificado"
-                          class="selector-modalidad" >
-                          <a-select-option value='CERTIFICADO BLANCO'>CERTIFICADO BLANCO</a-select-option>
-                          <a-select-option value='CERTIFICADO AMARILLO'>CERTIFICADO AMARILLO</a-select-option>
-                          <a-select-option value='CONSTANCIA DE ESTUDIOS'>CONSTANCIA DE ESTUDIOS</a-select-option>
-                      </a-select>
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="8">
-                    <a-form-item>
-                      <div class="flex justify-between"><label>Codigo certificado</label> <span @click="ejemplo = true" style="color:blue; cursor:pointer;">ver ejemplo</span></div>
-                      <a-input v-model:value="datos_preinscripcion.codigo_certificado" />
-                    </a-form-item>
-                  </a-col>
-                </a-row>
-  
-              </div>
-  
+    
+              </a-form>
             </a-card>
             </div>
         </div>
@@ -1103,7 +1109,8 @@
   const ejemplo = ref(false);
   const modalDatos = ref(true);
   const open = ref(false);
-  const abrirModalDatos = () => { 
+  const abrirModalDatos = async () => { 
+    const values = await formPreinscripcion.value.validateFields();
     open.value = true
     cambiarFormato() 
     getUbigeo();
@@ -1180,6 +1187,15 @@
     paterno: null,
     materno: null,
   });
+
+  const formPreinscripcion = ref();
+  const datos_preinscripcion = reactive({
+    modalidad: 8,
+    programa:null,
+    tipo_certificado:null,
+    codigo_medico: null,
+    codigo_certificado:null,
+  })
   
   const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
   const ubigeoInput = (event) => { formState.ubigeo = event.target.value.replace(/\D/g, ''); };
@@ -1380,7 +1396,6 @@ const getDatosApi = () => {
     getDatosPersonales()
   }
 
-  
   const saveDatosPersonales =  async () => {
     const values = await formDatosPersonales.value.validateFields();
     let res = await axios.post(
@@ -1525,13 +1540,6 @@ const getDatosApi = () => {
       }
     }
   }
-  
-
-  
-
-
-  
-  
   //formDatosPadre
   const getApoderado = async () => {
     const res = await axios.post("get-apoderado", { id_postulante: datospersonales.id, tipo: 1 });
@@ -1609,20 +1617,7 @@ const getDatosApi = () => {
       console.error(error);
     }
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
   const id_pasos = ref(null)
   const avance_current = ref(null)
   const getPasos = async (depp) => {
@@ -1654,31 +1649,25 @@ const getDatosApi = () => {
     console.log('Función del componente hijo ejecutada en el componente padre');
   };
   
-  const datos_preinscripcion = ref({
-    modalidad: 8,
-    programa:null,
-    tipo_certificado:null,
-    codigo_medico: null,
-    codigo_certificado:null,
-  })
+
   
   const imagen = ref(null);
   
   const submit = async () => {
     let fd = new FormData();
     fd.append('dni', formState.dni)
-    fd.append('modalidad', datos_preinscripcion.value.modalidad)
-    fd.append('programa', datos_preinscripcion.value.programa)
-    fd.append('tipo_certificado', datos_preinscripcion.value.tipo_certificado)
-    fd.append('codigo_certificado', datos_preinscripcion.value.codigo_certificado)
-    fd.append('codigo_medico', datos_preinscripcion.value.codigo_medico)
+    fd.append('modalidad', datos_preinscripcion.modalidad)
+    fd.append('programa', datos_preinscripcion.programa)
+    fd.append('tipo_certificado', datos_preinscripcion.tipo_certificado)
+    fd.append('codigo_certificado', datos_preinscripcion.codigo_certificado)
+    fd.append('codigo_medico', datos_preinscripcion.codigo_medico)
     fd.append('id_postulante', datospersonales.id)
     await axios.post("save-pre-inscripcion", fd).then(res=>{
       if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 110) } else{ next() }
       showToast("success","2",res.data.menssje);
       getResoluciones()
-      open.value = false
     }).catch(err=>console.log(err))
+    open.value = false
   }
   const presionado = ref(0);
   
@@ -1704,9 +1693,6 @@ const getDatosApi = () => {
     college.value = colegios.value.find(item => item.value === datoscolegio.colegio);
     console.log(college.value.label)
   }
-  
-  
-
   
   </script>
   
