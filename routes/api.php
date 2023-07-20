@@ -20,8 +20,8 @@ use App\Http\Controllers\LoginController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-ingresante/{dni}/{proceso}', [ApixController::class, 'getIngresante']);
     Route::get('/get-postulante-pago/{dni}/{proceso}', [ApixController::class, 'getPostulantePago']);
-    Route::get('/get-postulante-biometrico/{codigo}', [ApixController::class, 'getBiometrico']);
 });
+Route::get('/get-postulante-biometrico/{codigo}', [ApixController::class, 'getBiometrico']);
 
 Route::post('/login', [LoginController::class, 'login']);
 
