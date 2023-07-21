@@ -1085,7 +1085,7 @@
         </div>
         <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary" >Finalizar</a-button>    
+          <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary" >Finalizar</a-button> 
           <!-- <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>     -->
         </div>
       </a-affix>
@@ -1131,12 +1131,12 @@
   const pagina_pre = ref(0)
   const next = () => { pagina_pre.value++; }
   const prev = () => { pagina_pre.value--; }
-  const dni = ref("70757838")
+  const dni = ref("")
   
   const formRef = ref();
   const formState = reactive({
-    dni: '75317022',
-    ubigeo: '200401',
+    dni: '',
+    ubigeo: '',
   });
   const formDatosPersonales = ref();
   const datospersonales = reactive({
@@ -1663,12 +1663,15 @@ const getDatosApi = () => {
     fd.append('codigo_medico', datos_preinscripcion.codigo_medico)
     fd.append('id_postulante', datospersonales.id)
     await axios.post("save-pre-inscripcion", fd).then(res=>{
-      if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 110) } else{ next() }
-      showToast("success","2",res.data.menssje);
-      getResoluciones()
+       if( avance_current.value < 100){ savePasos("Registro de datos preinscripcion", 6, 110) } else{ next() }
+       showToast("success","2",res.data.menssje);
+       getResoluciones()
+      console.log(res)
     }).catch(err=>console.log(err))
     open.value = false
   }
+
+
   const presionado = ref(0);
   
   const getDocs = async () => {

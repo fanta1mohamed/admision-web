@@ -53,6 +53,7 @@ class PreinscripcionController extends Controller
 
   public function preinscribir(Request $request) 
   {
+
     try {
         DB::beginTransaction();
             
@@ -67,24 +68,59 @@ class PreinscripcionController extends Controller
                 'estado' => 1
             ]);
 
-            $doc = Documento::create([
-                'codigo' => $request->codigo_certificado, 
-                'nombre' => 'CERT. DE ESTUDIOS',
-                'numero' => 1,
-                'observacion' => $request->tipo_certificado,
-                'id_postulante' => $request->id_postulante,
-                'id_tipo_documento' => 1,
-                'estado' => 1,
-                'url' => '',
-                'fecha' => date('Y-m-d')
-            ]);
+            $doc = [];
+            $dooc = Documento::where('id_postulante', $request->id_postulante)->first();
+
+            if ($dooc == []) {
+                $doc = Documento::create([
+                    'codigo' => $request->codigo_certificado, 
+                    'nombre' => 'CERT. DE ESTUDIOS',
+                    'numero' => 1,
+                    'observacion' => $request->tipo_certificado,
+                    'id_postulante' => $request->id_postulante,
+                    'id_tipo_documento' => 1,
+                    'estado' => 1,
+                    'url' => '',
+                    'fecha' => date('Y-m-d')
+                ]);
+
+             }else{
+
+                if($dooc->verificado == 0 )
+                {
+                    $dooc->codigo = $request->codigo_certificado;
+                    $dooc->nombre = 'CERT. DE ESTUDIOS';
+                    $dooc->numero = 1;
+                    $dooc->observacion = $request->tipo_certificado;
+                    $dooc->id_postulante = $request->id_postulante;
+                    $dooc->id_tipo_documento = 1;
+                    $dooc->estado = 1;
+                    $dooc->verificado = 0;
+                    $dooc->url = '';
+                    $dooc->fecha = date('Y-m-d');
+                    $dooc->save();
+                }
+            }
+
+            if($request->codigo_medico != null ){
+                $d = Documento::create([
+                    'codigo' => $request->codigo_medico, 
+                    'nombre' => 'EX MEDICO',
+                    'numero' => 1,
+                    'observacion' => 'EX MEDICO',
+                    'id_postulante' => $request->id_postulante,
+                    'id_tipo_documento' => 2,
+                    'estado' => 1,
+                    'url' => '',
+                    'fecha' => date('Y-m-d')
+                ]);
+            }
 
             $ava = AvancePostulante::create([
                 'dni_postulante'=> $request->dni,
                 'id_proceso' => $proceso,
                 'avance' => 1,
             ]);
-
         
         DB::commit();
         return response()->json(['message' => 'Preinscripción exitosa'], 200);
