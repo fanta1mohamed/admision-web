@@ -185,7 +185,7 @@
                                 {{$data->codigo}}
                             </div>
                             <div style="text-align: center">
-                                <span style="text-transform: uppercase;">{{ strtoupper(substr($data->name, 0, 1)) }}. {{$data->paterno}} </span>
+                                <span style="text-transform: uppercase;">{{ strtoupper(substr($data->name, 0, 1)) }}. {{$data->upaterno}} </span>
                             </div>
                             <div style="text-align: center;">
                                 <span style="text-transform: uppercase; font-size:0.6rem;">inscriptor</span>
