@@ -345,7 +345,7 @@
 
   <a-tab-pane key="7" tab="Constancia">
       <div v-if="dniseleccionado" style="width:100%">            
-        <iframe :src="'https://inscripciones.admision.unap.edu.pe/documentos/cepre2023-II/'+dniseleccionado+'/inscripcion-1.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
+        <iframe :src="'https://inscripciones.admision.unap.edu.pe/documentos/general2023-II/'+dniseleccionado+'.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
         <!-- <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/inscripcion-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe> -->
       </div>
     </a-tab-pane>
