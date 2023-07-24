@@ -195,7 +195,7 @@ class InscripcionController extends Controller
         modalidad.nombre AS modalidad,
         procesos.nombre AS proceso,
         inscripciones.created_at as fecha,
-        users.name, users.paterno
+        users.name, users.paterno as upaterno
         FROM inscripciones
         JOIN postulante ON inscripciones.id_postulante = postulante.id
         JOIN programa ON inscripciones.id_programa = programa.id
