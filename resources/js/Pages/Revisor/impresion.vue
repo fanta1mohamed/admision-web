@@ -37,7 +37,7 @@
           <a-col flex="1 1">
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
-                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/fotos/inscripcion/'+postulante.dni_temp+'.jpg'"/>
+                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/fotos/inscripcion/'+postulante.dni_temp+'.jpg'"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
@@ -185,22 +185,6 @@
             </div>
           </a-col>
 
-        </div>
-      </div>
-
-      <div style="width: 100%; height: 150px;">
-
-        <div v-if="postcepre" class="flex justify-center">
-          <div v-if="postcepre.habilitado == 1" style="color: green;">
-            <div style="text-align: center;"><span style="font-size: 1.8rem; font-weight: bold;">{{ postcepre.nombres }} {{ postcepre.paterno }} {{ postcepre.materno }}</span> </div>
-            <div style="text-align: center;"> <span style="font-size: 2rem; font-weight: bold;"> DNI NUMERO: {{ postcepre.nro_documento }}</span> </div>
-            <div style="text-align: center;"><span style="font-size: 3rem; font-weight: bold;"> AUTORIZADO POR CEPREUNA</span></div>
-          </div>
-          <div v-else style="color: crimson;" class="">
-            <div style="text-align: center;"><span style="font-size: 2.2rem; font-weight: bold;">{{ postcepre.nombres }} {{ postcepre.paterno }} {{ postcepre.materno }}</span> </div>
-            <div style="text-align: center;"><span style="font-size: 2rem; font-weight: bold;"> DNI NUMERO: {{ postcepre.nro_documento }}</span> </div>
-            <div style="text-align: center;"><span style="font-size: 3rem; font-weight: bold;"> NO AUTORIZADO POR CEPREUNA</span></div>
-          </div>
         </div>
       </div>
 
