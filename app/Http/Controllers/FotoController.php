@@ -21,12 +21,8 @@ class FotoController extends Controller {
             // Define la ruta donde se guardará la foto recortada
             $filePath = public_path('fotos/inscripcion/' . $fileName);
     
-            // Guarda la foto recortada en el servidor
             file_put_contents($filePath, $photoData);
-    
-            // Realiza cualquier acción adicional después de guardar la foto recortada
-            // ...
-    
+        
             return response()->json(['message' => 'Foto recortada guardada correctamente']);
         }
     
