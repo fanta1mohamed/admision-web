@@ -16,5 +16,7 @@ class DetalleExamenVocacional extends Model
         'id_pregunta',
         'id_postulante',
         'id_respuesta',
+        'nro',
+        'id_usuario'
     ];
 }

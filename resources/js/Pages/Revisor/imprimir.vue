@@ -147,6 +147,11 @@ const dniseleccionado = ref(null)
 
 const postulantes = ref([]) 
 
+const numerorandom = ref();
+
+const generateRandomNumber = () => {
+ numerorandom.value = Math.floor(Math.random() * 100) + 1;
+}
 
 function focusInput() { save() }
 const checkedList = ref([]);
@@ -206,6 +211,7 @@ const getPostulanteRequisitos = async () => {
 getPostulanteRequisitos()
 
 const getPostulantesByDni = async () => {
+  generateRandomNumber()
   let res = await axios.post("get-postulante-dni",{ dni: dniseleccionado.value });
   postulante.value.id = res.data.datos.id_postulante;   
   postulante.value.dni_temp = res.data.datos.dni

@@ -5,6 +5,7 @@
 </head>
 <body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-top:125px">
     <div>
+        <div style="display: none;"> <h1>Hora actual: {{ date('H:i:s') }}</h1></div>
         <div>
             <table>
                 <tr>
@@ -22,10 +23,15 @@
                     <td style="" width="5px" align="left" valign="top">:</td>
                     <td style="" align="left" valign="top"><div style="text-align: justify; font-weight: regular;"><span>{{$data->modalidad}}</span></div></td>
                     <td style="" rowspan="7" align="right"  width="150px" valign="top">
-                        <div style="border:solid 1px #d9d9d9; padding:5px; width:140px; overflow-hidden; margin-right:-40px;" >
-                            <div style="overflow: hidden; height:160px; width:125px;">
-                                <img src="{{ public_path('fotos/inscripcion/'.$data->dni.'.jpg') }}" alt="foto" width="125"> 
+                        <div style="position:relative; border:solid 1px #d9d9d9; padding:1px; width:140px; overflow-hidden; margin-right:-40px;" >
+                            <div style=" position:absolute; font-size: 2.5rem; top:-40px; right:-4px;">
+                                {{$data->id_programa}}
                             </div>
+
+                            <div style="overflow: hidden; height:170px; width:140px; margin-right:-10px;">
+                                <img src="{{ public_path('fotos/inscripcion/'.$data->dni.'.jpg') }}" alt="foto" width="150"> 
+                            </div>
+                            {{-- <div ><span style="color:red; font-size:14pt;">DUPLICADO</span></div> --}}
                         </div>
                     </td>
                 </tr>
@@ -55,10 +61,10 @@
                     <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -30px;"><span style="text-transform: uppercase;"> {{ $data->nombre }} </span></div></td>
                 </tr>
                 <tr>
-                    <td width="195px" align="left" valign="top"><div style="margin-top: -36px;"> FECHA DE IMPRESION </div></td>
+                    <td width="195px" align="left" valign="top"><div style="margin-top: -36px;"> FECHA Y HORA </div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -36px;">:</div></td>
                     {{-- <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;">{{$fecha}}</span></div></td> --}}
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;"> 14 julio de 2023</span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;"> {{$data->fecha}}</span></div></td>
                 </tr>
             </table>
         </div>
@@ -78,7 +84,7 @@
                                 proporcionada durante el proceso de inscripción es veraz y 
                                 de mi entera responsabilidad. Reconozco y 
                                 acepto los términos estipulados en el Reglamento del 
-                                EXAMEN DE ADMISIÓN CEPREUNA 2023-II, así como someterme 
+                                EXAMEN DE ADMISIÓN GENERAL 2023-II, así como someterme 
                                 a una rigurosa revisión física exhaustiva para acceder 
                                 a la Ciudad Universitaria y realizar el examen de admisión. 
                                 En caso de obtener una vacante, me comprometo a cumplir con 
@@ -114,12 +120,12 @@
 
                     <td valign="top">
                         <div>
-                            <div style=" width 80px; height: 95px;">
+                            <div style=" width 80px; height: 95px; border:solid 1px black;">
                                 {{-- <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="95">  --}}
                                 <img src="{{ public_path('fotos/huella/'.$data->dni.'.jpg') }}" alt="foto" width="75"> 
                             </div>
                             <div style="text-align: center" >Indice Derecho </div>
-                            <div style="width 80px; heightpx; margin-top:10px;">
+                            <div style=" width 80px; height: 95px; margin-top:10px; border:solid 1px black;">
                                 <img src="{{ public_path('fotos/huella/'.$data->dni.'x.jpg') }}" alt="foto" width="75"> 
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
@@ -132,7 +138,7 @@
                             <div style="border:solid 1px black; width 85px; height: 95px; margin-top:-2px;">
 
                             </div>
-                            <div style="text-align: center" >Indice Derecho </div>
+                            <div style="text-align: center;"  >Indice Derecho </div>
                             <div style="border:solid 1px black; width 85px; height: 95px; margin-top:10px;">
                             </div>
                             <div style="text-align: center">Indice Izquierdo</div>
@@ -173,10 +179,16 @@
                     <td>
                         <div style="magin-rigth -20px; width:145px; margin-top:-120px;">
                             <div style="text-align: center">
-                                <span style="font-size:12pt; text-align:center"><?php echo DNS1D::getBarcodeHTML($data->codigo ,'C128');?> </span>
+                                <span style="font-size:12pt; text-align:center"><?php echo DNS1D::getBarcodeHTML($data->dni ,'C128');?> </span>
                             </div>
                             <div style="margin-right:-14px; text-align: right; font-size:2.3rem;">
                                 {{$data->codigo}}
+                            </div>
+                            <div style="text-align: center">
+                                <span style="text-transform: uppercase;">{{ strtoupper(substr($data->name, 0, 1)) }}. {{$data->paterno}} </span>
+                            </div>
+                            <div style="text-align: center;">
+                                <span style="text-transform: uppercase; font-size:0.6rem;">inscriptor</span>
                             </div>
                         </div>
                     </td>

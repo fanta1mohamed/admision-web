@@ -29,9 +29,7 @@ class DetalleExamenVocacionalController extends Controller
             }
             else{
                 $this->saveDetalleVocacional($request->id_examen, $respuesta['ideP'], $request->id_postulante, $respuesta['ide']); 
-
             }
-
         }
         $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
         $avancePostulante->avance = 2;
@@ -56,8 +54,26 @@ class DetalleExamenVocacionalController extends Controller
             'id_pregunta' => $id_pregunta,
             'id_postulante' => $id_postulante,
             'id_respuesta' => $id_respuesta,
+            'fecha' => date('Y-m-d'),
+            'id_usuario'=> auth()->id()
+        ]);    
+    }
+
+    public function saveRespuesta(Request $request) {
+    
+        $detalle_vocacional = DetalleExamenVocacional::create([
+            'id_examen_vocacional' => $request->id_vocacional,
+            'id_pregunta' => $request->pregunta,
+            'nro' => $request->nro,
+            'id_postulante' => $request->postulante,
+            'id_respuesta' => $request->respuesta,
             'fecha' => date('Y-m-d')
         ]);    
+
+        $this->response['tipo'] = 'success';
+        $this->response['nro'] = $request->nro;
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
     }
 
     private function savePasos($nom, $num, $avan, $pos, $pro) {
@@ -70,6 +86,8 @@ class DetalleExamenVocacionalController extends Controller
             'postulante' => $pos,
             'proceso' => $pro
         ]);
+
+        
     }
 
     public function pdfvocacional($dni) {

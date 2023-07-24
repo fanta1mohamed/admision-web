@@ -198,10 +198,20 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::post('/actualizar-postulante', [PostulanteController::class, 'actualizarDatos']);
 
+    Route::get('/examen-vocacional2', fn () => Inertia::render('Publico/exvocacional2'))->name('ex-vocacional2');
+
+//    Route::post('/get-preguntas2', [PreguntaController::class, 'getPreguntas2']);
+//    Route::post('/get-preguntas-perfiles', [PreguntaController::class, 'getPreguntasPerfiles']);
+
 });
 
 Route::post('/get-avance-postulante', [TestController::class, 'getAvancePostulante']);
 Route::post('/get-avance-postulante2', [TestController::class, 'getAvancePostulante2']);
+
+Route::post('/get-preguntas2', [PreguntaController::class, 'getPreguntas2']);
+Route::post('/get-alternativas2', [PreguntaController::class, 'getAlternativas2']);
+
+Route::get('/get-pre', [PreguntaController::class, 'getPreguntasPerfiles2']);
 
 
 Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
@@ -221,6 +231,10 @@ Route::get('/preinscripcion-adicional', fn () => Inertia::render('Publico/preins
 //Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
 Route::get('/preinscripcion-general', fn () => Inertia::render('Publico/preinscripciongeneral'))->name('preinscripcion-general');
 Route::get('/examen-vocacional', fn () => Inertia::render('Publico/exvocacional'))->name('ex-vocacional');
+
+Route::post('/save-respuesta', [DetalleExamenVocacionalController::class, 'saveRespuesta']);
+
+
 Route::post('save-pasos-preinscripcion', [PreinscripcionController::class, 'savePasos']);
 Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
 Route::post('/save-postulante-dni', [PostulanteController::class, 'saveDniPostulante']);
@@ -249,6 +263,7 @@ Route::post('/get-datos-examen2', [PreguntaController::class, 'getDatosExamen2']
 
 Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'saveVocacional']);
 
+
 Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocacional']);
 Route::get('/pdf-solicitud/{dni}', [PreinscripcionController::class, 'pdfsolicitud']);
 
@@ -256,8 +271,6 @@ Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
-
-
 Route::get('/get-expediente/{programa}/{dni}', [TestController::class, 'getNroConstancia']);
 
 
@@ -273,6 +286,7 @@ Route::get('/aleatorio', fn () => Inertia::render('Publico/aleatorio'));
 Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);
 Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
+
 
 require __DIR__.'/auth.php';
 

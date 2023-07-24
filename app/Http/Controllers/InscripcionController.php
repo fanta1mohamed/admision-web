@@ -178,9 +178,7 @@ class InscripcionController extends Controller
         $this->response['estado'] = true;
         $this->response['datos'] = $request['postulante']['dni_temp'];
         return response()->json($this->response, 200);
-
-        // return redirect('http://admision-web.test/admin/pdf-inscripción/70757838');
-         
+        // return redirect('http://admision-web.test/admin/pdf-inscripción/70757838');         
     }
 
 
@@ -193,21 +191,25 @@ class InscripcionController extends Controller
         postulante.primer_apellido AS paterno,
         postulante.segundo_apellido AS materno,
         programa.nombre AS programa,
+        inscripciones.id_programa as id_programa,
         modalidad.nombre AS modalidad,
-        procesos.nombre AS proceso
+        procesos.nombre AS proceso,
+        inscripciones.created_at as fecha,
+        users.name, users.paterno
         FROM inscripciones
         JOIN postulante ON inscripciones.id_postulante = postulante.id
         JOIN programa ON inscripciones.id_programa = programa.id
         JOIN modalidad ON inscripciones.id_modalidad = modalidad.id 
         JOIN procesos ON inscripciones.id_proceso = procesos.id
+        JOIN users on inscripciones.id_usuario = users.id
         WHERE postulante.nro_doc = '.$dni.';');        
         $data = $datos[0];
         $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$dni);
-        file_put_contents(public_path('/documentos/cepre2023-II/'.$dni.'/').'inscripcion-1.pdf', $output);
+        $rutaCarpeta = public_path('/documentos/general2023-II/'.$dni);
+        file_put_contents(public_path('/documentos/general2023-II/').$dni.'.pdf', $output);
 
         return $pdf->download();
 

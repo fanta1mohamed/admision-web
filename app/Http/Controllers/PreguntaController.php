@@ -146,7 +146,7 @@ class PreguntaController extends Controller
 
     public function getDatosExamen2(Request $request)
     {
-        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2');
+        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 5');
 
         if($examen[0]->vocacional == 0) {
 
@@ -161,16 +161,11 @@ class PreguntaController extends Controller
              $this->response['estado'] = true;
              $this->response['datos'] = $res;
              return response()->json($this->response, 200);
-
         }else {
-
             $this->response['estado'] = false;
             $this->response['mensaje'] = "Ya rindió el examen vocacional";
             return response()->json($this->response, 200);
-
-
         }
-
 
     }
 
@@ -258,6 +253,78 @@ class PreguntaController extends Controller
            }
         }
         return $cont;
+    }
+
+    //EXAMEN VOCACIONAL 2
+
+    public function getpreguntas2(Request $request){
+
+        $pos = $request->postulante;
+        $cod = $request->codigo;
+
+        $programa = DB::select("SELECT inscripciones.id_programa FROM inscripciones 
+        WHERE inscripciones.id_postulante = ".$pos." AND codigo = ".$cod);
+
+        $res = DB::select('SELECT preguntas.id AS id_pregunta, preguntas.pregunta FROM preguntas
+        JOIN examen_vocacional ON examen_vocacional.id = preguntas.id_examen_vocacional
+        JOIN programa ON programa.id = examen_vocacional.programa
+        WHERE programa.id = '. $programa[0]->id_programa);
+        
+        $preguntas = collect();
+        $rangos = [[431, 435], [436, 440], [441, 447], [448, 452], [453,457]];
+
+        foreach ($rangos as $rango) {
+            $preguntasDeRango = DB::table('preguntas')
+                ->select('preguntas.id as id_pregunta','pregunta')
+                ->whereBetween('id', $rango)
+                ->inRandomOrder()
+                ->limit(2)
+                ->get();
+
+            $preguntas = $preguntas->merge($preguntasDeRango);
+        }
+
+        $preguntas = $preguntas->shuffle()->take(12);
+
+
+        $combinados = collect($res)->merge($preguntas);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $combinados;
+        return response()->json($this->response, 200);
+    }
+
+
+    public function getAlternativas2(Request $request){
+        $res = DB::select('SELECT id, respuesta FROM respuestas
+        WHERE id_pregunta = ' . $request->id_pregunta);
+        
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+    public function getPreguntasPerfiles2(){
+
+        $preguntas = collect();
+        $rangos = [[431, 435], [436, 440], [441, 447], [448, 452], [453,457]];
+        
+        foreach ($rangos as $rango) {
+            $preguntasDeRango = DB::table('preguntas')
+                ->select('preguntas.id as id_pregunta','pregunta')
+                ->whereBetween('id', $rango)
+                ->inRandomOrder()
+                ->limit(2)
+                ->get();
+        
+            $preguntas = $preguntas->merge($preguntasDeRango);
+        }
+        
+        $preguntas = $preguntas->shuffle()->take(12);
+        
+
+        return $preguntas;
+
     }
 
 

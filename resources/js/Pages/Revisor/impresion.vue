@@ -451,6 +451,7 @@ const getDatosCepre = async () => {
 }
 
 const getPostulantesByDni =  async () => {
+  const numerorandom = ref();
   let res = await axios.get(
       "get-postulante-dni/" + dniseleccionado.value
   );
@@ -511,12 +512,10 @@ const getInscripciones =  async () => {
 
 
 const Inscribir =  async () => {
-  if( postcepre.value.habilitado == 1 ){
-    let res = await axios.post( "inscribir", { postulante: postulante.value });
-    imprimirPDF(dniseleccionado.value)
-    dniseleccionado.value = "";
-    dni.value = "";
-  }
+  let res = await axios.post( "inscribir", { postulante: postulante.value });
+  imprimirPDF(dniseleccionado.value)
+  dniseleccionado.value = "";
+  dni.value = "";
 
   //postulantes.value = res.data.datos.data;
   postulante.value = { 
@@ -545,6 +544,11 @@ watch(dni, ( newValue, oldValue ) => {
   //getDatosCepre();
 })
 
+
+const numerorandom = ref();
+const generateRandomNumber = () => {
+ numerorandom.value = Math.floor(Math.random() * 100) + 1;
+}
 
 
 watch(dniseleccionado, ( newValue, oldValue ) => {
@@ -576,7 +580,7 @@ watch(tabactive, ( newValue, oldValue ) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/cepre2023-II/'+dnni+'/inscripcion-1.pdf';
+    iframe.src = baseUrl+'/documentos/general2023-II/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
