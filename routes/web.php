@@ -198,13 +198,14 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::post('/actualizar-postulante', [PostulanteController::class, 'actualizarDatos']);
 
-    Route::get('/examen-vocacional2', fn () => Inertia::render('Publico/exvocacional2'))->name('ex-vocacional2');
+
 
 //    Route::post('/get-preguntas2', [PreguntaController::class, 'getPreguntas2']);
 //    Route::post('/get-preguntas-perfiles', [PreguntaController::class, 'getPreguntasPerfiles']);
 
 });
 
+Route::get('/examen-vocacional2', fn () => Inertia::render('Publico/exvocacional2'))->name('ex-vocacional2');
 Route::post('/get-avance-postulante', [TestController::class, 'getAvancePostulante']);
 Route::post('/get-avance-postulante2', [TestController::class, 'getAvancePostulante2']);
 

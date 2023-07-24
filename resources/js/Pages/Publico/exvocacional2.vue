@@ -107,8 +107,8 @@ const alternativas = ref([]);
 
 const respuestas = ref([])
 
-const dni = ref('74948418')
-const codigo = ref('23060044')
+const dni = ref('')
+const codigo = ref('')
 const datos = ref(null)
 const ex = ref(0)
 
@@ -167,7 +167,7 @@ const iniciarContador = (t = false) => {
 
 const guardar = async (pregunta, respuesta) => {
   let res = await axios.post("save-respuesta",
-  { id_vocacional: datos.value[0].id_vocacional, pregunta: pregunta, postulante: datos.value[0].id, respuesta:respuesta, nro: nropregunta.value + 1 } );
+  { dni: dni.value, id_vocacional: datos.value[0].id_vocacional, pregunta: pregunta, postulante: datos.value[0].id, respuesta:respuesta, nro: nropregunta.value + 1 } );
   nropregunta.value = res.data.nro;   
   iniciarContador(true)
 }

@@ -70,6 +70,10 @@ class DetalleExamenVocacionalController extends Controller
             'fecha' => date('Y-m-d')
         ]);    
 
+        $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
+        $avancePostulante->avance = 2;
+        $avancePostulante->save();
+
         $this->response['tipo'] = 'success';
         $this->response['nro'] = $request->nro;
         $this->response['estado'] = true;
