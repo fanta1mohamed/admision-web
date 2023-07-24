@@ -19,6 +19,7 @@
 </head>
 <body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-left:60px; margin-top:125px; margin-right:40px;">
     <div style="width: 100%; text-align:center; font-weight: bold; font-size:1.4rem; height:40px;"> <span> DATOS BIOMÉTRICOS</span></div>
+    {{ $data }}
     <div class="div-container">
         <div style="width: 250px; height: 100%;">
             <table>

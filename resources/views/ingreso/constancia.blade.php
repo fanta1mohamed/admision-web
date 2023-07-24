@@ -23,7 +23,7 @@
                     <td style="">
                         <div style="text-align: right">
                             <span style="">
-                                Fecha: Puno, {{ $date }}
+                                Puno, {{ $date }}
                             </span>
                         </div>
                     </td>
@@ -40,9 +40,9 @@
                             <span style="line-height:1.4rem;">
                                 La Dirección de admisión de la Universidad Nacional del Altiplano de Puno,
                                 conforme al cumplimento del reglamento general del Examen {{ $data->proceso}},
-                                certifica que {{ $data->nombres }} {{$data->paterno}} {{$data->materno}}, con DNI N° {{ $data->dni }}, 
+                                certifica que <span style="text-transform: uppercase"> {{ $data->nombres }} {{$data->paterno}} {{$data->materno}}</span>, con DNI N° {{ $data->dni }}, 
                                 es ingresante al programa de estudios de {{$data->programa}}, 
-                                bajo la modalidad {{ $data->modalidad}}, en el examen realizado el {{ $dateI }}.
+                                bajo la modalidad {{ $data->modalidad}}, realizado el {{ $dateI }}.
                             </span>
                         </div>
                     </td>
@@ -56,8 +56,7 @@
                                 entre los ingresantes al programa de estudios de {{ $data->programa}},
                                 Así mismo, se adjuntan 
                                 los datos biométricos del estudiante registrados en la etapa de inscripción, 
-                                ingreso el día del examen y control biométrico. Estos datos garantizan 
-                                la autenticidad y seguridad de su identificación en nuestra universidad.
+                                ingreso el día del examen y control biométrico.
                             </span>
                         </div>
                     </td>
@@ -66,7 +65,7 @@
                     <td>
                         <div style="text-align: justify; margin-top:15px;">
                             <span style="line-height:1.4rem;">
-                                La Universidad Nacional del Altiplano de Puno felicita al estudiante por su destacado logro
+                                La Dirección de admisión de la UNA Puno felicita al estudiante por su destacado logro
                                  y le da una cálida bienvenida a nuestra prestigiosa universidad. 
                                 Le deseamos mucho éxito en su trayectoria universitaria.
                             </span>
@@ -108,7 +107,16 @@
                             <span style="font-size:6pt;"><?php echo DNS2D::getBarcodeHTML('https://admision.unap.edu.pe/verificar-solicitud/70757838', 'QRCODE',4,4);?> </span>
                         </div>
                         <div style=" margin-left: 140px; height: text-align:center;">
-                            <span style="font-size:6pt;"><?php echo DNS1D::getBarcodeHTML('70757373', 'C128',2.2,44);?> </span>
+                            <span style="font-size:6pt;"><?php echo DNS1D::getBarcodeHTML($data->dni, 'C128',2.2,44);?> </span>
+                        </div>
+                        <div style="text-align: center; margin-left: 140px;">
+                            <span style="text-transform: uppercase;">{{ strtoupper(substr($data->name, 0, 1)) }}. {{$data->paterno}} </span>
+                        </div>
+                        <div style="text-align: center; margin-left: 140px;">
+                            <span style="text-transform: uppercase; font-size:0.6rem;">revisor</span>
+                        </div>
+                        <div style="text-align: center; margin-left: 140px;">
+                            <span style="text-transform: uppercase; font-size:0.6rem;">{{ now() }}</span>
                         </div>
                     </td> 
                 </tr>

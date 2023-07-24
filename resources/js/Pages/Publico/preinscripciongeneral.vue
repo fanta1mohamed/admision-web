@@ -1146,7 +1146,7 @@
     segundo_apellido: "",
     nombres:"",
     estado_civil:1,
-    sexo:1,
+    sexo:null,
     correo:"",
     celular:'',
     fec_nacimiento:"",
@@ -1344,7 +1344,7 @@ const getDatosApi = () => {
         datospersonales.segundo_apellido = res.data.datos[0].segundo_apellido
         datospersonales.nombres = res.data.datos[0].nombres
         //datospersonales.estado_civil = res.data.datos[0].estado_civil
-        //datospersonales.sexo = res.data.datos[0].sexo
+        datospersonales.sexo = res.data.datos[0].sexo
         datospersonales.correo = res.data.datos[0].correo
         datospersonales.celular = res.data.datos[0].celular
         if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }

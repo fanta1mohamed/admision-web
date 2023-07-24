@@ -323,6 +323,8 @@ class SeleccionDataController extends Controller
           'postulante.nro_doc as value', 
           DB::raw("CONCAT( postulante.nombres,' ',postulante.primer_apellido, postulante.primer_apellido) as label")
       )
+      ->join('pre_inscripcion','pre_inscripciones.id_postulante','postulante.id')
+      ->where('pre_inscripcion.id_proceso','=',5)
       ->where($query_where)
       ->where(function ($query) use ($request) {
           return $query
@@ -344,7 +346,9 @@ class SeleccionDataController extends Controller
     postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
     postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento
     FROM postulante
-    WHERE postulante.nro_doc = ' . $request->dni);
+    JOIN pre_inscripcion ON postulante.id = pre_inscripcion.id_postulante
+    WHERE postulante.nro_doc = '.$request->dni.' AND pre_inscripcion.id_proceso = 5');
+    
     if(count($res) > 0 ){
         $this->response['estado'] = true;
         $this->response['datos'] = $res[0];
