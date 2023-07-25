@@ -52,9 +52,9 @@ class IngresoController extends Controller
             FROM resultados
             LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
             LEFT JOIN inscripciones ON inscripciones.id_postulante = postulante.id
-            JOIN users on inscripciones.id_usuario = users.id
             LEFT JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
             LEFT JOIN procesos ON resultados.id_proceso = procesos.id 
+            left join users on users.id = inscripciones.id_usuario
             LEFT JOIN programa ON programa.id = inscripciones.id_programa
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
@@ -170,7 +170,7 @@ class IngresoController extends Controller
     }
 
     public function pdfbiometrico($datos){
-        $data = $datos;
+        $data = $datos->dni;
         $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
