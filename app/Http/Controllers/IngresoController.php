@@ -60,90 +60,91 @@ class IngresoController extends Controller
             WHERE resultados.apto = 'SI'
             AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ". auth()->user()->id_proceso.";");
 
-        $this->pdf($re[0]);
-        $this->pdfbiometrico($re[0]);
-        $this->UnirPDF($request->dni);
+            // $this->pdf($re[0]);
+            // $this->pdfbiometrico($re[0]);
+            // $this->UnirPDF($request->dni);
 
-        $pdf = new Fpdi();
+            // $pdf = new Fpdi();
+            
+            // $files = [
+            //     public_path('/documentos/cepre2023-II/'.$request->dni.'/').'constancia-ingreso-1.pdf',
+            //     public_path('/documentos/cepre2023-II/'.$request->dni.'/').'control-biometrico-1.pdf'
+            // ];
+
+            // foreach ($files as $file) {
+            //     $pageCount = $pdf->setSourceFile($file);
+            //     for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            //         $template = $pdf->importPage($pageNo);
+            //         $pdf->AddPage();
+            //         $pdf->useTemplate($template);
+            //     }
+            // }
+
+            // $outputFilePath = public_path('/documentos/cepre2023-II'.'/'.$request->dni.'/control-biometrico-unido.pdf');
+            // $pdf->Output($outputFilePath, 'F');
+
+            try {
+                DB::transaction(function () use ($request, $re) {
+
+                    $database2 = 'mysql_secondary';
+                    $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
+                    $nuevoCodigo = $rs[0]->siguiente;
+
+                    $biometric = ControlBiometrico::create([
+                        'id_proceso' => $re[0]->id_proceso,
+                        'id_postulante' => $re[0]->id_postulante,
+                        'codigo_ingreso' => $nuevoCodigo,
+                        'estado' => 1,
+                        'id_usuario' => auth()->id()
+                    ]);
+
+                    $e_civil = 1;
+                    if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
+                    if($re[0]->estado_civil == 2 ) { $e_civil = 1;}
+                    if($re[0]->estado_civil == 3 ) { $e_civil = 3;}
+                    if($re[0]->estado_civil == 4 ) { $e_civil = 6;}
+
+                    $estudiante = Estudiante::on('mysql_secondary')->create([
+                        'num_mat' => $nuevoCodigo,
+                        'cod_car' => $re[0]->programa_oti,
+                        'paterno' => $re[0]->paterno, 
+                        'materno' => $re[0]->materno,
+                        'nombres' => $re[0]->nombres,
+                        'tip_doc' => $re[0]->tipo_doc_oti,
+                        'num_doc' => $re[0]->dni,
+                        'fch_nac' => $re[0]->fec_nacimiento,
+                        'sexo' => $re[0]->sexo,
+                        'ubigeo' => $re[0]->ubigeo_residencia,
+                        'mod_ing' => $re[0]->modalidad_oti,
+                        'est_civ' => $e_civil,
+                        'fch_ing' => $re[0]->fecha,
+                        'direc' => $re[0]->direccion,
+                        'email' => $re[0]->email,
+                        'con_est' => 5,
+                        'celular' => $re[0]->celular,
+                        'cod_esp' => $re[0]->cod_esp,
+                        'puntaje' => $re[0]->puntaje,
+                        'puesto_escuela' => $re[0]->puesto,
+                        'puesto_general' => $re[0]->puesto_general,
+                        'ano_ing' => $re[0]->anio,
+                        'per_ing' => $re[0]->ciclo_oti
+                        
+                    ]);
+
+                    // $avancePostulante->avance = 5;  
+                    // $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
+                    // $avancePostulante->save();
+                
+                });
+            } catch (\Exception $e) {
+                $errorMessage = $e->getMessage();
+                // Registrar el error en un archivo de registro
+                \Log::error('Error en la transacción: ' . $errorMessage);
+                // Devolver una respuesta de error al usuario con el mensaje de error
+                return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
         
-        $files = [
-            public_path('/documentos/cepre2023-II/'.$request->dni.'/').'constancia-ingreso-1.pdf',
-            public_path('/documentos/cepre2023-II/'.$request->dni.'/').'control-biometrico-1.pdf'
-        ];
-
-        foreach ($files as $file) {
-            $pageCount = $pdf->setSourceFile($file);
-            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                $template = $pdf->importPage($pageNo);
-                $pdf->AddPage();
-                $pdf->useTemplate($template);
+        
             }
-        }
-
-        $outputFilePath = public_path('/documentos/cepre2023-II'.'/'.$request->dni.'/control-biometrico-unido.pdf');
-        $pdf->Output($outputFilePath, 'F');
-
-        // try {
-        //     DB::transaction(function () use ($request, $re) {
-
-        //         $database2 = 'mysql_secondary';
-        //         $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
-        //         $nuevoCodigo = $rs[0]->siguiente;
-
-        //         $biometric = ControlBiometrico::create([
-        //             'id_proceso' => $re[0]->id_proceso,
-        //             'id_postulante' => $re[0]->id_postulante,
-        //             'codigo_ingreso' => $nuevoCodigo,
-        //             'estado' => 1,
-        //             'id_usuario' => auth()->id()
-        //         ]);
-
-        //         $e_civil = 1;
-        //         if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
-        //         if($re[0]->estado_civil == 2 ) { $e_civil = 1;}
-        //         if($re[0]->estado_civil == 3 ) { $e_civil = 3;}
-        //         if($re[0]->estado_civil == 4 ) { $e_civil = 6;}
-
-        //         $estudiante = Estudiante::on('mysql_secondary')->create([
-        //             'num_mat' => $nuevoCodigo,
-        //             'cod_car' => $re[0]->programa_oti,
-        //             'paterno' => $re[0]->paterno, 
-        //             'materno' => $re[0]->materno,
-        //             'nombres' => $re[0]->nombres,
-        //             'tip_doc' => $re[0]->tipo_doc_oti,
-        //             'num_doc' => $re[0]->dni,
-        //             'fch_nac' => $re[0]->fec_nacimiento,
-        //             'sexo' => $re[0]->sexo,
-        //             'ubigeo' => $re[0]->ubigeo_residencia,
-        //             'mod_ing' => $re[0]->modalidad_oti,
-        //             'est_civ' => $e_civil,
-        //             'fch_ing' => $re[0]->fecha,
-        //             'direc' => $re[0]->direccion,
-        //             'email' => $re[0]->email,
-        //             'con_est' => 5,
-        //             'celular' => $re[0]->celular,
-        //             'cod_esp' => $re[0]->cod_esp,
-        //             'puntaje' => $re[0]->puntaje,
-        //             'puesto_escuela' => $re[0]->puesto,
-        //             'puesto_general' => $re[0]->puesto_general,
-        //             'ano_ing' => $re[0]->anio,
-        //             'per_ing' => $re[0]->ciclo_oti
-        //         ]);
-
-        //         // $avancePostulante->avance = 5;  
-        //         // $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
-        //         // $avancePostulante->save();
-               
-        //     });
-        // } catch (\Exception $e) {
-        //     $errorMessage = $e->getMessage();
-        //     // Registrar el error en un archivo de registro
-        //     \Log::error('Error en la transacción: ' . $errorMessage);
-        //     // Devolver una respuesta de error al usuario con el mensaje de error
-        //     return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
-    
-    
-        // }
         
 
 
