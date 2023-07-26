@@ -69,6 +69,7 @@ class ApixController extends Controller {
                 'postulante.primer_apellido',
                 'postulante.nro_doc AS nro_documento',
                 'control_biometrico.codigo_ingreso',
+                'inscripciones.id_programa'
             )
             ->join('control_biometrico','control_biometrico.id_postulante','postulante.id')
             ->join('procesos','control_biometrico.id_proceso','procesos.id') 
@@ -82,7 +83,7 @@ class ApixController extends Controller {
             }else {
                 return response()->json(['status' => false, 'mensaje'=>'Ingresante no encontrado'], 203);
             }
-            
+
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'mensaje'=>$th->getMessage()], 500);
         }
