@@ -9,55 +9,87 @@ use Illuminate\Support\Facades\DB;
 class ApixController extends Controller {
 
     public function getIngresante($dni, $proceso){
-        $res = Postulante::select(
-            
-            'postulante.nombres',
-            'postulante.segundo_apellido',
-            'postulante.primer_apellido',
-            'postulante.tipo_doc AS tipo_documento',
-            'postulante.nro_doc AS nro_documento',
-            'postulante.sexo',
-            'postulante.estado_civil',
-            'postulante.celular',
-            'postulante.fec_nacimiento AS fecha_nacimiento',
-            'postulante.email',
-            'postulante.ubigeo_residencia',
-            'postulante.ubigeo_nacimiento',
-            'postulante.direccion',
-            'postulante.discapacidad',
-            'paises.codigo AS pais_nacimiento', 'paises.nacionalidad',
-            'control_biometrico.codigo_ingreso',
-            'filial.codigo as codigo_sede_filial', 'tipo_proceso.id AS tipo_proceso',
-            DB::raw("CONCAT( procesos.anio,'-',procesos.ciclo) as proceso_admision"),
-            'facultad.codigo AS codigo_facultad', 
-            'programa.codigo AS codigo_programa',
-        )
-        ->leftjoin('paises','paises.id','postulante.id_pais')
-        ->leftjoin('inscripciones','inscripciones.id_postulante','postulante.id')
-        ->leftjoin('programa','inscripciones.id_programa','programa.id')
-        ->leftjoin('facultad','programa.id_facultad','facultad.id')
-        ->leftjoin('resultados','resultados.dni_postulante','postulante.nro_doc')
-        ->leftjoin('modalidad','inscripciones.id_modalidad','modalidad.id')
-        ->leftjoin('procesos','procesos.id','inscripciones.id_proceso')
-        ->leftjoin('filial','filial.id','procesos.id_sede_filial')
-        ->leftjoin('tipo_proceso','tipo_proceso.id','procesos.id_tipo_proceso')
-        ->leftjoin('control_biometrico','control_biometrico.id_postulante','postulante.id')
-        ->where('resultados.apto', '=','SI')
-        ->where('procesos.id', '=',$proceso)
-        ->where('nro_doc','=',$dni)->get();
+        try {
 
-        if (count($res) > 0 ){
-            return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $res[0]], 200);
-        }else {
-            return response()->json(['status' => false, 'mensaje'=>'Postulante no encontrado'], 203);
+            $res = Postulante::select(
+                'postulante.nombres',
+                'postulante.segundo_apellido',
+                'postulante.primer_apellido',
+                'postulante.tipo_doc AS tipo_documento',
+                'postulante.nro_doc AS nro_documento',
+                'postulante.sexo',
+                'postulante.estado_civil',
+                'postulante.celular',
+                'postulante.fec_nacimiento AS fecha_nacimiento',
+                'postulante.email',
+                'postulante.ubigeo_residencia',
+                'postulante.ubigeo_nacimiento',
+                'postulante.direccion',
+                'postulante.discapacidad',
+                'paises.codigo AS pais_nacimiento', 'paises.nacionalidad',
+                'control_biometrico.codigo_ingreso',
+                'filial.codigo as codigo_sede_filial', 'tipo_proceso.id AS tipo_proceso',
+                DB::raw("CONCAT( procesos.anio,'-',procesos.ciclo) as proceso_admision"),
+                'facultad.codigo AS codigo_facultad', 
+                'programa.codigo AS codigo_programa',
+            )
+            ->leftjoin('paises','paises.id','postulante.id_pais')
+            ->leftjoin('inscripciones','inscripciones.id_postulante','postulante.id')
+            ->leftjoin('programa','inscripciones.id_programa','programa.id')
+            ->leftjoin('facultad','programa.id_facultad','facultad.id')
+            ->leftjoin('resultados','resultados.dni_postulante','postulante.nro_doc')
+            ->leftjoin('modalidad','inscripciones.id_modalidad','modalidad.id')
+            ->leftjoin('procesos','procesos.id','inscripciones.id_proceso')
+            ->leftjoin('filial','filial.id','procesos.id_sede_filial')
+            ->leftjoin('tipo_proceso','tipo_proceso.id','procesos.id_tipo_proceso')
+            ->leftjoin('control_biometrico','control_biometrico.id_postulante','postulante.id')
+            ->where('resultados.apto', '=','SI')
+            ->where('procesos.id', '=',$proceso)
+            ->where('nro_doc','=',$dni)->first();
+
+            if (!$res ){
+                return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $res], 200);
+            }else {
+                return response()->json(['status' => false, 'mensaje'=>'Postulante no encontrado'], 203);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'mensaje'=>$th->getMessage()], 500);
+        }
+
+    }
+
+
+    public function getIngresantePago($dni, $proceso){
+        try {
+
+            $res = Postulante::select(
+                'postulante.nombres',
+                'postulante.segundo_apellido',
+                'postulante.primer_apellido',
+                'postulante.nro_doc AS nro_documento',
+                'control_biometrico.codigo_ingreso',
+            )
+            ->join('control_biometrico','control_biometrico.id_postulante','postulante.id')
+            ->where('control_biometrico.id_proceso', '=',$proceso)
+            ->where('postulante.nro_doc','=',$dni)->first();
+
+            if ($res ){
+                return response()->json(['status' => true, 'mensaje'=>'Ingresante encontrado', 'data' => $res], 200);
+            }else {
+                return response()->json(['status' => false, 'mensaje'=>'Ingresante no encontrado'], 203);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'mensaje'=>$th->getMessage()], 500);
         }
 
     }
 
 
     public function getPostulantePago($dni, $proceso){
-        $res = [];
-        
+        try {
+            $res = null;
         if($proceso == 4 ){
             $res = Postulante::select(
                 'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
@@ -65,9 +97,9 @@ class ApixController extends Controller {
                 DB::raw("CASE WHEN colegios.id_gestion IN (1, 2, 3, 4) THEN 20 ELSE 0 END AS Monto"),
                 DB::raw("CASE WHEN pre_inscripcion.id_programa IN (38, 16) THEN 30 ELSE 0 END AS ex_med") 
             )
-            ->join('colegios','colegios.id','postulante.id_colegio')
+            ->leftJoin('colegios','colegios.id','postulante.id_colegio')
             ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
-            ->where('nro_doc','=',$dni)->get();
+            ->where('nro_doc','=',$dni)->first();
         }
         if($proceso == 5){
             $res = Postulante::select(
@@ -76,14 +108,21 @@ class ApixController extends Controller {
                 DB::raw("IF(colegios.id_gestion = 1, 200, IF((colegios.id_gestion = 2 OR colegios.id_gestion = 3), 350, IF(colegios.id_gestion = 4, 450, 0))) AS Monto"),
                 DB::raw("CASE WHEN pre_inscripcion.id_programa IN (38, 16) THEN 30 ELSE 0 END AS ex_med")   
             )
-            ->join('colegios','colegios.id','postulante.id_colegio')
+            ->leftJoin('colegios','colegios.id','postulante.id_colegio')
             ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
-            ->where('nro_doc','=',$dni)->get();
+            ->where('nro_doc','=',$dni)->first();
         }
 
-        $originalObjeto = $res[0];
 
-        if($res[0]->ex_med > 0) {
+        if(!$res){
+            return response()->json(['status' => false, 'mensaje'=>'Datos no encontrados', 'data' => null], 400);
+        }
+     
+
+        $originalObjeto = $res;
+
+    
+        if($res->ex_med > 0) {
 
             $nuevoObjeto = [
                 "nro_doc" => $originalObjeto["nro_doc"],
@@ -123,14 +162,16 @@ class ApixController extends Controller {
 
         }
 
-
-
-
-        if (count($res) > 0 ){
-            return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $nuevoObjeto], 200);
-        }else {
-            return response()->json(['status' => false, 'mensaje'=>'Postulante no encontrado'], 203);
+        if($res->id_gestion == null){
+            return response()->json(['status' => true, 'mensaje'=> 'No tiene colegio', 'data' => $nuevoObjeto], 200);
         }
+
+            return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $nuevoObjeto], 200);
+
+        }  catch (\Throwable $th) {
+            return response()->json(['status' => false, 'mensaje'=>$th->getMessage(), 'data' => null], 500);
+        }
+      
     }
 
     public function getBiometrico($codigo){
