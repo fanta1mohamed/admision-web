@@ -60,7 +60,7 @@ class ApixController extends Controller {
     }
 
 
-    public function getIngresantePago($dni, $proceso){
+    public function getIngresantePago($dni, $anio, $ciclo){
         try {
 
             $res = Postulante::select(
@@ -71,15 +71,18 @@ class ApixController extends Controller {
                 'control_biometrico.codigo_ingreso',
             )
             ->join('control_biometrico','control_biometrico.id_postulante','postulante.id')
-            ->where('control_biometrico.id_proceso', '=',$proceso)
+            ->join('procesos','control_biometrico.id_proceso','procesos.id') 
+            ->join('inscripciones','inscripciones.id_postulante','postulante.id')
+            ->where('procesos.anio', '=',$anio)
+            ->where('procesos.ciclo', '=',$ciclo)
             ->where('postulante.nro_doc','=',$dni)->first();
 
-            if ($res ){
+            if ( $res ){
                 return response()->json(['status' => true, 'mensaje'=>'Ingresante encontrado', 'data' => $res], 200);
             }else {
                 return response()->json(['status' => false, 'mensaje'=>'Ingresante no encontrado'], 203);
             }
-
+            
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'mensaje'=>$th->getMessage()], 500);
         }
