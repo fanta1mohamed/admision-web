@@ -47,8 +47,6 @@ class IngresoController extends Controller
         return response()->json($this->response, 200);
     }
 
-
-
     public function biometrico(Request $request){
 
         $re = DB::select("SELECT
@@ -77,38 +75,38 @@ class IngresoController extends Controller
             modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
             programa.nombre AS programa
             FROM resultados
-            JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
-            JOIN inscripciones ON inscripciones.id_postulante = postulante.id
-            JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
-            JOIN procesos ON resultados.id_proceso = procesos.id 
-            join users on users.id = inscripciones.id_usuario
-            JOIN programa ON programa.id = inscripciones.id_programa
-            JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
+            LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
+            LEFT JOIN inscripciones ON inscripciones.id_postulante = postulante.id
+            LEFT JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
+            LEFT JOIN procesos ON resultados.id_proceso = procesos.id 
+            left join users on users.id = inscripciones.id_usuario
+            LEFT JOIN programa ON programa.id = inscripciones.id_programa
+            LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
             AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ". auth()->user()->id_proceso.";");
 
-            $this->pdf($re[0]);
-            $this->pdfbiometrico($re[0]);
+            // $this->pdf($re[0]);
+            // $this->pdfbiometrico($re[0]);
             // $this->UnirPDF($request->dni);
 
-            $pdf = new Fpdi();
+            // $pdf = new Fpdi();
             
-            $files = [
-                public_path('/documentos/cepre2023-II/'.$request->dni.'/').'constancia-ingreso-1.pdf',
-                public_path('/documentos/cepre2023-II/'.$request->dni.'/').'control-biometrico-1.pdf'
-            ];
+            // $files = [
+            //     public_path('/documentos/cepre2023-II/'.$request->dni.'/').'constancia-ingreso-1.pdf',
+            //     public_path('/documentos/cepre2023-II/'.$request->dni.'/').'control-biometrico-1.pdf'
+            // ];
 
-            foreach ($files as $file) {
-                $pageCount = $pdf->setSourceFile($file);
-                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                    $template = $pdf->importPage($pageNo);
-                    $pdf->AddPage();
-                    $pdf->useTemplate($template);
-                }
-            }
+            // foreach ($files as $file) {
+            //     $pageCount = $pdf->setSourceFile($file);
+            //     for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            //         $template = $pdf->importPage($pageNo);
+            //         $pdf->AddPage();
+            //         $pdf->useTemplate($template);
+            //     }
+            // }
 
-            $outputFilePath = public_path('/documentos/cepre2023-II'.'/'.$request->dni.'/control-biometrico-unido.pdf');
-            $pdf->Output($outputFilePath, 'F');
+            // $outputFilePath = public_path('/documentos/cepre2023-II'.'/'.$request->dni.'/control-biometrico-unido.pdf');
+            // $pdf->Output($outputFilePath, 'F');
 
             // try {
             //     DB::transaction(function () use ($request, $re) {
@@ -199,7 +197,7 @@ class IngresoController extends Controller
 
     public function pdfbiometrico($datos){
         $data = $datos->dni;
-        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','datos'));
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
         $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$datos->dni);
@@ -228,7 +226,7 @@ class IngresoController extends Controller
             }
         }
 
-        $outputFilePath = public_path('/documentos/cepre2023-II/'.$dni).'control-biometrico-unido.pdf';
+        $outputFilePath = public_path('/documentos/cepre2023-II/'.'/'.$dni.'control-biometrico-unido.pdf');
         $pdf->Output($outputFilePath, 'F');
 
         return response()->download($outputFilePath);
