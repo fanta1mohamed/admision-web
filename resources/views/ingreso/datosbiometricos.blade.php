@@ -68,7 +68,7 @@
                 <tr>
                     <td style="">
                         <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('hcepreexamen/'.$data.'.jpg')}} " alt="" width="118">
+                            <img src="{{ public_path('hexamencepre/'.$data.'.jpg')}} " alt="" width="118">
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
@@ -80,7 +80,7 @@
                     </td>
                     <td style="">
                         <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('hcepreexamen/'.$data.'x.jpg')}} " alt="" width="118">
+                            <img src="{{ public_path('hexamencepre/'.$data.'x.jpg')}} " alt="" width="118">
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 10px;">
                                 <div style="background: #d9d9d900; text-align:center; width:100%;" >
                                     <div style="">
@@ -104,7 +104,7 @@
                 <tr>
                     <td ">
                        <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('hbiometrico/'.$data.'.jpg')}} " alt="" width="118">
+                            <img src="{{ public_path('hingresantescepre/'.$data.'.jpg')}} " alt="" width="118">
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
@@ -116,7 +116,7 @@
                     </td>
                     <td >
                         <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('hbiometrico/'.$data.'x.jpg')}} " alt="" width="118">
+                            <img src="{{ public_path('hingresantescepre/'.$data.'x.jpg')}} " alt="" width="118">
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 10px;">
                                 <div style="background: #d9d9d900; text-align:center; width:100%;" >
                                     <div style="">
@@ -185,7 +185,7 @@
                 <tr>
                     <td colspan="2">
                        <div style="width: 100%; height:300px; text-align:center;">
-                          <img src="{{ public_path('fotos/inscripcion/'.$data.'.jpg')}} " alt="" height="300">
+                          <img src="{{ public_path('fotos/biometrico/'.$data.'.jpg')}} " alt="" height="300">
                           <div style="margin-top: -25px; heigth:20px; padding: 0px 70px;">
                             <div style="background: #d9d9d977; text-align:center; " >
                                 <span>Control biométrico</span>

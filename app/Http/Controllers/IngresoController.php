@@ -199,7 +199,7 @@ class IngresoController extends Controller
 
     public function pdfbiometrico($datos){
         $data = $datos->dni;
-        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data'));
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','datos'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
         $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$datos->dni);
@@ -228,7 +228,7 @@ class IngresoController extends Controller
             }
         }
 
-        $outputFilePath = public_path('/documentos/cepre2023-II/'.'/'.$dni.'control-biometrico-unido.pdf');
+        $outputFilePath = public_path('/documentos/cepre2023-II/'.$dni).'control-biometrico-unido.pdf';
         $pdf->Output($outputFilePath, 'F');
 
         return response()->download($outputFilePath);
