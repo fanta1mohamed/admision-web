@@ -31,6 +31,7 @@
                 <tr>
                     <td style="">
                         <div style="width: 118px; height:150px;">
+                            <span> {{ public_path('fotos/huella/'.$data.'.jpg')}} </span>
                             <img src="{{ public_path('fotos/huella/'.$data.'.jpg')}} " alt="" width="118">
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
                                 <div style="background: #d9d9d900; text-align:center; " >

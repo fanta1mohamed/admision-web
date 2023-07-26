@@ -110,7 +110,7 @@
                             <span style="font-size:6pt;"><?php echo DNS1D::getBarcodeHTML($data->dni, 'C128',2.2,44);?> </span>
                         </div>
                         <div style="text-align: center; margin-left: 140px;">
-                            <span style="text-transform: uppercase;">{{ strtoupper(substr($data->name, 0, 1)) }}. {{$data->paterno}} </span>
+                            <span style="text-transform: uppercase;">{{ strtoupper(substr($data->name, 0, 1)) }}. {{$data->upaterno}} </span>
                         </div>
                         <div style="text-align: center; margin-left: 140px;">
                             <span style="text-transform: uppercase; font-size:0.6rem;">revisor</span>
