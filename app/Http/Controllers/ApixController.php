@@ -121,7 +121,7 @@ class ApixController extends Controller {
 
 
         if(!$res){
-            return response()->json(['status' => false, 'mensaje'=>'Datos no encontrados', 'data' => null], 400);
+            return response()->json(['status' => false, 'mensaje'=>'Datos no encontrados', 'data' => null], 200);
         }
      
 
@@ -202,7 +202,7 @@ class ApixController extends Controller {
                 return response()->json([
                     'status'=> false,
                     'errors'=> $validator->errors()->all()
-                ],400);
+                ],200);
             }
             $departament->update($request->input());
             return response()->json([
