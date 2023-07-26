@@ -50,26 +50,75 @@
         </a-col>
       </a-row> -->
       <a-row :gutter="16">
-        <a-col :span="24" :sm="24" :md="8" :lg="6">
+        <!-- <a-col :span="24" :sm="24" :md="8" :lg="6">
           <div style="height: 240px;">
-            <!-- {{ dniseleccionado }} -->
             <h1 style="font-weight: bold;">Requisitos</h1>
             <a-checkbox v-model:checked="checkAll" class="first-item" @change="onCheckAllChange">Todo</a-checkbox>
             <a-checkbox-group v-model:value="checkedList" class="checkbox-group-vertical">
               <a-checkbox v-for="(option, index) in requisitos" :key="option.value" :value="option.value" :class="{ 'first-item': index === 0 }" class="checkbox-item">
                 {{ option.label }}
               </a-checkbox>
-            </a-checkbox-group>            
+            </a-checkbox-group>
           </div>
-          <!-- <div>
-            <h1 style="font-weight: bold;">Observación</h1>
-            <a-textarea type="text" style="height: 180px;" />
-          </div> -->
-        </a-col>
-        <a-col :span="24" :sm="24" :md="16" :lg="18" style="border: 1px solid #d9d9d9; min-width: 600px;" class="m-0 p-0">
+        </a-col> -->
+        <a-col :span="24" :sm="24" :md="24" :lg="24" style="border: 1px solid #d9d9d9; min-width: 600px;" class="m-0 p-0">
           <div style="margin-right: -8px; margin-left: -8px; min-width: 600px;">
 
             <a-tabs v-model:activeKey="activeKey" type="card" style="">
+              <a-tab-pane key="7" tab="Datos Personales" class="pl-2 pr-2">
+                <div>
+                  <a-row :gutter="16">
+                      <!-- Columna izquierda -->
+                      <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>DNI</label>
+                          <a-input disabled v-model:value="ingresante.nro_doc" />
+                        </a-form-item>
+
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Ap. paterno</label>
+                          <a-input v-model:value="ingresante.primer_apellido" />
+                        </a-form-item>
+
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Proceso</label>
+                          <a-input v-model:value="ingresante.proceso" />
+                        </a-form-item>
+                      </a-col>
+
+                      <!-- Columna derecha -->
+                      <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Nombres</label>
+                          <a-input v-model:value="ingresante.nombres" />
+                        </a-form-item>
+
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Ap. Materno</label>
+                          <a-input v-model:value="ingresante.segundo_apellido" />
+                        </a-form-item>
+
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Puntaje</label>
+                          <a-input v-model:value="ingresante.puntaje" />
+                        </a-form-item>
+
+                      </a-col>
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Programa</label>
+                          <a-input v-model:value="ingresante.programa" />
+                        </a-form-item>
+                      </a-col>
+                    </a-row>
+                    <div class="flex justify-end mb-4">
+                      <a-button> Actualizar Datos</a-button>
+                    </div>
+                  <!-- {{ ingresante }} -->
+                </div>
+              </a-tab-pane>
+
               <a-tab-pane key="2" tab="Voucher" class="pl-2 pr-2">
                 <div class="" style="width: 100%; height: 380px;">
                   <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
@@ -111,12 +160,12 @@
                       <!-- <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe> -->
                     </div>
                   </div>
-                </div>  
+                </div>
               </a-tab-pane>
 
               <a-tab-pane key="6" tab="D. Biométricos">
                 <div>
-                </div>  
+                </div>
               </a-tab-pane>
             </a-tabs>
 
@@ -145,7 +194,7 @@ const baseUrl = window.location.origin;
 const dni = ref(null);
 const dniseleccionado = ref(null)
 
-const postulantes = ref([]) 
+const postulantes = ref([])
 
 const numerorandom = ref();
 
@@ -185,12 +234,20 @@ const dniInput = ref(null)
 const save = async () => {
   dniInput.value.focus()
   let res = await axios.post('save-requisito',{
-    dni: dniseleccionado.value, requisitos: checkedList.value 
+    dni: dniseleccionado.value, requisitos: checkedList.value
   });
   dniseleccionado.value = null
   checkedList.value = []
 }
 
+const ingresante = ref(null)
+
+const getIngresante =  async ( ) => {
+  let res = await axios.get(
+      "get-ingresante/"+dni.value
+  );
+  ingresante.value = res.data.datos;
+}
 
 const getPostulantes =  async (term = "", page = 1) => {
   let res = await axios.post(
@@ -213,7 +270,7 @@ getPostulanteRequisitos()
 const getPostulantesByDni = async () => {
   generateRandomNumber()
   let res = await axios.post("get-postulante-dni",{ dni: dniseleccionado.value });
-  postulante.value.id = res.data.datos.id_postulante;   
+  postulante.value.id = res.data.datos.id_postulante;
   postulante.value.dni_temp = res.data.datos.dni
 }
 
@@ -223,13 +280,14 @@ watch(dni, (newValue, oldValue ) => {
 
 watch(dniseleccionado, (newValue, oldValue ) => {
     getPostulanteRequisitos();
+    getIngresante();
 })
 
 const abrirVentana = async () => {
   let res = await axios.post("control-biometrico",{ dni: dniseleccionado.value });
   imprimirPDF(res.data.datos);
 
-  // postulante.value.id = res.data.datos.id_postulante;   
+  // postulante.value.id = res.data.datos.id_postulante;
   // postulante.value.dni_temp = res.data.datos.dni
   // const url = 'https://admision-web.test/pdf-ingreso/'+dniseleccionado.value;
   // window.open(url, '_blank');

@@ -198,6 +198,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::post('/actualizar-postulante', [PostulanteController::class, 'actualizarDatos']);
 
+    Route::get('/get-ingresante/{dni}', [IngresoController::class, 'getDatosIngreso']);
 
 
 //    Route::post('/get-preguntas2', [PreguntaController::class, 'getPreguntas2']);
