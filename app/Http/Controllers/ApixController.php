@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class ApixController extends Controller {
 
-    public function getIngresante($dni, $proceso){
+    public function getIngresante($dni, $anio, $ciclo){
         try {
 
             $res = Postulante::select(
@@ -44,13 +44,15 @@ class ApixController extends Controller {
             ->leftjoin('tipo_proceso','tipo_proceso.id','procesos.id_tipo_proceso')
             ->leftjoin('control_biometrico','control_biometrico.id_postulante','postulante.id')
             ->where('resultados.apto', '=','SI')
-            ->where('procesos.id', '=',$proceso)
-            ->where('nro_doc','=',$dni)->first();
+            //->where('procesos.id', '=',$proceso)
+            ->where('procesos.anio', '=',$anio)
+            ->where('procesos.ciclo', '=',$ciclo)
+            ->where('postulante.nro_doc','=',$dni)->first();
 
-            if (!$res ){
+            if ($res ){
                 return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $res], 200);
             }else {
-                return response()->json(['status' => false, 'mensaje'=>'Postulante no encontrado'], 203);
+                return response()->json(['status' => false, 'mensaje'=>'Ingresante no encontrado'], 203);
             }
 
         } catch (\Throwable $th) {
