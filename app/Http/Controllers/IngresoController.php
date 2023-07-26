@@ -85,28 +85,28 @@ class IngresoController extends Controller
             WHERE resultados.apto = 'SI'
             AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ". auth()->user()->id_proceso.";");
 
-            // $this->pdf($re[0]);
-            // $this->pdfbiometrico($re[0]);
-            // $this->UnirPDF($request->dni);
+            $this->pdf($re[0]);
+            $this->pdfbiometrico($re[0]);
+//            $this->UnirPDF($request->dni);
 
-            // $pdf = new Fpdi();
+            $pdf = new Fpdi();
             
-            // $files = [
-            //     public_path('/documentos/cepre2023-II/'.$request->dni.'/').'constancia-ingreso-1.pdf',
-            //     public_path('/documentos/cepre2023-II/'.$request->dni.'/').'control-biometrico-1.pdf'
-            // ];
+            $files = [
+                public_path('/documentos/cepre2023-II/'.$request->dni.'/').'constancia-ingreso-1.pdf',
+//                public_path('/documentos/cepre2023-II/'.$request->dni.'/').'control-biometrico-1.pdf'
+            ];
 
-            // foreach ($files as $file) {
-            //     $pageCount = $pdf->setSourceFile($file);
-            //     for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-            //         $template = $pdf->importPage($pageNo);
-            //         $pdf->AddPage();
-            //         $pdf->useTemplate($template);
-            //     }
-            // }
+            foreach ($files as $file) {
+                $pageCount = $pdf->setSourceFile($file);
+                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                    $template = $pdf->importPage($pageNo);
+                    $pdf->AddPage();
+                    $pdf->useTemplate($template);
+                }
+            }
 
-            // $outputFilePath = public_path('/documentos/cepre2023-II'.'/'.$request->dni.'/control-biometrico-unido.pdf');
-            // $pdf->Output($outputFilePath, 'F');
+            $outputFilePath = public_path('/documentos/cepre2023-II'.'/'.$request->dni.'/control-biometrico-unido.pdf');
+            $pdf->Output($outputFilePath, 'F');
 
             // try {
             //     DB::transaction(function () use ($request, $re) {
