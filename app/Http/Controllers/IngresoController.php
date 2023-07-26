@@ -89,7 +89,7 @@ class IngresoController extends Controller
 
             $this->pdf($re[0]);
             $this->pdfbiometrico($re[0]);
-            $this->UnirPDF($request->dni);
+            // $this->UnirPDF($request->dni);
 
             $pdf = new Fpdi();
             
