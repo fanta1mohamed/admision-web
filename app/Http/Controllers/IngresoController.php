@@ -213,7 +213,7 @@ class IngresoController extends Controller
     public function pdfbiometrico2($dni){
 
         $hiI = public_path('fotos/huella/').$dni.'.jpg';
-        $hiD = public_path('fotos/huella/').$dni.'.xjpg';
+        $hiD = public_path('fotos/huella/').$dni.'x.jpg';
         $data = $dni;
         $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hiI','hiD'));
         $pdf->setPaper('A4', 'portrait');
