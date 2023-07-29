@@ -89,22 +89,6 @@
                             </div>
                         </div>
                     </td>
-                    <td style="">
-                        <div style="width: 118px; height:150px;">
-                            @if ($hexaD)
-                            <img src="{{ $hexaD }}" alt="Mi imagen" width="118">
-                            @else
-                                <p>La imagen no está disponible.</p>
-                            @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 10px;">
-                                <div style="background: #d9d9d900; text-align:center; width:100%;" >
-                                    <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 0px; font-weight:bold; color:red;">Indice Izquierdo</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="margin-bottom:20px;">
