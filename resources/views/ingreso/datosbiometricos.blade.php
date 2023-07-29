@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                     <td style="">
-                        <div style="width: 118px; height:150px;">
+                        <div style="width: 118px; height:140px;">
                             @if ($hiI)
                                 <img src="{{ $hiI }}" alt="Mi imagen" width="118">
                             @else
@@ -46,7 +46,7 @@
                         </div>
                     </td>
                     <td style="border: ">
-                        <div style="width: 118px; height:150px;">
+                        <div style="width: 118px; height:140px;">
                             @if ($hiD)
                                 <img src="{{ $hiD }}" alt="Mi imagen" width="118">
                             @else
