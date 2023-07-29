@@ -128,10 +128,10 @@
                                     Sin Huella
                                 </div>
                             @endif
-                            <div style="margin-top: -45px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -40px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto Biométrico</div>
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella examen</div>
                                     </div>
                                 </div>
                             </div>
