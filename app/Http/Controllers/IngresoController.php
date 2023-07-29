@@ -219,7 +219,7 @@ class IngresoController extends Controller
 
 
         $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
-        $fbio = public_path('fotos/biometrico/').$dni.'x.jpg';
+        $fbio = public_path('fotos/biometrico/').$dni.'.jpg';
         //$hbioI = public_path('fotos/huella/').$dni.'.jpg';
         //$hbioD = public_path('fotos/huella/').$dni.'x.jpg';
         $data = $dni;
