@@ -31,8 +31,8 @@
                 <tr>
                     <td style="">
                         <div style="width: 118px; height:140px;">
-                            @if ($hiI)
-                                <img src="{{ $hiI }}" alt="Mi imagen" width="118">
+                            @if ($hinsI)
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
                             @else
                                 <p>La imagen no está disponible.</p>
                             @endif
@@ -47,8 +47,8 @@
                     </td>
                     <td style="border: ">
                         <div style="width: 118px; height:140px;">
-                            @if ($hiD)
-                                <img src="{{ $hiD }}" alt="Mi imagen" width="118">
+                            @if ($hinsD)
+                                <img src="{{ $hinsD }}" alt="Mi imagen" width="118">
                             @else
                                 <p>La imagen no está disponible.</p>
                             @endif
@@ -75,7 +75,11 @@
                 <tr>
                     <td style="">
                         <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('hexamencepre/'.$data.'.jpg')}} " alt="" width="118">
+                            @if ($hexaI)
+                            <img src="{{ $hexaI }}" alt="Mi imagen" width="118">
+                            @else
+                                <p>La imagen no está disponible.</p>
+                            @endif
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
@@ -170,7 +174,11 @@
                 <tr>
                     <td align="center">
                        <div style=" height:250px; margin-left:40px;">
-                            <img src="{{ public_path('fotos/inscripcion/'.$data.'.jpg')}} " alt="" height="250">
+                        @if ($fins)
+                            <img src="{{ $fins }}" alt="Mi imagen" width="118">
+                        @else
+                            <p>La imagen no está disponible.</p>
+                        @endif
                             <div style="margin-top: -25px; heigth:20px; padding: 0px 20px;">
                                 <div style="background: #d9d9d977; text-align:center; " >
                                     <span>Inscripción</span>
@@ -192,7 +200,11 @@
                 <tr>
                     <td colspan="2">
                        <div style="width: 100%; height:300px; text-align:center;">
-                          <img src="{{ public_path('fotos/biometrico/'.$data.'.jpg')}} " alt="" height="300">
+                        @if ($fbio)
+                            <img src="{{ $fbio }}" alt="Mi imagen" width="118">
+                        @else
+                            <p>La imagen no está disponible.</p>
+                        @endif
                           <div style="margin-top: -25px; heigth:20px; padding: 0px 70px;">
                             <div style="background: #d9d9d977; text-align:center; " >
                                 <span>Control biométrico</span>

@@ -216,10 +216,14 @@ class IngresoController extends Controller
         $hinsD = public_path('fotos/huella/').$dni.'x.jpg';
         $hexaI = public_path('hexamencepre/').$dni.'.jpg';
         $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
+
+
+        $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
+        $fbio = public_path('fotos/biometrico/').$dni.'x.jpg';
         //$hbioI = public_path('fotos/huella/').$dni.'.jpg';
         //$hbioD = public_path('fotos/huella/').$dni.'x.jpg';
         $data = $dni;
-        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD'));
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD','fins','fbio'));
         $pdf->setPaper('A4', 'portrait');
         //  $output = $pdf->output();
         // $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$datos->dni);
