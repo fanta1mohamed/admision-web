@@ -119,7 +119,11 @@
                 <tr>
                     <td ">
                        <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('hingresantescepre/'.$data.'.jpg')}} " alt="" width="118">
+                        @if ($hbioI)
+                        <img src="{{ $hbioI }}" alt="Mi imagen" width="118">
+                        @else
+                            <p>La imagen no está disponible.</p>
+                        @endif
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
@@ -131,7 +135,11 @@
                     </td>
                     <td >
                         <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('hingresantescepre/'.$data.'x.jpg')}} " alt="" width="118">
+                            @if ($bioD)
+                            <img src="{{ $hbioD }}" alt="Mi imagen" width="118">
+                            @else
+                                <p>La imagen no está disponible.</p>
+                            @endif
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 10px;">
                                 <div style="background: #d9d9d900; text-align:center; width:100%;" >
                                     <div style="">
