@@ -31,9 +31,8 @@
                 <tr>
                     <td style="">
                         <div style="width: 118px; height:150px;">
-
-                            @if ($imagen1)
-                                <img src="{{ $imagen1 }}" alt="Mi imagen" width="118">
+                            @if ($hiI)
+                                <img src="{{ $hiI }}" alt="Mi imagen" width="118">
                             @else
                                 <p>La imagen no está disponible.</p>
                             @endif
@@ -48,7 +47,11 @@
                     </td>
                     <td style="border: ">
                         <div style="width: 118px; height:150px;">
-                            <img src="{{ public_path('fotos/huella/'.$data.'x.jpg')}} " alt="" width="118">
+                            @if ($hiD)
+                                <img src="{{ $hiD }}" alt="Mi imagen" width="118">
+                            @else
+                                <p>La imagen no está disponible.</p>
+                            @endif
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 10px;">
                                 <div style="background: #d9d9d900; text-align:center; width:100%;" >
                                     <div style="">

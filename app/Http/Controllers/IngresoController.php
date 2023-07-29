@@ -212,9 +212,10 @@ class IngresoController extends Controller
 
     public function pdfbiometrico2($dni){
 
-        $imagen1 = public_path('fotos/huella/').$dni.'.jpg';
+        $hiI = public_path('fotos/huella/').$dni.'.jpg';
+        $hiD = public_path('fotos/huella/').$dni.'.xjpg';
         $data = $dni;
-        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','imagen1'));
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hiI','hiD'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
         // $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$datos->dni);
