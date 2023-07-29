@@ -49,7 +49,7 @@
             <table>
                 <tr align="center">
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden; margin-right:6px;">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden; margin-right:6px; padding:1px;">
                             @if (!empty($fins) && file_exists($fins))
                                 <img src="{{ $fins}}" alt="Mi imagen" width="160">
                             @else
@@ -57,7 +57,7 @@
                                     Sin Foto
                                 </div>
                             @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto inscripción</div>
@@ -75,7 +75,7 @@
                                     Sin Foto
                                 </div>
                             @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center;">
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto Biométrico</div>
@@ -85,7 +85,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="1">
-                        <div style="width: 69px; height:90px; border: solid 1px black;  margin-right:6px;">
+                        <div style="width: 69px; height:90px; border: solid 1px black;  margin-right:6px; padding:1px;">
                             @if (!empty($hinsD) && file_exists($hinsD))
                                 <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
                             @else
@@ -93,7 +93,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div style="width: 69px; height:90px; border: solid 1px black;">
+                        <div style="width: 69px; height:90px; border: solid 1px black; padding:1px;">
                             @if (!empty($hinsI) && file_exists($hinsI))
                                 <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
                             @else
@@ -110,7 +110,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: 20px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
@@ -120,7 +120,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden; margin-right:6px;">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden; margin-right:6px; padding:1px;">
                             @if (!empty($hexaI) && file_exists($hexaI))
                                 <img src="{{ $hexaI }}" alt="Mi imagen" width="140">
                             @else
@@ -128,7 +128,7 @@
                                     Sin Huella
                                 </div>
                             @endif
-                            <div style="margin-top: -50px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto Biométrico</div>
@@ -138,7 +138,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="1">
-                        <div style="width: 69px; height:90px; border: solid 1px black;">
+                        <div style="width: 69px; height:90px; border: solid 1px black; padding:1px;">
                             @if (!empty($hbioD) && file_exists($hbioD))
                                 <img src="{{ $hbioD }}" alt="Mi imagen" width="69">
                             @else
@@ -162,7 +162,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: -10px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
