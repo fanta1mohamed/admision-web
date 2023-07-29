@@ -67,9 +67,9 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;  margin-right:6px;">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;  margin-right:6px; padding:1px;">
                             @if (!empty($fbio) && file_exists($fbio))
-                                <img src="{{ $fbio }}" alt="Mi imagen" width="140">
+                                <img src="{{ $fbio }}" alt="Mi imagen" width="160">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
                                     Sin Foto
