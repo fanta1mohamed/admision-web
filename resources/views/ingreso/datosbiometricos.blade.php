@@ -50,8 +50,8 @@
                 <tr align="center">
                     <td rowspan="2" colspan="2">
                         <div style="width: 140px; height:180px; border: solid 1px black;">
-                            @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @if (!empty($hinsI) && file_exists($fins))
+                                <img src="{{ $fins}}" alt="Mi imagen" width="140">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
                                     Sin Foto
@@ -69,7 +69,7 @@
                     <td rowspan="2" colspan="2">
                         <div style="width: 140px; height:180px; border: solid 1px black;">
                             @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                                <img src="{{ $fbio }}" alt="Mi imagen" width="118">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
                                     Sin Foto
@@ -86,8 +86,8 @@
                     </td>
                     <td rowspan="2" colspan="1">
                         <div style="width: 69px; height:90px; border: solid 1px black;">
-                            @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @if (!empty($hinsD) && file_exists($hinsD))
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
                             @else
                                 <div style="margin-top:35px; text-align:center; font-size:.7rem;">
                                     Sin huella
@@ -101,9 +101,10 @@
                                 </div>
                             </div>
                         </div>
+
                         <div style="width: 69px; height:90px; border: solid 1px black;">
                             @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
                             @else
                                 <div style="margin-top:35px; text-align:center; font-size:.7rem;">
                                     Sin huella
@@ -120,11 +121,11 @@
                     </td>
                     <td rowspan="2" colspan="2">
                         <div style="width: 140px; height:180px; border: solid 1px black;">
-                            @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @if (!empty($hexaI) && file_exists($hexaI))
+                                <img src="{{ $hexaI }}" alt="Mi imagen" width="118">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
-                                    Sin Foto
+                                    Sin Huella
                                 </div>
                             @endif
                             <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
@@ -138,8 +139,8 @@
                     </td>
                     <td rowspan="2" colspan="1">
                         <div style="width: 69px; height:90px; border: solid 1px black;">
-                            @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @if (!empty($hbioD) && file_exists($hbioD))
+                                <img src="{{ $hbioD }}" alt="Mi imagen" width="118">
                             @else
                                 <div style="margin-top:35px; text-align:center; font-size:.7rem;">
                                     Sin huella
@@ -154,8 +155,8 @@
                             </div>
                         </div>
                         <div style="width: 69px; height:90px; border: solid 1px black;">
-                            @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @if (!empty($hbioI) && file_exists($hbioI))
+                                <img src="{{ $hbioI }}" alt="Mi imagen" width="118">
                             @else
                                 <div style="margin-top:35px; text-align:center; font-size:.7rem;">
                                     Sin huella
