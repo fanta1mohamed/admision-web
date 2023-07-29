@@ -216,12 +216,12 @@ class IngresoController extends Controller
         $hinsD = public_path('fotos/huella/').$dni.'x.jpg';
         $hexaI = public_path('hexamencepre/').$dni.'.jpg';
         $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
-
+        $hbioI = public_path('hbiometricocepre/').$dni.'.jpg';
+        $hbioD = public_path('hbiometricocepre/').$dni.'x.jpg';
 
         $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
         $fbio = public_path('fotos/biometrico/').$dni.'.jpg';
-        //$hbioI = public_path('fotos/huella/').$dni.'.jpg';
-        //$hbioD = public_path('fotos/huella/').$dni.'x.jpg';
+ 
         $data = $dni;
         $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD','fins','fbio'));
         $pdf->setPaper('A4', 'portrait');
