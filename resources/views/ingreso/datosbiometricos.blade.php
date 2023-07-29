@@ -146,7 +146,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: -10px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -13px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
@@ -191,7 +191,7 @@
         </p>
     </div>
 
-    <div style="text-align: right;">
+    <div style="text-align: center;">
         <p style="line-height: 1.5rem;">
             Atentamente,
         </p>
