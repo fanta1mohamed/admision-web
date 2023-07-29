@@ -16,221 +16,206 @@
         }
     </style>
 </head>
-<body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-left:60px; margin-top:125px; margin-right:40px;">
-    <div style="width: 100%; text-align:center; font-weight: bold; font-size:1.4rem; height:40px;"> <span> DATOS BIOMÉTRICOS</span></div>
-    <div class="div-container">
-        <div style="width: 250px; height: 100%;">
+<body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-left:20px; margin-top:105px; margin-right:0px;">
+    <div>
+        <table style="width: 100%">
+            <tr>
+                <td align="center"><div style="text-align: center"><span style="font-weight:bold">{{ $data->proceso }}</span></div></td>
+            </tr>
+
+            <tr>
+                <td align="center"><div style="text-align: center"><span style="font-size: 1.4rem; font-weight:bold">CONSTANCIA DE INGRESO</span></div></td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="text-align: justify">
+    
+        <p style="line-height: 1.5rem;">
+            La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, conforme al cumplimento del Reglamento General del 
+            Examen <span style="font-weight:bold;">{{$data->proceso}}</span>, certifica 
+            que <span style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</span>, identificado (a) con 
+            DNI N° <span style="font-weight:bold;">{{$data->dni}}</span>, es 
+            <span style="font-weight:bold;">INGRESANTE APTO</span> al programa de estudios de <span style="font-weight:bold;">{{$data->programa}}</span>, 
+            bajo la modalidad <span style="font-weight:bold;">{{$data->modalidad}}</span>, 
+            realizado el {{ $date }}. El (la) estudiante en mención, 
+            queda expedito(a) para matricularse en el referido programa de estudios.
+        </p>
+
+    </div>
+
+    <div>
+        <div style="margin-left: 40px;">
             <table>
-                <tr>
-                    <td colspan="2" style="">
-                       <div style="width: 100%; height:30px; text-align:center; padding-auto;">
-                            <span style="font-weight: 700">HUELLAS</span>
-                       </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="">
-                        <div style="width: 118px; height:140px;">
-                            @if ($hinsI)
+                <tr align="center">
+                    <td rowspan="2" colspan="2">
+                        <div style="width: 140px; height:180px; border: solid 1px black;">
+                            @if (!empty($hinsI) && file_exists($hinsI))
                                 <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
                             @else
-                                <p>La imagen no está disponible.</p>
+                                <div style="margin-top:60px; text-align:center; font-size:.7rem;">
+                                    Sin Foto
+                                </div>
                             @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
+                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Indice Derecho</div>
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto inscripción</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </td>
-                    <td style="border: ">
-                        <div style="width: 118px; height:140px;">
-                            @if ($hinsD)
-                                <img src="{{ $hinsD }}" alt="Mi imagen" width="118">
+                    <td rowspan="2" colspan="2">
+                        <div style="width: 140px; height:180px; border: solid 1px black;">
+                            @if (!empty($hinsI) && file_exists($hinsI))
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
                             @else
-                                <p>La imagen no está disponible.</p>
+                                <div style="margin-top:60px; text-align:center; font-size:.7rem;">
+                                    Sin Foto
+                                </div>
                             @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 10px;">
-                                <div style="background: #d9d9d900; text-align:center; width:100%;" >
+                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
+                                <div style="background: #d9d9d900; text-align:center;">
                                     <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 0px; font-weight:bold; color:red;">Indice Izquierdo</div>
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto Biométrico</div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                     </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="">
-                       <div style="width: 100%; height:20px; text-align:center; background:#d9d9d977;">
-                            <span>Inscripción</span>
-                       </div>
                     </td>
-                </tr>
-
-                <tr> <td colspan="2" style="height:10px;"></td> </tr>
-                <tr>
-                    <td style="">
-                        <div style="width: 118px; height:150px;">
-                            @if ($hexaI)
-                            <img src="{{ $hexaI }}" alt="Mi imagen" width="118">
+                    <td rowspan="2" colspan="1">
+                        <div style="width: 69px; height:90px; border: solid 1px black;">
+                            @if (!empty($hinsI) && file_exists($hinsI))
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
                             @else
-                                <p>La imagen no está disponible.</p>
+                                <div style="margin-top:35px; text-align:center; font-size:.7rem;">
+                                    Sin huella
+                                </div>
                             @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
+                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Indice Derecho</div>
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="margin-bottom:20px;">
-                        <div style="width: 100%; height:20px; text-align:center; background:#d9d9d977;">
-                            <span>Control puerta</span>
-                       </div>
-                    </td>
-                </tr>
-
-
-                <tr> <td colspan="2" style="height:10px;"></td> </tr>
-                <tr>
-                    <td ">
-                       <div style="width: 118px; height:150px;">
-                        @if ($hbioI)
-                        <img src="{{ $hbioI }}" alt="Mi imagen" width="118">
-                        @else
-                            <p>La imagen no está disponible.</p>
-                        @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 30px;">
+                        <div style="width: 69px; height:90px; border: solid 1px black;">
+                            @if (!empty($hinsI) && file_exists($hinsI))
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @else
+                                <div style="margin-top:35px; text-align:center; font-size:.7rem;">
+                                    Sin huella
+                                </div>
+                            @endif
+                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Indice Derecho</div>
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
                                     </div>
                                 </div>
                             </div>
-                       </div>
+                        </div>
                     </td>
-                    <td >
-                        <div style="width: 118px; height:150px;">
-                            @if ($hbioD)
-                            <img src="{{ $hbioD }}" alt="Mi imagen" width="118">
+                    <td rowspan="2" colspan="2">
+                        <div style="width: 140px; height:180px; border: solid 1px black;">
+                            @if (!empty($hinsI) && file_exists($hinsI))
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
                             @else
-                                <p>La imagen no está disponible.</p>
+                                <div style="margin-top:60px; text-align:center; font-size:.7rem;">
+                                    Sin Foto
+                                </div>
                             @endif
-                            <div style="margin-top: -147px; heigth:10px; padding: 0px 10px;">
-                                <div style="background: #d9d9d900; text-align:center; width:100%;" >
+                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
+                                <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 0px; font-weight:bold; color:red;">Indice Izquierdo</div>
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto Biométrico</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                     </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="">
-                        <div style="width: 100%; height:20px; text-align:center; background:#d9d9d977;">
-                            <span>Control Biométrico</span>
-                       </div>
                     </td>
-                </tr>
-            </table>
-        </div>
-        <div style="width: 270; height: 850px; padding-left:20px;">
-            <table>
-                <tr>
-                    <td colspan="2" style="">
-                       <div style="width: 100%; height:30px; text-align:center; padding-auto;">
-                            <span style="font-weight: 700">DATOS PERSONALES</span>
-                       </div>
-                    </td>
-                </tr>
-                {{-- <tr>
-                    <td style=" font-size: .9rem;">
-                        <div style="width: 165px; height:150px;">
-                            <div style="margin-top: -20px; font-weight:bold;">DNI</div>
-                        <div style="font-size: .8r  em;">70757838</div>
-                            <div style="margin-top: 5px; font-weight:bold;">Primer apellido</div>
-                            <div style="font-size: .8rem;">LUQUE</div>
-                            <div style="margin-top: 5px; font-weight:bold;">Segundo apellido</div>
-                            <div style="font-size: .8rem;">CUSACANI</div>
-                            <div style="margin-top: 5px; font-weight:bold;">Pre nombres</div>
-                            <div style="font-size: .8rem;">JHON ARIEL</div>
-                        </div>
-                     </td>
-
-                     --}}
-                <tr>
-                    <td align="center">
-                       <div style=" height:300px; margin-left:40px;">
-                        @if ($fins)
-                            <img src="{{ $fins }}" alt="Mi imagen" height="300"
-                        @else
-                            <p>La imagen no está disponible.</p>
-                        @endif
-                            <div style="margin-top: -25px; heigth:20px; padding: 0px 20px;">
-                                <div style="background: #d9d9d977; text-align:center; " >
-                                    <span>Inscripción</span>
+                    <td rowspan="2" colspan="1">
+                        <div style="width: 69px; height:90px; border: solid 1px black;">
+                            @if (!empty($hinsI) && file_exists($hinsI))
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @else
+                                <div style="margin-top:35px; text-align:center; font-size:.7rem;">
+                                    Sin huella
                                 </div>
-                              </div>
-                        </div>
-                    </td>
-
-                </tr>
-                {{-- <tr> --}}
-                    <td colspan="2" style="">
-                       <div style="width: 100%; height:20px; text-align:center; margin-top:5px;">
-                        {{-- <span>INGENIERÍA DE SISTEMAS</span> --}}
-                       </div>
-                    </td>
-                </tr> --}}
-
-                <tr> <td colspan="2" style="height:10px;"></td> </tr>
-                <tr>
-                    <td colspan="2">
-                       <div style="width: 100%; height:300px; text-align:center;">
-                        @if ($fbio)
-                            <img src="{{ $fbio }}" alt="Mi imagen" height="300">
-                        @else
-                            <p>La imagen no está disponible.</p>
-                        @endif
-                          <div style="margin-top: -25px; heigth:20px; padding: 0px 70px;">
-                            <div style="background: #d9d9d977; text-align:center; " >
-                                <span>Control biométrico</span>
+                            @endif
+                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
+                                <div style="background: #d9d9d900; text-align:center; " >
+                                    <div style="">
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                    </td>
-                </tr>
-
-                <tr> <td colspan="2" style="height:10px;"></td> </tr>
-                <tr>
-                    <td colspan="2" style="border-bottom: solid 1px black;">
-                       <div style="width: 100%; height:130px;">
-
-                       </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                       <div style="width: 100%; height:40px; text-align:center;">
-                            <div>Dr. Juan Carlos Benavides Huanca</div>
-                            <div style="margin-top: -3px;">
-                                <span style="font-size: .8rem;">Director de la Dirección de Admisión</span>
+                        <div style="width: 69px; height:90px; border: solid 1px black;">
+                            @if (!empty($hinsI) && file_exists($hinsI))
+                                <img src="{{ $hinsI }}" alt="Mi imagen" width="118">
+                            @else
+                                <div style="margin-top:35px; text-align:center; font-size:.7rem;">
+                                    Sin huella
+                                </div>
+                            @endif
+                            <div style="margin-top: -147px; heigth:10px; padding: 0px 0px;">
+                                <div style="background: #d9d9d900; text-align:center; " >
+                                    <div style="">
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
+                                    </div>
+                                </div>
                             </div>
-
-                       </div>
+                        </div>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
+
+    
+    <div style="text-align: justify">
+        <p style="line-height: 1.5rem;">
+            Así mismo, se deja constancia que ha validado su identidad a 
+            través del control biométrico y acreditó los documentos personales según 
+            los requisitos exigidos en el Art. 24 del Reglamento de Admisión CEPREUNA 2023 – II.
+        </p>
+    </div>
+
+    <div style="text-align: right;">
+        <p style="line-height: 1.5rem;">
+            {{$fimp}}
+        </p>
+    </div>
+
+    <div style="text-align: right;">
+        <p style="line-height: 1.5rem;">
+            Atentamente,
+        </p>
+    </div>
+
+    <div style="margin-top:130px;">
+        <table>
+            <tr>
+                <td>
+                    <div style="text-align:center; width:380px;">
+                        <div>_______________________</div>
+                        <div>DIRECTOR DE ADMISIÓN</div>
+                    </div>
+                </td>
+                <td style="width: 50%;">
+                    <div style="text-align:center;">
+                        <div>______________________</div>
+                        <div>INGRESANTE</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+ 
+ 
 </body>
 </html>

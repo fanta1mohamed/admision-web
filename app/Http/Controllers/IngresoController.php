@@ -212,18 +212,51 @@ class IngresoController extends Controller
 
     public function pdfbiometrico2($dni){
 
+        $datos = DB::select(
+            "SELECT
+            procesos.nombre as proceso,
+            postulante.primer_apellido AS paterno,
+            postulante.segundo_apellido AS materno, postulante.nombres,
+            tipo_documento_identidad.nombre,
+            postulante.nro_doc AS dni,
+            users.name, users.paterno as upaterno,
+            modalidad.nombre as modalidad,
+            resultados.fecha,
+            resultados.puntaje,
+            resultados.puesto,
+            resultados.puesto_general,
+            programa.nombre AS programa
+            FROM resultados
+            LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
+            LEFT JOIN inscripciones ON inscripciones.id_postulante = postulante.id
+            LEFT JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
+            LEFT JOIN procesos ON resultados.id_proceso = procesos.id 
+            left join users on users.id = inscripciones.id_usuario
+            LEFT JOIN programa ON programa.id = inscripciones.id_programa
+            LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
+            WHERE resultados.apto = 'SI'
+            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 4"
+        );
+
+        $data = $datos[0];
         $hinsI = public_path('fotos/huella/').$dni.'.jpg';
         $hinsD = public_path('fotos/huella/').$dni.'x.jpg';
         $hexaI = public_path('hexamencepre/').$dni.'.jpg';
         $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
         $hbioI = public_path('hbiometricocepre/').$dni.'.jpg';
         $hbioD = public_path('hbiometricocepre/').$dni.'x.jpg';
-
         $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
         $fbio = public_path('fotos/biometrico/').$dni.'.jpg';
- 
-        $data = $dni;
-        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD','hbioI','hbioD','fins','fbio'));
+
+        setlocale(LC_TIME, 'es_ES.utf8');
+        $fecha = $data->fecha;
+        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $fecha)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+
+        $fec_imp = '2023-07-27';
+        $fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+//        $fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD','hbioI','hbioD','fins','fbio','date', 'fimp'));
         $pdf->setPaper('A4', 'portrait');
         //  $output = $pdf->output();
         // $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$datos->dni);
