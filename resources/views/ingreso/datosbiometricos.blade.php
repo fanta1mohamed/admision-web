@@ -49,9 +49,9 @@
             <table>
                 <tr align="center">
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden; margin-right:3px;">
                             @if (!empty($fins) && file_exists($fins))
-                                <img src="{{ $fins}}" alt="Mi imagen" width="150">
+                                <img src="{{ $fins}}" alt="Mi imagen" width="160">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
                                     Sin Foto
@@ -67,7 +67,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;  margin-right:3px;">
                             @if (!empty($fbio) && file_exists($fbio))
                                 <img src="{{ $fbio }}" alt="Mi imagen" width="140">
                             @else
@@ -85,7 +85,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="1">
-                        <div style="width: 69px; height:90px; border: solid 1px black;">
+                        <div style="width: 69px; height:90px; border: solid 1px black;  margin-right:3px;">
                             @if (!empty($hinsD) && file_exists($hinsD))
                                 <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
                             @else
@@ -120,7 +120,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden; margin-right:3px;">
                             @if (!empty($hexaI) && file_exists($hexaI))
                                 <img src="{{ $hexaI }}" alt="Mi imagen" width="140">
                             @else
