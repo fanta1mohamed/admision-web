@@ -69,7 +69,7 @@
                     <td rowspan="2" colspan="2">
                         <div style="width: 140px; height:180px; border: solid 1px black;">
                             @if (!empty($hinsI) && file_exists($hinsI))
-                                <img src="{{ $fbio }}" alt="Mi imagen" width="118">
+                                <img src="{{ $fbio }}" alt="Mi imagen" width="140">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
                                     Sin Foto
@@ -122,7 +122,7 @@
                     <td rowspan="2" colspan="2">
                         <div style="width: 140px; height:180px; border: solid 1px black;">
                             @if (!empty($hexaI) && file_exists($hexaI))
-                                <img src="{{ $hexaI }}" alt="Mi imagen" width="118">
+                                <img src="{{ $hexaI }}" alt="Mi imagen" width="140">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
                                     Sin Huella
@@ -140,7 +140,7 @@
                     <td rowspan="2" colspan="1">
                         <div style="width: 69px; height:90px; border: solid 1px black;">
                             @if (!empty($hbioD) && file_exists($hbioD))
-                                <img src="{{ $hbioD }}" alt="Mi imagen" width="118">
+                                <img src="{{ $hbioD }}" alt="Mi imagen" width="69">
                             @else
                                 <div style="margin-top:35px; text-align:center; font-size:.7rem;">
                                     Sin huella
@@ -156,7 +156,7 @@
                         </div>
                         <div style="width: 69px; height:90px; border: solid 1px black;">
                             @if (!empty($hbioI) && file_exists($hbioI))
-                                <img src="{{ $hbioI }}" alt="Mi imagen" width="118">
+                                <img src="{{ $hbioI }}" alt="Mi imagen" width="69">
                             @else
                                 <div style="margin-top:35px; text-align:center; font-size:.7rem;">
                                     Sin huella
