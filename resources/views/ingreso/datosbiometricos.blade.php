@@ -177,9 +177,9 @@
                      --}}
                 <tr>
                     <td align="center">
-                       <div style=" height:250px; margin-left:40px;">
+                       <div style=" height:300px; margin-left:40px;">
                         @if ($fins)
-                            <img src="{{ $fins }}" alt="Mi imagen" width="118">
+                            <img src="{{ $fins }}" alt="Mi imagen" height="300"
                         @else
                             <p>La imagen no está disponible.</p>
                         @endif
@@ -205,7 +205,7 @@
                     <td colspan="2">
                        <div style="width: 100%; height:300px; text-align:center;">
                         @if ($fbio)
-                            <img src="{{ $fbio }}" alt="Mi imagen" width="118">
+                            <img src="{{ $fbio }}" alt="Mi imagen" height="300">
                         @else
                             <p>La imagen no está disponible.</p>
                         @endif
