@@ -85,7 +85,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="1">
-                        <div style="width: 69px; height:90px; border: solid 1px black;  margin-right:6px; padding:1px;">
+                        <div style="width: 69px; height:90px; border: solid 1px black;  margin-right:6px;">
                             @if (!empty($hinsD) && file_exists($hinsD))
                                 <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
                             @else
@@ -102,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div style="width: 69px; height:90px; border: solid 1px black; padding:1px;">
+                        <div style="width: 69px; height:90px; border: solid 1px black;">
                             @if (!empty($hinsI) && file_exists($hinsI))
                                 <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
                             @else
@@ -138,7 +138,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="1">
-                        <div style="width: 69px; height:90px; border: solid 1px black; padding:1px;">
+                        <div style="width: 69px; height:90px; border: solid 1px black;">
                             @if (!empty($hbioD) && file_exists($hbioD))
                                 <img src="{{ $hbioD }}" alt="Mi imagen" width="69">
                             @else
