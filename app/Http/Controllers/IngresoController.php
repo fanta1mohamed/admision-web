@@ -196,6 +196,7 @@ class IngresoController extends Controller
     }
 
     public function pdfbiometrico($datos){
+
         $data = $datos->dni;
         $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data'));
         $pdf->setPaper('A4', 'portrait');
@@ -207,6 +208,22 @@ class IngresoController extends Controller
         file_put_contents(public_path('/documentos/cepre2023-II/'.$datos->dni.'/').'control-biometrico-1.pdf', $output);
         return $pdf->stream();
     }
+
+
+    public function pdfbiometrico2($dni){
+
+        $imagen1 = public_path('fotos/huella/').$dni.'.jpg';
+        $data = $dni;
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','imagen1'));
+        $pdf->setPaper('A4', 'portrait');
+        $output = $pdf->output();
+        // $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$datos->dni);
+        // if (!File::exists($rutaCarpeta)) {
+        //     File::makeDirectory($rutaCarpeta, 0755, true, true);
+        // }
+        // file_put_contents(public_path('/documentos/cepre2023-II/'.$datos->dni.'/').'control-biometrico-1.pdf', $output);
+        return $pdf->stream();
+    } 
 
     public function UnirPDF($dni){
 

@@ -293,7 +293,7 @@ watch(buscar, ( newValue, oldValue ) => { getModalidades() })
 
 watch(visible, ( newValue, oldValue ) => {
     if(visible.value == false && modalidad.value.id != null ){
-       form = null
+       form.value = null
     }
 })
 

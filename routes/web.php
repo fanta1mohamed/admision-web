@@ -184,6 +184,10 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 
+
+
+
+
     Route::get('/impresion', fn () => Inertia::render('Revisor/impresion'))->name('revisor-impresion-inscripcion');
     Route::get('/get-postulante-dni/{dni}', [InscripcionController::class, 'getPostulanteByDni']);
     Route::get('/get-apoderados-postulante/{dni}', [InscripcionController::class, 'getApoderados']);
@@ -205,6 +209,9 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 //    Route::post('/get-preguntas-perfiles', [PreguntaController::class, 'getPreguntasPerfiles']);
 
 });
+Route::get('/pdf-datos-biometrico/{dni}', [IngresoController::class, 'pdfbiometrico2']);
+
+
 
 Route::get('/examen-vocacional2', fn () => Inertia::render('Publico/exvocacional2'))->name('ex-vocacional2');
 Route::post('/get-avance-postulante', [TestController::class, 'getAvancePostulante']);
