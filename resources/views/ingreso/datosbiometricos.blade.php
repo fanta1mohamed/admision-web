@@ -49,9 +49,9 @@
             <table>
                 <tr align="center">
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black;">
-                            @if (!empty($hinsI) && file_exists($fins))
-                                <img src="{{ $fins}}" alt="Mi imagen" width="140">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;">
+                            @if (!empty($fins) && file_exists($fins))
+                                <img src="{{ $fins}}" alt="Mi imagen" width="150">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
                                     Sin Foto
@@ -67,8 +67,8 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black;">
-                            @if (!empty($hinsI) && file_exists($hinsI))
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;">
+                            @if (!empty($fbio) && file_exists($fbio))
                                 <img src="{{ $fbio }}" alt="Mi imagen" width="140">
                             @else
                                 <div style="margin-top:60px; text-align:center; font-size:.7rem;">
@@ -120,7 +120,7 @@
                         </div>
                     </td>
                     <td rowspan="2" colspan="2">
-                        <div style="width: 140px; height:180px; border: solid 1px black;">
+                        <div style="width: 140px; height:180px; border: solid 1px black; overflow:hidden;">
                             @if (!empty($hexaI) && file_exists($hexaI))
                                 <img src="{{ $hexaI }}" alt="Mi imagen" width="140">
                             @else
