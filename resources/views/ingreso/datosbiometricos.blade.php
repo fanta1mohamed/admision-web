@@ -135,7 +135,7 @@
                     </td>
                     <td >
                         <div style="width: 118px; height:150px;">
-                            @if ($bioD)
+                            @if ($hbioD)
                             <img src="{{ $hbioD }}" alt="Mi imagen" width="118">
                             @else
                                 <p>La imagen no está disponible.</p>
