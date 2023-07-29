@@ -75,7 +75,7 @@
                                     Sin Foto
                                 </div>
                             @endif
-                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -25px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center;">
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Foto Biométrico</div>
@@ -93,7 +93,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -10px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
@@ -110,7 +110,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -10px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
@@ -146,7 +146,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -10px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
@@ -162,7 +162,7 @@
                                     Sin huella
                                 </div>
                             @endif
-                            <div style="margin-top: -15px; heigth:10px; padding: 0px 0px;">
+                            <div style="margin-top: -10px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
                                         <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
