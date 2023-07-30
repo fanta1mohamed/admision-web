@@ -110,7 +110,7 @@
 
         <hr style="border-top: 1px solid #FFFFFF23;">
           <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
-            <span>Corrección de datos</span>
+            <span>Mantenimiento</span>
           </div>
 
           <a-menu-item style="margin-left: -10px; width: 250px; background: #ff000000;">
@@ -136,6 +136,15 @@
               <div class="flex" style=" width: 100%; align-items: center;">
                 <printer-filled style=""/>
                 <span>Colegios</span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+            <nav-link :href="route('admin-documento-index')" :active="route().current('admin-documento-index')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <printer-filled style=""/>
+                <span>Documentos</span>
               </div>
             </nav-link>
           </a-menu-item>

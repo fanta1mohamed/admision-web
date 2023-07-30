@@ -145,7 +145,10 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'))->name('admin-apoderado-index');
     Route::get('/postulante', fn () => Inertia::render('Admin/Postulante/index'))->name('admin-postulante-index');
     Route::get('/colegio', fn () => Inertia::render('Admin/Colegio/index'))->name('admin-colegio-index');
+    Route::get('/documento', fn () => Inertia::render('Admin/Documentos/index'))->name('admin-documento-index');
     Route::post('/get-colegios-admin', [ColegioController::class, 'getColegiosAdmin']);
+    Route::post('/get-documentos-admin', [DocumentoController::class, 'getDocumentosAdmin']);
+    Route::post('/save-documento', [DocumentoController::class, 'saveDocumentoAdmin']);
     
     Route::post('/get-postulantes-admin', [PostulanteController::class, 'getPostulantesAdmin']);
     Route::post('/save-postulante-admin', [PostulanteController::class, 'savePostulanteAdmin']);
@@ -183,8 +186,6 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/guardar-foto-biometrico', [FotoController::class, 'guardarFotoBiometrico']);
 
     Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
-
-
 
 
 
@@ -233,6 +234,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
     Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
     Route::post('/save-respuestas', [SimulacroController::class, 'saveRespuestas']);
+
 });
 
 //PREINSCRIPCION
@@ -280,16 +282,14 @@ Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
-Route::get('/get-expediente/{programa}/{dni}', [TestController::class, 'getNroConstancia']);
+#Route::get('/get-expediente/{programa}/{dni}', [TestController::class, 'getNroConstancia']);
 
+Route::get('/participa/{dni}', [PostulanteController::class, 'participa']);
 
 //Editor
 
-
 Route::get('/ver-puntaje', fn () => Inertia::render('Publico/puntaje'));
 Route::get('/aleatorio', fn () => Inertia::render('Publico/aleatorio'));
-
-
 
 //Seguimiento
 Route::get('/test', fn () => Inertia::render('Prueba/test'));

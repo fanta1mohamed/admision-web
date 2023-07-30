@@ -41,35 +41,53 @@ class InscripcionController extends Controller
 
     public function getPostulanteByDni($dni){
         
-        $res = DB::select('SELECT 
-        postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
-        postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento,
-        programa.id AS id_programa, programa.nombre as programa, programa.codigo as cod_programa,
-        colegios.id AS id_colegio, colegios.nombre AS colegio,
-        modalidad.id AS id_modalidad, modalidad.nombre as modalidad,
-        procesos.nombre AS proceso, procesos.id as id_proceso,
-        departamento.nombre AS departamento, provincia.nombre AS provincia, distritos.nombre AS distrito
-        FROM pre_inscripcion
-        JOIN postulante ON pre_inscripcion.id_postulante = postulante.id
-        JOIN colegios ON postulante.id_colegio = colegios.id
-        JOIN programa ON programa.id = pre_inscripcion.id_programa
-        JOIN modalidad ON modalidad.id = pre_inscripcion.id_modalidad
-        JOIN procesos ON procesos.id = pre_inscripcion.id_proceso
-        JOIN ubigeo ON postulante.ubigeo_residencia = ubigeo.ubigeo
-        JOIN departamento ON ubigeo.id_departamento = departamento.id
-        JOIN provincia ON ubigeo.id_provincia = provincia.id
-        JOIN distritos ON ubigeo.id_distrito = distritos.id
-        WHERE postulante.nro_doc = ' . $dni.' AND postulante.estado = 1');
-        if(count($res) > 0 ){
-            $this->response['estado'] = true;
-            $this->response['datos'] = $res[0];
-            return response()->json($this->response, 200);
+        $existeRegistro = DB::table('puntajes')
+            ->where('dni', $dni)
+            ->where('apto', 'SI')
+            ->exists();
+
+        $sancionados = DB::table('sancionados')
+            ->where('dni', $dni)
+            ->exists();
+
+        if($existeRegistro || $sancionados ){
+            return $existeRegistro;
         }
-        else{
-            $this->response['estado'] = true;
-            $this->response['datos'] = null;
-            return response()->json($this->response, 200);
+        else {
+            $res = DB::select('SELECT 
+            postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
+            postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento,
+            programa.id AS id_programa, programa.nombre as programa, programa.codigo as cod_programa,
+            colegios.id AS id_colegio, colegios.nombre AS colegio,
+            modalidad.id AS id_modalidad, modalidad.nombre as modalidad,
+            procesos.nombre AS proceso, procesos.id as id_proceso,
+            departamento.nombre AS departamento, provincia.nombre AS provincia, distritos.nombre AS distrito
+            FROM pre_inscripcion
+            JOIN postulante ON pre_inscripcion.id_postulante = postulante.id
+            JOIN colegios ON postulante.id_colegio = colegios.id
+            JOIN programa ON programa.id = pre_inscripcion.id_programa
+            JOIN modalidad ON modalidad.id = pre_inscripcion.id_modalidad
+            JOIN procesos ON procesos.id = pre_inscripcion.id_proceso
+            JOIN ubigeo ON postulante.ubigeo_residencia = ubigeo.ubigeo
+            JOIN departamento ON ubigeo.id_departamento = departamento.id
+            JOIN provincia ON ubigeo.id_provincia = provincia.id
+            JOIN distritos ON ubigeo.id_distrito = distritos.id
+            WHERE postulante.nro_doc = ' . $dni.' AND postulante.estado = 1');
+            if(count($res) > 0 ){
+                $this->response['estado'] = true;
+                $this->response['datos'] = $res[0];
+                return response()->json($this->response, 200);
+            }
+            else{
+                $this->response['estado'] = true;
+                $this->response['datos'] = null;
+                return response()->json($this->response, 200);
+            }
+
         }
+
+
+
 
     }
 

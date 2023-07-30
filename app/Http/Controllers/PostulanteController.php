@@ -41,22 +41,25 @@ class PostulanteController extends Controller
   
   }
 
+
+
   public function saveDniPostulante(Request $request) {
 
-    $postulante = Postulante::create([
-      'tipo_doc' => $request->tipo_doc,
-      'nro_doc' => $request->nro_doc,
-      'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
-      'primer_apellido' => $request->paterno, 
-      'segundo_apellido' => $request->materno,
-      'nombres' => $request->nombres,
-      'ubigeo_residencia' => $request->ubigeo_nacimiento
-    ]);
-    $this->response['tipo'] = 'success';
-    $this->response['titulo'] = 'REGISTRO NUEVO';
-    $this->response['estado'] = true;
-    $this->response['datos'] = $postulante;
-    return response()->json($this->response, 200);
+      $postulante = Postulante::create([
+        'tipo_doc' => $request->tipo_doc,
+        'nro_doc' => $request->nro_doc,
+        'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+        'primer_apellido' => $request->paterno, 
+        'segundo_apellido' => $request->materno,
+        'nombres' => $request->nombres,
+        'ubigeo_residencia' => $request->ubigeo_nacimiento
+      ]);
+      $this->response['tipo'] = 'success';
+      $this->response['titulo'] = 'REGISTRO NUEVO';
+      $this->response['estado'] = true;
+      $this->response['datos'] = $postulante; 
+
+      return response()->json($this->response, 200);
   }
 
   public function savePostulante(Request $request) {
@@ -336,19 +339,33 @@ public function savePostulanteAdmin(Request $request ) {
   return response()->json($this->response, 200);
 }
 
-public function deleteModalidad($id){
-  $modalidad = Modalidad::find($id);
-  $p = $modalidad;
-  $modalidad->delete();
+  public function deleteModalidad($id){
+    $modalidad = Modalidad::find($id);
+    $p = $modalidad;
+    $modalidad->delete();
 
-  $this->response['titulo'] = '!REGISTRO ELIMINADO!';
-  $this->response['mensaje'] = 'MODALIDAD '.$p->nombre.' ELIMINADA CON EXITO';
-  $this->response['estado'] = true;
-  $this->response['datos'] = $p;
-  return response()->json($this->response, 200);
-}
+    $this->response['titulo'] = '!REGISTRO ELIMINADO!';
+    $this->response['mensaje'] = 'MODALIDAD '.$p->nombre.' ELIMINADA CON EXITO';
+    $this->response['estado'] = true;
+    $this->response['datos'] = $p;
+    return response()->json($this->response, 200);
+  }
 
-
-
+  public function participa($dni){
+    $existeRegistro = DB::table('puntajes')
+      ->where('dni', $dni)
+      ->where('apto', 'SI')
+      ->exists();    
+    $sancionados = DB::table('sancionados')
+      ->where('dni', $dni)
+      ->exists();
+    if($existeRegistro || $sancionados ){
+      $this->response['estado'] = 0;
+      return response()->json($this->response, 200);
+    }else {
+      $this->response['estado'] = 1;
+      return response()->json($this->response, 200);
+    }
+  }
 
 }

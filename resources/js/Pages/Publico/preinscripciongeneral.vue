@@ -89,12 +89,12 @@
   
           <div class="datos-column">
             <label for="name">Distrito: <span></span>  </label>
-            <input type="text" disabled :value="datosresidencia.dist"  />
+            <input type="text" disabled :value="datosresidencia.dist"/>
           </div>
           
           <div class="datos-column" style="width:100%;">
             <label for="name">Dirección: <span></span>  </label>
-            <input type="text" disabled :value="datosresidencia.direccion"  />
+            <input type="text" disabled :value="datosresidencia.direccion"/>
           </div>
   
         </div>
@@ -369,7 +369,8 @@
             </a-card>
             <div style="display: flex; justify-content: center; margin-top: 20px;">
               <!-- <a-button type="primary" @click="getDatosApi()">Iniciar Postulación</a-button> -->
-              <a-button type="primary" @click="getDatosPersonales()">Iniciar Postulación</a-button>
+              <a-button type="primary" v-if="participa == 0" disabled>Iniciar Postulación</a-button>
+              <a-button type="primary" v-if="participa == 1" @click="getDatosPersonales()">Iniciar Postulación</a-button>
             </div>
           </a-form>
         </a-card>
@@ -1308,6 +1309,26 @@ watch(() => datosmadre.dni, (newValue, oldValue) => {
   if(newValue.length == 8){ getMadreApi() }
 });
 
+watch(() => datosmadre.dni, (newValue, oldValue) => {
+  if(newValue.length == 8){ getMadreApi() }
+});
+
+watch(() => formState.dni, (newValue, oldValue) => {
+  if(newValue.length == 8){ 
+    participa.value = 0;
+    getParticipa() 
+  }
+});
+
+//http://admision-web.test/participa/
+const participa = ref(0); 
+const getParticipa =  async () => {
+    let res = await axios.get( "participa/"+formState.dni );
+    participa.value = res.data.estado;
+}
+
+
+
 const postcepre = ref(null)
 
 const datareniec = ref(null)
@@ -1332,7 +1353,7 @@ const getDatosApi = () => {
   });
 };
   
-  const getDatosPersonales = async () => {
+const getDatosPersonales = async () => {
     if(pagina_pre.value == 0 ){
       const values = await formRef.value.validateFields();
     }

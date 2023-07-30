@@ -52,6 +52,61 @@ class DocumentoController extends Controller {
     $this->response['datos'] = $documento;
     return response()->json($this->response, 200);
   }
+  
+  public function getDocumentosAdmin(Request $request)
+  {
+    $query_where = [];
+    $res = Documento::select( 'documento.id','documento.codigo','documento.nombre','postulante.nro_doc as dni',
+    DB::raw('CONCAT(postulante.nombres," ",postulante.primer_apellido," ",postulante.segundo_apellido) as postulante'),
+    'documento.estado', 'documento.verificado', 'tipo_documento.nombre as tipo', 'documento.observacion')
+    ->join('postulante','postulante.id','documento.id_postulante')
+    ->leftjoin('tipo_documento','documento.id_tipo_documento','tipo_documento.id')
+    ->where($query_where)
+    ->where(function ($query) use ($request) {
+        return $query
+          ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
+          ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
+          ->orWhere('documento.codigo', 'LIKE', '%' . $request->term . '%')
+          ->orWhere('documento.nombre', 'LIKE', '%' . $request->term . '%');
+    })
+    ->paginate(20);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+  public function saveDocumentoAdmin(Request $request ) {
+
+      $documento = null;
+      if (!$request->id) {
+          $documento = Documento::create([
+              'codigo' => $request->codigo,
+              'nombre' => $request->nombre,
+              'id_usuario' => auth()->id()
+          ]);
+          $this->response['titulo'] = 'REGISTRO NUEVO';
+          $this->response['mensaje'] = 'Documento '.$documento->nombre.' CREADA CON EXITO';
+          $this->response['estado'] = true;
+          $this->response['datos'] = $documento;
+      } else {
+
+          $documento = Documento::find($request->id);
+          $documento->nombre = $request->nombre;
+          $documento->codigo = $request->codigo;
+          $documento->observacion = $request->observacion;
+          $documento->id_usuario = auth()->id();
+          $documento->save();
+
+          $this->response['titulo'] = '!REGISTRO MODIFICADO!';
+          $this->response['mensaje'] = 'DOCUMENTO '.$documento->nombre.' MODIFICADO';
+          $this->response['estado'] = true;
+          $this->response['datos'] = $documento;
+      }
+
+    return response()->json($this->response, 200);
+  }
+
 
   private function cambio($tabla, $campo, $anterior, $nuevo, $id_registro){
     $cambio = Cambio::create([
