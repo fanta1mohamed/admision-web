@@ -32,7 +32,7 @@
     <div style="text-align: justify">
     
         <p style="line-height: 1.5rem;">
-            La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, conforme al Reglamento General del 
+            La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, en cumplimiento pleno del Reglamento General del 
             Examen <span style="font-weight:bold;">{{$data->proceso}}</span>, HACE CONSTAR 
             que <span style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</span>, identificado (a) con 
             DNI N° <span style="font-weight:bold;">{{$data->dni}}</span>, es 
