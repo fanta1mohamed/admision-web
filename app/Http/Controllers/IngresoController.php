@@ -267,7 +267,7 @@ class IngresoController extends Controller
         //     File::makeDirectory($rutaCarpeta, 0755, true, true);
         // }
         file_put_contents(public_path('/documentos/ingresantescepre/').$dni.'.pdf', $output);
-//        return $pdf->stream();
+        return $pdf->stream();
     } 
 
     public function UnirPDF($dni){
