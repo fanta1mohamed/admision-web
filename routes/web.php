@@ -296,6 +296,8 @@ Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);
 Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
 
+Route::get('/constancias-ingreso', [IngresoController::class, 'constanciasIngreso']);
+
 
 require __DIR__.'/auth.php';
 
