@@ -33,13 +33,13 @@
     
         <p style="line-height: 1.5rem;">
             La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, conforme al cumplimento del Reglamento General del 
-            Examen <span style="font-weight:bold;">{{$data->proceso}}</span>, certifica 
+            Examen <span style="font-weight:bold;">{{$data->proceso}}</span>, hace constar 
             que <span style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</span>, identificado (a) con 
             DNI N° <span style="font-weight:bold;">{{$data->dni}}</span>, es 
             <span style="font-weight:bold;">INGRESANTE APTO</span> al programa de estudios de <span style="font-weight:bold;">{{$data->programa}}</span>, 
             bajo la modalidad <span style="font-weight:bold;">{{$data->modalidad}}</span>, 
             realizado el {{ $date }}. El (la) estudiante en mención, 
-            queda expedito(a) para matricularse en el referido programa de estudios.
+            queda expedito(a) con código {{$data->cod_ingreso}} para matricularse en el referido programa de estudios.
         </p>
 
     </div>
