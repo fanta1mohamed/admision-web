@@ -180,7 +180,7 @@
     <div style="text-align: justify">
         <p style="line-height: 1.5rem;">
             Así mismo, se deja constancia que ha validado su identidad a 
-            través del control biométrico y acreditó los documentos personales según 
+            través del control biométrico y acreditó los documentos personales, según 
             los requisitos exigidos en el Art. 24 del Reglamento de Admisión CEPREUNA 2023 – II.
         </p>
     </div>
