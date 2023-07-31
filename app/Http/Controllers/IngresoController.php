@@ -86,7 +86,7 @@ class IngresoController extends Controller
             AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ". auth()->user()->id_proceso.";");
 
             $this->pdf($re[0]);
-            $this->pdfbiometrico($re[0]);
+            //$this->pdfbiometrico($re[0]);
 //          $this->UnirPDF($request->dni);
 
             $pdf = new Fpdi();
