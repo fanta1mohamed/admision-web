@@ -31,7 +31,7 @@ class ApixController extends Controller {
                 'filial.codigo as codigo_sede_filial', 'tipo_proceso.id AS tipo_proceso',
                 DB::raw("CONCAT( procesos.anio,'-',procesos.ciclo) as proceso_admision"),
                 'facultad.codigo AS codigo_facultad', 
-                'programa.codigo AS codigo_programa',
+                'programa.codigo_sunedu AS codigo_programa',
             )
             ->leftjoin('paises','paises.id','postulante.id_pais')
             ->leftjoin('inscripciones','inscripciones.id_postulante','postulante.id')
