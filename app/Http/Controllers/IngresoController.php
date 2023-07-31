@@ -226,6 +226,7 @@ class IngresoController extends Controller
             resultados.puntaje,
             resultados.puesto,
             resultados.puesto_general,
+            control_biometrico.codigo_ingreso AS cod_ingreso,
             programa.nombre AS programa
             FROM resultados
             LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
@@ -234,6 +235,7 @@ class IngresoController extends Controller
             LEFT JOIN procesos ON resultados.id_proceso = procesos.id 
             left join users on users.id = inscripciones.id_usuario
             LEFT JOIN programa ON programa.id = inscripciones.id_programa
+            JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
             AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 4"
