@@ -255,7 +255,7 @@ class IngresoController extends Controller
         $fecha = $data->fecha;
         $date = \Carbon\Carbon::createFromFormat('Y-m-d', $fecha)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
-        $fec_imp = '2023-07-27';
+        $fec_imp = '2023-07-31';
         $fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 //        $fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
