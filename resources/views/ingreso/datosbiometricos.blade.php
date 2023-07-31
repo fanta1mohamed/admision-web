@@ -33,7 +33,7 @@
     
         <p style="line-height: 1.5rem;">
             La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, en cumplimiento pleno del Reglamento General del 
-            Examen <span style="font-weight:bold;">{{$data->proceso}}</span>, <span style="font-weight:bold;">sHACE CONSTAR </span> 
+            Examen <span style="font-weight:bold;">{{$data->proceso}}</span>, <span style="font-weight:bold;">HACE CONSTAR </span> 
             que <span style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</span>, identificado (a) con 
             DNI N° <span style="font-weight:bold;">{{$data->dni}}</span>, es 
             <span style="font-weight:bold;">INGRESANTE APTO</span> al programa de estudios de <span style="font-weight:bold;">{{$data->programa}}</span>, 
@@ -187,7 +187,7 @@
 
     <div style="text-align: right;">
         <p style="line-height: 1.5rem;">
-            C,u {{$fimp}}
+            CU. {{$fimp}}
         </p>
     </div>
 
