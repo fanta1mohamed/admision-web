@@ -50,7 +50,11 @@ class InscripcionController extends Controller
             ->where('dni', $dni)
             ->exists();
 
-        if($existeRegistro || $sancionados ){
+        $ingresantes = DB::table('resultados')
+            ->where('dni_postulante', $dni)
+            ->exists();
+
+        if($existeRegistro || $sancionados || $ingresantes ){
             return $existeRegistro;
         }
         else {

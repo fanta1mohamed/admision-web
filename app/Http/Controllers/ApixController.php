@@ -30,7 +30,7 @@ class ApixController extends Controller {
                 'control_biometrico.codigo_ingreso',
                 'filial.codigo as codigo_sede_filial', 'tipo_proceso.id AS tipo_proceso',
                 DB::raw("CONCAT( procesos.anio,'-',procesos.ciclo) as proceso_admision"),
-                'facultad.codigo AS codigo_facultad',  
+                'facultad.codigo AS codigo_facultad', 
                 'programa.codigo_sunedu AS codigo_programa',
             )
             ->leftjoin('paises','paises.id','postulante.id_pais')
@@ -212,13 +212,8 @@ class ApixController extends Controller {
     }
     public function destroy(Postulante $postulante){
 
+        
     }
-
-
-
-
-
-
 
 
 

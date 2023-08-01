@@ -291,6 +291,8 @@ Route::get('/participa/{dni}', [PostulanteController::class, 'participa']);
 Route::get('/ver-puntaje', fn () => Inertia::render('Publico/puntaje'));
 Route::get('/aleatorio', fn () => Inertia::render('Publico/aleatorio'));
 
+Route::get('/resultados', fn () => Inertia::render('Resultados/index'))->name('resultados');
+
 //Seguimiento
 Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);
