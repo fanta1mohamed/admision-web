@@ -70,7 +70,7 @@ class BlogController extends Controller
 
     public function getPuntajes($dni){
 
-        $res = DB::select('SELECT * FROM puntajes WHERE dni = '.$dni. ' ORDER BY fecha ASC;');
+        $res = DB::select('SELECT * FROM puntajes WHERE dni = '.$dni. ' ORDER BY fecha DESC;');
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
