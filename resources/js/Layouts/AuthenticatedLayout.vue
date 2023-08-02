@@ -1,5 +1,5 @@
 <template>
-  <a-layout style="min-height: 100vh;">
+  <a-layout style="min-height: 100vh; scroll-behavior: auto;">
     <a-layout-sider v-model:collapsed="collapsed" class="custom-scrollbar" width="230px" style="overflow-x: hidden; overflow-y: scroll; min-height: 100vh;  background:#476175; width: 230px; border-right: 1px solid #00000010;"  :trigger="null" :triggerSubMenuAcción="true" collapsible collapsed-width="0">
       <div style="display: flex; align-items: center; justify-content: left; margin-top: 6px; margin-left: 20px; margin-bottom: 6px;">
         <div>
@@ -13,7 +13,7 @@
     </div>
 
     <a-menu 
-        v-model:selectedKeys="selectedKeys" 
+        v-model:selectedKeys="selectedKeys"
         v-model:openKeys="openKeys"
         theme="dark" mode="inline" style="background: none; margin-left: -5px; font-weight: 500; font-size: .8rem; ">
         <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
@@ -28,7 +28,7 @@
 
         </a-menu-item>
 
-        <a-sub-menu key="sub3">
+        <a-sub-menu key="sub1">
           <template #title>
             <span>
               <setting-filled/>
@@ -77,7 +77,7 @@
           </a-menu-item>
         </a-sub-menu>
 
-        <a-sub-menu key="sub1" >
+        <a-sub-menu key="sub2" >
           <template #title>
               <div class="flex" style="align-items: center;">
                 <gold-filled/>
@@ -108,12 +108,16 @@
 
 
 
-        <hr style="border-top: 1px solid #FFFFFF23;">
-          <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
-            <span>Mantenimiento</span>
-          </div>
 
-          <a-menu-item style="margin-left: -10px; width: 250px; background: #ff000000;">
+        <hr style="border-top: 1px solid #FFFFFF23;">
+        <a-sub-menu key="sub3" >
+          <template #title>
+              <div class="flex" style="align-items: center;">
+                <gold-filled/>
+                <span>Mantenieminto</span>
+              </div>
+          </template>
+          <a-menu-item style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
             <nav-link :href="route('admin-apoderado-index')" :active="route().current('admin-apoderado-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
                 <printer-filled style=""/>
@@ -122,7 +126,7 @@
             </nav-link>
           </a-menu-item>
 
-          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+          <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-postulante-index')" :active="route().current('admin-postulante-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
                 <printer-filled style=""/>
@@ -131,7 +135,7 @@
             </nav-link>
           </a-menu-item>
 
-          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+          <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-colegio-index')" :active="route().current('admin-colegio-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
                 <printer-filled style=""/>
@@ -140,7 +144,7 @@
             </nav-link>
           </a-menu-item>
 
-          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+          <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-documento-index')" :active="route().current('admin-documento-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
                 <printer-filled style=""/>
@@ -149,7 +153,7 @@
             </nav-link>
           </a-menu-item>
 
-          <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
+          <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-reporte')" :active="route().current('admin-reporte')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
                 <printer-filled style=""/>
@@ -157,6 +161,20 @@
               </div>
             </nav-link>
           </a-menu-item>
+
+          <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
+            <nav-link :href="route('admin-inscripciones')" :active="route().current('admin-inscripciones')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <printer-filled style=""/>
+                <span>
+                  Inscripciones
+                </span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+        </a-sub-menu>
+
 
 
 
@@ -230,6 +248,24 @@
       <slot />
     </a-layout-content>
   </a-layout>
+
+  <div style="display: none;">
+    <div v-if="route().current('proceso-index')"> {{ submenu = 1 }}</div>
+    <div v-if="route().current('programa-index')"> {{ submenu = 1 }}</div>
+    <div v-if="route().current('modalidad-index')"> {{ submenu = 1 }}</div>
+    <div v-if="route().current('filial-index')"> {{ submenu = 1 }}</div>
+    
+    <div v-if="route().current('roles-index')"> {{ submenu = 2 }}</div>
+    <div v-if="route().current('usuarios-index')"> {{ submenu = 2 }}</div>
+
+    <div v-if="route().current('admin-inscripciones')"> {{ submenu = 3  }}</div>
+    <div v-if="route().current('admin-reporte')"> {{ submenu = 3  }}</div>
+    <div v-if="route().current('admin-documento-index')"> {{ submenu = 3  }}</div>
+    <div v-if="route().current('admin-colegio-index')"> {{ submenu = 3  }}</div>
+    <div v-if="route().current('admin-postulante-index')"> {{ submenu = 3  }}</div>
+            <div v-if="route().current('admin-apoderado-index')"> {{ submenu = 3 }}</div>
+  </div>
+
 </a-layout>
 </template>
 
@@ -265,7 +301,9 @@ export default defineComponent({
     return {
       key: 'sub1',
       collapsed: ref(false),
-      openKeys: ['']
+      openKeys: [''],
+      selectedKeys : ['sub1','sub2'],
+      submenu: 0
     };
   },
   methods:{
@@ -278,7 +316,16 @@ export default defineComponent({
   },
 
   watch:{
-    openKeys (open) {
+    submenu () {
+      if(this.submenu == 1){
+        this.openKeys = ['sub1'];
+      }
+      if(this.submenu == 2){
+        this.openKeys = ['sub2'];
+      }
+      if(this.submenu == 3){
+        this.openKeys = ['sub3'];
+      }
       // console.log('openKeys', val);
     }
   } 

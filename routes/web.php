@@ -79,6 +79,11 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/pdf-inscripción/{dni}', [InscripcionController::class, 'pdfInscripcion']);
     Route::post('/inscripciones/inscribir', [InscripcionController::class, 'Inscribir']);
 
+    Route::post('/get-inscripciones-admin', [InscripcionController::class, 'getInscripcionesAdmin']);
+
+    
+
+
     Route::get('/procesos', [ProcesoController::class, 'index'])->name('proceso-index');
     Route::get('/eliminar-proceso/{id}', [ProcesoController::class, 'deleteProceso']);
     Route::get('/procesos/get-tipos', [ProcesoController::class, 'getTipoProceso']);
@@ -89,6 +94,8 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     //PREINSCRIPCION
     Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
+    Route::get('/inscripciones', fn () => Inertia::render('Admin/Inscripcion/index'))->name('admin-inscripciones');
+
     // Route::post('/save-programa', [ProgramaController::class, 'savePrograma']);
     // Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);
     // Route::get('/eliminar-programa/{id}', [ProgramaController::class, 'deletePrograma']);
@@ -223,7 +230,6 @@ Route::post('/get-alternativas2', [PreguntaController::class, 'getAlternativas2'
 
 Route::get('/get-pre', [PreguntaController::class, 'getPreguntasPerfiles2']);
 
-
 Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacro');
     Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
@@ -234,7 +240,6 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
     Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
     Route::post('/save-respuestas', [SimulacroController::class, 'saveRespuestas']);
-
 });
 
 //PREINSCRIPCION

@@ -184,7 +184,6 @@ class InscripcionController extends Controller
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> $request['postulante']['id_proceso'],
             'id_programa' => $request['postulante']['id_programa'],
-            'id_proceso' => $request['postulante']['id_proceso'],
             'id_modalidad' => $request['postulante']['id_modalidad'],
             'estado' => 0,
             'id_usuario' => auth()->id() 
@@ -204,9 +203,49 @@ class InscripcionController extends Controller
     }
 
 
+    public function Actualizar(Request $request){
+     
+        $inscripcion = Inscripcion::find($request->id);
+
+        if( $inscripcion->programa != $request->programa) {
+            $inscripcion->estado = 3;
+            $inscripcion->observacion = "Cambio de programa a $request->programa";
+            $inscripcion->save();
+
+            $res = DB::select("SELECT COALESCE(LPAD(MAX(CAST(SUBSTRING(codigo, 6) AS UNSIGNED)) + 1, 4, '0'), '0001') AS siguiente
+            FROM inscripciones
+            WHERE codigo LIKE '23".$request->programa."%'");
+
+            $inscripcion = Inscripcion::create([
+                'codigo'=>'23'.$request->programa.$res[0]->siguiente,
+                'id_postulante'=> $request->id,
+                'id_proceso'=> $request->id_proceso,
+                'id_programa' => $request->id_programa,
+                'id_modalidad' => $request->id_modalidad,
+                'estado' => 0,
+            ]);
+
+        }
+        if ( $inscripcion->modalidad != $request->modalidad ) {
+            $inscripcion->id_modalidad = $request->id_modalidad;
+            $inscripcion->id_modalidad = $request->id_modalidad;
+            $inscripcion->save();
+        }
+
+        $this->pdfInscripcion($request->dni);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $request['postulante']['dni_temp'];
+        return response()->json($this->response, 200);
+        // return redirect('http://admision-web.test/admin/pdf-inscripción/70757838');         
+    }
+
+
+
+
     public function pdfInscripcion($dni) {
 
-        $datos = DB::select('SELECT 
+        $datos = DB::select("SELECT 
         postulante.nro_doc AS dni, 
         inscripciones.codigo as codigo,
         postulante.nombres AS nombre, 
@@ -224,7 +263,9 @@ class InscripcionController extends Controller
         JOIN modalidad ON inscripciones.id_modalidad = modalidad.id 
         JOIN procesos ON inscripciones.id_proceso = procesos.id
         JOIN users on inscripciones.id_usuario = users.id
-        WHERE postulante.nro_doc = '.$dni.';');        
+        WHERE postulante.nro_doc = $dni
+        AND inscripciones.estado = 0");
+
         $data = $datos[0];
         $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data'));
         $pdf->setPaper('A4', 'portrait');
@@ -234,6 +275,35 @@ class InscripcionController extends Controller
         file_put_contents(public_path('/documentos/general2023-II/').$dni.'.pdf', $output);
 
         return $pdf->download();
+
+    }
+
+
+    public function getInscripcionesAdmin(Request $request) {
+
+        $query_where = [];
+        $res = Inscripcion::select(
+            'inscripciones.id as id', 'postulante.nro_doc AS dni', 'inscripciones.codigo as codigo', 'postulante.nombres AS nombres', 
+            'postulante.primer_apellido AS paterno', 'postulante.segundo_apellido AS materno', 'programa.nombre as programa', 'inscripciones.id_programa as id_programa',
+            'modalidad.id as id_modalidad', 'modalidad.nombre as modalidad', 'procesos.nombre AS proceso', 'inscripciones.created_at as fecha', 'inscripciones.estado'
+        )
+        ->join('postulante','inscripciones.id_postulante', 'postulante.id')
+        ->join('programa','inscripciones.id_programa', 'programa.id')
+        ->join('modalidad','inscripciones.id_modalidad', 'modalidad.id')        
+        ->join('procesos','inscripciones.id_proceso', 'procesos.id')
+        ->where($query_where)
+        ->where(function ($query) use ($request) {
+            return $query
+              ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.segundo_apellido', 'LIKE', '%' . $request->term . '%');
+        })
+        ->paginate(20);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
 
     }
 
