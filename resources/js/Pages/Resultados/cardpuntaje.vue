@@ -24,6 +24,9 @@
                 </div>
             </div> 
             <div style="display: flex; justify-content: center; margin-top: -10px;">
+                <div v-if="datos.apto == 'CLASIFICADO'">
+                    <a-label> </a-label> <span> {{ datos.apto }}</span>
+                </div>
                 <div>
                     <a-label>Ingreso: </a-label> <span> {{ datos.apto }}</span>
                 </div>

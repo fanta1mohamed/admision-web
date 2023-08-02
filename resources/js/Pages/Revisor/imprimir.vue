@@ -286,11 +286,6 @@ watch(dniseleccionado, (newValue, oldValue ) => {
 const abrirVentana = async () => {
   let res = await axios.post("control-biometrico",{ dni: dniseleccionado.value });
   imprimirPDF(res.data.datos);
-
-  // postulante.value.id = res.data.datos.id_postulante;
-  // postulante.value.dni_temp = res.data.datos.dni
-  // const url = 'https://admision-web.test/pdf-ingreso/'+dniseleccionado.value;
-  // window.open(url, '_blank');
 }
 
 
@@ -305,6 +300,32 @@ const imprimirPDF =  (dnni) => {
 }
 
 getRequisitos()
+
+const respuesta = [
+  { codigo:"239001", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239002", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239003", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239004", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239005", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239006", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239007", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239008", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239009", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239010", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239011", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239012", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239013", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239014", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239015", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239016", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239017", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239018", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239019", correo:"", carrera:"", fecha_ingreso:"" },
+  { codigo:"239019", correo:"", carrera:"", fecha_ingreso:"" }
+  
+]
+
+
 </script>
 
 

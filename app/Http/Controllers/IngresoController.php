@@ -24,7 +24,7 @@ class IngresoController extends Controller
 
 
     public function getDatosIngreso($dni){
-        $res = DB::select("SELECT  
+        $res = DB::select("SELECT
             postulante.id,
             postulante.nro_doc,
             postulante.nombres,
@@ -79,7 +79,7 @@ class IngresoController extends Controller
             LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
             LEFT JOIN inscripciones ON inscripciones.id_postulante = postulante.id
             LEFT JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
-            LEFT JOIN procesos ON resultados.id_proceso = procesos.id 
+            LEFT JOIN procesos ON resultados.id_proceso = procesos.id
             left join users on users.id = inscripciones.id_usuario
             LEFT JOIN programa ON programa.id = inscripciones.id_programa
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
@@ -91,7 +91,7 @@ class IngresoController extends Controller
 //          $this->UnirPDF($request->dni);
 
             $pdf = new Fpdi();
-            
+
             $files = [
                 public_path('/documentos/cepre2023-II/'.$request->dni.'/').'constancia-ingreso-1.pdf',
 //                public_path('/documentos/cepre2023-II/'.$request->dni.'/').'control-biometrico-1.pdf'
@@ -133,7 +133,7 @@ class IngresoController extends Controller
                     $estudiante = Estudiante::on('mysql_secondary')->create([
                         'num_mat' => $nuevoCodigo,
                         'cod_car' => $re[0]->programa_oti,
-                        'paterno' => $re[0]->paterno, 
+                        'paterno' => $re[0]->paterno,
                         'materno' => $re[0]->materno,
                         'nombres' => $re[0]->nombres,
                         'tip_doc' => $re[0]->tipo_doc_oti,
@@ -157,10 +157,10 @@ class IngresoController extends Controller
 
                     ]);
 
-                    // $avancePostulante->avance = 5;  
+                    // $avancePostulante->avance = 5;
                     // $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
                     // $avancePostulante->save();
-                
+
                 });
             } catch (\Exception $e) {
                 $errorMessage = $e->getMessage();
@@ -168,10 +168,10 @@ class IngresoController extends Controller
                 \Log::error('Error en la transacción: ' . $errorMessage);
                 // Devolver una respuesta de error al usuario con el mensaje de error
                 return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
-        
-        
+
+
             }
-        
+
 
 
         $this->response['estado'] = true;
@@ -179,10 +179,10 @@ class IngresoController extends Controller
         return response()->json($this->response, 200);
         // return response()->download($outputFilePath);
         // return response()->download($outputFilePath)->deleteFileAfterSend();
-    } 
+    }
 
     public function pdf($datos){
-        setlocale(LC_TIME, 'es_ES.utf8'); 
+        setlocale(LC_TIME, 'es_ES.utf8');
         $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
         $dateI = Carbon::createFromFormat('Y-m-d', $datos->fecha)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
         #$dateI = "26 de Junio del 2034";
@@ -232,7 +232,7 @@ class IngresoController extends Controller
             LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
             LEFT JOIN inscripciones ON inscripciones.id_postulante = postulante.id
             LEFT JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
-            LEFT JOIN procesos ON resultados.id_proceso = procesos.id 
+            LEFT JOIN procesos ON resultados.id_proceso = procesos.id
             left join users on users.id = inscripciones.id_usuario
             LEFT JOIN programa ON programa.id = inscripciones.id_programa
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
@@ -266,14 +266,14 @@ class IngresoController extends Controller
         // if (!File::exists($rutaCarpeta)) {
         //     File::makeDirectory($rutaCarpeta, 0755, true, true);
         // }
-        file_put_contents(public_path('/documentos/ingresantescepre/').$dni.'.pdf', $output);
+        file_put_contents(public_path('/documentos/ceprecorregido/').$dni.'.pdf', $output);
         return $pdf->stream();
-    } 
+    }
 
     public function UnirPDF($dni){
 
         $pdf = new Fpdi();
-        
+
         $files = [
             public_path('/documentos/cepre2023-II/'.$dni.'/').'constancia-ingreso-1.pdf',
             public_path('/documentos/cepre2023-II/'.$dni.'/').'control-biometrico-1.pdf'
@@ -353,22 +353,53 @@ class IngresoController extends Controller
         //     '75928872','75233573','73890716','75096969','76910237','60069675','74836248','75517851','73522925','75926734','74994154','71547572','71503734','75314292','73764119'
         // ];
 
+        // $ingresantes = [
+        //     '75949464','73648242','76869589','73760156','71882093','76923760','60068006','73313344','73313386','48308088','75965470','72792210','73965096','76972826','60909401',
+        //     '72640765','76660303','73209343','71090212','71348912','75208812','76344160','73810924','70279898','72752975','73581633','70501279','71837723','75348312','73745236',
+        //     '72107812','73941219','77094493','70811723','76735420','62718804','71655059','76039747','73773883','75938834','75998725','76021402','75395748','62301205','73384201',
+        //     '71778991','70547400','78286976','70821450','75929956','72368927','75379199','72487716','73252438','75475224','76799227','76944244','76186573','73810914','76217044',
+        //     '76909568','75521468','75944981','72073904','74034602','73309889','73743041','74440565','76701138','73993151','74808429','72326673','72086307','74633604','77238883',
+        //     '71500890','74725077','73254620','71374909','73392461','76536994','75701685','71461199','60066407','72073935','73645441','60732829','70657793','74724088','75714420',
+        //     '76737843','70830333','71945084','71348617','60764923','73197232','73266609','71025450','75466128','75482849'
+        // ];
+
+
         $ingresantes = [
-            '75949464','73648242','76869589','73760156','71882093','76923760','60068006','73313344','73313386','48308088','75965470','72792210','73965096','76972826','60909401',
-            '72640765','76660303','73209343','71090212','71348912','75208812','76344160','73810924','70279898','72752975','73581633','70501279','71837723','75348312','73745236',
-            '72107812','73941219','77094493','70811723','76735420','62718804','71655059','76039747','73773883','75938834','75998725','76021402','75395748','62301205','73384201',
-            '71778991','70547400','78286976','70821450','75929956','72368927','75379199','72487716','73252438','75475224','76799227','76944244','76186573','73810914','76217044',
-            '76909568','75521468','75944981','72073904','74034602','73309889','73743041','74440565','76701138','73993151','74808429','72326673','72086307','74633604','77238883',
-            '71500890','74725077','73254620','71374909','73392461','76536994','75701685','71461199','60066407','72073935','73645441','60732829','70657793','74724088','75714420',
-            '76737843','70830333','71945084','71348617','60764923','73197232','73266609','71025450','75466128','75482849'
+            '60170630','60199877','60417184','60422498',
+            '60422568','70201068','77141145','76799227',
+            '60758637','60758990','60764810','60764923',
+            '70316723','70383663','70415938','70513752',
+            '70657793','70811723','70821450','70831920',
+            '70989383','71104032','74031725','74043604',
+            '71122838','71262193','71267137','71349059',
+            '71459851','71461199','71522577','71525375',
+            '71621867','71627766','71655059','71804210',
+            '71840618','71864621','71923672','71958360',
+            '72298718','72298813','72326673','72437700',
+            '72577356','72792210','73055881','73104636',
+            '73254600','73299189','73311206','73331014',
+            '73377999','73382309','73425461','73472097',
+            '73475954','73522722','73581930','73613295',
+            '73636236','73643547','73694286','73743041',
+            '73744330','73763862','73775939','73814210',
+            '74034602','74043604','74245195','74309339',
+            '74314877','74421821','74449729','74560965',
+            '74600244','74614371','77567195','77674757',
+            '74686489','74697285','74724088','74809169',
+            '74843592','74966349','75208812','75218912',
+            '75233573','75238916','75270874','75272939',
+            '75277096','75314950','75433311','75667292',
+            '75676871','75676959','75926734','76008608',
+            '76009176','76057432','76186573','76217044',
+            '76647594','76650573','76735420'
         ];
-            
+
         foreach ($ingresantes as $dni) {
 
             $this->pdfbiometrico2($dni);
         }
-    
-    
+
+
     }
 
 
