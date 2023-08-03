@@ -137,42 +137,42 @@ class IngresoController extends Controller
                         'id_usuario' => auth()->id()
                     ]);
 
-                    // $e_civil = 1;
-                    // if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
-                    // if($re[0]->estado_civil == 2 ) { $e_civil = 1;}
-                    // if($re[0]->estado_civil == 3 ) { $e_civil = 3;}
-                    // if($re[0]->estado_civil == 4 ) { $e_civil = 6;}
+                    $e_civil = 1;
+                    if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
+                    if($re[0]->estado_civil == 2 ) { $e_civil = 1;}
+                    if($re[0]->estado_civil == 3 ) { $e_civil = 3;}
+                    if($re[0]->estado_civil == 4 ) { $e_civil = 6;}
 
-                    // $estudiante = Estudiante::on('mysql_secondary')->create([
-                    //     'num_mat' => $nuevoCodigo,
-                    //     'cod_car' => $re[0]->programa_oti,
-                    //     'paterno' => $re[0]->paterno,
-                    //     'materno' => $re[0]->materno,
-                    //     'nombres' => $re[0]->nombres,
-                    //     'tip_doc' => $re[0]->tipo_doc_oti,
-                    //     'num_doc' => $re[0]->dni,
-                    //     'fch_nac' => $re[0]->fec_nacimiento,
-                    //     'sexo' => $re[0]->sexo,
-                    //     'ubigeo' => $re[0]->ubigeo_residencia,
-                    //     'mod_ing' => $re[0]->modalidad_oti,
-                    //     'est_civ' => $e_civil,
-                    //     'fch_ing' => $re[0]->fecha,
-                    //     'direc' => $re[0]->direccion,
-                    //     'email' => $re[0]->email,
-                    //     'con_est' => 5,
-                    //     'celular' => $re[0]->celular,
-                    //     'cod_esp' => $re[0]->cod_esp,
-                    //     'puntaje' => $re[0]->puntaje,
-                    //     'puesto_escuela' => $re[0]->puesto,
-                    //     'puesto_general' => $re[0]->puesto_general,
-                    //     'ano_ing' => $re[0]->anio,
-                    //     'per_ing' => $re[0]->ciclo_oti
+                    $estudiante = Estudiante::on('mysql_secondary')->create([
+                        'num_mat' => $request->codigo,
+                        'cod_car' => $re[0]->programa_oti,
+                        'paterno' => $re[0]->paterno,
+                        'materno' => $re[0]->materno,
+                        'nombres' => $re[0]->nombres,
+                        'tip_doc' => $re[0]->tipo_doc_oti,
+                        'num_doc' => $re[0]->dni,
+                        'fch_nac' => $re[0]->fec_nacimiento,
+                        'sexo' => $re[0]->sexo,
+                        'ubigeo' => $re[0]->ubigeo_residencia,
+                        'mod_ing' => $re[0]->modalidad_oti,
+                        'est_civ' => $e_civil,
+                        'fch_ing' => $re[0]->fecha,
+                        'direc' => $re[0]->direccion,
+                        'email' => $re[0]->email,
+                        'con_est' => 5,
+                        'celular' => $re[0]->celular,
+                        'cod_esp' => $re[0]->cod_esp,
+                        'puntaje' => $re[0]->puntaje,
+                        'puesto_escuela' => $re[0]->puesto,
+                        'puesto_general' => $re[0]->puesto_general,
+                        'ano_ing' => $re[0]->anio,
+                        'per_ing' => $re[0]->ciclo_oti
 
-                    // ]);
+                    ]);
 
-                    // $avancePostulante->avance = 5;
-                    // $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
-                    // $avancePostulante->save();
+                    $avancePostulante->avance = 5;
+                    $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
+                    $avancePostulante->save();
                     $this->pdfbiometrico2($request->dni);
 
 
@@ -263,7 +263,7 @@ class IngresoController extends Controller
         $hexaD = public_path('hexamengeneral/').$dni.'x.jpg';
         $hbioI = public_path('hbiometricogeneral/').$dni.'.jpg';
         $hbioD = public_path('hbiometricogeneral/').$dni.'.jpg';
-        $fins = public_path('fotos/inscripcion/').$dni.'x.jpg';
+        $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
         $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');

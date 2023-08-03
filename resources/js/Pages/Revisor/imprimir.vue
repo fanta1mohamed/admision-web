@@ -8,7 +8,7 @@
           
           <div>
 
-            <div> {{ datosOTI }} </div>
+            <!-- <div> {{ datosOTI }} </div> -->
           <!-- <div> {{ datosOTI }} </div>
           {{ ingresante }} -->
 
