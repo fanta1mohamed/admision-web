@@ -66,7 +66,7 @@
 
             <a-tabs v-model:activeKey="activeKey" type="card" style="">
               <a-tab-pane key="7" tab="Datos Personales" class="pl-2 pr-2">
-                <div>
+                <div v-if="ingresante">
                   <a-row :gutter="16">
                       <!-- Columna izquierda -->
                       <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">

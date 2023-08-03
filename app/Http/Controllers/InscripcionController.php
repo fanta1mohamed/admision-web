@@ -282,6 +282,10 @@ class InscripcionController extends Controller
     public function getInscripcionesAdmin(Request $request) {
 
         $query_where = [];
+
+        if ($request->programa) array_push($query_where,[DB::raw('inscripciones.id_programa'), '=', $request->programa]); 
+        array_push($query_where,[DB::raw('inscripciones.id_proceso'), '=', 5]);
+
         $res = Inscripcion::select(
             'inscripciones.id as id', 'postulante.nro_doc AS dni', 'inscripciones.codigo as codigo', 'postulante.nombres AS nombres', 
             'postulante.primer_apellido AS paterno', 'postulante.segundo_apellido AS materno', 'programa.nombre as programa', 'inscripciones.id_programa as id_programa',
@@ -294,12 +298,13 @@ class InscripcionController extends Controller
         ->where($query_where)
         ->where(function ($query) use ($request) {
             return $query
+              ->orWhere('modalidad.nombre', 'LIKE', '%' . $request->term . '%')
               ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
               ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
               ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%')
               ->orWhere('postulante.segundo_apellido', 'LIKE', '%' . $request->term . '%');
         })
-        ->paginate(20);
+        ->paginate($request->paginashoja);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
