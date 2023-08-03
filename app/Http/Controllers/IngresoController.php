@@ -170,9 +170,6 @@ class IngresoController extends Controller
 
                     ]);
 
-                    $avancePostulante->avance = 5;
-                    $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->first();
-                    $avancePostulante->save();
                     $this->pdfbiometrico2($request->dni);
 
 
