@@ -232,6 +232,24 @@ class PostulanteController extends Controller
       return response()->json($this->response, 200);
   }
 
+
+  public function actualizarDatosIngresante(Request $request) {
+
+    $registroActual = Postulante::find($request->id);
+    $registroActual->nombres = $request->nombres;
+    $registroActual->primer_apellido = $request->paterno; 
+    $registroActual->segundo_apellido = $request->materno; 
+    $registroActual->sexo = $request->sexo;
+    $registroActual->tipo_doc = $request->tipo_doc; 
+    $registroActual->fec_nacimiento = $request->fec_nacimiento;
+    $registroActual->save();
+
+    $this->response['tipo'] = 'success';
+    $this->response['titulo'] = 'REGISTRO ACTUALIZADO';
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+}
+
   private function saveCambios($tabla, $campo, $anterior, $nuevo, $id ){
     $cambio = Cambio::create([
       'tabla' => $tabla,

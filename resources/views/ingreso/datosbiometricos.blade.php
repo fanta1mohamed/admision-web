@@ -16,11 +16,11 @@
         }
     </style>
 </head>
-<body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-left:20px; margin-top:105px; margin-right:0px;">
-    <div>
+<body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-left:20px; margin-top:95px; margin-right:0px;">
+    <div style="margin-top:-10px;">
         <table style="width: 100%">
             <tr>
-                <td align="center"><div style="text-align: center"><span style="font-weight:bold">{{ $data->proceso }}</span></div></td>
+                <td align="center"><div style="text-align: center"><span style="font-weight:bold">EXAMEN {{ $data->proceso }}</span></div></td>
             </tr>
 
             <tr>
@@ -37,8 +37,8 @@
             que <span style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</span>, identificado (a) con 
             DNI N° <span style="font-weight:bold;">{{$data->dni}}</span>, es 
             <span style="font-weight:bold;">INGRESANTE APTO</span> al programa de estudios de <span style="font-weight:bold;">{{$data->programa}}</span>, 
-            bajo la modalidad <span style="font-weight:bold;">{{$data->modalidad}}</span>, 
-            realizado el {{ $date }}. El (la) estudiante en mención, 
+            bajo la modalidad <span style="font-weight:bold;">{{$data->modalidad}}</span>, El ingresante obtuvo la calificación final de
+            <span style="font-weight:bold;">{{ $data->puntaje }} puntos </span> el {{ $date }}. El (la) estudiante en mención,
             queda expedito(a) con código <span style="font-weight:bold;"> {{$data->cod_ingreso}} </span> para matricularse en el referido programa de estudios.
         </p>
 
@@ -181,8 +181,17 @@
         <p style="line-height: 1.5rem;">
             Así mismo, se deja constancia que ha validado su identidad a 
             través del control biométrico y acreditó los documentos personales, según 
-            los requisitos exigidos en el Art. 24 del Reglamento de Admisión CEPREUNA 2023 – II.
+            los requisitos exigidos en el Art. 27 del Reglamento del Examen de Admisión {{ $data->proceso }}. De 
+            igual manera se proporciona al ingresante 
+            un correo institucional de gran utilidad para fines académicos y administrativos.
         </p>
+    </div>
+    <div style="text-align: justify; margin-top: -15px;">
+        <p style="line-height: 1.5rem;">
+            Correo institucional: <span style="font-weight: bold"> {{ $data->correo }} </span><br> 
+            Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}} </span>
+        </p>
+
     </div>
 
     <div style="text-align: right;">

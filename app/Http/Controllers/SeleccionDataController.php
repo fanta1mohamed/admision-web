@@ -366,6 +366,7 @@ class SeleccionDataController extends Controller
 
     $res = RequisitoDetalle::select('dni_postulante','requisitos')
     ->where('dni_postulante','=',$request->dni)
+    ->where('id_proceso','=',auth()->user()->id_proceso)
     ->get();
     if(count($res) > 0 ){
       $this->response['estado'] = true;
@@ -380,17 +381,17 @@ class SeleccionDataController extends Controller
 
   public function getRequisitoPostulantes(Request $request) {
     
-    
     $res = RequisitoDetalle::select(
       'postulante.nombres', 'postulante.primer_apellido as paterno', 'postulante.segundo_apellido as materno', 'postulante.nro_doc as dni', 
       'postulante.nro_doc', 'requisito_detalle.requisitos')
     ->join('postulante','requisito_detalle.dni_postulante','postulante.nro_doc')
+    ->where('id_proceso','=',auth()->user()->id_proceso)
     ->where(function ($query) use ($request) {
       return $query
         ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
         ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
         ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%');
-      })->paginate($request->paginasize);
+      })->paginate(20);
   
 
     $this->response['estado'] = true;

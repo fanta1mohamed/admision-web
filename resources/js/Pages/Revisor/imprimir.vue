@@ -2,12 +2,16 @@
 <Head title="Revisión de documentos"/>
 <AuthenticatedLayout>
   <div>
-    <a-card style="background: white; height: calc(100vh - 90px); overflow: hidden;" class="mb-0 p-0" >
+    <a-card style="background: white;" class="mb-0 p-0" >
       <a-row :gutter="16" class="mb-3">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end; align-items: end;" >
+          
           <div>
-            <!-- {{ dniseleccionado }}
-            {{ postulante }} -->
+
+            <div> {{ datosOTI }} </div>
+          <!-- <div> {{ datosOTI }} </div>
+          {{ ingresante }} -->
+
           <label style="margin-right: 10px;"> Buscar:</label>
           <a-auto-complete
             v-model:value="dniseleccionado"
@@ -36,85 +40,231 @@
         </a-col>
       </a-row>
 
-      <!-- <a-row :gutter="16">
-        <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end; align-items: end;" >
-          <div class="flex justify-between" style="background: #d9d9d9; width: 100%; margin-right: -8px;">
-            <div v-for="(option, index) in options" :key="option.value">
-              <div class="flex justify-center" style="font-size: 44px;">
-                <img src="data:image/png;base64,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" width="60"/>
-              </div>
-              {{ option.label }}
-            </div>
-
-          </div>
-        </a-col>
-      </a-row> -->
-      <a-row :gutter="16">
-        <!-- <a-col :span="24" :sm="24" :md="8" :lg="6">
-          <div style="height: 240px;">
-            <h1 style="font-weight: bold;">Requisitos</h1>
-            <a-checkbox v-model:checked="checkAll" class="first-item" @change="onCheckAllChange">Todo</a-checkbox>
-            <a-checkbox-group v-model:value="checkedList" class="checkbox-group-vertical">
+      <a-row >
+        <a-col :span="24" :sm="24" :md="24" :lg="24">
+          <div style="height: 40px; margin-left: -10px;">
+            <a-checkbox-group v-model:value="checkedList" >
               <a-checkbox v-for="(option, index) in requisitos" :key="option.value" :value="option.value" :class="{ 'first-item': index === 0 }" class="checkbox-item">
-                {{ option.label }}
+               <span style="font-weight: bold;">{{ option.label }}</span> 
               </a-checkbox>
             </a-checkbox-group>
           </div>
-        </a-col> -->
+        </a-col>
+      </a-row>
+      <a-row :gutter="16">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="border: 1px solid #d9d9d9; min-width: 600px;" class="m-0 p-0">
           <div style="margin-right: -8px; margin-left: -8px; min-width: 600px;">
 
             <a-tabs v-model:activeKey="activeKey" type="card" style="">
-              <a-tab-pane key="7" tab="Datos Personales" class="pl-2 pr-2">
+
+              <a-tab-pane key="7" tab="Datos" class="pl-2 pr-2">
+                <div class="flex mb-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
+                  <span style="font-weight: bold; font-size: 1.2rem;">Datos personales</span>
+                </div>
                 <div v-if="ingresante">
+                  <a-card >
                   <a-row :gutter="16">
                       <!-- Columna izquierda -->
                       <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                          <label>DNI</label>
-                          <a-input disabled v-model:value="ingresante.nro_doc" />
-                        </a-form-item>
-
-                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                          <label>Ap. paterno</label>
+                          <label>Primer Apellido</label>
                           <a-input v-model:value="ingresante.primer_apellido" />
                         </a-form-item>
 
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                          <label>Proceso</label>
-                          <a-input v-model:value="ingresante.proceso" />
-                        </a-form-item>
-                      </a-col>
-
-                      <!-- Columna derecha -->
-                      <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                          <label>Nombres</label>
-                          <a-input v-model:value="ingresante.nombres" />
-                        </a-form-item>
-
-                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                          <label>Ap. Materno</label>
+                          <label>Segundo Apellido</label>
                           <a-input v-model:value="ingresante.segundo_apellido" />
                         </a-form-item>
 
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                          <label>Puntaje</label>
-                          <a-input v-model:value="ingresante.puntaje" />
+                          <label>Prenombres</label>
+                          <a-input v-model:value="ingresante.nombres"/>
                         </a-form-item>
-
                       </a-col>
 
+                      <!-- Columna derecha -->
+                      <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Tipo documento</label>
+                          <div>
+                            <a-select
+                              ref="tipodocumento"
+                              v-model:value="ingresante.tipo_doc"
+                              style="width: 100%"
+                            >
+                              <a-select-option :value="1">DNI</a-select-option>
+                              <a-select-option :value="2">Carné Ext.</a-select-option>
+                            </a-select>
+                          </div>
+
+                        </a-form-item>
+
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Sexo</label>
+                          <div>
+                            <a-select
+                              ref="sexoigresante"
+                              v-model:value="ingresante.sexo"
+                              style="width: 100%"
+                            >
+                              <a-select-option value="1">MASCULINO</a-select-option>
+                              <a-select-option value="2">FEMENINO</a-select-option>
+                            </a-select>
+                          </div>
+                        </a-form-item>
+
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Fecha de nacimiento</label>
+                          <a-date-picker placeholder="Selecciona tu fecha de nacimiento" style="width: 100%" v-model:value="ingresante.fec_nacimiento" format='DD/MM/YYYY' />
+                        </a-form-item>
+                      </a-col>
+
+                      <a-col :xs="24" :sm="12" :md="12" :lg="2" :xl="2">
+                        <div class="mb-3">
+                          <img :src="'https://inscripciones.admision.unap.edu.pe/fotos/huella/'+ingresante.nro_doc+'x.jpg'" height="80"/>
+                          <div class="flex justify-center"> H. Der.</div>
+                        </div>
+
+                        <div>
+                          <img :src="'https://inscripciones.admision.unap.edu.pe/fotos/huella/'+ingresante.nro_doc+'.jpg'" height="80" />
+                          <div class="flex justify-center"> H. Izq.</div>
+                        </div>
+                      </a-col>
+                      <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
+                        <img :src="'https://inscripciones.admision.unap.edu.pe/fotos/inscripcion/'+ingresante.nro_doc+'.jpg'" width="250" />
+          
+                      </a-col>
+
+                      <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="17">
+                        <div class="flex justify-end mb-0">
+                          <a-button class="btn-actualizar" @click="actualizar()"><span style="font-weight:bold;"> Actualizar Datos </span> </a-button>
+                        </div>
+                      </a-col>
+
+                      <a-col :xs="24" :sm="12" :md="12" :lg="8" :xl="7">
+                        <div class="flex justify-center" style="margin-top: -15px; "> <span style="padding: 0px 2px; font-size: 2.6rem; margin-top:2px; font-weight: bold;">DNI {{ ingresante.nro_doc }}</span></div>
+                      </a-col>
+                      
+                    </a-row>
+
+                  </a-card>
+
+                  <div v-if="datosOTI !== null" class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
+                    <span v-if="datosOTI.carrera !== ''" style="font-weight: bold; font-size: 1.2rem;">Datos de ingreso anterior</span>
+                  </div>
+                  <a-card v-if="datosOTI !== null">
+                    <a-row :gutter="16" v-if="datosOTI.carrera !== ''" >
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Fecha Ingreso</label>
+                          <a-input v-model:value="datosOTI.fecha_ingreso" />
+                        </a-form-item>
+                      </a-col>
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item>
+                          <label>Carrera</label>
+                          <a-input v-model:value="datosOTI.estado" />
+                        </a-form-item>
+                      </a-col>
+                      
+                      <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Programa</label>
+                          <a-input v-model:value="datosOTI.carrera" />
+                        </a-form-item>
+                      </a-col>
+
+                      <!-- <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Programa</label>
+                          <a-input v-model:value="ingresante.programa" />
+                        </a-form-item>
+                      </a-col>
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Programa</label>
+                          <a-input v-model:value="ingresante.programa" />
+                        </a-form-item>
+                      </a-col> -->
+
+                     </a-row> 
+                    </a-card>
+
+                    <div class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
+                      <span style="font-weight: bold; font-size: 1.2rem;">Datos de ingreso</span>
+                    </div>
+
+                    <a-card>
+                    <a-row :gutter="16">
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Proceso</label>
+                          <a-input v-model:value="ingresante.programa" />
+                        </a-form-item>
+                      </a-col>
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Modalidad</label>
+                          <a-input v-model:value="ingresante.proceso"/>
+                        </a-form-item>
+                      </a-col>
+                      
                       <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                           <label>Programa</label>
                           <a-input v-model:value="ingresante.programa" />
                         </a-form-item>
                       </a-col>
-                    </a-row>
-                    <div class="flex justify-end mb-4">
-                      <a-button> Actualizar Datos</a-button>
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Puntaje</label>
+                          <a-input v-model:value="ingresante.puntaje" />
+                        </a-form-item>
+                      </a-col>
+
+                      <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                          <label>Fecha ingreso</label>
+                          <a-input v-model:value="ingresante.fecha" />
+                        </a-form-item>
+                      </a-col>
+                    
+                    </a-row>  
+                    </a-card>
+
+
+                    <div class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
+                      <span style="font-weight: bold; font-size: 1.2rem;">Correo y codigo</span>
                     </div>
+
+                    <a-card>
+                      <a-row :gutter="16">
+
+                        <a-col :xs="24" :sm="24" :md="24" :lg="16" :xl="16">
+                          <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
+                            <label>Correo</label>
+                            <a-input v-model:value="datosOTI.correo" />
+                          </a-form-item>
+                        </a-col>
+
+                        <a-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
+                          <a-form-item>
+                            <label>Codigo</label>
+                            <a-input v-model:value="datosOTI.codigo"/>
+                          </a-form-item>
+                        </a-col>
+
+
+
+                      </a-row>
+                    </a-card>
+
                   <!-- {{ ingresante }} -->
                 </div>
               </a-tab-pane>
@@ -153,16 +303,6 @@
                   </div>
                 </div>
               </a-tab-pane>
-              <a-tab-pane key="5" tab="Cert Cepre">
-                <div>
-                  <div style="width:100%; height:380px; position:relative; overflow:hidden">
-                    <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <!-- <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/constancia%20vocacional-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe> -->
-                    </div>
-                  </div>
-                </div>
-              </a-tab-pane>
-
               <a-tab-pane key="6" tab="D. Biométricos">
                 <div>
                 </div>
@@ -189,6 +329,10 @@ import { FormOutlined, DeleteOutlined, CreditCardOutlined } from '@ant-design/ic
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import Vouchers from './components/voucher.vue'
+import dayjs from 'dayjs';
+import { format, parseISO } from 'date-fns';
+import { es } from 'date-fns/locale';
+
 const baseUrl = window.location.origin;
 
 const dni = ref(null);
@@ -207,12 +351,10 @@ const checkedList = ref([]);
 const options = [
   { label: 'Solicitud', value: 1 },
   { label: 'Vouchers', value: 2 },
-  { label: 'Certificado', value: 3 },
-  { label: 'Ex vocacional', value: 4 },
-  { label: 'C. Cepreuna', value: 5 },
-];
+  { label: 'Certificado', value: 3 }
+]
 
-const checkAll = ref(false);
+const checkAll = ref(true);
 
 const onCheckAllChange = (e) => {
   checkAll.value = e.target.checked;
@@ -240,14 +382,56 @@ const save = async () => {
   checkedList.value = []
 }
 
-const ingresante = ref(null)
+const ingresante = ref({
+  id:null,
+  nro_doc: "",
+  tipo_doc: null,
+  nombres:null,
+  sexo: null,
+  fec_nacimiento: null,
+  primer_apellido:"",
+  segundo_apellido:"",
+  proceso:"",
+  puntaje:"",
+  programa:"",
+  fecha:""
+})
+
+
 
 const getIngresante =  async ( ) => {
   let res = await axios.get(
-      "get-ingresante/"+dni.value
+      "get-ingresante-general/"+dni.value
   );
-  ingresante.value = res.data.datos;
+  ingresante.value.id = res.data.datos.id
+  ingresante.value.nro_doc = res.data.datos.nro_doc
+  ingresante.value.tipo_doc = res.data.datos.tipo_doc
+  ingresante.value.sexo = res.data.datos.sexo
+  if(res.data.datos.fec_nacimiento){ ingresante.value.fec_nacimiento = dayjs(res.data.datos.fec_nacimiento) }
+  ingresante.value.nombres = res.data.datos.nombres
+  ingresante.value.primer_apellido = res.data.datos.primer_apellido
+  ingresante.value.segundo_apellido = res.data.datos.segundo_apellido
+  ingresante.value.proceso = res.data.datos.proceso
+  ingresante.value.puntaje = res.data.datos.puntaje
+  ingresante.value.programa = res.data.datos.programa
+  if(res.data.datos.fecha){ ingresante.value.fecha = res.data.datos.fecha }
 }
+
+const actualizar = async ( ) => { 
+  let res = await axios.post(
+    "actualizar-ingresante",{
+      id: ingresante.value.id,
+      tipo_doc: ingresante.value.tipo_doc,
+      sexo: ingresante.value.sexo,
+      fec_nacimiento: format(new Date(ingresante.value.fec_nacimiento), 'yyyy-MM-dd'),
+      nombres: ingresante.value.nombres,
+      paterno: ingresante.value.primer_apellido,
+      materno: ingresante.value.segundo_apellido
+    }
+  );
+  notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
+  getPostulantesByDni();
+} 
 
 const getPostulantes =  async (term = "", page = 1) => {
   let res = await axios.post(
@@ -281,19 +465,30 @@ watch(dni, (newValue, oldValue ) => {
 watch(dniseleccionado, (newValue, oldValue ) => {
     getPostulanteRequisitos();
     getIngresante();
+    getCodigo()
 })
 
 const abrirVentana = async () => {
-  let res = await axios.post("control-biometrico",{ dni: dniseleccionado.value });
+  let res = await axios.post("control-biometrico",
+  { dni: dniseleccionado.value, codigo: datosOTI.value.codigo, correo: datosOTI.value.correo });
   imprimirPDF(res.data.datos);
 }
 
+const datosOTI = ref({
+  correo:"",
+  codigo:""
+});
+
+const getCodigo = async () => {
+  let res = await axios.get("get-codigo/"+ dniseleccionado.value);
+  datosOTI.value = res.data.datos;
+}
 
 
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/cepre2023-II/'+dnni+'/control-biometrico-unido.pdf';
+    iframe.src = baseUrl+'/documentos/control-biometrico-general/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
@@ -301,47 +496,34 @@ const imprimirPDF =  (dnni) => {
 
 getRequisitos()
 
-const respuesta = [
-  { codigo:"239001", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239002", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239003", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239004", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239005", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239006", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239007", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239008", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239009", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239010", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239011", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239012", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239013", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239014", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239015", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239016", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239017", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239018", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239019", correo:"", carrera:"", fecha_ingreso:"" },
-  { codigo:"239019", correo:"", carrera:"", fecha_ingreso:"" }
-  
-]
 
 
+const notificacion = (type, titulo, mensaje) => {
+  notification[type]({
+    message: titulo,
+    description: mensaje,
+  });
+};
 </script>
 
 
 <style scoped>
-.checkbox-group-vertical {
-  display: flex;
-  flex-wrap: wrap;
+.btn-actualizar{
+  background:#224464; 
+  color:white; 
+  width:100%; 
+  height: 38px; 
+  /* color:#1c1c8a;  */
+  border-radius:5px;
+  border:none;
 }
-
-.checkbox-item {
-  flex: 0 0 100%;
-  margin-bottom: 8px;
-}
-
-.first-item {
-  margin-left: 8px;
-  margin-bottom: 8px;
+.btn-actualizar:active{
+  border:none;
+  animation-duration: 1.5s;
+  background:#2e5c85c9; 
+  width:100%; 
+  height: 38px; 
+  color:white; 
+  border-radius:5px;
 }
 </style>

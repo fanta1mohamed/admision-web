@@ -195,7 +195,6 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 
 
-
     Route::get('/impresion', fn () => Inertia::render('Revisor/impresion'))->name('revisor-impresion-inscripcion');
     Route::get('/get-postulante-dni/{dni}', [InscripcionController::class, 'getPostulanteByDni']);
     Route::get('/get-apoderados-postulante/{dni}', [InscripcionController::class, 'getApoderados']);
@@ -209,12 +208,13 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/seguimiento', fn () => Inertia::render('Revisor/seguimiento'))->name('revisor-seguimiento');
 
     Route::post('/actualizar-postulante', [PostulanteController::class, 'actualizarDatos']);
+    Route::post('/actualizar-ingresante', [PostulanteController::class, 'actualizarDatosIngresante']);
 
     Route::get('/get-ingresante/{dni}', [IngresoController::class, 'getDatosIngreso']);
+    Route::get('/get-ingresante-general/{dni}', [IngresoController::class, 'getDatosIngresoGeneral']);
 
+    Route::get('/get-codigo/{dni}', [IngresoController::class, 'getCodigo']);
 
-//    Route::post('/get-preguntas2', [PreguntaController::class, 'getPreguntas2']);
-//    Route::post('/get-preguntas-perfiles', [PreguntaController::class, 'getPreguntasPerfiles']);
 
 });
 Route::get('/pdf-datos-biometrico/{dni}', [IngresoController::class, 'pdfbiometrico2']);

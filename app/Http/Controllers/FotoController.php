@@ -40,7 +40,7 @@ class FotoController extends Controller {
             // Genera un nombre único para la foto recortada
             $fileName = $request->dni . '.jpg';
             // Define la ruta donde se guardará la foto recortada
-            $filePath = public_path('fotos/biometrico/' . $fileName);
+            $filePath = public_path('fotos/biometricogeneral/' . $fileName);
     
             // Guarda la foto recortada en el servidor
             file_put_contents($filePath, $photoData);

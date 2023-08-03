@@ -14,6 +14,8 @@ class ControlBiometrico extends Model
         'id_proceso',
         'id_postulante',
         'codigo_ingreso',
-        'estado'
+        'estado',
+        'id_usuario',
+        'correo_institucional'
     ];
 }

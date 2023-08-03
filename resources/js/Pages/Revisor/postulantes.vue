@@ -77,17 +77,11 @@ const verurl = ref("");
 const buscar = ref("")
 
 
-
-
-
-
-
-
 //----------------------------------------------
 
 const totalpaginas = ref(0) 
 const pagina = ref(1)
-const paginasize = ref(10)
+const paginasize = ref(20)
 
 const requisitos = ref([])
 const valores = ref([])
@@ -122,20 +116,11 @@ getRequisitos()
 //----------------------------------------------
 
 
-
-const abrirmodal = ( url) => {
-  console.log("http://admision-web.test/"+url.url)
-  verurl.value = "http://admision-web.test/"+url.url;
-  visible.value = true;
-}
-
-
-
 const getCertificados = async () => {
   let res = await axios.post(`get-certificados-revision?page=`+pagina.value ,
   { term: buscar.value, paginasize: paginasize.value });
   certificados.value = res.data.datos.data;
-  totalpaginas.value = res.data.datos.total
+  //totalpaginas.value = res.data.datos.total
 }
 
 const actualizarEstado = async (item) => {
@@ -145,8 +130,6 @@ const actualizarEstado = async (item) => {
   notificacion('success',res.data.titulo, res.data.mensaje);
   getCertificados()
 }
-
-
 
 const notificacion = (type, titulo, mensaje) => {
     notification[type]({
@@ -163,7 +146,7 @@ const columns = [
     dataIndex: 'nombres',
     key: 'nombres',
     align: 'left',
-    width: '300px'
+    width: '400px'
   },
   {
     title: 'Requisitos',
