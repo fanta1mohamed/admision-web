@@ -243,6 +243,7 @@ import { watch, computed, ref, unref } from 'vue';
 import { FormOutlined, PrinterOutlined, DeleteOutlined, SearchOutlined, } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
+const baseUrl = window.location.origin;
 
 const programa = ref(null);
 const buscar = ref("");
