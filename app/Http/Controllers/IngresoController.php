@@ -168,7 +168,7 @@ class IngresoController extends Controller
 
                     ]);
 
-                    $this->pdfbiometrico2($request->dni);
+                   // $this->pdfbiometrico2($request->dni);
 
                 });
             } catch (\Exception $e) {
