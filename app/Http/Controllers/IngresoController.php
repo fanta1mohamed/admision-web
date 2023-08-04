@@ -244,7 +244,7 @@ class IngresoController extends Controller
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
-            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 5"
+            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 4"
         );
 
         $data = $datos[0];
