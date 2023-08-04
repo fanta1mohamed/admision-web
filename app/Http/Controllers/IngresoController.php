@@ -69,7 +69,7 @@ class IngresoController extends Controller
         JOIN programa ON programa.id = inscripciones.id_programa
         JOIN procesos ON procesos.id = inscripciones.id_proceso
         WHERE postulante.nro_doc = $dni 
-        AND inscripciones.id_proceso = 5");
+        AND inscripciones.id_proceso = 4");
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res[0];
@@ -113,7 +113,7 @@ class IngresoController extends Controller
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
-            AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = 5;");
+            AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = 4;");
 
             // return $re;
 
@@ -122,16 +122,16 @@ class IngresoController extends Controller
             try {
                 DB::transaction(function () use ($request, $re) {
 
-                    // $database2 = 'mysql_secondary';
-                    // $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
-                    // $nuevoCodigo = $rs[0]->siguiente;
+                    $database2 = 'mysql_secondary';
+                    $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
+                    $nuevoCodigo = $rs[0]->siguiente;
  
                     $biometric = ControlBiometrico::create([
-                        'id_proceso' => 5,
+                        'id_proceso' => 4,
                         'id_postulante' => $re[0]->id_postulante,
-                        'codigo_ingreso' => $request->codigo,
+                        'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
-                        'correo_institucional' => $request->correo,
+                        'correo_institucional' => '73759622@est.unap.edu.pe',
                         'id_usuario' => auth()->id()
                     ]);
 
@@ -142,7 +142,7 @@ class IngresoController extends Controller
                     if($re[0]->estado_civil == 4 ) { $e_civil = 6;}
 
                     $estudiante = Estudiante::on('mysql_secondary')->create([
-                        'num_mat' => $request->codigo,
+                        'num_mat' => $nuevoCodigo,
                         'cod_car' => $re[0]->programa_oti,
                         'paterno' => $re[0]->paterno,
                         'materno' => $re[0]->materno,
