@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -126,8 +125,7 @@ class IngresoController extends Controller
                     // $database2 = 'mysql_secondary';
                     // $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
                     // $nuevoCodigo = $rs[0]->siguiente;
-
-     
+ 
                     $biometric = ControlBiometrico::create([
                         'id_proceso' => 5,
                         'id_postulante' => $re[0]->id_postulante,
@@ -172,7 +170,6 @@ class IngresoController extends Controller
 
                     $this->pdfbiometrico2($request->dni);
 
-
                 });
             } catch (\Exception $e) {
                 $errorMessage = $e->getMessage();
@@ -181,9 +178,6 @@ class IngresoController extends Controller
                 // Devolver una respuesta de error al usuario con el mensaje de error
                 return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
             }
-
-
-
 
         $this->response['estado'] = true;
         $this->response['datos'] = $request->dni;
@@ -305,7 +299,6 @@ class IngresoController extends Controller
 
     }
 
-   
     
     public function getCodigo($dni){
         $res = DB::table('temporal')

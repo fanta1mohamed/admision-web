@@ -168,8 +168,6 @@ class InscripcionController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
-     
-
 
     public function Inscribir(Request $request){
      
@@ -207,40 +205,41 @@ class InscripcionController extends Controller
      
         $inscripcion = Inscripcion::find($request->id);
 
-        if( $inscripcion->programa != $request->programa) {
+        if( $inscripcion->id_programa != $request->id_programa) {
             $inscripcion->estado = 3;
-            $inscripcion->observacion = "Cambio de programa a $request->programa";
+            $inscripcion->observaciones = "Cambio de programa a $request->id_programa";
             $inscripcion->save();
+
+            $program = DB::table('programa')->select('codigo')->where('id', $request->id_programa)->first();
 
             $res = DB::select("SELECT COALESCE(LPAD(MAX(CAST(SUBSTRING(codigo, 6) AS UNSIGNED)) + 1, 4, '0'), '0001') AS siguiente
             FROM inscripciones
-            WHERE codigo LIKE '23".$request->programa."%'");
+            WHERE codigo LIKE '23".$program->codigo."%'");
 
             $inscripcion = Inscripcion::create([
-                'codigo'=>'23'.$request->programa.$res[0]->siguiente,
-                'id_postulante'=> $request->id,
-                'id_proceso'=> $request->id_proceso,
+                'codigo'=>'23'.$program->codigo.$res[0]->siguiente,
+                'id_postulante'=> $request->id_postulante,
+                'id_proceso'=> 5,
                 'id_programa' => $request->id_programa,
-                'id_modalidad' => $request->id_modalidad,
+                'id_modalidad' => $request->id_modalidad, 
                 'estado' => 0,
+                'id_usuario' => auth()->id()
+
             ]);
 
         }
-        if ( $inscripcion->modalidad != $request->modalidad ) {
+        if ( $inscripcion->id_modalidad != $request->id_modalidad ) {
             $inscripcion->id_modalidad = $request->id_modalidad;
-            $inscripcion->id_modalidad = $request->id_modalidad;
+            $inscripcion->observaciones = "$inscripcion->observaciones Cambio de modalidad a $request->id_modalidad";
             $inscripcion->save();
         }
 
         $this->pdfInscripcion($request->dni);
 
+        $this->response['titulo'] = 'REGISTRO MODIFICADO';
+        $this->response['mensaje'] = 'DATOS ACTUALIZADOS CORRECTAMENTE';
         $this->response['estado'] = true;
-        $this->response['datos'] = $request['postulante']['dni_temp'];
-        return response()->json($this->response, 200);
-        // return redirect('http://admision-web.test/admin/pdf-inscripción/70757838');         
     }
-
-
 
 
     public function pdfInscripcion($dni) {
@@ -263,8 +262,7 @@ class InscripcionController extends Controller
         JOIN modalidad ON inscripciones.id_modalidad = modalidad.id 
         JOIN procesos ON inscripciones.id_proceso = procesos.id
         JOIN users on inscripciones.id_usuario = users.id
-        WHERE postulante.nro_doc = $dni
-        AND inscripciones.estado = 0");
+        WHERE postulante.nro_doc = $dni AND inscripciones.estado = 0");
 
         $data = $datos[0];
         $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data'));
@@ -287,7 +285,7 @@ class InscripcionController extends Controller
         array_push($query_where,[DB::raw('inscripciones.id_proceso'), '=', 5]);
 
         $res = Inscripcion::select(
-            'inscripciones.id as id', 'postulante.nro_doc AS dni', 'inscripciones.codigo as codigo', 'postulante.nombres AS nombres', 
+            'inscripciones.id as id', 'postulante.id as id_postulante', 'postulante.nro_doc AS dni', 'inscripciones.codigo as codigo', 'postulante.nombres AS nombres', 
             'postulante.primer_apellido AS paterno', 'postulante.segundo_apellido AS materno', 'programa.nombre as programa', 'inscripciones.id_programa as id_programa',
             'modalidad.id as id_modalidad', 'modalidad.nombre as modalidad', 'procesos.nombre AS proceso', 'inscripciones.created_at as fecha', 'inscripciones.estado'
         )
