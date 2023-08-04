@@ -370,7 +370,7 @@ const notificacion = (type, titulo, mensaje) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/general2023-II'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/general2023-II/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
