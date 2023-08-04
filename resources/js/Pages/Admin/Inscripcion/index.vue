@@ -102,8 +102,8 @@
             </template>
 
             <template v-if="column.dataIndex === 'acciones'">
-                <a-button type="success" disabled style="background:#52c41a; color: white;" @click="abrirEditar(record)" size="small">
-                    <template #icon><eye-outlined/></template>
+                <a-button type="success" style="background:#52c41a; color: white;" @click="imprimirPDF(record.dni)" size="small">
+                    <template #icon><printer-outlined/></template>
                 </a-button>
                 <a-divider type="vertical" />
                 <a-button type="primary" @click="abrirEditar(record)" size="small">
@@ -113,6 +113,7 @@
                 <a-popconfirm
                     v-if="inscripciones.length"
                     title="¿Estas seguro de eliminar?"
+                    disabled
                     @confirm="eliminar(record)"
                     >
                     <a-button type="danger" shape="" size="small">
@@ -239,7 +240,7 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { FormOutlined, EyeOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue';
+import { FormOutlined, PrinterOutlined, DeleteOutlined, SearchOutlined, } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 
@@ -344,7 +345,6 @@ const columnsInscripcion = [
     { title: 'Acciones', dataIndex: 'acciones', width:'140px', align:'center'},
 ];
 
-
 const selectedRowKeys = ref([]); 
 
 const onSelectChange = changableRowKeys => {
@@ -365,6 +365,15 @@ const notificacion = (type, titulo, mensaje) => {
     description: mensaje,
     });
 };
+
+const imprimirPDF =  (dnni) => {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = "none";
+    iframe.src = baseUrl+'/documentos/general2023-II'+dnni+'.pdf';
+    document.body.appendChild(iframe);
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+}
 
 getInscripciones()
 </script>
