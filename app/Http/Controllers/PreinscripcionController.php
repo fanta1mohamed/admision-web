@@ -6,6 +6,7 @@ use App\Models\Proceso;
 use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
 use App\Models\Documento;
+use App\Models\Postulante;
 use App\Models\AvancePostulante;
 use App\Models\Paso;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -375,5 +376,84 @@ class PreinscripcionController extends Controller
         // return response()->download($outputFilePath)->deleteFileAfterSend();
 
     }
+
+
+    public function getPreinscripcionesAdmin(Request $request) {
+
+        $query_where = [];
+
+        if ($request->programa) array_push($query_where,[DB::raw('pre_inscripcion.id_programa'), '=', $request->programa]); 
+        array_push($query_where,[DB::raw('pre_inscripcion.id_proceso'), '=', 5]);
+
+        $res = Preinscripcion::select(
+            'pre_inscripcion.id as id', 'postulante.id as id_postulante', 'postulante.nro_doc AS dni',
+            'postulante.nombres AS nombres',
+            'postulante.primer_apellido AS paterno', 'postulante.segundo_apellido AS materno', 
+            'programa.nombre as programa', 'pre_inscripcion.id_programa as id_programa',
+            'modalidad.id as id_modalidad', 'modalidad.nombre as modalidad', 'procesos.nombre AS proceso', 
+            'pre_inscripcion.created_at as fecha', 'postulante.sexo', 
+            'inscripciones.estado'
+        )
+        ->join('postulante','pre_inscripcion.id_postulante', 'postulante.id')
+        ->join('inscripciones','inscripciones.id_postulante', 'postulante.id')
+        ->join('programa','pre_inscripcion.id_programa', 'programa.id')
+        ->join('modalidad','pre_inscripcion.id_modalidad', 'modalidad.id')        
+        ->join('procesos','pre_inscripcion.id_proceso', 'procesos.id')
+        ->where($query_where)
+        ->where(function ($query) use ($request) {
+            return $query
+              ->orWhere('modalidad.nombre', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.segundo_apellido', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('modalidad.nombre', 'LIKE', '%' . $request->term . '%');
+        })
+        ->distinct()
+        ->paginate($request->paginashoja);
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+
+    }
+
+
+    public function Actualizar(Request $request){
+     
+        $preinscripcion = Preinscripcion::find($request->id);
+
+        if( $preinscripcion->id_programa != $request->id_programa) {
+            $preinscripcion->id_programa = $request->id_programa;
+            //$preinscripcion->observacion = "Cambio de programa a $request->id_programa";
+        }
+        if ( $preinscripcion->id_modalidad != $request->id_modalidad ) {
+            $preinscripcion->id_modalidad = $request->id_modalidad;
+            //$preinscripcion->observacion = "$preinscripcion->observacion, Cambio de modalidad a $request->id_modalidad";
+        }
+        $preinscripcion->save();
+        $this->pdfsolicitud($request->dni);
+
+        $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
+        $this->response['mensaje'] = '';
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+    }
+
+
+    public function actualizarSexo(Request $request ) {
+
+        $postulante = Postulante::find($request->id_postulante);
+        $postulante->sexo = $request->sexo;
+        $postulante->save();
+
+        $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
+        $this->response['mensaje'] = '';
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+  }
+
+
+    
 
 }

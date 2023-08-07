@@ -19,6 +19,8 @@ class Preinscripcion extends Model
         'id_proceso',
         'id_modalidad',
         'estado',
-        'codigo_seguridad'
+        'codigo_seguridad',
+        'id_usuario',
+        'observacion',
     ];
 }

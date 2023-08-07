@@ -32,7 +32,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     
-        <title inertia>{{ config('app.name', 'Admision 2023') }}</title>
+        <title inertia>{{ config('app.name', 'Admision Unap') }}</title>
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         

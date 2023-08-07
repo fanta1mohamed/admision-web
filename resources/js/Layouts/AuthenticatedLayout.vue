@@ -106,9 +106,6 @@
 
         </a-sub-menu>
 
-
-
-
         <hr style="border-top: 1px solid #FFFFFF23;">
         <a-sub-menu key="sub3" >
           <template #title>
@@ -120,7 +117,7 @@
           <a-menu-item style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
             <nav-link :href="route('admin-apoderado-index')" :active="route().current('admin-apoderado-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
-                <printer-filled style=""/>
+                <setting-filled style=""/>
                 <span>Apoderados</span>
               </div>
             </nav-link>
@@ -129,7 +126,7 @@
           <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-postulante-index')" :active="route().current('admin-postulante-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
-                <printer-filled style=""/>
+                <setting-filled style=""/>
                 <span>Postulantes</span>
               </div>
             </nav-link>
@@ -138,7 +135,7 @@
           <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-colegio-index')" :active="route().current('admin-colegio-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
-                <printer-filled style=""/>
+                <setting-filled style=""/>
                 <span>Colegios</span>
               </div>
             </nav-link>
@@ -147,16 +144,16 @@
           <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-documento-index')" :active="route().current('admin-documento-index')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
-                <printer-filled style=""/>
+                <setting-filled style=""/>
                 <span>Documentos</span>
               </div>
             </nav-link>
           </a-menu-item>
 
           <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-            <nav-link :href="route('admin-reporte')" :active="route().current('admin-reporte')" style="margin: 0px; margin-left: -25px; ">
+            <nav-link :href="route('admin-preinscripciones')" :active="route().current('admin-preinscripciones')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
-                <printer-filled style=""/>
+                <setting-filled style=""/>
                 <span>Preinscripciones</span>
               </div>
             </nav-link>
@@ -165,7 +162,7 @@
           <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
             <nav-link :href="route('admin-inscripciones')" :active="route().current('admin-inscripciones')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
-                <printer-filled style=""/>
+                <setting-filled style=""/>
                 <span>
                   Inscripciones
                 </span>

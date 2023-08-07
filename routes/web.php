@@ -80,6 +80,9 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/inscripciones/inscribir', [InscripcionController::class, 'Inscribir']);
 
     Route::post('/get-inscripciones-admin', [InscripcionController::class, 'getInscripcionesAdmin']);
+    Route::post('/get-preinscripciones-admin', [PreinscripcionController::class, 'getPreinscripcionesAdmin']);
+    Route::post('/actualizar-sexo-postulante', [PreinscripcionController::class, 'actualizarSexo']);
+    Route::post('/actualizar-preinscripcion', [PreinscripcionController::class, 'Actualizar']);    
 
 
     Route::get('/procesos', [ProcesoController::class, 'index'])->name('proceso-index');
@@ -96,6 +99,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     Route::post('/actualizar-inscripcion', [InscripcionController::class, 'Actualizar']);
     
+    Route::get('/preinscripciones', fn () => Inertia::render('Admin/Preinscripcion/index'))->name('admin-preinscripciones');
 
     // Route::post('/save-programa', [ProgramaController::class, 'savePrograma']);
     // Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);

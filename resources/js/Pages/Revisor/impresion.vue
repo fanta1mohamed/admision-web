@@ -242,6 +242,7 @@
           vouchers
       </div>
     </template>
+    {{ vouchers }}
     <a-table :dataSource="vouchers" :columns="colVouchers"> 
       <template #bodyCell="{ column, index, record }">
         <template v-if="column.dataIndex === 'codigo'">
@@ -466,12 +467,37 @@ const getApoderados =  async () => {
   apoderados.value = res.data.datos;
 }
 
-const getVouchers =  async () => {
-  let res = await axios.get(
-      "get-vouchers-postulante/" + dniseleccionado.value
-  );
-  vouchers.value = res.data.datos;
-}
+// const getVouchers =  async () => {
+//   let res = await axios.get(
+//       "http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w=" + dniseleccionado.value
+//   );
+//   vouchers.value = res.data;
+// }
+
+// const getVouchers = async () => {
+//   const url = 'http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w='+ dniseleccionado.value;
+//   try {    
+//     const response = await axios.get(url,{
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Access-Control-Allow-Origin': 'https://inscripciones.admision.unap.edu.pe' // Agregar la cabecera para permitir el dominio
+//       }
+//     });
+//     console.log(response.data);
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
+// };
+
+const getVouchers = async() => {
+  try {    
+    const response = await axios.get('http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w='+ dniseleccionado.value,
+    { headers: { 'Content-Type': 'application/json'} });
+    vouchers.value = response.data;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
 const getDocumentos =  async () => {
   let res = await axios.get(
@@ -536,11 +562,11 @@ const generateRandomNumber = () => {
 
 
 watch(dniseleccionado, ( newValue, oldValue ) => {
-    getDatosCepre();
+    //getDatosCepre();
     getInscripciones()
     getPostulantesByDni()
     getVouchers()
-    getDocumentos()
+    //getDocumentos()
 })
 
 watch(tabactive, ( newValue, oldValue ) => {
@@ -580,11 +606,11 @@ const colApoderados = [
 ]
 
 const colVouchers =  [
-  { title: 'N° Operación', dataIndex: 'operacion', key: 'operacion',},
-  { title: 'Fecha', dataIndex: 'fecha', key: 'fecha',},
-  { title: 'Hora', dataIndex: 'hora', key: 'hora', },
-  { title: 'Concepto', dataIndex: 'codigo', key: 'codigo', },
-  { title: 'Monto', dataIndex: 'monto', key: 'monto', },
+  { title: 'N° Operación', dataIndex: 'paymentTitle'},
+  { title: 'Fecha', dataIndex: 'paymentDatetime', key: 'fecha',},
+  { title: 'Hora', dataIndex: 'paymentDatetime', key: 'hora', },
+  { title: 'Concepto', dataIndex: 'paymentTitle', },
+  { title: 'Monto', dataIndex: 'paymentAmount', key: 'monto', },
 ]
 
 const colDocumentos =  [
