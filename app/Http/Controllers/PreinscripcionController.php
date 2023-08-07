@@ -409,7 +409,6 @@ class PreinscripcionController extends Controller
               ->orWhere('postulante.segundo_apellido', 'LIKE', '%' . $request->term . '%')
               ->orWhere('modalidad.nombre', 'LIKE', '%' . $request->term . '%');
         })
-        ->distinct()
         ->paginate($request->paginashoja);
 
         $this->response['estado'] = true;
