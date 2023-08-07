@@ -395,7 +395,7 @@ class PreinscripcionController extends Controller
             'inscripciones.estado'
         )
         ->join('postulante','pre_inscripcion.id_postulante', 'postulante.id')
-        ->join('inscripciones','inscripciones.id_postulante', 'postulante.id')
+        ->leftjoin('inscripciones','inscripciones.id_postulante', 'postulante.id')
         ->join('programa','pre_inscripcion.id_programa', 'programa.id')
         ->join('modalidad','pre_inscripcion.id_modalidad', 'modalidad.id')        
         ->join('procesos','pre_inscripcion.id_proceso', 'procesos.id')
