@@ -153,15 +153,17 @@
 
                   </a-card>
 
-<!--
+                  <!--
                   {{ anteriores }} -->
-                  <div v-if="anteriores !== []" class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
+                  <div v-if="anteriores[0]" class="flex mb-3 mt-3" :style="anteriores[0] ? 'align-items:center; justify-content: center; width: 100%; height: 40px; background: red; border-radius: 7px;' : 'align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;'">
                     <span style="font-weight: bold; font-size: 1.2rem;">Datos de ingreso anterior</span>
                   </div>
                   <!-- {{ anteriores }} -->
-                  <div v-if="anteriores !== []">
-                    <a-card v-for="(ant,index) in anteriores" :key="index" >
-                      <Anterior :item="ant" />
+                  <div v-if="anteriores[0]">
+                    <a-card>
+                      <div v-for="(ant,index) in anteriores" :key="index" >
+                        <Anterior :item="ant" />
+                      </div>
                     </a-card>
                   </div>
 
@@ -175,14 +177,14 @@
                       <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                           <label>Proceso</label>
-                          <a-input v-model:value="ingresante.programa" />
+                          <a-input v-model:value="ingresante.proceso" />
                         </a-form-item>
                       </a-col>
 
                       <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                           <label>Modalidad</label>
-                          <a-input v-model:value="ingresante.proceso"/>
+                          <a-input v-model:value="ingresante.modalidad"/>
                         </a-form-item>
                       </a-col>
 
@@ -210,26 +212,13 @@
                     </a-row>
                     </a-card>
 
-                    <div class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
+                    <div v-if="anteriores[0]" class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
                       <span style="font-weight: bold; font-size: 1.2rem;">Segunda Carrera</span>
                     </div>
 
                     <a-card class="mb-3" style="margin-bottom: 10px;">
                       <a-row v-if="!anteriores[0]" :gutter="16">
-                        <div>-</div>
-                        <!-- <a-col :xs="24" :sm="24" :md="24" :lg="16" :xl="16">
-                          <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                            <label>Correo</label>
-                            <a-input :value="dniseleccionado+'@est.unap.edu.pe'" />
-                          </a-form-item>
-                        </a-col>
 
-                        <a-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
-                          <a-form-item>
-                            <label>Codigo</label>
-                            <a-input v-model:value="datosOTI.codigo"/>
-                          </a-form-item>
-                        </a-col> -->
                       </a-row>
 
                       <a-row v-else :gutter="16">
@@ -379,6 +368,7 @@ const ingresante = ref({
   primer_apellido:"",
   segundo_apellido:"",
   proceso:"",
+  modalidad:"",
   puntaje:"",
   programa:"",
   fecha:"",
@@ -398,6 +388,7 @@ const getIngresante =  async ( ) => {
   ingresante.value.primer_apellido = res.data.datos.primer_apellido
   ingresante.value.segundo_apellido = res.data.datos.segundo_apellido
   ingresante.value.proceso = res.data.datos.proceso
+  ingresante.value.modalidad = res.data.datos.modalidad
   ingresante.value.puntaje = res.data.datos.puntaje
   ingresante.value.programa = res.data.datos.programa
   ingresante.value.puesto= res.data.datos.puesto

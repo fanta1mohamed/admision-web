@@ -59,6 +59,7 @@ class IngresoController extends Controller
         postulante.fec_nacimiento,
         programa.nombre AS programa,
         procesos.nombre AS proceso,
+        modalidad.nombre AS modalidad,
         resultados.puntaje,
         resultados.puesto,
         resultados.puesto_general,
@@ -67,9 +68,10 @@ class IngresoController extends Controller
         JOIN postulante ON postulante.nro_doc = resultados.dni_postulante
         JOIN inscripciones ON postulante.id = inscripciones.id_postulante
         JOIN programa ON programa.id = inscripciones.id_programa
+        JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
         JOIN procesos ON procesos.id = inscripciones.id_proceso
         WHERE postulante.nro_doc = $dni 
-        AND inscripciones.id_proceso = 4");
+        AND inscripciones.id_proceso = 5");
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res[0];
@@ -78,6 +80,7 @@ class IngresoController extends Controller
 
 
     public function biometrico(Request $request){
+        $ingreso = 0;
 
         $re = DB::select("SELECT
             procesos.anio, procesos.ciclo_oti,
@@ -113,9 +116,9 @@ class IngresoController extends Controller
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
-            AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = 4;");
+            AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = 5;");
 
-            // return $re;
+            if($request->n_carrera == 1 ){ $ingreso = 1; }
 
             try {
                 DB::transaction(function () use ($request, $re) {
@@ -124,24 +127,14 @@ class IngresoController extends Controller
                     $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
                     $nuevoCodigo = $rs[0]->siguiente;
  
-                    if($request->n_carrera == 1 ) {
-                        $biometric = ControlBiometrico::create([
-                            'id_proceso' => 4,
-                            'id_postulante' => $re[0]->id_postulante,
-                            'codigo_ingreso' => $nuevoCodigo,
-                            'estado' => 1,
-                            'id_usuario' => auth()->id()
-                        ]);
-                    }else {
-                        $biometric = ControlBiometrico::create([
-                            'id_proceso' => 4,
-                            'id_postulante' => $re[0]->id_postulante,
-                            'codigo_ingreso' => $nuevoCodigo,
-                            'estado' => 1,
-                            'correo_institucional' => $request->dni.'@est.unap.edu.pe',
-                            'id_usuario' => auth()->id()
-                        ]);
-                    }
+                    $biometric = ControlBiometrico::create([
+                        'id_proceso' => 5,
+                        'id_postulante' => $re[0]->id_postulante,
+                        'codigo_ingreso' => $nuevoCodigo,
+                        'estado' => 1,
+                        'codigo_ingreso' => $ingreso - 1,
+                        'id_usuario' => auth()->id()
+                    ]);
 
                     $e_civil = 1;
                     if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
@@ -157,6 +150,7 @@ class IngresoController extends Controller
                         'nombres' => $re[0]->nombres,
                         'tip_doc' => $re[0]->tipo_doc_oti,
                         'num_doc' => $re[0]->dni,
+                        'num_carr'=> $ingreso,
                         'fch_nac' => $re[0]->fec_nacimiento,
                         'sexo' => $re[0]->sexo,
                         'ubigeo' => $re[0]->ubigeo_residencia,
@@ -176,7 +170,7 @@ class IngresoController extends Controller
 
                     ]);
 
-                   // $this->pdfbiometrico2($request->dni);
+                    $this->pdfbiometrico2($request->dni);
 
                 });
             } catch (\Exception $e) {
@@ -253,7 +247,7 @@ class IngresoController extends Controller
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
-            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 4"
+            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 5"
         );
 
         $data = $datos[0];
