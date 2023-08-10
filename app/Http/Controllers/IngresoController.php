@@ -133,7 +133,7 @@ class IngresoController extends Controller
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
-                        'segunda_carrera' => $request->n_carrera,
+                        'segunda_carrera' => $ingreso-1,
                         'id_usuario' => auth()->id()
                     ]);
 
