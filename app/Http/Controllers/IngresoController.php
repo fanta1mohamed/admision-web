@@ -151,7 +151,7 @@ class IngresoController extends Controller
                         'nombres' => $re[0]->nombres,
                         'tip_doc' => $re[0]->tipo_doc_oti,
                         'num_doc' => $re[0]->dni,
-                        'num_car'=> $ingreso,
+                        'num_car' => $ingreso,
                         'fch_nac' => $re[0]->fec_nacimiento,
                         'sexo' => $re[0]->sexo,
                         'ubigeo' => $re[0]->ubigeo_residencia,
