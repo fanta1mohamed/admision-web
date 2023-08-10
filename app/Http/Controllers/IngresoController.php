@@ -118,10 +118,10 @@ class IngresoController extends Controller
             WHERE resultados.apto = 'SI'
             AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = 5;");
 
-            if($request->n_carrera == 1 ){ $ingreso = 1; }
 
             try {
                 DB::transaction(function () use ($request, $re) {
+                    if($request->n_carrera == 1 ){ $ingreso = 1; }
 
                     $database2 = 'mysql_secondary';
                     $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
@@ -132,7 +132,7 @@ class IngresoController extends Controller
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
-                        'codigo_ingreso' => $ingreso - 1,
+                        'codigo_ingreso' => $ingreso,
                         'id_usuario' => auth()->id()
                     ]);
 
