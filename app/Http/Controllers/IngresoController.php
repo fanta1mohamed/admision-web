@@ -80,7 +80,7 @@ class IngresoController extends Controller
 
 
     public function biometrico(Request $request){
-        $ingreso = 0;
+        
 
         $re = DB::select("SELECT
             procesos.anio, procesos.ciclo_oti,
@@ -121,6 +121,7 @@ class IngresoController extends Controller
             try {
                 DB::transaction(function () use ($request, $re) {
 
+                    $ingreso = 1;
                     if($request->n_carrera == 1 ){ $ingreso = 2; }
 
                     $database2 = 'mysql_secondary';
@@ -132,7 +133,7 @@ class IngresoController extends Controller
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
-                        'codigo_ingreso' => $ingreso,
+                        'segunda_carrera' => $ingreso,
                         'id_usuario' => auth()->id()
                     ]);
 
