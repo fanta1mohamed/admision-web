@@ -32,6 +32,7 @@ class Estudiante extends Model
         'con_est',
         'celular',
         'cod_esp',
+        'num_car',
         'puntaje',
         'puesto_escuela',
         'puesto_general',
