@@ -123,7 +123,7 @@ class IngresoController extends Controller
 
                     $ingreso = 1;
                     $i_admision = 0;
-                    if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1 }
+                    if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
 
                     $database2 = 'mysql_secondary';
                     $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
