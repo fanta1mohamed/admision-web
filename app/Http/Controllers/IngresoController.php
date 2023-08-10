@@ -133,7 +133,7 @@ class IngresoController extends Controller
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
-                        'segunda_carrera' => $ingreso,
+                        'segunda_carrera' => $request->n_carrera,
                         'id_usuario' => auth()->id()
                     ]);
 
@@ -239,12 +239,12 @@ class IngresoController extends Controller
             control_biometrico.segunda_carrera AS segunda_carrera,
             programa.nombre AS programa
             FROM resultados
-            LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
-            LEFT JOIN inscripciones ON inscripciones.id_postulante = postulante.id
-            LEFT JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
-            LEFT JOIN procesos ON resultados.id_proceso = procesos.id
-            left join users on users.id = inscripciones.id_usuario
-            LEFT JOIN programa ON programa.id = inscripciones.id_programa
+            JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
+            JOIN inscripciones ON inscripciones.id_postulante = postulante.id
+            JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
+            JOIN procesos ON resultados.id_proceso = procesos.id
+            join users on users.id = inscripciones.id_usuario
+            JOIN programa ON programa.id = inscripciones.id_programa
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI'
