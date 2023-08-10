@@ -220,6 +220,15 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/get-codigo/{dni}', [IngresoController::class, 'getCodigo']);
 
 
+    Route::get('/api-pagos/{parametro}', function ($parametro) {
+        try {
+            $response = Http::get('http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w=' . $parametro);
+            return response($response->body(), $response->status())->header('Content-Type', 'application/json');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error en la solicitud'], 500);
+        }
+    });
+
 });
 Route::get('/pdf-datos-biometrico/{dni}', [IngresoController::class, 'pdfbiometrico2']);
 

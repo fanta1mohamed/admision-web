@@ -17,29 +17,33 @@
     </style>
 </head>
 <body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-left:20px; margin-top:95px; margin-right:0px;">
-    <div style="margin-top:-10px;">
+    <div style="margin-top: 20px;">
         <table style="width: 100%">
             <tr>
                 <td align="center"><div style="text-align: center"><span style="font-weight:bold">EXAMEN {{ $data->proceso }}</span></div></td>
             </tr>
 
             <tr>
+                @if ($data->segunda_carrera == 1)
+                <td align="center"><div style="text-align: center"><span style="font-size: 1.4rem; font-weight:bold">CONSTANCIA DE INGRESO A 2DA CARRERA </span></div></td>
+                @else
                 <td align="center"><div style="text-align: center"><span style="font-size: 1.4rem; font-weight:bold">CONSTANCIA DE INGRESO</span></div></td>
+                @endif
             </tr>
         </table>
     </div>
 
-    <div style="text-align: justify">
+    <div style="text-align: justify;">
     
         <p style="line-height: 1.5rem;">
             La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, en cumplimiento pleno del Reglamento General del 
-            Examen <span style="font-weight:bold;">{{$data->proceso}}</span>, <span style="font-weight:bold;">HACE CONSTAR </span> 
-            que <span style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</span>, identificado (a) con 
-            DNI N° <span style="font-weight:bold;">{{$data->dni}}</span>, es 
-            <span style="font-weight:bold;">INGRESANTE APTO</span> al programa de estudios de <span style="font-weight:bold;">{{$data->programa}}</span>, 
-            bajo la modalidad <span style="font-weight:bold;">{{$data->modalidad}}</span>, El ingresante obtuvo la calificación final de
-            <span style="font-weight:bold;">{{ $data->puntaje }} puntos </span> el {{ $date }}. El (la) estudiante en mención,
-            queda expedito(a) con código <span style="font-weight:bold;"> {{$data->cod_ingreso}} </span> para matricularse en el referido programa de estudios.
+            Examen <label style="font-weight:bold;">{{$data->proceso}}</label>, <label style="font-weight:bold;">HACE CONSTAR </label> 
+            que <label style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</label>, identificado (a) con 
+            DNI N° <label style="font-weight:bold;">{{$data->dni}}</label>, es 
+            <label style="font-weight:bold;">INGRESANTE APTO</label> al programa de estudios de <label style="font-weight:bold;">{{$data->programa}}</label>, 
+            bajo la modalidad <label style="font-weight:bold;">{{$data->modalidad}}</label>, El ingresante está en el puesto <label style="font-weight:bold;">{{ $data->puesto }}</label> y obtuvo el puntaje de
+            <label style="font-weight:bold;">{{ $data->puntaje }} </label>puntos el {{ $date }}. El (la) estudiante en mención,
+            queda expedito(a) con código <label style="font-weight:bold;"> {{$data->cod_ingreso}} </label> para matricularse en el referido programa de estudios.
         </p>
 
     </div>
@@ -188,25 +192,30 @@
     </div>
     <div style="text-align: justify; margin-top: -15px;">
         <p style="line-height: 1.5rem;">
-            Correo institucional: <span style="font-weight: bold"> {{ $data->correo }} </span><br> 
-            Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}} </span>
+            @if ($data->segunda_carrera == 1)
+                Use el correo institucional que ya tiene asignado<br>
+                Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
+            @else
+                Correo institucional: <span style="font-weight: bold"> {{$data->dni}}@est.unap.edu.pe </span><br> 
+                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}} </span>
+            @endif
         </p>
 
     </div>
 
-    <div style="text-align: right;">
+    <div style="text-align: right; margin-top:-15px;">
         <p style="line-height: 1.5rem;">
             CU. {{$fimp}}
         </p>
     </div>
 
-    <div style="text-align: center;">
+    {{-- <div style="text-align: center;">
         <p style="line-height: 1.5rem;">
             Atentamente,
         </p>
-    </div>
+    </div> --}}
 
-    <div style="margin-top:80px;">
+    <div style="margin-top:100px;">
         <table>
             <tr>
                 <td>

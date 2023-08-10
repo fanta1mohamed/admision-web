@@ -4,13 +4,9 @@
   <div>
     <a-card style="background: white;" class="mb-0 p-0" >
       <a-row :gutter="16" class="mb-3">
-        <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end; align-items: end;" >
-          
-          <div>
+        <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end; align-items: end;">
 
-            <!-- <div> {{ datosOTI }} </div> -->
-          <!-- <div> {{ datosOTI }} </div>
-          {{ ingresante }} -->
+          <div>
 
           <label style="margin-right: 10px;"> Buscar:</label>
           <a-auto-complete
@@ -45,7 +41,7 @@
           <div style="height: 40px; margin-left: -10px;">
             <a-checkbox-group v-model:value="checkedList" >
               <a-checkbox v-for="(option, index) in requisitos" :key="option.value" :value="option.value" :class="{ 'first-item': index === 0 }" class="checkbox-item">
-               <span style="font-weight: bold;">{{ option.label }}</span> 
+               <span style="font-weight: bold;">{{ option.label }}</span>
               </a-checkbox>
             </a-checkbox-group>
           </div>
@@ -76,9 +72,17 @@
                           <a-input v-model:value="ingresante.segundo_apellido" />
                         </a-form-item>
 
-                        <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                          <label>Prenombres</label>
-                          <a-input v-model:value="ingresante.nombres"/>
+                        <a-form-item>
+                          <div class="flex">
+                            <div style="width:calc(100% - 100px);">
+                              <label>Prenombres</label>
+                              <a-input v-model:value="ingresante.nombres"/>
+                            </div>
+                            <div class="ml-3" style="width:100px;">
+                              <label>Puesto</label>
+                              <a-input v-model:value="ingresante.puesto"/>
+                            </div>
+                        </div>
                         </a-form-item>
                       </a-col>
 
@@ -132,7 +136,7 @@
                       </a-col>
                       <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
                         <img :src="'https://inscripciones.admision.unap.edu.pe/fotos/inscripcion/'+ingresante.nro_doc+'.jpg'" width="250" />
-          
+
                       </a-col>
 
                       <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="17">
@@ -144,44 +148,22 @@
                       <a-col :xs="24" :sm="12" :md="12" :lg="8" :xl="7">
                         <div class="flex justify-center" style="margin-top: -15px; "> <span style="padding: 0px 2px; font-size: 2.6rem; margin-top:2px; font-weight: bold;">DNI {{ ingresante.nro_doc }}</span></div>
                       </a-col>
-                      
+
                     </a-row>
 
                   </a-card>
 
-<!-- 
+<!--
                   {{ anteriores }} -->
                   <div v-if="anteriores !== []" class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
                     <span style="font-weight: bold; font-size: 1.2rem;">Datos de ingreso anterior</span>
                   </div>
+                  <!-- {{ anteriores }} -->
                   <div v-if="anteriores !== []">
                     <a-card v-for="(ant,index) in anteriores" :key="index" >
-                      <a-row :gutter="16">
-                        <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                          <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                            <label>Ciclo</label>
-                            <a-input v-model:value="ant.cycle" />
-                          </a-form-item>
-                        </a-col>
-
-                        <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                          <a-form-item>
-                            <label>Carrera</label>
-                            <a-input v-model:value="ant.career" />
-                          </a-form-item>
-                        </a-col>
-                        
-                        <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                          <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
-                            <label>Codigo</label>
-                            <a-input v-model:value="ant.code" />
-                          </a-form-item>
-                        </a-col>
-                      </a-row> 
+                      <Anterior :item="ant" />
                     </a-card>
-                    
                   </div>
-
 
                     <div class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
                       <span style="font-weight: bold; font-size: 1.2rem;">Datos de ingreso</span>
@@ -203,7 +185,7 @@
                           <a-input v-model:value="ingresante.proceso"/>
                         </a-form-item>
                       </a-col>
-                      
+
                       <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                           <label>Programa</label>
@@ -224,22 +206,21 @@
                           <a-input v-model:value="ingresante.fecha" />
                         </a-form-item>
                       </a-col>
-                    
-                    </a-row>  
+
+                    </a-row>
                     </a-card>
 
-
                     <div class="flex mb-3 mt-3" style="align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;">
-                      <span style="font-weight: bold; font-size: 1.2rem;">Correo y codigo</span>
+                      <span style="font-weight: bold; font-size: 1.2rem;">Segunda Carrera</span>
                     </div>
 
-                    <a-card>
-                      <a-row :gutter="16">
-
-                        <a-col :xs="24" :sm="24" :md="24" :lg="16" :xl="16">
+                    <a-card class="mb-3" style="margin-bottom: 10px;">
+                      <a-row v-if="!anteriores[0]" :gutter="16">
+                        <div>-</div>
+                        <!-- <a-col :xs="24" :sm="24" :md="24" :lg="16" :xl="16">
                           <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                             <label>Correo</label>
-                            <a-input v-model:value="datosOTI.correo" />
+                            <a-input :value="dniseleccionado+'@est.unap.edu.pe'" />
                           </a-form-item>
                         </a-col>
 
@@ -248,10 +229,32 @@
                             <label>Codigo</label>
                             <a-input v-model:value="datosOTI.codigo"/>
                           </a-form-item>
+                        </a-col> -->
+                      </a-row>
+
+                      <a-row v-else :gutter="16">
+                        <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                          <a-form-item>
+                            <div style="text-align:center;">
+                              <label>INDICAR QUE USE EL CORREO INSTITUCIONAL DE SU ANTERIOR INGRESO</label>
+                            </div>
+                          </a-form-item>
                         </a-col>
-
-
-
+                        <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                          <a-form-item>
+                            <div class="mb-2">
+                              <a-label>SEGUNDA CARRERA</a-label>
+                              <a-select
+                                ref="select"
+                                v-model:value="n_carrera"
+                                style="width: 100%"
+                              >
+                                <a-select-option :value="1">SI</a-select-option>
+                                <a-select-option :value="0">NO</a-select-option>
+                              </a-select>
+                            </div>
+                          </a-form-item>
+                        </a-col>
                       </a-row>
                     </a-card>
 
@@ -270,18 +273,9 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/general2023-II/'+dniseleccionado+'/solicitud-1.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
                     </div>
                 </div>
-                </div>
-              </a-tab-pane>
-              <a-tab-pane key="3" tab="Certificado">
-                <div style="height:380px;">
-                  <div style="width:100%; height:380px; position:relative; overflow:hidden">
-                    <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/certificado-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
-                    </div>
-                  </div>
                 </div>
               </a-tab-pane>
               <a-tab-pane key="4" tab="Ex vocacional">
@@ -318,6 +312,7 @@ import { FormOutlined, DeleteOutlined, CreditCardOutlined } from '@ant-design/ic
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import Vouchers from './components/voucher.vue'
+import Anterior from './components/anteriores.vue'
 import dayjs from 'dayjs';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -331,6 +326,8 @@ const postulantes = ref([])
 
 const anteriores = ref([]);
 const numerorandom = ref();
+
+const n_carrera = ref(0)
 
 const generateRandomNumber = () => {
  numerorandom.value = Math.floor(Math.random() * 100) + 1;
@@ -384,7 +381,8 @@ const ingresante = ref({
   proceso:"",
   puntaje:"",
   programa:"",
-  fecha:""
+  fecha:"",
+  puesto:""
 })
 
 const getIngresante =  async ( ) => {
@@ -402,11 +400,12 @@ const getIngresante =  async ( ) => {
   ingresante.value.proceso = res.data.datos.proceso
   ingresante.value.puntaje = res.data.datos.puntaje
   ingresante.value.programa = res.data.datos.programa
+  ingresante.value.puesto= res.data.datos.puesto
   if(res.data.datos.fecha){ ingresante.value.fecha = res.data.datos.fecha }
   getCarrerasPrevias()
 }
 
-const actualizar = async ( ) => { 
+const actualizar = async ( ) => {
   let res = await axios.post(
     "actualizar-ingresante",{
       id: ingresante.value.id,
@@ -420,7 +419,7 @@ const actualizar = async ( ) => {
   );
   notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
   getPostulantesByDni();
-} 
+}
 
 const getPostulantes =  async (term = "", page = 1) => {
   let res = await axios.post(
@@ -448,29 +447,23 @@ const getPostulantesByDni = async () => {
 }
 
 watch(dni, (newValue, oldValue ) => {
-  getPostulantes();
+  if(newValue.length >= 8){
+    getPostulantes();
+  } 
 })
 
 watch(dniseleccionado, (newValue, oldValue ) => {
     getPostulanteRequisitos();
-    getIngresante();
-    getCodigo()
+    if(newValue.length >= 8){
+      getIngresante();
+      getCarrerasPrevias()
+    }
 })
 
 const abrirVentana = async () => {
   let res = await axios.post("control-biometrico",
-  { dni: dniseleccionado.value, codigo: datosOTI.value.codigo, correo: datosOTI.value.correo });
+  { dni: dniseleccionado.value, n_carrera: n_carrera.value });
   imprimirPDF(res.data.datos);
-}
-
-const datosOTI = ref({
-  correo:"",
-  codigo:""
-});
-
-const getCodigo = async () => {
-  let res = await axios.get("get-codigo/"+ dniseleccionado.value);
-  datosOTI.value = res.data.datos;
 }
 
 const imprimirPDF =  (dnni) => {
@@ -483,21 +476,47 @@ const imprimirPDF =  (dnni) => {
 }
 
 const getCarrerasPrevias = async() => {
+  try {
+    if(ingresante.value.dni != null){
+      const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/',  {
+        doc_:ingresante.value.nro_doc,
+        nom_:ingresante.value.nombres,
+        app_:ingresante.value.primer_apellido,
+        apm_:ingresante.value.segundo_apellido
+      }, { headers: { 'Content-Type': 'application/json'}  });
+      anteriores.value = response.data;
+      if( anteriores.value[0]){
+        n_carrera.value = 1;
+      }
+    }
+    else{
+      const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/',  {
+        doc_: dniseleccionado.value,
+        nom_: "SDSFASD",
+        app_: "SDSFASD",
+        apm_: "SDSFASD"
+      }, { headers: { 'Content-Type': 'application/json'}  });
+      anteriores.value = response.data;
+      if( anteriores.value[0]){
+        n_carrera.value = 1;
+      }
+    }
 
-  try {    
-    const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/',  {
-      doc_:ingresante.value.nro_doc,
-      nom_:ingresante.value.nombres,
-      app_:ingresante.value.primer_apellido,
-      apm_:ingresante.value.segundo_apellido
-    }, { headers: { 'Content-Type': 'application/json'}  });
-
-    anteriores.value = response.data;
-    console.log("::",response.data);
   } catch (error) {
     console.error('Error:', error);
   }
 };
+
+
+// const getEstadoEstudiante = async() => {
+//   try {
+//     const response = await axios.get('https://service2.unap.edu.pe/DEBTS/?w='+anteriores,
+//     { headers: { 'Content-Type': 'application/json'}  });
+//     anteriores.value = response.data;
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
+// };
 
 // const getCarrerasPrevias = async ( ) => {
 //   try {
@@ -521,11 +540,7 @@ const getCarrerasPrevias = async() => {
 //   }
 // }
 
-
-
 getRequisitos()
-
-
 
 const notificacion = (type, titulo, mensaje) => {
   notification[type]({
@@ -538,10 +553,10 @@ const notificacion = (type, titulo, mensaje) => {
 
 <style scoped>
 .btn-actualizar{
-  background:#224464; 
-  color:white; 
-  width:100%; 
-  height: 38px; 
+  background:#224464;
+  color:white;
+  width:100%;
+  height: 38px;
   /* color:#1c1c8a;  */
   border-radius:5px;
   border:none;
@@ -549,10 +564,10 @@ const notificacion = (type, titulo, mensaje) => {
 .btn-actualizar:active{
   border:none;
   animation-duration: 1.5s;
-  background:#2e5c85c9; 
-  width:100%; 
-  height: 38px; 
-  color:white; 
+  background:#2e5c85c9;
+  width:100%;
+  height: 38px;
+  color:white;
   border-radius:5px;
 }
 </style>

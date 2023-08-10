@@ -55,7 +55,7 @@ class IngresoController extends Controller
         postulante.primer_apellido,
         postulante.segundo_apellido,
         postulante.tipo_doc,
-        postulante.sexo,
+        postulante.sexo, 
         postulante.fec_nacimiento,
         programa.nombre AS programa,
         procesos.nombre AS proceso,
@@ -117,8 +117,6 @@ class IngresoController extends Controller
 
             // return $re;
 
-
-
             try {
                 DB::transaction(function () use ($request, $re) {
 
@@ -126,14 +124,24 @@ class IngresoController extends Controller
                     $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
                     $nuevoCodigo = $rs[0]->siguiente;
  
-                    $biometric = ControlBiometrico::create([
-                        'id_proceso' => 4,
-                        'id_postulante' => $re[0]->id_postulante,
-                        'codigo_ingreso' => $nuevoCodigo,
-                        'estado' => 1,
-                        'correo_institucional' => '73759622@est.unap.edu.pe',
-                        'id_usuario' => auth()->id()
-                    ]);
+                    if($request->n_carrera == 1 ) {
+                        $biometric = ControlBiometrico::create([
+                            'id_proceso' => 4,
+                            'id_postulante' => $re[0]->id_postulante,
+                            'codigo_ingreso' => $nuevoCodigo,
+                            'estado' => 1,
+                            'id_usuario' => auth()->id()
+                        ]);
+                    }else {
+                        $biometric = ControlBiometrico::create([
+                            'id_proceso' => 4,
+                            'id_postulante' => $re[0]->id_postulante,
+                            'codigo_ingreso' => $nuevoCodigo,
+                            'estado' => 1,
+                            'correo_institucional' => $request->dni.'@est.unap.edu.pe',
+                            'id_usuario' => auth()->id()
+                        ]);
+                    }
 
                     $e_civil = 1;
                     if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
@@ -225,14 +233,15 @@ class IngresoController extends Controller
             postulante.segundo_apellido AS materno, postulante.nombres,
             tipo_documento_identidad.nombre,
             postulante.nro_doc AS dni,
+            postulante.fec_nacimiento AS fec_nacimiento,
             users.name, users.paterno as upaterno,
             modalidad.nombre as modalidad,
             resultados.fecha,
             resultados.puntaje,
             resultados.puesto,
             resultados.puesto_general,
-            control_biometrico.correo_institucional as correo, 
             control_biometrico.codigo_ingreso AS cod_ingreso,
+            control_biometrico.segunda_carrera AS segunda_carrera,
             programa.nombre AS programa
             FROM resultados
             LEFT JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
@@ -265,7 +274,10 @@ class IngresoController extends Controller
         //$fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
         $fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
-        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD','hbioI','hbioD','fins','fbio','date', 'fimp'));
+        $fec_nac = $datos[0]->fec_nacimiento;
+        $fnac = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_nac)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+
+        $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD','hbioI','hbioD','fins','fbio','date', 'fimp','fnac'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 

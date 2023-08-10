@@ -242,7 +242,6 @@
           vouchers
       </div>
     </template>
-    {{ vouchers }}
     <a-table :dataSource="vouchers" :columns="colVouchers"> 
       <template #bodyCell="{ column, index, record }">
         <template v-if="column.dataIndex === 'codigo'">
@@ -350,8 +349,6 @@
         <!-- <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/inscripcion-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe> -->
       </div>
     </a-tab-pane>
-
-
 </a-tabs>
 
 
@@ -423,8 +420,6 @@ const getPostulantes =  async (term = "", page = 1) => {
   postulantes.value = res.data.datos.data;
 }
 
-
-
 const postcepre = ref(null)
 const getDatosCepre = async () => {
   let res = await axios.get('https://sistemas.cepreuna.edu.pe/api/v1/'+dniseleccionado.value, {
@@ -491,12 +486,9 @@ const getApoderados =  async () => {
 
 const getVouchers = async() => {
   try {    
-    const response = await axios.get('http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w='+ dniseleccionado.value,
-    { headers: { 'Content-Type': 'application/json'} });
-    vouchers.value = response.data;
-  } catch (error) {
-    console.error('Error:', error);
-  }
+    const response = await axios.get('api-pagos/'+ dniseleccionado.value);
+    vouchers.value = response.data.data;
+  } catch (error) { console.error('Error:', error); }
 };
 
 const getDocumentos =  async () => {
@@ -663,9 +655,6 @@ const colPreinscripciones =  [
   { title: 'Estado', dataIndex: 'estado', key: 'estado', },
   { title: 'Ver', dataIndex: 'acciones', },
 ]
-
-
-
 
 getPostulantes()
 </script>
