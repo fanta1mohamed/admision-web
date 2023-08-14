@@ -248,7 +248,7 @@ class IngresoController extends Controller
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-            WHERE resultados.apto = 'SI'
+            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
             AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 5"
         );
 
