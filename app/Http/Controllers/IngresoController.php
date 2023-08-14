@@ -115,7 +115,7 @@ class IngresoController extends Controller
             LEFT join users on users.id = inscripciones.id_usuario
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-            WHERE resultados.apto = 'SI'
+            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
             AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = 5;");
 
             try {
