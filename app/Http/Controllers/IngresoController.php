@@ -270,7 +270,7 @@ class IngresoController extends Controller
         //$fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
         $fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
-        $fec_nac = $datos[0]->fec_nacimientweow;
+        $fec_nac = $datos[0]->fec_nacimiento;
         $fnac = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_nac)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
         $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data','hinsI','hinsD','hexaI','hexaD','hbioI','hbioD','fins','fbio','date', 'fimp','fnac'));
