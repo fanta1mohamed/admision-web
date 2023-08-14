@@ -217,15 +217,12 @@
                     </div>
 
                     <a-card class="mb-3" style="margin-bottom: 10px;">
-                      <a-row v-if="!anteriores[0]" :gutter="16">
 
-                      </a-row>
-
-                      <a-row v-else :gutter="16">
+                      <a-row :gutter="16">
                         <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                           <a-form-item>
                             <div style="text-align:center;">
-                              <label>INDICAR QUE USE EL CORREO INSTITUCIONAL DE SU ANTERIOR INGRESO</label>
+                              <!-- <label>INDICAR QUE USE EL CORREO INSTITUCIONAL DE SU ANTERIOR INGRESO</label> -->
                             </div>
                           </a-form-item>
                         </a-col>
