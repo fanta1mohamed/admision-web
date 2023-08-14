@@ -198,6 +198,7 @@
             @else
                 Correo institucional: <span style="font-weight: bold"> {{$data->dni}}@est.unap.edu.pe </span><br> 
                 Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}} </span>
+                Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @endif
         </p>
 
