@@ -91,7 +91,7 @@
                     <td rowspan="2" colspan="1">
                         <div style="width: 69px; height:90px; border: solid 1px black;  margin-right:4px;">
                             @if (!empty($hinsD) && file_exists($hinsD))
-                                <img src="{{ $hinsI }}" alt="Mi imagen" width="69">
+                                <img src="{{ $hinsD }}" alt="Mi imagen" width="69">
                             @else
                                 <div style="margin-top:35px; text-align:center; font-size:.7rem;">
                                     Sin huella
@@ -117,7 +117,7 @@
                             <div style="margin-top: -10px; heigth:10px; padding: 0px 0px;">
                                 <div style="background: #d9d9d900; text-align:center; " >
                                     <div style="">
-                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. ID</div>
+                                        <div style="font-size: .5rem; background: #d9d9d977; padding; 0px 5px; font-weight:bold; color:red;">Huella Ins. II</div>
                                     </div>
                                 </div>
                             </div>
