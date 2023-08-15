@@ -454,7 +454,7 @@ const imprimirPDF =  (dnni) => {
 
 const getCarrerasPrevias = async() => {
   anteriores.value = []
-  anteriores.value = 0
+  n_carrera.value = 0
 
   try {
     if(ingresante.value.dni != null){
