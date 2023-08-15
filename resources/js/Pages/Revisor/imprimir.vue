@@ -373,6 +373,8 @@ const ingresante = ref({
 })
 
 const getIngresante =  async ( ) => {
+  ingresante.value = null
+  anteriores.value = null
   let res = await axios.get(
       "get-ingresante-general/"+dni.value
   );
@@ -451,6 +453,10 @@ watch(dniseleccionado, (newValue, oldValue ) => {
 const abrirVentana = async () => {
   let res = await axios.post("control-biometrico",
   { dni: dniseleccionado.value, n_carrera: n_carrera.value });
+
+  dniseleccionado.value = null,
+  anteriores.value = [],
+  n_carrera.value = 0,
   imprimirPDF(res.data.datos);
 }
 
@@ -464,6 +470,7 @@ const imprimirPDF =  (dnni) => {
 }
 
 const getCarrerasPrevias = async() => {
+  anteriores.value = null;
   try {
     if(ingresante.value.dni != null){
       const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/',  {
