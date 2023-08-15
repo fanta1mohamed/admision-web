@@ -391,6 +391,8 @@ const getIngresante =  async ( ) => {
   ingresante.value.programa = res.data.datos.programa
   ingresante.value.puesto= res.data.datos.puesto
   if(res.data.datos.fecha){ ingresante.value.fecha = res.data.datos.fecha }
+  anteriores.value = []
+  n_carrera.value = 0
   getCarrerasPrevias()
 }
 
@@ -416,14 +418,6 @@ const getPostulantes =  async (term = "", page = 1) => {
       { term: dni.value }
   );
   postulantes.value = res.data.datos.data;
-}
-
-const getPostulanteRequisitos = async () => {
-  checkedList.value = [];
-  let res = await axios.post("get-postulante-requisitos",{ dni: dniseleccionado.value });
-  if(res.data.estado === true ){
-    checkedList.value = JSON.parse(res.data.datos.requisitos);
-  }
 }
 
 //getPostulanteRequisitos()
@@ -463,8 +457,6 @@ const imprimirPDF =  (dnni) => {
 }
 
 const getCarrerasPrevias = async() => {
-  anteriores.value = null
-  n_carrera.value = 0
   try {
     if(ingresante.value.dni != null){
       const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/',  {
