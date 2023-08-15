@@ -373,8 +373,6 @@ const ingresante = ref({
 })
 
 const getIngresante =  async ( ) => {
-  anteriores.value = []
-  n_carrera.value = 0
 
   let res = await axios.get(
       "get-ingresante-general/"+dni.value
@@ -446,7 +444,6 @@ watch(dni, (newValue, oldValue ) => {
 watch(dniseleccionado, (newValue, oldValue ) => {
     if(newValue.length >= 8){
       getIngresante();
-      getCarrerasPrevias()
     }
 })
 
@@ -466,6 +463,8 @@ const imprimirPDF =  (dnni) => {
 }
 
 const getCarrerasPrevias = async() => {
+  anteriores.value = null
+  n_carrera.value = 0
   try {
     if(ingresante.value.dni != null){
       const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/',  {
