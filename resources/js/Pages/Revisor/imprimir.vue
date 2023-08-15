@@ -441,8 +441,10 @@ watch(dni, (newValue, oldValue ) => {
 })
 
 watch(dniseleccionado, (newValue, oldValue ) => {
-    getPostulanteRequisitos();
     if(newValue.length >= 8){
+      dniseleccionado.value = null
+      anteriores.value = []
+      n_carrera.value = 0
       getIngresante();
       getCarrerasPrevias()
     }
@@ -468,9 +470,6 @@ const imprimirPDF =  (dnni) => {
 }
 
 const getCarrerasPrevias = async() => {
-  dniseleccionado.value = null
-  anteriores.value = []
-  n_carrera.value = 0
   try {
     if(ingresante.value.dni != null){
       const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/',  {
