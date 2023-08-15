@@ -373,6 +373,9 @@ const ingresante = ref({
 })
 
 const getIngresante =  async ( ) => {
+  anteriores.value = []
+  n_carrera.value = 0
+
   let res = await axios.get(
       "get-ingresante-general/"+dni.value
   );
@@ -442,9 +445,6 @@ watch(dni, (newValue, oldValue ) => {
 
 watch(dniseleccionado, (newValue, oldValue ) => {
     if(newValue.length >= 8){
-      dniseleccionado.value = null
-      anteriores.value = []
-      n_carrera.value = 0
       getIngresante();
       getCarrerasPrevias()
     }
@@ -453,10 +453,6 @@ watch(dniseleccionado, (newValue, oldValue ) => {
 const abrirVentana = async () => {
   let res = await axios.post("control-biometrico",
   { dni: dniseleccionado.value, n_carrera: n_carrera.value });
-
-  dniseleccionado.value = null,
-  anteriores.value = [],
-  n_carrera.value = 0,
   imprimirPDF(res.data.datos);
 }
 
