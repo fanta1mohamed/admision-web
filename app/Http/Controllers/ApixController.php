@@ -47,6 +47,7 @@ class ApixController extends Controller {
             //->where('procesos.id', '=',$proceso)
             ->where('procesos.anio', '=',$anio)
             ->where('procesos.ciclo', '=',$ciclo)
+            ->where('inscripciones.estado','=',0)
             ->where('postulante.nro_doc','=',$dni)->first();
 
             if ($res ){
