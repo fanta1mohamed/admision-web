@@ -255,12 +255,17 @@ class IngresoController extends Controller
         $data = $datos[0];
         $hinsI = public_path('fotos/huella/').$dni.'x.jpg';
         $hinsD = public_path('fotos/huella/').$dni.'.jpg';
-        $hexaI = public_path('hexamengeneral/').$dni.'.jpg';
-        $hexaD = public_path('hexamengeneral/').$dni.'x.jpg';
-        $hbioI = public_path('hbiometricogeneral/').$dni.'.jpg';
-        $hbioD = public_path('hbiometricogeneral/').$dni.'x.jpg';
+        $hexaI = public_path('hexamencepre/').$dni.'.jpg';
+        $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
+        // $hexaI = public_path('hexamengeneral/').$dni.'.jpg';
+        // $hexaD = public_path('hexamengeneral/').$dni.'x.jpg';
+        $hbioI = public_path('hbiometricocepre/').$dni.'.jpg';
+        $hbioD = public_path('hbiometricocepre/').$dni.'x.jpg';
+        // $hbioI = public_path('hbiometricogeneral/').$dni.'.jpg';
+        // $hbioD = public_path('hbiometricogeneral/').$dni.'x.jpg';
         $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
-        $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
+        $fbio = public_path('fotos/biometrico/').$dni.'.jpg';
+        // $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');
         $fecha = $data->fecha;
