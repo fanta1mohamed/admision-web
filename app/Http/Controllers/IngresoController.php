@@ -332,7 +332,6 @@ class IngresoController extends Controller
 
         // return $estudiante;
 
-
         $user = 'dga2023'; // Reemplaza con el nombre de usuario que deseas verificar
         $host = '10.1.1.134'; // Reemplaza con el host desde el que se conecta el usuario
 
@@ -346,8 +345,6 @@ class IngresoController extends Controller
         }
                 
     }
-
-
 
 
 }
