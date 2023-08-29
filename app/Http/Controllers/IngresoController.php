@@ -252,23 +252,23 @@ class IngresoController extends Controller
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
-            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 5"
+            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 4"
         );
 
         $data = $datos[0];
-        $hinsI = public_path('fotos/huella/').$dni.'x.jpg';
-        $hinsD = public_path('fotos/huella/').$dni.'.jpg';
-        // $hexaI = public_path('hexamencepre/').$dni.'.jpg';
-        // $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
-        $hexaI = public_path('hexamengeneral/').$dni.'.jpg';
-        $hexaD = public_path('hexamengeneral/').$dni.'x.jpg';
-        // $hbioI = public_path('hbiometricocepre/').$dni.'.jpg';
-        // $hbioD = public_path('hbiometricocepre/').$dni.'x.jpg';
-        $hbioI = public_path('hbiometricogeneral/').$dni.'.jpg';
-        $hbioD = public_path('hbiometricogeneral/').$dni.'x.jpg';
+        // $hinsI = public_path('fotos/huella/').$dni.'x.jpg';
+        // $hinsD = public_path('fotos/huella/').$dni.'.jpg';
+        $hexaI = public_path('hexamencepre/').$dni.'.jpg';
+        $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
+        // $hexaI = public_path('hexamengeneral/').$dni.'.jpg';
+        // $hexaD = public_path('hexamengeneral/').$dni.'x.jpg';
+        $hbioI = public_path('hbiometricocepre/').$dni.'.jpg';
+        $hbioD = public_path('hbiometricocepre/').$dni.'x.jpg';
+        // $hbioI = public_path('hbiometricogeneral/').$dni.'.jpg';
+        // $hbioD = public_path('hbiometricogeneral/').$dni.'x.jpg';
         $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
-        // $fbio = public_path('fotos/biometrico/').$dni.'.jpg';
-        $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
+        $fbio = public_path('fotos/biometrico/').$dni.'.jpg';
+        // $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');
         $fecha = $data->fecha;
@@ -329,36 +329,51 @@ class IngresoController extends Controller
 
     public function getEstudianteOTI(){
 
-        $ingresantes = [
-            '70757838','74956220','75007479','71104032','77246024','78289140','75141964',
+        $ingresantes = 
+        ['75148837','73818926','75257148','76582589','75449951','62271229','74210522','72430115','74984922','76646804',
+        '72816673','60836477','75937257','74527219','71439193','75784783','73385652','77818316','75654456','74237991',
+        '75670999','70094794','77030707','77130071','73576735','70760840','74695063','73648584','75498340','75690091',
+        '76619018','73811240','74938634','74057031','76797370','76316812','71892811','74410191','71442782','74868267',
+        '74396959','73811586','71505574','71955896','71938666','74057961','46925867','73380990','73818929','73749385',
+        '71868361','73764067','73953518','73532565','73809219','74704631','75090568','73747948','75793924','72542571',
+        '74575054','74601033','60422495','72011705','71868472','60443077','76651131','73113874','74568475','75997933',
+        '77215512','75554389','75828188','73525046','73318957','75486134','73523846','74695346','72220072','75317017',
+        '73266575','75055641','75773845','60174501','42951068','71476905','71534521','81274424','60417080','75573642',
+        '71449272','60758689','76776151','73333888','76650758','77473209','73525048','74120280','72169334','74624479',
+        '76766782','75981167','75787096','74808838','76970313','74822823','73385750','75842724','70439234','73647476',
+        '73821195','77073195'
         ];
         
         foreach ($ingresantes as $dni) {
-            $this->obtenerDatosEstudiante($dni);
-        }
-    }
 
-
-    public function obtenerDatosEstudiante($dni)
-    {
-        $response = Http::get("https://service2.unap.edu.pe/TieneCarrerasPrevias/$dni");
-
-        $data = $response->json();
-
-        // Guardar los datos en la tabla
-        foreach ($data as $estudiante) {
-            RegistroEstudiante::create([
-                'nombre' => $estudiante['name'],
-                'codigo' => $estudiante['code'],
-                'ciclo' => $estudiante['cycle'],
-                'id_programa' => $estudiante['careerId'],
-                'programa' => $estudiante['career'],
-                'ultimo_ciclo' => $estudiante['lastCycle'],
-                'condicion' => $estudiante['condition'],
+            $response = Http::post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', [
+                'doc_' => $dni,
+                'nom_' => 'sdfasdf',
+                'app_' => 'ssdfasd',
+                'apm_' => 'sdfs'
+            ], [
+                'headers' => ['Content-Type' => 'application/json']
             ]);
+    
+            $data = $response->json();
+
+#            return $data;
+            foreach ($data as $estudiante) {
+                RegistroEstudiante::create([
+                    'dni' => $dni,
+                    'nombre' => $estudiante['name'],
+                    'codigo' => $estudiante['code'],
+                    'ciclo' => $estudiante['cycle'],
+                    'id_programa' => $estudiante['careerId'],
+                    'programa' => $estudiante['career'],
+                    'ultimo_ciclo' => $estudiante['lastCycle'],
+                    'condicion' => $estudiante['cond1tion'],
+                ]);
+            }
         }
 
-        return "Datos guardados exitosamente.";
+
+
     }
 
 

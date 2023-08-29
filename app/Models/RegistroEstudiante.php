@@ -11,6 +11,7 @@ class RegistroEstudiante extends Model
     protected $table = 'cb_2023_1';
 
     protected $fillable = [
+        'dni',
         'nombre',
         'codigo',
         'ciclo',
