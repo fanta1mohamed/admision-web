@@ -12,11 +12,14 @@ use App\Models\AvancePostulante;
 use App\Models\Paso;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Models\RegistroEstudiante;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\File;
 use setasign\Fpdi\Fpdi;
+use Illuminate\Support\Facades\Http;
+
 
 class IngresoController extends Controller
 {
