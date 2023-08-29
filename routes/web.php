@@ -322,7 +322,7 @@ Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
 Route::get('/constancias-ingreso', [IngresoController::class, 'constanciasIngreso']);
 
 
-Route::get('/get-e-oti/{dni}', [IngresoController::class, 'getEstudianteOTI']);
+Route::get('/get-e-oti', [IngresoController::class, 'getEstudianteOTI']);
 
 require __DIR__.'/auth.php';
 

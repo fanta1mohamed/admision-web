@@ -324,24 +324,38 @@ class IngresoController extends Controller
     }
 
 
-    public function getEstudianteOTI($dni){
-        // $estudiante = Estudiante::on('mysql_secondary')
-        // ->select('*')
-        // ->where('num_doc', $dni)
-        // ->first();
+    public function getEstudianteOTI(){
 
-        // return $estudiante;
-
-        $user = 'dga2023'; // Reemplaza con el nombre de usuario que deseas verificar
-        $host = '10.1.1.134'; // Reemplaza con el host desde el que se conecta el usuario
-
-        $query = "SHOW GRANTS FOR '$user'@'$host'";
-        $grants = DB::connection()->select($query);
+        $ingresantes = [
+            '70757838','74956220','75007479','71104032','77246024','78289140','75141964',
+        ];
         
-        foreach ($grants as $grant) {
-            echo $grant->Grants_for_user . "\n";
+        foreach ($ingresantes as $dni) {
+            $this->obtenerDatosEstudiante($dni);
         }
-                
+    }
+
+
+    public function obtenerDatosEstudiante($dni)
+    {
+        $response = Http::get("https://service2.unap.edu.pe/TieneCarrerasPrevias/$dni");
+
+        $data = $response->json();
+
+        // Guardar los datos en la tabla
+        foreach ($data as $estudiante) {
+            RegistroEstudiante::create([
+                'nombre' => $estudiante['name'],
+                'codigo' => $estudiante['code'],
+                'ciclo' => $estudiante['cycle'],
+                'id_programa' => $estudiante['careerId'],
+                'programa' => $estudiante['career'],
+                'ultimo_ciclo' => $estudiante['lastCycle'],
+                'condicion' => $estudiante['condition'],
+            ]);
+        }
+
+        return "Datos guardados exitosamente.";
     }
 
 
