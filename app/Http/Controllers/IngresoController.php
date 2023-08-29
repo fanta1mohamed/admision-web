@@ -338,7 +338,7 @@ class IngresoController extends Controller
         $query = "SHOW GRANTS FOR '$user'@'$host'";
         $expression = DB::raw($query);
         
-        $grants = DB::select(DB::raw($expression->toSql()));
+        $grants = DB::select(DB::raw($expression), $expression->getBindings());
         
         foreach ($grants as $grant) {
             echo $grant->Grants_for_user . "\n";
