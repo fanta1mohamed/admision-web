@@ -325,12 +325,23 @@ class IngresoController extends Controller
 
 
     public function getEstudianteOTI($dni){
-        $estudiante = Estudiante::on('mysql_secondary')
-        ->select('*')
-        ->where('num_doc', $dni)
-        ->first();
+        // $estudiante = Estudiante::on('mysql_secondary')
+        // ->select('*')
+        // ->where('num_doc', $dni)
+        // ->first();
 
-        return $estudiante;
+        // return $estudiante;
+
+
+        $user = 'dga2023'; // Reemplaza con el nombre de usuario que deseas verificar
+        $host = '10.1.1.134'; // Reemplaza con el host desde el que se conecta el usuario
+
+        $query = "SHOW GRANTS FOR '$user'@'$host'";
+        $grants = DB::select(DB::raw($query));
+
+        foreach ($grants as $grant) {
+            echo $grant->Grants_for_user . "\n";
+        }
     }
 
 
