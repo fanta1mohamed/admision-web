@@ -337,11 +337,14 @@ class IngresoController extends Controller
         $host = '10.1.1.134'; // Reemplaza con el host desde el que se conecta el usuario
 
         $query = "SHOW GRANTS FOR '$user'@'$host'";
-        $grants = DB::select(DB::raw($query));
-
+        $expression = DB::raw($query);
+        
+        $grants = DB::select(DB::raw($expression->toSql()));
+        
         foreach ($grants as $grant) {
             echo $grant->Grants_for_user . "\n";
         }
+                
     }
 
 
