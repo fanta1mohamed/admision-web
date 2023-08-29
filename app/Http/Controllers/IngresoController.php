@@ -324,6 +324,16 @@ class IngresoController extends Controller
     }
 
 
+    public function getEstudianteOTI($dni){
+        $estudiante = Estudiante::on('mysql_secondary')
+        ->select('*')
+        ->where('num_doc', $dni)
+        ->first();
+
+        return $estudiante;
+    }
+
+
 
 
 }

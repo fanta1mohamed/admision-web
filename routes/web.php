@@ -26,6 +26,7 @@ use App\Http\Controllers\DetalleExamenVocacionalController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\FotoController;
+use App\Http\Controllers\DashboardController;
 
 
 Route::middleware('auth')->get('/', function () {
@@ -52,6 +53,11 @@ Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.up
 Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     Route::get('dashboard', fn () => Inertia::render('Dashboard'))->name('admin-dashboard');
+    Route::get('get-preinscritos', [DashboardController::class, 'preinscritos']);
+    Route::get('get-inscritos', [DashboardController::class, 'inscritos']);
+    Route::get('get-mejores-inscriptores', [DashboardController::class, 'mInscriptores']);
+    Route::post('get-mejores-inscriptores-dia', [DashboardController::class, 'mInscriptoresDia']);
+
     Route::resource('roles',RolController::class);
     Route::get('roles', fn () => Inertia::render('Roles/index'))->name('roles-index');
     Route::resource('usuarios',UsuarioController::class);
@@ -314,6 +320,9 @@ Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);
 Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
 Route::get('/constancias-ingreso', [IngresoController::class, 'constanciasIngreso']);
+
+
+Route::get('/get-e-oti/{dni}', [IngresoController::class, 'getEstudianteOTI']);
 
 require __DIR__.'/auth.php';
 
