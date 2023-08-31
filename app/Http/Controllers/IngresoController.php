@@ -256,8 +256,8 @@ class IngresoController extends Controller
         );
 
         $data = $datos[0];
-        // $hinsI = public_path('fotos/huella/').$dni.'x.jpg';
-        // $hinsD = public_path('fotos/huella/').$dni.'.jpg';
+        $hinsI = public_path('fotos/huella/').$dni.'x.jpg';
+        $hinsD = public_path('fotos/huella/').$dni.'.jpg';
         $hexaI = public_path('hexamencepre/').$dni.'.jpg';
         $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
         // $hexaI = public_path('hexamengeneral/').$dni.'.jpg';
