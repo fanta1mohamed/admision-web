@@ -20,13 +20,15 @@
           <span>Administración</span>
         </div>
         
-        <a-menu-item key="1" style="background: #ff000000;">
-          <div style="display: flex; align-items: center;">
-            <appstore-filled style=""/>
-            <div style="margin-left: 10px;"><span>Dashboard</span></div>  
-          </div>
-
-        </a-menu-item>
+        <!-- <a-menu-item key="1" style="background: #ff000000;"></a-menu-item> -->
+        <a-menu-item class="" style="margin-left: -10px; width: 265px; background:#476175; margin-top: -10px;">
+            <nav-link :href="route('admin-dashboard')" :active="route().current('admin-dashboard')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <AppstoreOutlined />
+                <span>Dashboard</span>
+              </div>
+            </nav-link>
+          </a-menu-item>
 
         <a-sub-menu key="sub1">
           <template #title>
@@ -171,9 +173,6 @@
           </a-menu-item>
 
         </a-sub-menu>
-
-
-
 
           <hr style="border-top: 1px solid #FFFFFF23;">
           <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">

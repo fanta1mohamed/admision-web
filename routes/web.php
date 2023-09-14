@@ -26,6 +26,7 @@ use App\Http\Controllers\DetalleExamenVocacionalController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\FotoController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\DashboardController;
 
 
@@ -52,7 +53,9 @@ Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.up
 
 Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
-    Route::get('dashboard', fn () => Inertia::render('Dashboard'))->name('admin-dashboard');
+
+    Route::get('/', fn () => Inertia::render('Admin/Dashboard/Index'));
+    Route::get('dashboard', fn () => Inertia::render('Admin/Dashboard/Index'))->name('admin-dashboard');
     Route::get('get-preinscritos', [DashboardController::class, 'preinscritos']);
     Route::get('get-inscritos', [DashboardController::class, 'inscritos']);
     Route::get('get-mejores-inscriptores', [DashboardController::class, 'mInscriptores']);
@@ -172,6 +175,25 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/save-postulante-admin', [PostulanteController::class, 'savePostulanteAdmin']);
     // Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
     // Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);    
+
+
+    
+
+    Route::get('/component', fn () => Inertia::render('Admin/Dashboard/components/reportes'));
+
+    //REPORTES VARIOS 
+    Route::get('get-inscritos-genero-reporte', [DashboardController::class, 'reporteInscritosGenero']);
+    Route::get('get-inscritos-edad-reporte', [DashboardController::class, 'reporteInscritosEdad']);
+    Route::get('get-inscritos-residencia-reporte', [DashboardController::class, 'reporteInscritosResidencia']);
+    Route::get('get-inscritos-procedencia-reporte', [DashboardController::class, 'reporteInscritosProcedencia']);
+    Route::get('get-inscritos-egreso-reporte', [DashboardController::class, 'reporteInscritosEgreso']);
+    Route::get('get-inscritos-discapacidad-reporte', [DashboardController::class, 'reporteInscritosDiscapacidad']);
+    Route::get('get-inscritos-tipo-documento-reporte', [DashboardController::class, 'reporteInscritosTipoDocumento']);
+    Route::get('get-inscritos-colegio-reporte', [DashboardController::class, 'reporteInscritosColegio']);
+    Route::get('get-inscritos-procedencia-colegio-reporte', [DashboardController::class, 'reporteInscritosProcedenciaColegio']);
+    Route::get('get-inscritos-tipo-colegio-reporte', [DashboardController::class, 'reporteInscritosTipoColegio']);
+
+
 });
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
@@ -322,7 +344,58 @@ Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
 Route::get('/constancias-ingreso', [IngresoController::class, 'constanciasIngreso']);
 
 
+Route::get('/pago-banco-nacion',[PagoController::class,'getPagosBancoNacion']);
+Route::get('/get-pagos',[PagoController::class,'getPagos']);
+Route::get('/get-pagos-caja',[PagoController::class,'getPagosCaja']);
+
+
 Route::get('/get-e-oti', [IngresoController::class, 'getEstudianteOTI']);
+
+
+Route::get('/get-biometricos-extraordinarios', function () {
+    $documentos = [
+        '60836477','73749385','76766782','75148837','76619018','74410191','71938666','74210522','76650758','74057961','73647476','76316812','60174501','75773845','75828188','74695346','71476905','72220072',
+        '73318957','71868361','73809219','73385750','74695063','74984922','73953518','73821195','77030707','76651131','62271229','73266575','77073195','73380990','75793924','42951068','73113874','73811240',
+        '71955896','75784783','73532565','75486134','76776151','77130071','73333888','71892811','71442782','76646804','76582589','75842724','73648584','73818926','74237991','76797370','75670999','71439193',
+        '46925867','75257148','74868267','74057031','75997933','77818316','60443077','71505574','74601033','74938634','75498340','75690091','73523846','75090568','74527219','75937257','73525046','71534521',
+        '74624479','75449951','74568475','75573642','72169334','75317017','76970313','73764067','60422495','70760840','73811586','74575054','73747948','75981167','74704631','74822823','71449272','70439234',
+        '77473209','70094794','71868472','72430115','72542571','72816673','73576735','74396959','72011705','75554389','75787096','81274424','77215512','75055641','73818929','74120280','73385652','73525048',
+        '75654456','60417080','74808838','60758689',
+    ];
+
+    foreach ($documentos as $documento) {
+        $requestBody = [
+            'doc_' => $documento,
+            'nom_' => 'NAYE',
+            'app_' => 'AEDO',
+            'apm_' => '',
+        ];
+        $response = Http::post('https://service2.unap.edu.pe/TieneCarrerasPrevias/' . $documento, $requestBody);
+        $responseData = $response->json();
+
+        if ($response != null && !empty($response->json())) {
+            $responseData = $response->json();
+
+            // Supongamos que deseas guardar la respuesta en una tabla ficticia en la base de datos
+            DB::table('biometricos')->insert([
+                'dni' => $documento,
+                'name' => $responseData[0]['name'],
+                'code' => $responseData[0]['code'],
+                'career' => $responseData[0]['career'],
+                'cond1tion' => $responseData[0]['cond1tion'],
+            ]);
+        }
+
+    }
+
+    return 'Solicitudes POST enviadas y respuestas guardadas en la base de datos ficticia.';
+});
+
+
+
+
+
+
 
 require __DIR__.'/auth.php';
 

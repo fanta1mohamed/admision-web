@@ -94,4 +94,218 @@ class DashboardController extends Controller
   }
 
 
+  //Reportes varios
+
+  public function reporteInscritosGenero(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->selectRaw('COUNT(*) AS cant, postulante.sexo')
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('postulante.sexo')
+    ->orderByDesc('cant')
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+
+  public function reporteInscritosEdad(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->select(
+        DB::raw('COUNT(*) AS cantidad'),
+        DB::raw('TIMESTAMPDIFF(YEAR, postulante.fec_nacimiento, CURDATE()) AS edad')
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('edad')
+    ->orderByDesc('cantidad','edad')
+    ->limit(7)
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+
+  public function reporteInscritosResidencia(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->join('ubigeo', 'postulante.ubigeo_residencia', '=', 'ubigeo.ubigeo')
+    ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
+    ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
+    ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'departamento.nombre AS dep',
+        'provincia.nombre AS prov',
+        'distritos.nombre AS dist'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('dep', 'prov', 'dist')
+    #->orderByDesc('cant')
+    ->orderByDesc('cant')
+     ->limit(6)
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+
+  public function reporteInscritosProcedencia(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->join('ubigeo', 'postulante.ubigeo_nacimiento', '=', 'ubigeo.ubigeo')
+    ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
+    ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
+    ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'departamento.nombre AS dep',
+        'provincia.nombre AS prov',
+        'distritos.nombre AS dist'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('dep', 'prov', 'dist')
+    ->orderByDesc('cant')
+    ->limit(8)
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+  public function reporteInscritosEgreso(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'postulante.anio_egreso AS egreso'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('egreso')
+    ->orderByDesc('cant')
+    ->limit(7)
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+  public function reporteInscritosDiscapacidad(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'postulante.discapacidad AS discapacidad'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('discapacidad')
+    ->orderByDesc('cant')
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+  public function reporteInscritosTipoDocumento(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->join('tipo_documento_identidad', 'postulante.tipo_doc', '=', 'tipo_documento_identidad.id')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'tipo_documento_identidad.nombre AS tipo_doc'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('tipo_documento_identidad.nombre')
+    ->orderByDesc('cant')
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+  public function reporteInscritosColegio(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->join('colegios', 'colegios.id', '=', 'postulante.id_colegio')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'colegios.nombre AS cole',
+        'colegios.cod_modular'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('colegios.cod_modular', 'colegios.nombre')
+    ->orderByDesc('cant')
+    ->Limit(7)
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+  public function reporteInscritosProcedenciaColegio(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->join('colegios', 'colegios.id', '=', 'postulante.id_colegio')
+    ->join('ubigeo', 'colegios.ubigeo', '=', 'ubigeo.ubigeo')
+    ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
+    ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
+    ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'departamento.nombre AS dep',
+        'provincia.nombre AS prov',
+        'distritos.nombre AS dist'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('dep', 'prov', 'dist')
+    ->orderByDesc('cant')
+    ->Limit(7)
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+  public function reporteInscritosTipoColegio(Request $request){
+    
+    $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+    ->join('colegios', 'colegios.id', '=', 'postulante.id_colegio')
+    ->select(
+        DB::raw('COUNT(*) AS cant'),
+        'colegios.gestion AS tipo_colegio'
+    )
+    ->where('inscripciones.estado', '=', 0)
+    ->where('inscripciones.id_proceso', '=', 5)
+    ->groupBy('colegios.gestion')
+    ->orderByDesc('cant')
+    ->get();
+
+    $this->response['datos'] = $resultados;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+  }
+
+
+
 }
