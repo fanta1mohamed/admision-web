@@ -194,6 +194,10 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('get-inscritos-tipo-colegio-reporte', [DashboardController::class, 'reporteInscritosTipoColegio']);
 
 
+    //POSTULANTE
+    Route::get('/perfil-postulante', fn () => Inertia::render('Admin/Postulante/Perfil'));
+
+
 });
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
