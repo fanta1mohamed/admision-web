@@ -34,7 +34,7 @@
       <a-col :xs="24" :sm="12" :md="6" :lg="6">        
         <div class="p-4" style="background: white; border-radius: 12px;">
           <div class="flex justify-between">
-            <div><span style="font-weight: bold;">Preinscritos</span></div>
+            <div><span style="font-weight: bold;">Inscritos</span></div>
             <div class="p-1 pl-2 pr-2" style="background: #6db6e753; border-radius: 50%;">
               <div style="margin-top: -5px;">
                 <span style="color: var(--primary-color); font-size: 1.15em;"><team-outlined /></span>
@@ -42,16 +42,15 @@
             </div>
           </div>
           <div style="margin-top: 50px;">
-            <div v-if="preinscritos"> 
+            <div> 
               <span style="font-size: 1.5rem; font-weight: bold;">
-                {{ preinscritos }}
+                {{ inscritos }}
               </span>
             </div>
           </div>
           <div class="flex justify-start">
-            <div>
-              <span style="color: #00af00; font-weight:bold; "> {{ ultimopreinscrito.count }} preinscritos <span style="color: gray;">el {{ ultimopreinscrito.date }}</span> </span>
-              <!-- <span style="color: #00af00;"> preinscritos  {{ (ultimopreinscrito.count / preinscritos ).toFixed(2) }}% <span style="color: gray;">el {{ ultimopreinscrito.date }}</span> </span> -->
+            <div> 
+              <span style="color: #00af00; font-weight:bold; "> {{ ultimoinscrito.count }} inscritos <span style="color: gray;">el {{ ultimoinscrito.date }}</span> </span>
             </div>
           </div>
 
@@ -165,7 +164,7 @@
 
                 </div>
                   <div class="ml-2">
-                    <div style="margin-top: 2px;"><span style="font-weight: bold;">{{ inscriptor.name }} {{ inscriptor.paterno }}</span></div>
+                    <div style="margin-top: 2px;"><span style="font-size:0.9rem; font-weight: bold;">{{ inscriptor.name }} {{ inscriptor.paterno }}</span></div>
                     <div style="margin-top: -7px;"><span style="color: gray; font-size: .8rem;">{{ inscriptor.cant }} Inscritos</span></div>
                   </div>
                 </div>
@@ -196,8 +195,8 @@
 
                   </div>
                   <div class="ml-2">
-                    <div style="margin-top: 2px;"><span style="font-weight: bold;">{{ inscriptor.name }} {{ inscriptor.paterno }}</span></div>
-                    <div style="margin-top: -7px;"><span style="color: gray; font-size: .8rem;">{{ inscriptor.cant }} Inscritos</span></div>
+                    <div style="margin-top: 2px;"><span style=" font-size: .9rem; font-weight: bold;">{{ inscriptor.name }} {{ inscriptor.paterno }}</span></div>
+                    <div style="margin-top: -7px;"><span style="color: gray; font-size: .7rem;">{{ inscriptor.cant }} Inscritos</span></div>
                   </div>
                 </div>
               </div>
@@ -290,17 +289,17 @@
     </div> -->
     <!-- END CARD -->
 
-    <div style="height: 16px;" ></div>
+    <!-- <div style="height: 16px;" ></div>
     <div class="p-4" style="width: 100%; min-height: 260px; transition: all 1s ease-in-out; border-radius: 9px; background: white;">
       <div style="">
         <Reportes/>
       </div>
-    </div>
+    </div> -->
 
 
     <div style="height: 16px;" ></div>
 
-    <div class="flex justify-between">
+    <!-- <div class="flex justify-between">
         <div class="p-4 card-dash" style="background: white; width: 49%; height: 240px;">
           <div class="flex justify-between">
             <div><span style="font-weight: bold;">Documento</span></div>
@@ -327,85 +326,16 @@
             <ChartComponent/>
           </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="flex" style="height: 16px;"></div>
-    <div class="p-4" style="width: 100%; border-radius: 9px; background: white;">
+    <!-- <div class="p-4" style="width: 100%; border-radius: 9px; background: white;">
       <div>
         <Reportes/>
       </div> 
-    </div>
+    </div> -->
   </div>
-  <div style="width: 300px;  height: 560px; padding-left: 15px;">
-    <div class="p-4" style="background:white; border-radius: 9px; height: 560px;">
-      <div class="mb-5">
-        <div class="mb-3 flex justify-between">  
-          <h1 style="font-weight: bold;">Mejores inscriptores</h1>
-          <div style="margin-top: -5px;"> <span style="color: var(--primary-color);"><eye-outlined/></span></div>
-        </div>
 
-        <div v-if="minscriptores != null">
-          <div v-for="(inscriptor,index) in minscriptores" :key="inscriptor.id" class="flex mb-2" style="height: 38px; width: 100%;">
-            <div style="border-radius: 50%; height: 38px; overflow: hidden;">
-                <div v-if="inscriptor.url">
-                  <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                    width="38" height="38"> 
-                </div>             
-
-                <div v-else style="width: 38px; height: 38px;" :style="'background:'+colores[index]"> 
-                  <!-- {{ colores[index] }} -->
-                  <div class="flex justify-center pt-0">
-                    <span style="color: white; font-size: 1.7rem;">
-                      {{ inscriptor.paterno[0].toUpperCase() }} 
-                    </span> 
-                    <!-- <span style="color: white; font-weight: bold; font-size:1.5rem;">
-                      {{ inscriptor.paterno[0].toUpperCase() }} 
-                    </span>  -->
-                  </div>
-                </div>
-
-
-            </div>
-            <div class="ml-2">
-              <div style="margin-top: 2px;"><span style="font-weight: bold;">{{ inscriptor.name }} {{ inscriptor.paterno }}</span></div>
-              <div style="margin-top: -7px;"><span style="color: gray; font-size: .8rem;">{{ inscriptor.cant }} Inscritos</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="mb-3">  
-          <h1 style="font-weight: bold;">Mejores Revisores del día</h1>
-        </div>
-
-        <div v-if="minscriptoresD != null"  >
-          <div v-for="(inscriptor,index) in minscriptoresD" :key="inscriptor.id" class="flex mb-2" style="height: 38px; width: 100%;">
-            <div style="border-radius: 50%; height: 38px; overflow: hidden;">
-                <div v-if="inscriptor.url">
-                  <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                    width="38" height="38"> 
-                </div>             
-
-                <div v-else style="width: 38px; height: 38px;" :style="'background:'+colores[index]"> 
-                  <!-- {{ colores[index] }} -->
-                  <div class="flex justify-center pt-0">
-                    <span style="color: white; font-size: 1.7rem;">
-                      {{ inscriptor.paterno[0].toUpperCase() }} 
-                    </span> 
-                  </div>
-                </div>
-
-
-            </div>
-            <div class="ml-2">
-              <div style="margin-top: 2px;"><span style="font-weight: bold;">{{ inscriptor.name }} {{ inscriptor.paterno }}</span></div>
-              <div style="margin-top: -7px;"><span style="color: gray; font-size: .8rem;">{{ inscriptor.cant }} Inscritos</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 </AuthenticatedLayout>

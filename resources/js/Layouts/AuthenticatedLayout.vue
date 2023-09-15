@@ -24,7 +24,7 @@
         <a-menu-item class="" style="margin-left: -10px; width: 265px; background:#476175; margin-top: -10px;">
             <nav-link :href="route('admin-dashboard')" :active="route().current('admin-dashboard')" style="margin: 0px; margin-left: -25px; ">
               <div class="flex" style=" width: 100%; align-items: center;">
-                <AppstoreOutlined />
+                <AppstoreFilled/>
                 <span>Dashboard</span>
               </div>
             </nav-link>

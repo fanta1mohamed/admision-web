@@ -5,7 +5,7 @@
         <!-- Head -->
         <div class="flex justify-between pl-0 pr-3 items-center" style="height: 48px; width: 100%; margin-left: -8px;"> 
             <div><h1 style="font-weight: bold; font-size: 1.2rem;">{{ seleccionado }} de postulantes</h1></div>
-            <div>
+            <div class="flex">
                 <a-dropdown>
                     <template #overlay>
                         <a-menu>
@@ -29,7 +29,11 @@
                     </a-button>
                 </a-dropdown>
                 <div>
-                    <a-button @click="exportToExcel">Descargar</a-button>
+                    <a-button type="" style="background: green; color:white;" @click="exportToExcel" :size="small">
+                        <template #icon>
+                        <DownloadOutlined />
+                        </template>
+                    </a-button>
                 </div>
             </div>
         </div>
@@ -94,12 +98,53 @@
 
 </template>
 <script setup>
-import { DownOutlined } from '@ant-design/icons-vue';
+import { DownOutlined, DownloadOutlined } from '@ant-design/icons-vue';
 import {ref} from 'vue';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, Title, LinearScale, PointElement, LineElement } from 'chart.js'
 import { Pie, Bar, Line } from 'vue-chartjs'
 //import jsonToExcel from 'json-as-xlsx';
-import xlsx from 'json-as-xlsx'
+//import  json2excel  from 'json-as-xlsx'
+//import xlsx from 'json-as-xlsx'
+//import headerImage from '../../../../../assets/imagenes/logotiny.png'; // Importa la imagen como un módulo
+
+import * as XLSX from 'xlsx';
+
+// Ruta de la imagen para el encabezado
+const headerImage = '../../../../../../imagenes/logotiny.png';
+
+// Datos de ejemplo
+// const data = [
+//   { nombre: 'Producto 1', cantidad: 10 },
+//   { nombre: 'Producto 2', cantidad: 20 },
+//   { nombre: 'Producto 3', cantidad: 15 },
+// ];
+
+// Función para exportar a Excel
+const exportToExcel = () => {
+  // Crear un libro de Excel
+  const workbook = XLSX.utils.book_new();
+
+  // Agregar una hoja al libro
+  const worksheet = XLSX.utils.json_to_sheet(datos.value);
+
+  // Agregar una imagen al encabezado
+  const img = new Image();
+  img.src = headerImage;
+  const canvas = document.createElement('canvas');
+  canvas.width = 100; // Ancho de la imagen
+  canvas.height = 50; // Altura de la imagen
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  const headerImageBase64 = canvas.toDataURL('image/png');
+  worksheet['A1'].l = { Target: headerImageBase64, Tooltip: 'Imagen' };
+
+  // Agregar la hoja al libro
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Productos');
+
+  // Crear un archivo Excel
+  XLSX.writeFile(workbook, 'productos.xlsx');
+};
+
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend, PointElement, LineElement)
@@ -127,45 +172,51 @@ const excelData = [
 ];
 
 
-const fileName = 'datos.xlsx';
 
+// const exportToExcel = () => {
+//   const headerImages = {
+//     // Aquí defines las imágenes y sus ubicaciones en tu proyecto
+//     logo: '../../../../../assets/imagenes/logotiny.png',
+//   };
 
-const exportToExcel = () => {
-  let data = [
-  {
-    sheet: "Participantes",
-    columns: [
-      { label: "dni", value: 'cant'}, // Custom format
-      { label: "Nombre", value:"dep" }, // Run functions
-      { label: "Paterno", value:"prov" },
-      { label: "Materno", value:"dist" }
-    ],
-    content: datos.value
-  },
-  // {
-  //   sheet: "Children",
-  //   columns: [
-  //     { label: "User", value: "user" }, // Top level data
-  //     { label: "Age", value: "age", format: '# "years"' }, // Column format
-  //     { label: "Phone", value: "more.phone", format: "(###) ###-####" }, // Deep props and column format
-  //   ],
-  //   content: [
-  //     { user: "Manuel", age: 16, more: { phone: 9999999900 } },
-  //     { user: "Ana", age: 17, more: { phone: 8765432135 } },
-  //   ],
-  // },
-]
+//   const header = [
+//     {
+//       // Definimos un estilo para la celda que contendrá la imagen
+//       style: {
+//         alignment: {
+//           horizontal: 'center',
+//           vertical: 'center',
+//         },
+//       },
+//       image: headerImages.logo, // Ruta de la imagen
+//       width: 100, // Ancho de la celda
+//       height: 50, // Altura de la celda
+//     },
+//     // Los demás encabezados
+//     { label: 'DNI', value: 'dni' },
+//     { label: 'Nombre', value: 'dep' },
+//     { label: 'Paterno', value: 'prov' },
+//     { label: 'Materno', value: 'dist' },
+//   ];
 
-let settings = {
-  fileName: "Lista", // Name of the resulting spreadsheet
-  extraLength: 3, // A bigger number means that columns will be wider
-  writeMode: "writeFile", // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
-  writeOptions: {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
-  RTL: false, // Display the columns from right-to-left (the default value is false)
-}
+//   const data = [
+//     {
+//       sheet: 'Participantes',
+//       columns: header,
+//       content: datos.value,
+//     },
+//   ];
 
-xlsx(data, settings)
-}
+//   const settings = {
+//     fileName: 'Lista',
+//     extraLength: 3,
+//     writeMode: 'writeFile',
+//     writeOptions: {},
+//     RTL: false,
+//   };
+
+//   jsonToExcel(data, settings);
+// };
 
 
 
