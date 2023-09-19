@@ -1,14 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Models\Preinscripcion;
-use App\Models\Inscripcion; 
+use App\Models\Inscripcion;  
 use App\Models\Users;
-use DB;
+use App\Models\Postulante;
+use App\Models\Colegio;
+use App\Models\ControlBiometrico;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -305,6 +307,77 @@ class DashboardController extends Controller
     $this->response['estado'] = true;
     return response()->json($this->response, 200);
   }
+
+
+  public function showPostulante($dni) {
+
+    $postulanteInfo = Postulante::select(
+        'postulante.id AS id_postulante',
+        'postulante.nombres',
+        'postulante.email',
+        'postulante.celular',
+        'departamento.nombre AS departamento',
+        'provincia.nombre AS provincia',
+        'distritos.nombre AS distrito'
+    )
+    ->leftJoin('ubigeo', 'ubigeo.ubigeo', '=', 'postulante.ubigeo_residencia')
+    ->leftJoin('departamento', 'departamento.id', '=', 'ubigeo.id_departamento')
+    ->leftJoin('provincia', 'provincia.id', '=', 'ubigeo.id_provincia')
+    ->leftJoin('distritos', 'distritos.id', '=', 'ubigeo.id_distrito')
+    ->where('postulante.nro_doc', '=', $dni)
+    ->first();
+
+    $colegioInfo = Colegio::select( 'colegios.nombre AS colegio', 'distritos.nombre AS distrito' )
+    ->join('postulante','postulante.id_colegio','=','colegios.id')
+    ->leftJoin('ubigeo', 'ubigeo.ubigeo', '=', 'postulante.ubigeo_residencia')
+    ->leftJoin('distritos', 'distritos.id', '=', 'ubigeo.id_distrito')
+    ->where('postulante.nro_doc', '=', $dni)
+    ->first();
+
+    $procesos = Inscripcion::select('procesos.id AS id_proceso','procesos.nombre AS proceso','inscripciones.codigo')
+    ->join('procesos', 'procesos.id', '=', 'inscripciones.id_proceso')
+    ->where('inscripciones.id_postulante', '=', $postulanteInfo->id_postulante)
+    ->orderBy('procesos.id', 'desc')
+    ->get();
+
+    $foto = "https://inscripciones.admision.unap.edu.pe/fotos/inscripcion/$dni.jpg";
+
+    $countPreInscripcion = Preinscripcion::where('id_postulante', '=', $postulanteInfo->id_postulante)->count();
+    $countInscripcion = Inscripcion::where('id_postulante', '=', $postulanteInfo->id_postulante)->count();
+    $countControlBiometrico = ControlBiometrico::where('id_postulante', '=', $postulanteInfo->id_postulante)->count();
+
+    //return Inertia::location('perfil-postulante');
+    return Inertia::render('Admin/Postulante/Perfil',
+      [
+        'info' => $postulanteInfo, 
+        'infoColegio' => $colegioInfo, 
+        'preinscripciones'=>  $countPreInscripcion,
+        'inscripciones' => $countInscripcion,
+        'control_biometrico' => $countControlBiometrico,
+        'foto' => $foto,
+        'pro' => $procesos
+      ]); 
+
+  }
+
+  // public function getInsPostulante(Request $request){
+
+  //   $procesos = Inscripcion::select('procesos.id AS id_proceso','procesos.nombre AS proceso','inscripciones.codigo')
+  //   ->join('procesos', 'procesos.id', '=', 'inscripciones.id_proceso')
+  //   ->where('inscripciones.id', '=', $postulanteInfo)
+  //   ->orderBy('procesos.id', 'desc')
+  //   ->get();
+
+  //   $this->response['datos'] = $procesos;
+  //   $this->response['estado'] = true;
+  //   return response()->json($this->response, 200);
+  // }
+
+
+
+
+
+
 
 
 

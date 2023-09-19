@@ -177,8 +177,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     // Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);    
 
 
-    
-
     Route::get('/component', fn () => Inertia::render('Admin/Dashboard/components/reportes'));
 
     //REPORTES VARIOS 
@@ -196,7 +194,9 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     //POSTULANTE
     Route::get('/perfil-postulante', fn () => Inertia::render('Admin/Postulante/Perfil'));
-
+    Route::get('postulante-perfil/{dni}', [DashboardController::class, 'showPostulante']);
+    Route::post('get-procesos', [DashboardController::class, 'getInsPostulante']);
+   
 
 });
 

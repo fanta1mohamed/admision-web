@@ -5,7 +5,7 @@
 <!-- {{ buscar }} -->
 <row class="flex justify-between mb-4" >
     <div class="mr-3">
-    <a-button type="primary" @click="showModalPrograma">Nuevo</a-button>
+    <a-button type="primary" @click="showModalPrograma"></a-button>
     </div>
     <div class="flex justify-between" style="position: relative;" >
     <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 30px;"/>
@@ -19,8 +19,13 @@
     :pagination="false"
     size="small"
     > 
-    <template #bodyCell="{ column, index, record }">
-
+    <template #bodyCell="{ column, index, record}">
+        
+        <template v-if="column.dataIndex === 'ver_postulante'">
+            <a-button type="true" @click="goPostulante(record.nro_doc)" size="small" style="height: 30px; display: flex; align-items: center;">
+                <EyeOutlined />
+            </a-button>
+        </template>
         <template v-if="column.dataIndex === 'nombres'">
             {{ record.nombres }} {{  record.primer_apellido }} {{ record.segundo_apellido }}
         </template>
@@ -178,7 +183,6 @@
 </div>
 
 
-
 </AuthenticatedLayout>
 </template>
 
@@ -188,7 +192,7 @@ import { reactive, ref, onMounted, watch } from 'vue';
 import { message } from 'ant-design-vue';
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { FormOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue';
+import { FormOutlined, DeleteOutlined, SearchOutlined, EyeOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { format } from 'date-fns';
@@ -238,7 +242,7 @@ const form = reactive({
     observaciones: '',
     id_colegio: '',
 });
-
+                                    
 const fetchData = () => {
 
 };
@@ -274,6 +278,8 @@ const deleteData = () => {
 // utilizando el "id" del registro que deseas eliminar
 };
 
+
+
 // Obtener los datos cuando el componente se monte
 onMounted(() => {
 fetchData();
@@ -307,6 +313,7 @@ const getModalidades =  async ( ) => {
 }
 
 const columnsProgramas = [
+    { title: 'Ver', dataIndex: 'ver_postulante' },    
     { title: 'DNI', dataIndex: 'nro_doc' },
     { title: 'Nombre', dataIndex: 'nombres'},
     { title: 'Celular', dataIndex: 'celular'},
@@ -323,7 +330,17 @@ const notificacion = (type, titulo, mensaje) => {
     });
 };
 
+
 watch(pagina, ( newValue, oldValue ) => { getModalidades(); })
+
+//get-postulante-perfil
+
+const goPostulante = async (dni) => {
+    try {
+        window.location.href = 'postulante-perfil/'+dni;
+    } catch (error) {  console.error(error); }
+};
+
 
 
 getModalidades()
