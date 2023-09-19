@@ -240,7 +240,7 @@
       </div>
     </a-layout-header>
     <a-layout-content
-      :style="{ margin: '14px 14px', padding: '0px', background: '#fff', minHeight: '280px' }">
+      :style="{ margin: '14px 14px', padding: '0px', minHeight: '280px' }">
       <slot />
     </a-layout-content>
   </a-layout>
