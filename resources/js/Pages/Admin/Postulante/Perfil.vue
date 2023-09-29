@@ -2,19 +2,6 @@
     <Head title="Postulantes" />
     <AuthenticatedLayout style="">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div class="flex  overflow-hidden shadow-sm sm:rounded-lg  justify-center">
             <div class="bg-white p-5 container">
                 <div class="p-2">
@@ -79,9 +66,6 @@
                                         </template>
                                     </a-button>
                                     
-                                    <a-modal v-model:open="open" title="Modal">
-                                        sdfasdf
-                                    </a-modal>
                                 </div>
                             </div>
                             <div>
@@ -238,6 +222,9 @@
 
         </div>
 
+        <a-modal v-model:visible="open" title="Editar Datos">
+            
+        </a-modal>
 
     </AuthenticatedLayout>
 </template>    
@@ -259,6 +246,7 @@ const abrir = () => {
     open.value = true;
     console.log("Esta funcionando");
 }
+
 const props = defineProps({
     foto: String,
     info: Object,
