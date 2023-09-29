@@ -10,7 +10,7 @@
                             <div style="border-radius:100%; width: 100%; overflow:hidden;">
                                 <div style="margin-bottom: -30px; margin-top:-30px">
                                     <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKTXDwTTnsPx88rP_7Ljrt1SShsD9xbdnmn0prjfe1Ww&s"> -->
-                                    <a-image :src="foto" />
+                                    <a-image :src="foto" :preview="false" />
                                 </div>
                             </div>
                         </a-col>
@@ -188,7 +188,7 @@
 
                         <a-col :xs="24" :sm="24" :md="8" :lg="6">
                             <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 mt-4"
-                                style="border: solid 1px #d9d9d9;">
+                                style="border: solid 1px #d9d9d9; height: 524px;">
                                 <div>
                                     <a-card size="small" v-for="item in pro" :key="item.id_proceso"
                                         :class="seleccionado == item.id_proceso ? 'item-inscripciones-seleccionado' : 'item-inscripciones'"
@@ -217,13 +217,44 @@
             {{ seleccionado = pro[0].id_proceso }}
         </div> -->
                 </div>
-            </div>
+
+                <div class="p-2">
+                    <a-row class="p-4" :gutter="[16, 8]" style="border: solid #d9d9d9 1px; border-radius: 9px;">
+                        <div>
+                            <h1 style="font-weight: bold; font-size: 1.1rem;">Actividad Reciente</h1>
+                        </div>
+                        <a-table :dataSource="dataSource" :columns="columns" style="width: 100%;">
+                            <template #bodyCell="{ column, index, record }">
+                                <template v-if="column.dataIndex === 'acciones'">
+                                    <div class="" style="justify-content: flex-start;">
+                                        <span class="mr-2">{{ record.usuario }} </span>
+                                            <span> <a-tag v-if="record.acciones == 'insertó'" color="green"> {{ record.acciones }} </a-tag></span>  
+                                            <span> <a-tag v-if="record.acciones == 'actualizó'" color="blue"> {{ record.acciones }} </a-tag> </span>
+                                            <span> <a-tag v-if="record.acciones == 'eliminó'" color="red"> {{ record.acciones }} </a-tag> </span>
+                                            el registro <span class="mr-2 ml-2" style="font-weight: bold;"> N° {{ record.registro }} </span> en la tabla {{ record.tabla }}
+                                    </div>
+                                </template>
+                            </template>
+                        </a-table>
+                    </a-row>    
+                </div>
+
+             </div>
+
+
+
+
 
 
         </div>
 
         <a-modal v-model:visible="open" title="Editar Datos">
             
+        </a-modal>
+
+
+        <a-modal v-model:visible="open" title="Modal">
+            sdfasdf
         </a-modal>
 
     </AuthenticatedLayout>
@@ -258,6 +289,70 @@ const props = defineProps({
 })
 
 const seleccionado = ref(null);
+
+
+const dataSource = ref([
+    {
+        usuario_id: 1,
+        usuario: 'Ariel Luque',
+        acciones: 'insertó',
+        registro:2322,
+        tabla: 'filial',
+        direccion: '127.168.12.1',
+        fecha:'2023-11-03 08:55:20'
+    },
+    {
+        usuario_id: 1,
+        usuario: 'Luque King',
+        acciones: 'actualizó',
+        registro:233,
+        tabla: 'filial',
+        direccion: '127.85.0.1',
+        fecha:'2023-11-03 10:55:20'
+    },
+
+    {
+        usuario_id: 1,
+        usuario: 'Madara',
+        acciones: 'eliminó',
+        registro:126,
+        tabla: 'filial',
+        direccion: '10.10.120.1',
+        fecha:'2023-11-07 10:15:20'
+    },
+    {
+        usuario_id: 1,
+        usuario: 'king',
+        acciones: 'eliminó',
+        registro:219,
+        tabla: 'filial',
+        direccion: '127.140.192.1',
+        fecha:'2023-11-12 08:55:20'
+    },
+
+
+]);
+
+const columns = ref([
+    {
+        title: 'Actividad',
+        dataIndex: 'acciones',
+        key: 'age',
+        align: 'left'
+    },
+    {
+        title: 'Dirección',
+        dataIndex: 'direccion',
+        key: 'address',
+    },
+
+    {
+        title: 'Fecha y hora',
+        dataIndex: 'fecha',
+        key: 'address',
+    },
+]);
+
 
 </script>
 <style scoped>

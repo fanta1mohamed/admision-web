@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Filial;
+use App\Models\Dataversion;
 use App\Models\Programa;
 
 class ProgramaController extends Controller
@@ -73,6 +74,7 @@ class ProgramaController extends Controller
         } else {
 
             $programa = Programa::find($request->id);
+            Dataversion::create([ 'registro_id' => $programa->id, 'tabla' => $programa->getTable(),  'usuario_id' => auth()->id(), 'fecha' => now(), 'datos' => $programa->toJson() ]);
             $programa->nombre = $request->nombre;
             $programa->codigo = $request->codigo;
             $programa->nivel_academico = $request->nivel_academico;

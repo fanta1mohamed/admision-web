@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Filial;
+use App\Models\Dataversion;
 
 class FilialController extends Controller
 {
@@ -66,13 +67,15 @@ class FilialController extends Controller
         } else {
 
             $filial = Filial::find($request->id);
+            Dataversion::create([ 'registro_id' => $filial->id, 'tabla' => $filial->getTable(),  'usuario_id' => auth()->id(), 'fecha' => now(), 'datos' => $filial->toJson() ]);
+
             $filial->nombre = $request->nombre;
             $filial->codigo = $request->codigo;
             $filial->id_dep = $request->id_dep;
             $filial->id_prov = $request->id_prov;
             $filial->estado = $request->estado;
             $filial->id_usuario = auth()->id();
-            $filial->save();
+            $filial->save();  
 
             $this->response['titulo'] = '!REGISTRO MODIFICADO!';
             $this->response['mensaje'] = 'Filial '.$filial->nombre.' modificado con exito';
