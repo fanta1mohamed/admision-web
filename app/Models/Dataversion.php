@@ -12,6 +12,5 @@ class Dataversion extends Model
     public $timestamps = false;
     protected $table = 'data_version';
     protected $fillable = ['registro_id', 'tabla', 'usuario_id', 'fecha', 'datos'];
-
     
 }

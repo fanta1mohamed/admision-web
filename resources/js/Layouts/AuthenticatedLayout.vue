@@ -174,6 +174,42 @@
 
         </a-sub-menu>
 
+
+        <a-sub-menu key="sub4" >
+          <template #title>
+              <div class="flex" style="align-items: center;">
+                <gold-filled/>
+                <span>Participantes</span>
+              </div>
+          </template>
+          <a-menu-item style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
+            <nav-link :href="route('admin-participante-docente')" :active="route().current('admin-participante-docente')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <setting-filled style=""/>
+                <span>Docentes</span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+          <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
+            <nav-link :href="route('admin-participante-administrativo')" :active="route().current('admin-participante-administrativo')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <setting-filled style=""/>
+                <span>
+                  Administrativos
+                </span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
+        </a-sub-menu>
+
+
+
+
+
+
+
           <hr style="border-top: 1px solid #FFFFFF23;">
           <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
             <span>Inscripcion</span>
@@ -259,7 +295,10 @@
     <div v-if="route().current('admin-documento-index')"> {{ submenu = 3  }}</div>
     <div v-if="route().current('admin-colegio-index')"> {{ submenu = 3  }}</div>
     <div v-if="route().current('admin-postulante-index')"> {{ submenu = 3  }}</div>
-            <div v-if="route().current('admin-apoderado-index')"> {{ submenu = 3 }}</div>
+    <div v-if="route().current('admin-apoderado-index')"> {{ submenu = 3 }}</div>
+
+    <div v-if="route().current('admin-participante-docente')"> {{ submenu = 4  }}</div>
+    <div v-if="route().current('admin-participante-administrativo')"> {{ submenu = 4  }}</div>
   </div>
 
 </a-layout>
@@ -313,15 +352,10 @@ export default defineComponent({
 
   watch:{
     submenu () {
-      if(this.submenu == 1){
-        this.openKeys = ['sub1'];
-      }
-      if(this.submenu == 2){
-        this.openKeys = ['sub2'];
-      }
-      if(this.submenu == 3){
-        this.openKeys = ['sub3'];
-      }
+      if(this.submenu == 1){ this.openKeys = ['sub1']; }
+      if(this.submenu == 2){ this.openKeys = ['sub2']; }
+      if(this.submenu == 3){ this.openKeys = ['sub3']; }
+      if(this.submenu == 4){ this.openKeys = ['sub4']; }
       // console.log('openKeys', val);
     }
   } 

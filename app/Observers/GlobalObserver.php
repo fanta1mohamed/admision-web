@@ -7,7 +7,6 @@ class GlobalObserver
     public function created($model)
     {
         $clientIp = request()->ip();
-        $model->save();
         DB::table('activity_logs')->insert([
             'action' => 'insertó',
             'model' => get_class($model),

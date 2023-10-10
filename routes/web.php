@@ -27,6 +27,8 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\PagoController;
+use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\AdministrativoController;
 use App\Http\Controllers\DashboardController;
 
 
@@ -52,7 +54,6 @@ Route::middleware('auth')->group(function () {
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 Route::prefix('admin')->middleware('auth','admin')->group(function () {
-
 
     Route::get('/', fn () => Inertia::render('Admin/Dashboard/Index'));
     Route::get('dashboard', fn () => Inertia::render('Admin/Dashboard/Index'))->name('admin-dashboard');
@@ -196,7 +197,21 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/perfil-postulante', fn () => Inertia::render('Admin/Postulante/Perfil'));
     Route::get('postulante-perfil/{dni}', [DashboardController::class, 'showPostulante']);
     Route::post('get-procesos', [DashboardController::class, 'getInsPostulante']);
-   
+
+    
+    //PARTICIPANTES
+    Route::get('/participante-docente', fn () => Inertia::render('Admin/Participante/Docente'))->name('admin-participante-docente');
+    Route::get('/participante-administrativo', fn () => Inertia::render('Admin/Participante/Administrativo'))->name('admin-participante-administrativo');
+
+    Route::post('/save-docente', [DocenteController::class, 'saveDocente']);   
+    Route::post('/get-docentes', [DocenteController::class, 'getDocentes']);   
+    Route::post('/eliminar-docente', [DocenteController::class, 'deleteDocente']);
+    Route::post('/actualizar-sexo-docente', [DocenteController::class, 'actualizarSexo']);
+
+    Route::post('/save-administrativo', [AdministrativoController::class, 'saveAdministrativo']);   
+    Route::post('/get-administrativos', [AdministrativoController::class, 'getAdministrativos']);   
+    Route::post('/eliminar-administrativo', [AdministrativoController::class, 'deleteAdministrativo']);
+    Route::post('/actualizar-sexo-administrativo', [AdministrativoController::class, 'actualizarSexo']);
 
 });
 
@@ -263,7 +278,6 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
 });
 Route::get('/pdf-datos-biometrico/{dni}', [IngresoController::class, 'pdfbiometrico2']);
-
 
 
 Route::get('/examen-vocacional2', fn () => Inertia::render('Publico/exvocacional2'))->name('ex-vocacional2');

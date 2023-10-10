@@ -450,7 +450,7 @@ class PreinscripcionController extends Controller
         $this->response['mensaje'] = '';
         $this->response['estado'] = true;
         return response()->json($this->response, 200);
-  }
+    }
 
 
     
