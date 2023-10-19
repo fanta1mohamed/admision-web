@@ -400,7 +400,43 @@ class SeleccionDataController extends Controller
   
   }
 
+  public function getUbigeos(Request $request) {
+    $res = DB::table('ubigeo')
+    ->select('ubigeo.ubigeo as key' , DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre) as value'))
+    ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
+    ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
+    ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
+    ->where(function ($query) use ($request) {
+      return $query
+          ->orWhere('departamento.nombre', 'LIKE', '%' . $request->term . '%')
+          ->orWhere('provincia.nombre', 'LIKE', '%' . $request->term . '%')
+          ->orWhere(DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre)'),'LIKE','%'.$request->term . '%')
+          ->orWhere('distritos.nombre', 'LIKE', '%' . $request->term . '%');
+    })
+    ->paginate(10);
 
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
 
+  public function getColegiosUbigeo(Request $request) {
+    $res = DB::table('colegios')
+    ->select('id as key' , DB::raw('CONCAT(nombre," (",gestion,")") AS "value"'))
+    ->where('ubigeo','=',$request->ubigeo)    
+    ->where(function ($query) use ($request) {
+      return $query
+          ->orWhere('nombre', 'LIKE', '%' . $request->term . '%')
+          ->orWhere('gestion', 'LIKE', '%' . $request->term . '%')
+          ->orWhere(DB::raw('CONCAT(nombre," (",gestion,")")'),'LIKE','%'.$request->term . '%');
+    })
+    ->paginate(10);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+  
 
 }

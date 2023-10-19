@@ -1,7 +1,8 @@
 <template>
   <a-layout style="min-height: 100vh; scroll-behavior: auto;">
     <a-layout-sider v-model:collapsed="collapsed" class="custom-scrollbar" width="230px" style="overflow-x: hidden; overflow-y: scroll; min-height: 100vh;  background:#476175; width: 230px; border-right: 1px solid #00000010;"  :trigger="null" :triggerSubMenuAcción="true" collapsible collapsed-width="0">
-      <div style="display: flex; align-items: center; justify-content: left; margin-top: 6px; margin-left: 20px; margin-bottom: 6px;">
+
+    <div style="display: flex; align-items: center; justify-content: left; margin-top: 6px; margin-left: 20px; margin-bottom: 6px;">
         <div>
             <img src="../../assets/imagenes/logotiny.png" width="35"/>
         </div> 
@@ -202,6 +203,17 @@
             </nav-link>
           </a-menu-item>
 
+          <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
+            <nav-link :href="route('admin-participante-sorteo')" :active="route().current('admin-participante-sorteo')" style="margin: 0px; margin-left: -25px; ">
+              <div class="flex" style=" width: 100%; align-items: center;">
+                <setting-filled style=""/>
+                <span>
+                  Sorteo
+                </span>
+              </div>
+            </nav-link>
+          </a-menu-item>
+
         </a-sub-menu>
 
 
@@ -362,7 +374,7 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.custom-scrollbar {
+/* .custom-scrollbar {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;
@@ -382,6 +394,6 @@ export default defineComponent({
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #ffffff7a;
-}
+} */
 
 </style>

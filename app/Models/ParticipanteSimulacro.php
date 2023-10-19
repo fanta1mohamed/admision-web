@@ -11,10 +11,19 @@ class ParticipanteSimulacro extends Model
     protected $table = 'participantes_simulacro';
 
     protected $fillable = [
+        'tipo_doc',
         'nro_doc',
-        'primer_apellido',
-        'segundo_apellido',
-        'nombres'
+        'paterno',
+        'materno',
+        'nombres',
+        'sexo',
+        'fec_nacimiento',
+        'celular',
+        'correo',
+        'pais',
+        'ubi_residencia',
+        'grado_instruccion',
+        'id_colegio'
     ];
 
 

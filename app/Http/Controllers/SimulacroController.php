@@ -8,10 +8,12 @@ use App\Models\TipoProceso;
 use App\Models\ParticipanteSimulacro;
 use App\Models\DetalleExamenSimulacro;
 use App\Models\Simulacro;
+use App\Models\InscripcionSimulacro;
 use App\Models\Postulante;
 use App\Models\Paso;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+
 
 class SimulacroController extends Controller
 {
@@ -123,6 +125,7 @@ class SimulacroController extends Controller
       return response()->json($this->response, 200);
     }
 
+
     public function saveResidencia(Request $request ) {
 
       $postulante = Postulante::find($request->id);
@@ -232,7 +235,54 @@ class SimulacroController extends Controller
     }
 
 
-  //END PASO 1 PRE INSCRIPCION 
+    //SIMULACRO 2023
+    public function saveParticipante(Request $request) {
+      if ($request->fec_nac) {
+          $fecha = substr($request->fec_nac, 0, 10);
+      }
+  
+      try {
+          DB::beginTransaction();
+  
+          $participante = ParticipanteSimulacro::create([
+              'tipo_doc' => $request->tipo_doc,
+              'nro_doc' => $request->nro_doc,
+              'paterno' => $request->paterno,
+              'materno' => $request->materno,
+              'nombres' => $request->nombres,
+              'sexo' => $request->sexo,
+              'fec_nacimiento' => $fecha,
+              'celular' => $request->celular,
+              'correo' => $request->correo,
+              'pais' => $request->pais,
+              'ubi_residencia' => $request->ubigeo_residencia,
+              'grado_instruccion' => $request->grado,
+              'id_colegio' => $request->id_colegio
+          ]);
+  
+          $inscripcion = InscripcionSimulacro::create([
+              'id_estudiante' => $participante->id,
+              'id_simulacro' => 3,
+              'estado' => 1,
+              'fecha' => date('Y-m-d'),
+              'terminos' => $request->terminos,
+              'id_programa' => $request->programa
+          ]);
+  
+          DB::commit();
+  
+          $this->response['titulo'] = 'REGISTRO NUEVO';
+          $this->response['mensaje'] = 'PARTICIPANTE ' . $participante->nombres . ' REGISTRADO';
+          $this->response['estado'] = true;
+          $this->response['datos'] = $participante;
+      } catch (\Exception $e) {
+          DB::rollback();
+          // Manejar el error como desees, por ejemplo, registrar en un archivo de registro.
+          $this->response['titulo'] = 'ERROR EN EL REGISTRO';
+          $this->response['mensaje'] = 'No se pudo completar el registro: ' . $e->getMessage();
+          $this->response['estado'] = false;
+      }
+  }
 
 
 }
