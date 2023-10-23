@@ -11,12 +11,21 @@ use App\Models\Simulacro;
 use App\Models\InscripcionSimulacro;
 use App\Models\Postulante;
 use App\Models\Paso;
+use Barryvdh\DomPDF\Facade\Pdf;
+use TCPDF;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 
 class SimulacroController extends Controller
 {
+
+  private $fondo;
+
+  public function __construct()
+  {
+      $this->fondo = public_path('imagenes/fondo.png');
+  }
 
   public function getSimulacros(Request $request)
   {
@@ -124,6 +133,38 @@ class SimulacroController extends Controller
 
       return response()->json($this->response, 200);
     }
+
+    public function pdfInscripcion($dni) {
+
+      // $datos = DB::select("SELECT 
+      // postulante.nro_doc AS dni, 
+      // inscripciones.codigo as codigo,
+      // postulante.nombres AS nombre, 
+      // postulante.primer_apellido AS paterno,
+      // postulante.segundo_apellido AS materno,
+      // programa.nombre AS programa,
+      // inscripciones.id_programa as id_programa,
+      // modalidad.nombre AS modalidad,
+      // procesos.nombre AS proceso,
+      // inscripciones.created_at as fecha,
+      // users.name, users.paterno as upaterno
+      // FROM inscripciones
+      // JOIN postulante ON inscripciones.id_postulante = postulante.id
+      // JOIN programa ON inscripciones.id_programa = programa.id
+      // JOIN modalidad ON inscripciones.id_modalidad = modalidad.id 
+      // JOIN procesos ON inscripciones.id_proceso = procesos.id
+      // JOIN users on inscripciones.id_usuario = users.id
+      // WHERE postulante.nro_doc = $dni AND inscripciones.estado = 0");
+
+      // $data = $datos[0];
+      
+      $pdf = Pdf::loadView('simulacro.inscripcion', ['fondo' => $this->fondo]);
+      
+      $pdf->setPaper('A4', 'portrait');
+      $output = $pdf->output();
+      
+      return $pdf->stream();
+  }
 
 
     public function saveResidencia(Request $request ) {

@@ -181,6 +181,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        
         Spatie\Permission\PermissionServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
 
@@ -196,6 +197,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Elibyy\TCPDF\ServiceProvider::class,
 
     ],
 
@@ -213,7 +215,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        'TPDF' => Elibyy\TCPDF\Facades\TCPDF::class,
     ])->toArray(),
 
 ];

@@ -8,6 +8,7 @@
         "php": "^8.1",
         "barryvdh/laravel-dompdf": "^2.0",
         "dompdf/dompdf": "^2.0",
+        "elibyy/tcpdf-laravel": "*",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.8",
         "laravel/breeze": "^1.4",
@@ -19,6 +20,7 @@
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.3",
         "spatie/laravel-permission": "^5.10",
+        "tecnickcom/tcpdf": "^6.6",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
