@@ -157,7 +157,7 @@ class SimulacroController extends Controller
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        // file_put_contents(public_path('/documentos/simulacro2023/').$dni.'.pdf', $output);
+        file_put_contents(public_path('/documentos/simulacro2023/').$dni.'.pdf', $output);
         return $pdf->stream();
       }
 
