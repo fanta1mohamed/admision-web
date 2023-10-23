@@ -19,7 +19,7 @@ class PagoController extends Controller
         $data = $request->pagos;
 
         foreach ($data as $item) {
-            $response = Http::post("http://38.43.133.27/PAYMENTS_MNG/v1/setStatus/".$item['id']."/", []);
+            $response = Http::post("https://service2.unap.edu.pe/PAYMENTS_MNG/v1/setStatus/".$item['id']."/", []);
 
             if ($response->successful()) {
                 if($item['total'] == 10.00){
