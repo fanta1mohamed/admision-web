@@ -30,7 +30,7 @@
     <div style="position: relative;">
         <img src="{{ $fondo }}" alt="foto" width="100%"> 
     </div>
-    <div style="position: absolute; width:900px; top:700px; left:100px; ">
+    {{-- <div style="position: absolute; width:900px; top:700px; left:100px; ">
         <div style=" transform: rotate(-45deg); transform-origin: 0% 100%; text-align: center; font-weight:bold; padding: 10px; font-size:100pt;">
             <div class="individual-letters">
                 <span>H</span>
@@ -41,7 +41,7 @@
               </div>
         </div>
 
-    </div>
+    </div> --}}
     <div style="position:absolute; top:26px; width:100%;">
         <div style="text-align:center; font-weight:bold; font-size:14pt;">
             <div><span>UNIVERSIDAD NACIONAL DEL ALTIPLANO</span></div>
@@ -63,27 +63,27 @@
                 <tr>
                     <td>PROGRAMA DE ESTUDIOS</td>
                     <td><div style="width: 36px; text-align:center;">:</div></td>
-                    <td>INGENIERÍA DE SISTEMAS</td>
+                    <td>{{$datos->programa}}</td>
                 </tr>
                 <tr>
                     <td>NRO. DE DOCUMENTO</td>
                     <td><div style="width: 36px; text-align:center;">:</div></td>
-                    <td>70757838</td>
+                    <td>{{$datos->nro_doc}}</td>
                 </tr>
                 <tr>
                     <td>PRIMER APELLIDO</td>
                     <td><div style="width: 36px; text-align:center;">:</div></td>
-                    <td>LUQUE</td>
+                    <td>{{$datos->paterno}}</td>
                 </tr>
                 <tr>
                     <td>SEGUNDO APELLIDO</td>
                     <td><div style="width: 36px; text-align:center;">:</div></td>
-                    <td>CUSACANI</td>
+                    <td>{{$datos->materno}}</td>
                 </tr>
                 <tr>
                     <td>PRENOMBRES</td>
                     <td><div style="width: 36px; text-align:center;">:</div></td>
-                    <td>JHON ARIEL</td>
+                    <td>{{$datos->nombres}}</td>
                 </tr>
             </table>
         </div>

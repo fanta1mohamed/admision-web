@@ -136,29 +136,22 @@ class SimulacroController extends Controller
 
     public function pdfInscripcion($dni) {
 
-      // $datos = DB::select("SELECT 
-      // postulante.nro_doc AS dni, 
-      // inscripciones.codigo as codigo,
-      // postulante.nombres AS nombre, 
-      // postulante.primer_apellido AS paterno,
-      // postulante.segundo_apellido AS materno,
-      // programa.nombre AS programa,
-      // inscripciones.id_programa as id_programa,
-      // modalidad.nombre AS modalidad,
-      // procesos.nombre AS proceso,
-      // inscripciones.created_at as fecha,
-      // users.name, users.paterno as upaterno
-      // FROM inscripciones
-      // JOIN postulante ON inscripciones.id_postulante = postulante.id
-      // JOIN programa ON inscripciones.id_programa = programa.id
-      // JOIN modalidad ON inscripciones.id_modalidad = modalidad.id 
-      // JOIN procesos ON inscripciones.id_proceso = procesos.id
-      // JOIN users on inscripciones.id_usuario = users.id
-      // WHERE postulante.nro_doc = $dni AND inscripciones.estado = 0");
+      $datos = DB::select("
+        SELECT 
+        programa.nombre AS programa,
+        participantes_simulacro.nro_doc,
+        participantes_simulacro.paterno,
+        participantes_simulacro.materno,
+        participantes_simulacro.nombres
+        FROM inscripcion_simulacro
+        JOIN programa ON inscripcion_simulacro.id_programa = programa.id
+        JOIN participantes_simulacro ON inscripcion_simulacro.id_estudiante = participantes_simulacro.id
+        WHERE participantes_simulacro.nro_doc = $dni
+      ");
 
-      // $data = $datos[0];
+      $data = $datos[0];
       
-      $pdf = Pdf::loadView('simulacro.inscripcion', ['fondo' => $this->fondo]);
+      $pdf = Pdf::loadView('simulacro.inscripcion', ['fondo' => $this->fondo,'datos'=>$data]);
       
       $pdf->setPaper('A4', 'portrait');
       $output = $pdf->output();
