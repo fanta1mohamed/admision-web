@@ -23,7 +23,6 @@ class PagoController extends Controller
 
             if ($response->successful()) {
                 if($item['total'] == 10.00){
-
                     Pago::create([
                         'codigo' => $item['id'],
                         'authorizationCode' => $item['autorizationCode'],

@@ -2,23 +2,26 @@
     <div class="scroll-container" ref="scrollContainer">
       <div class="pr-3" style="text-align: justify;">
         <p>
-          Este examen de simulacro de admisión tiene como objetivo la preparación y práctica
-          similar a un examen de admisión real, para estudiantes de quinto año de secundaria.
-          No garantiza ingreso a la universidad ni otorga vacantes. Los resultados aquí
-          obtenidos carecen de validez oficial y no tienen relación con el proceso de admisión
-          real.
+          Este examen de simulacro de admisión tiene como objetivo proporcionar a los estudiantes de quinto 
+          año de secundaria una valiosa oportunidad de preparación y práctica, en un formato similar al 
+          examen de admisión real de la Universidad Nacional del Altiplano (UNA PUNO). 
+          Sin embargo, es fundamental destacar lo siguiente:
 
-          Este examen de simulacro de admisión tiene como objetivo la preparación y práctica
-          similar a un examen de admisión real, para estudiantes de quinto año de secundaria.
-          No garantiza ingreso a la universidad ni otorga vacantes. Los resultados aquí
-          obtenidos carecen de validez oficial y no tienen relación con el proceso de admisión
-          real.
+        </p>
+        <p>
+          No Garantiza el Ingreso a la Universidad: La participación en este simulacro de admisión no garantiza 
+          de ninguna manera el ingreso a la UNA PUNO. Este proceso de evaluación está diseñado exclusivamente 
+          para que los estudiantes se familiaricen con el tipo de preguntas y el entorno de un examen de admisión, 
+          pero no otorga vacantes para la universidad.
+        </p>
 
-          Este examen de simulacro de admisión tiene como objetivo la preparación y práctica
-          similar a un examen de admisión real, para estudiantes de quinto año de secundaria.
-          No garantiza ingreso a la universidad ni otorga vacantes. Los resultados aquí
-          obtenidos carecen de validez oficial y no tienen relación con el proceso de admisión
-          real.
+        <p>
+          Este simulacro de admisión se brinda como una herramienta de entrenamiento y práctica para los 
+          estudiantes que se preparan para el examen de admisión de la UNA PUNO. Es importante comprender que sus 
+          resultados no tienen un peso determinante en el proceso de admisión oficial de la universidad y que la admisión 
+          real sigue un procedimiento distinto. Los participantes deben utilizar esta oportunidad para mejorar sus 
+          habilidades y evaluarse a sí mismos en un entorno simulado.
+
         </p>
       </div>
     </div>

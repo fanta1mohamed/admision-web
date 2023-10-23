@@ -389,7 +389,8 @@ Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
 Route::get('/get-e-oti', [IngresoController::class, 'getEstudianteOTI']);
 
 Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
-    $response = Http::get("http://38.43.133.27/PAYMENTS_MNG/v1/{$dni}/9/");
+    // $response = Http::get("http://38.43.133.27/PAYMENTS_MNG/v1/{$dni}/9/");
+    $response = Http::get("https://service2.unap.edu.pe/PAYMENTS_MNG/v1/{$dni}/8/");
     if ($response->successful()) {
         return $response->json();
     } else {

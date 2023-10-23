@@ -149,15 +149,20 @@ class SimulacroController extends Controller
         WHERE participantes_simulacro.nro_doc = $dni
       ");
 
-      $data = $datos[0];
-      
-      $pdf = Pdf::loadView('simulacro.inscripcion', ['fondo' => $this->fondo,'datos'=>$data]);
-      
-      $pdf->setPaper('A4', 'portrait');
-      $output = $pdf->output();
+      if (count($datos) === 0) {
+          return "No registrado";
+      }else {
+        $data = $datos[0];
+        $pdf = Pdf::loadView('simulacro.inscripcion', ['fondo' => $this->fondo,'datos'=>$data]);        
+        $pdf->setPaper('A4', 'portrait');
+        $output = $pdf->output();
 
-      return $pdf->stream();
-      // return $pdf->download();
+        // file_put_contents(public_path('/documentos/simulacro2023/').$dni.'.pdf', $output);
+        return $pdf->stream();
+      }
+
+
+        // return $pdf->download();
 
   }
 
