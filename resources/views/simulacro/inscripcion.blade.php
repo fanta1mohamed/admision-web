@@ -90,7 +90,7 @@
         <div style="text-align:justify; margin-top:10px; margin-left:1.2cm; margin-right:1cm; font-size:12pt; font-family: 'Garet Book';">
             <div>
                 <p>
-                    Ha sido debidamente inscrito(a) para participar en el “Simulacro de Admisión 2023”, a
+                    Ha sido debidamente inscrito(a) para participar en el <span style="font-weight: bold; font-style:italic; font-family: 'Helvetica'">“Simulacro de Admisión 2023”</span>, a
                     llevarse a cabo el día sábado 11 de noviembre del año en curso a 11:00 horas, dentro del
                     recinto universitario.
                 </p>
@@ -116,9 +116,9 @@
             </div>
             <div style="letter-spacing:0.088rem; line-height:1.7rem; margin-left:.7cm">
                 <ul>
-                    <li>Documento Nacional de Identidad original (DNI)</li>
-                    <li>Constancia de Inscripción</li>
-                    <li>Lápiz 2B, borrador y tajador</li>
+                    <li>Documento Nacional de Identidad original (DNI).</li>
+                    <li>Constancia de Inscripción.</li>
+                    <li>Lápiz 2B, borrador y tajador.</li>
                     <li>De preferencia vestir con buzo sin capucha ni metales.</li>
                     <li>Visible el cuello y las orejas.</li>
                     <li>Cabello recogido (mujeres) y cabello corto (varones).</li>
@@ -141,8 +141,13 @@
         <div style="text-align:justify; margin-top:40px; margin-left:1.2cm; margin-right:1cm; font-size:12pt; font-family: 'Helvetica';">
             <table style="width: 100%;">
                 <tr>
+                    <td align="center" rowspan="1"> 
+                        <div style="margin-left: 50px; margin-top:-15px;">
+                            <img src="{{ public_path('imagenes/logoDAD.jpg')}}"  width="65">
+                        </div>
+                    </td>
                     <td>
-                        <div style="margin-left: 125px; margin-right: 60px;">
+                        <div style="margin-left: -5px; margin-right: 60px;">
                             <div>DIRECCIÓN DE ADMISIÓN</div>
                             <div>UNA PUNO</div>
                         </div>      
@@ -156,7 +161,6 @@
                     <td style="width:120px;">
                         <div style="text-align: center; font-size:.8rem;">
                             <div style="margin-left:20px; width: 80px; height:100px; border:solid 1px black;"></div>
-                            <div style="width: 120px;" >Huella digital</div>
                             <div>Indice derecho</div>
                         </div>
                     </td>

@@ -1,7 +1,47 @@
 <template>
 <AuthenticatedLayout>
 <div class="flex justify-center" style="">
-<div style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;  background:white;">
+<div v-if="inscrito === true" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;  background:white;">
+    <div class="flex justify-center;" style="align-items:center; min-height: calc(100vh - 290px);">
+        <div style="width:100%">
+            <div class="flex pb-4" style="justify-content:center; ">
+                <div style="text-align:center;">
+                    <div style="max-width:800px; margin-bottom:20px;">
+                        <span style="font-weight:bold; font-size:1.6rem;">
+                            POSTULANTE INSCRITO
+                        </span>
+                    </div>
+                    <div style="max-width:800px;">
+                        <span style="font-size:1.1rem;">
+                            Usted se encuentra inscrito para el EXAMEN SIMULACRO 2023 
+                            de la Universidad Nacional del Altiplano de Puno
+                        </span>
+                    </div>
+                    <div>
+                        <span style="font-size:1.1rem;">
+                            Descargue su constancia haciendo clic  en el botón "DESCARGAR"
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex mb-6" style="justify-content:center;">
+                <div class="flex" style="width:100%; max-width: 700px;">
+                    <a-input v-model:value="form.nro_doc" @input="dniInput" :maxlength="8" style="width: 100%;" :disabled="inscrito"/>
+                </div>
+            </div>
+
+            <a-row>
+                <div class="flex justify-center" style="width:100%; ">
+                    <a-button type="primary"  :loading="loadingdowload" style="width:180px; background:#713EDA; border-radius:4px;" @click="imprimir()"> Descargar </a-button>
+                </div>
+            </a-row>
+
+        </div>
+    </div> 
+   
+</div>
+
+<div v-if="inscrito === false" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;  background:white;">
 
     <a-tabs v-model:activeKey="activeKey"  type="card" size="small">
         <a-tab-pane key="1" class="pl-6 pb-6 pr-6" tab="Validación de pago" force-render :disabled="!confirmacion">
@@ -65,7 +105,7 @@
 
                     <a-row>
                         <div class="flex justify-center" style="width:100%; ">
-                            <a-button type="primary" style="width:180px; background:#713EDA; border-radius:4px;" @click="enviarPago()"> Continuar </a-button>
+                            <a-button type="primary" :loading="pagosloading" style="width:180px; background:#713EDA; border-radius:4px;" @click="enviarPago()"> Continuar </a-button>
                         </div>
                     </a-row>
 
@@ -404,6 +444,14 @@
 
 </a-modal>
 
+
+
+
+
+
+
+
+
 </AuthenticatedLayout>
 </template>
         
@@ -434,6 +482,8 @@ const confirmarcion = ref(false)
 const activeKey = ref("1")
 const formDatos = ref();
 const loading = ref(false)
+const loadingdowload = ref(false);
+const pagos = ref([]);
 const form = reactive({  
     tipo_doc: 1, 
     nro_doc:'',
@@ -452,7 +502,6 @@ const form = reactive({
     terminos:false,
 });
 
-
 const dniInput = (event) => { form.nro_doc = event.target.value.replace(/\D/g, ''); };
 const celularInput = (event) => { form.celular = event.target.value.replace(/\D/g, ''); };
 
@@ -464,6 +513,7 @@ const save = async () => {
         if (response.status === 202) {
             console.log(response.data.errors);
         } else {
+            inscrito.value = true;
             limpiar();
             notificacion('success', response.data.titulo, response.data.mensaje);
         }
@@ -477,14 +527,20 @@ watch(buscarC, ( newValue, oldValue ) => { getColegios() })
 watch(ubicolegioseleccionado, ( newValue, oldValue ) => { getColegios() })
 watch(buscarResidencia, ( newValue, oldValue ) => {  if(newValue.length >= 3){ getUbigeosResidencia() }})
 watch(buscarColegio, ( newValue, oldValue ) => { if(newValue.length >= 3){ getUbigeosColegio() } })
-watch(() => form.nro_doc, (newValue, oldValue) => { if(newValue.length == 8){ getPagosOnline() } });
+watch(() => form.nro_doc, (newValue, oldValue) => { 
+    if(newValue.length == 8){ 
+        getInscrito();
+        if(inscrito.value === false){
+            getPagosOnline() 
+        }
+    } 
+});
 
 const onSelectResidencias = (value, option) => { redseleccionado.value = option.key; form.ubigeo_residencia = option.key };
 const onSelectUbiColegios = (value, option) => { ubicolegioseleccionado.value = option.key; };
 const onSelectColegios = (value, option) => { ubicolegioseleccionado.value = option.key; form.id_colegio = option.key };
 
 const notificacion = (type, titulo, mensaje) => { notification[type]({ message: titulo,description: mensaje});};
-
 
 const getUbigeosResidencia = async () => {
     axios.post("/get-ubigeo",{"term": buscarResidencia.value})
@@ -514,6 +570,26 @@ const getUbigeosColegio = async () => {
             } else { console.error('Error de configuración:', error.message); }
   });
 }
+
+
+
+const inscrito = ref(false);
+const getInscrito = async () => {
+    axios.get("/get-inscrito-simulacro/"+form.nro_doc)
+    .then((response) => {
+        inscrito.value = response.data.estado;
+    })
+    .catch((error) => {
+        if (error.response) {
+            console.error('Error de servidor:', error.response.data);
+        } else if (error.request) {
+            console.error('Error de red:', error.request);
+        } else { console.error('Error de configuración:', error.message); }
+  });
+}
+
+
+
 
 const getColegios = async () => {
     axios.post("/get-colegios-ubigeo",{"term": buscarC.value, ubigeo: ubicolegioseleccionado.value })
@@ -550,6 +626,7 @@ function validateFechaNacimiento(rule, value) {
   });
 }
 
+const pagosloading = ref(false);
 const cancelar = () => { modalAviso.value = false, childData.value = false; }
 const aceptarT = () => { form.terminos = true; modalAviso.value = false; }
 const childData = ref(false);
@@ -559,9 +636,25 @@ const handleUpdate = (newData) => {
 };
 
 
+const imprimir = async () => {
+    loadingdowload.value = true;
+    imp();
+    await new Promise(resolve => setTimeout(resolve, 9000));
+    loadingdowload.value = false;
+}
+
+const imp = () => {
+  const pdfUrl = 'http://admision-web.test/pdf-simulacro-inscripcion/' + form.nro_doc;
+  const link = document.createElement('a');
+  link.href = pdfUrl;
+  link.target = '_blank';
+  link.download = 'inscripcion-simulacro.pdf';
+  link.click();
+};
+
+
 const limpiar = () => {
     form.tipo_doc = 1; 
-    form.nro_doc = '';
     form.paterno ='';
     form.materno = ''; 
     form.nombres = ''; 
@@ -583,10 +676,12 @@ const limpiar = () => {
 
 
 const getPagosOnline = async () => {
+
     axios.get("/get-pagos-simulacro-online/"+form.nro_doc)
     .then((response) => {
         pagos.value = response.data.data;
         console.log('Datos recibidos:', pagos.value);
+        
     })
     .catch((error) => {
         if (error.response) {
@@ -594,16 +689,21 @@ const getPagosOnline = async () => {
         } else if (error.request) {
             console.error('Error de red:', error.request);
             } else { console.error('Error de configuración:', error.message); }
-  });
+    });
+
 }
 
 
 const enviarPago = async () => {
+    pagosloading.value = true;
     axios.post("/subir-pagos",{"pagos": selectedItems.value, "dni": form.nro_doc  })
     .then((response) => {
         confirmarcion.value = response.data.estado;
         console.log(response.data.estado.estado)
-        if(response.data.estado === true) { activeKey.value = '2'}
+        if(response.data.estado === true) 
+        { 
+            activeKey.value = '2'
+        }
     })
     .catch((error) => {
         if (error.response) {
@@ -611,7 +711,8 @@ const enviarPago = async () => {
         } else if (error.request) {
             console.error('Error de red:', error.request);
             } else { console.error('Error de configuración:', error.message); }
-  });
+    });
+    pagosloading.value = false;
 }
 
 
@@ -620,7 +721,7 @@ getUbigeosColegio()
 
 
 
-const pagos = ref([]);
+
 
 
 

@@ -155,8 +155,28 @@ class SimulacroController extends Controller
       
       $pdf->setPaper('A4', 'portrait');
       $output = $pdf->output();
-      
+
       return $pdf->stream();
+      // return $pdf->download();
+
+  }
+
+  public function Inscrito($dni){
+
+    $exists = InscripcionSimulacro::join('participantes_simulacro', 'inscripcion_simulacro.id_estudiante', '=', 'participantes_simulacro.id')
+    ->where('participantes_simulacro.nro_doc', $dni)
+    ->exists();
+
+    if ($exists) {
+      $this->response['mensaje'] = 'El postulante existe';
+      $this->response['estado'] = true;
+    } else {
+      $this->response['mensaje'] = 'El postulante no existe';
+      $this->response['estado'] = false;
+    }
+
+    return response()->json($this->response, 200);
+
   }
 
 
@@ -316,7 +336,8 @@ class SimulacroController extends Controller
           $this->response['mensaje'] = 'No se pudo completar el registro: ' . $e->getMessage();
           $this->response['estado'] = false;
       }
-  }
+  
+    }
 
 
 }
