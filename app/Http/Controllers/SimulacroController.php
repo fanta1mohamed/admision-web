@@ -24,7 +24,7 @@ class SimulacroController extends Controller
 
   public function __construct()
   {
-      $this->fondo = public_path('imagenes/fondo.png');
+      $this->fondo = public_path('imagenes/simulacro/sim40.png');
   }
 
   public function getSimulacros(Request $request)

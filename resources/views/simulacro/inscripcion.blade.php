@@ -17,6 +17,12 @@
             src: url('{{ asset('fonts/Garet-Heavy.ttf') }}') format('truetype');
             font-weight: normal;
         }
+        .individual-letters {
+            font-size: 36px;
+            font-weight: bold;
+            color: white; /* Color del texto */
+            -webkit-text-stroke: 2px black;
+        }
     </style>
     
 </head>
@@ -24,7 +30,19 @@
     <div style="position: relative;">
         <img src="{{ $fondo }}" alt="foto" width="100%"> 
     </div>
-    <div style="background:#ffff001f; position:absolute; top:26px; width:100%;">
+    <div style="position: absolute; width:900px; top:700px; left:100px; ">
+        <div style=" transform: rotate(-45deg); transform-origin: 0% 100%; text-align: center; font-weight:bold; padding: 10px; font-size:100pt;">
+            <div class="individual-letters">
+                <span>H</span>
+                <span>e</span>
+                <span>l</span>
+                <span>l</span>
+                <span>o</span>
+              </div>
+        </div>
+
+    </div>
+    <div style="position:absolute; top:26px; width:100%;">
         <div style="text-align:center; font-weight:bold; font-size:14pt;">
             <div><span>UNIVERSIDAD NACIONAL DEL ALTIPLANO</span></div>
             <div><span>VICERRECTORADO ACADÉMICO</span></div>
@@ -35,7 +53,7 @@
             <div><span>CONSTANCIA DE INSCRIPCIÓN</span></div>
             <div><span>EXAMEN SIMULACRO 2023</span></div>
         </div>
-        <div style="font-size:11pt; font-family: 'Garet Book'; margin-top:10px; font-weigth:normal; margin-left:1.2cm; margin-right:1.2cm;">
+        <div style="font-size:11pt; font-family: 'Garet Book'; margin-top:10px; font-weigth:normal; margin-left:1.2cm; margin-right:1.2cm; line-height:0.9rem;">
             <table>
                 <tr>
                     <td>MODALIDAD</td>
@@ -119,6 +137,33 @@
                 </p>
             </div>
         </div>
+
+        <div style="text-align:justify; margin-top:40px; margin-left:1.2cm; margin-right:1cm; font-size:12pt; font-family: 'Helvetica';">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <div style="margin-left: 125px; margin-right: 60px;">
+                            <div>DIRECCIÓN DE ADMISIÓN</div>
+                            <div>UNA PUNO</div>
+                        </div>      
+                    </td>
+                    <td>
+                        <div style="text-align: center; margin-top:-20px;">
+                            <div>_________________</div>
+                            <div>POSTULANTE</div>
+                        </div>
+                    </td>
+                    <td style="width:120px;">
+                        <div style="text-align: center; font-size:.8rem;">
+                            <div style="margin-left:20px; width: 80px; height:100px; border:solid 1px black;"></div>
+                            <div style="width: 120px;" >Huella digital</div>
+                            <div>Indice derecho</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 </body>
 </html>
