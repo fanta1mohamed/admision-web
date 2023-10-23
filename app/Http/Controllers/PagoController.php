@@ -43,7 +43,6 @@ class PagoController extends Controller
 
                 }
 
-
                 $this->response['estado'] = true;
                 return response()->json($this->response, 200);
             } else {

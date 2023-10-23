@@ -53,7 +53,7 @@
             <div><span>CONSTANCIA DE INSCRIPCIÓN</span></div>
             <div><span>EXAMEN SIMULACRO 2023</span></div>
         </div>
-        <div style="font-size:11pt; font-family: 'Garet Book'; margin-top:10px; font-weigth:normal; margin-left:1.2cm; margin-right:1.2cm; line-height:0.9rem;">
+        <div style="font-size:11pt; font-family: 'Helvetica'; margin-top:10px; font-weigth:normal; margin-left:1.2cm; margin-right:1.2cm; line-height:0.9rem; letter-spacing:0.088rem; line-height:1.7rem;">
             <table>
                 <tr>
                     <td>MODALIDAD</td>
@@ -87,9 +87,9 @@
                 </tr>
             </table>
         </div>
-        <div style="text-align:justify; margin-top:10px; margin-left:1.2cm; margin-right:1cm; font-size:12pt; font-family: 'Garet Book';">
+        <div style="text-align:justify; margin-top:10px; margin-left:1.2cm; margin-right:1cm; font-size:12pt; font-size:12pt; font-family: 'Helvetica';">
             <div>
-                <p>
+                <p style="letter-spacing:0.088rem; line-height:1.7rem;">
                     Ha sido debidamente inscrito(a) para participar en el <span style="font-weight: bold; font-style:italic; font-family: 'Helvetica'">“Simulacro de Admisión 2023”</span>, a
                     llevarse a cabo el día sábado 11 de noviembre del año en curso a 11:00 horas, dentro del
                     recinto universitario.
