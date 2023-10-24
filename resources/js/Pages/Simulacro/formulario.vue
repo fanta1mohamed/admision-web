@@ -1,4 +1,5 @@
 <template>
+<Head title="Formulario de inscripción"/>
 <AuthenticatedLayout>
 <div class="flex justify-center" style="">
 <div v-if="inscrito === true" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;  background:white;">
@@ -121,7 +122,7 @@
                 </div>
              </div>            
         </a-tab-pane>
-        <a-tab-pane key="2" class="pl-6 pb-6 pr-6" tab="Formulario de inscripción" :disabled="confirmacion">            
+        <a-tab-pane key="2" class="pl-6 pb-6 pr-6" tab="Formulario de inscripción" :disabled="!confirmacion">            
             <div class="flex justify-center">
                 <a-row style="display:flex; justify-content:center;">
                     <a-col :span="24">
@@ -465,6 +466,7 @@ import { watch, watchEffect, computed, ref, unref, reactive, onMounted } from 'v
 import { DownOutlined, ExclamationCircleOutlined, FormOutlined, PrinterOutlined, DeleteOutlined, SearchOutlined, SaveOutlined, EyeOutlined} from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import { Form } from 'ant-design-vue';
+import { Head } from '@inertiajs/vue3';
 import axios from 'axios';
 
 const baseUrl = window.location.origin;
@@ -640,8 +642,8 @@ function validateFechaNacimiento(rule, value) {
       const fechaMinima = new Date();
       const fechaMaxima = new Date();
 
-      fechaMinima.setFullYear(fechaMinima.getFullYear() - 17);
-      fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 14);
+      fechaMinima.setFullYear(fechaMinima.getFullYear() - 18);
+      fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 13);
 
       if (fechaNacimiento > fechaMaxima || fechaNacimiento < fechaMinima) {
         reject(new Error('Debes tener entre 14 y 17 años'));

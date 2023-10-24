@@ -291,7 +291,13 @@ Route::post('/get-alternativas2', [PreguntaController::class, 'getAlternativas2'
 Route::get('/get-pre', [PreguntaController::class, 'getPreguntasPerfiles2']);
 
 Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
-    Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacros');
+    Route::get('/', fn () => Inertia::render('Simulacro/Admin/index'))->name('simulacro-inicio');
+    Route::get('/get-nro-participantes', [SimulacroController::class, 'postulantesRegistrados']);
+
+
+    
+
+    //Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacros');
     Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
     Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
 
@@ -304,7 +310,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 });
 
 Route::prefix('simulacros')->group(function () {
-    Route::get('/formulario-inscripcion', fn () => Inertia::render('Simulacro/formulario'));
+    Route::get('/formulario-inscripcion', fn () => Inertia::render('Simulacro/formulario'));    
 });
 
 

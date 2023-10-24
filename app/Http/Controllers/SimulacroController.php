@@ -343,4 +343,21 @@ class SimulacroController extends Controller
     }
 
 
+    public function postulantesRegistrados() {
+
+      $nPar = ParticipanteSimulacro::count();
+      $ultReg = ParticipanteSimulacro::selectRaw('COUNT(*) as count, DATE(created_at) as fecha')
+      ->groupByRaw('DATE(created_at)')
+      ->orderByDesc('fecha')
+      ->first();
+
+      $this->response['particpantes'] = $nPar ;
+      $this->response['ultimoparticipante'] = $ultReg;
+      $this->response['estado'] = true;
+
+      return response()->json($this->response, 200);
+
+    }
+
+
 }

@@ -7,10 +7,9 @@
             <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
           </svg>
         </button> -->
-
         <a-dropdown :trigger="['click']">
           <a class="ant-dropdown-link" @click.prevent style="text-decoration: none; color: black;">
-            {{ $page.props.auth.user.name }} &nbsp;
+              {{ $page.props.auth.user.name }} &nbsp;
             <DownOutlined />
           </a>
           <template #overlay>
@@ -19,9 +18,6 @@
                 <button @click="dropdownOpen = ! dropdownOpen" class="relative block overflow-hidden">
                     </button>   
               </a-menu-item>
-                <!-- <dropdown-link :href="route('profile.edit')">
-                    Configurar perfil
-                </dropdown-link> -->
                 <a-menu-divider />
                 <dropdown-link class="w-full text-left" :href="route('logout')" method="post" as="button">
                     Salir del sistema
@@ -29,49 +25,6 @@
             </a-menu>
           </template>
         </a-dropdown>
-
-
-        <!-- <Dropdown v-else>
-          <template #trigger >
-            <div class="flex" style="align-items: center; height: 37px; color: #000000D9;">
-            <div style="text-align: end;  margin-top: 0px;">
-              <div style=" width: 200px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
-                <span style="font-size: 0.9rem;">Administrador </span>
-              </div>
-              <div style="margin-top: -7px;">
-                <span style="font-size: 0.9rem; font-weight: bold;"> Usuario </span>
-              </div>
-            </div>
-            <div style="margin-left: 10px;">
-              <i class="pi pi-angle-down"></i>
-            </div>
-          </div>
-          </template>
-
-          <template #content>
-            <DropdownLink :href="route('profile.edit')">
-              <template #icon>
-                <svg class="mr-3 w-4 h-4" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                  <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                  <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                Profile
-              </template>
-            </DropdownLink>
-
-            <DropdownLink :href="route('logout')" method="post" as="button">
-              <template #icon>
-                <svg class="mr-3 w-4 h-4" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                  <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                </svg>
-                Log Out
-              </template>
-            </DropdownLink>
-          </template>
-        </Dropdown> -->
-
-        
-
       </div>
     </header>
 </template>
