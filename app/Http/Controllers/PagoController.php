@@ -14,6 +14,7 @@ class PagoController extends Controller
         return $data;
     }
 
+
     public function pagosSimulacro( Request $request){
 
         $data = $request->pagos;
@@ -50,8 +51,22 @@ class PagoController extends Controller
         
         }
 
+    }
 
+    public function pagoSimulacro($dni){
 
+        $exists = Pago::where('dni', $dni)->where('total',10)->exists();
+    
+        if ($exists) {
+          $this->response['mensaje'] = 'Pagó 10 soles';
+          $this->response['estado'] = true;
+        } else {
+          $this->response['mensaje'] = 'No pagó aún';
+          $this->response['estado'] = false;
+        }
+    
+        return response()->json($this->response, 200);
+    
     }
 
 

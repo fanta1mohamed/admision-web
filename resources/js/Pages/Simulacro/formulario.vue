@@ -57,7 +57,10 @@
                         <div class="flex" style="width:100%; max-width: 700px;">
                             <a-input v-model:value="form.nro_doc" @input="dniInput" :maxlength="8" style="width: 100%;" :disabled="!form.terminos"/>
                         </div>
+                    </div>
 
+                    <div v-if="form.nro_doc.length === 8 && estadoPago !== null" class="flex mb-0" style="justify-content:center;">
+                        <p style="color:crimson;"> {{ estadoPago }} </p>
                     </div>
                     
                     <a-row style="display:flex; justify-content:center;" class="pb-4">
@@ -484,13 +487,15 @@ const formDatos = ref();
 const loading = ref(false)
 const loadingdowload = ref(false);
 const pagos = ref([]);
+const inscrito = ref(false);
+const pagado = ref(false);
 const form = reactive({  
     tipo_doc: 1, 
     nro_doc:'',
     paterno:'',
     materno:'', 
     nombres:'', 
-    sexo: 1, 
+    sexo: null, 
     fec_nac:'',
     celular:'',
     correo:'',
@@ -531,7 +536,10 @@ watch(() => form.nro_doc, (newValue, oldValue) => {
     if(newValue.length == 8){ 
         getInscrito();
         if(inscrito.value === false){
-            getPagosOnline() 
+            getPagado();
+            if(pagado.value === false){
+                getPagosOnline()
+            }    
         }
     } 
 });
@@ -573,7 +581,7 @@ const getUbigeosColegio = async () => {
 
 
 
-const inscrito = ref(false);
+
 const getInscrito = async () => {
     axios.get("/get-inscrito-simulacro/"+form.nro_doc)
     .then((response) => {
@@ -588,6 +596,23 @@ const getInscrito = async () => {
   });
 }
 
+
+const getPagado = async () => {
+    axios.get("/get-pago-simulacro/"+form.nro_doc)
+    .then((response) => {
+        pagado.value = response.data.estado;
+        if(response.data.estado === true){
+            activeKey.value = '2';
+        }
+    })
+    .catch((error) => {
+        if (error.response) {
+            console.error('Error de servidor:', error.response.data);
+        } else if (error.request) {
+            console.error('Error de red:', error.request);
+        } else { console.error('Error de configuración:', error.message); }
+  });
+}
 
 
 
@@ -604,6 +629,7 @@ const getColegios = async () => {
             } else { console.error('Error de configuración:', error.message); }
   });
 }
+
 
 function validateFechaNacimiento(rule, value) {
   return new Promise((resolve, reject) => {
@@ -652,6 +678,7 @@ const imp = () => {
   link.click();
 };
 
+const estadoPago = ref(null);
 
 const limpiar = () => {
     form.tipo_doc = 1; 
@@ -677,11 +704,15 @@ const limpiar = () => {
 
 const getPagosOnline = async () => {
 
+    estadoPago.value = null;
     axios.get("/get-pagos-simulacro-online/"+form.nro_doc)
     .then((response) => {
-        pagos.value = response.data.data;
-        console.log('Datos recibidos:', pagos.value);
-        
+        if(response.data.data.length === 0){
+            estadoPago.value = "No tiene registrado ningun para el este Simulacro de Admisión 2023"
+            console.log(estadoPago.value);
+        }else{
+            pagos.value = response.data.data;
+        }
     })
     .catch((error) => {
         if (error.response) {
@@ -716,16 +747,6 @@ const enviarPago = async () => {
 }
 
 
-getUbigeosResidencia()
-getUbigeosColegio()
-
-
-
-
-
-
-
-
 const toggleSelection = (item) => {
   item.selected = !item.selected;
 };
@@ -736,6 +757,9 @@ const selectedItems = computed(() => {
     }
 
 });
+
+getUbigeosResidencia()
+getUbigeosColegio()
 
 </script>
 <style scoped>

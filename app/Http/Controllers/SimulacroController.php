@@ -160,9 +160,7 @@ class SimulacroController extends Controller
         file_put_contents(public_path('/documentos/simulacro2023/').$dni.'.pdf', $output);
         return $pdf->stream();
       }
-
-
-        // return $pdf->download();
+      // return $pdf->download();
 
   }
 

@@ -413,7 +413,7 @@ class SeleccionDataController extends Controller
           ->orWhere(DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre)'),'LIKE','%'.$request->term . '%')
           ->orWhere('distritos.nombre', 'LIKE', '%' . $request->term . '%');
     })
-    ->paginate(10);
+    ->paginate(50);
 
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
@@ -430,7 +430,7 @@ class SeleccionDataController extends Controller
           ->orWhere('gestion', 'LIKE', '%' . $request->term . '%')
           ->orWhere(DB::raw('CONCAT(nombre," (",gestion,")")'),'LIKE','%'.$request->term . '%');
     })
-    ->paginate(10);
+    ->paginate(100);
 
     $this->response['estado'] = true;
     $this->response['datos'] = $res;

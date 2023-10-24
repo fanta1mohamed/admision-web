@@ -381,13 +381,11 @@ Route::post('/save-simulacro-participante', [SimulacroController::class, 'savePa
 Route::get('/pdf-simulacro-inscripcion/{dni}', [SimulacroController::class, 'pdfInscripcion']);
 Route::get('/get-inscrito-simulacro/{dni}', [SimulacroController::class, 'Inscrito']);
 
-
 Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
-
+Route::get('/get-pago-simulacro/{dni}', [PagoController::class, 'pagoSimulacro']);
 
 
 Route::get('/get-e-oti', [IngresoController::class, 'getEstudianteOTI']);
-
 Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
     // $response = Http::get("http://38.43.133.27/PAYMENTS_MNG/v1/{$dni}/9/");
     $response = Http::get("https://service2.unap.edu.pe/PAYMENTS_MNG/v1/{$dni}/8/");
