@@ -1,10 +1,9 @@
 <template>
 
-    <!-- <a-card class="ml-4 mr-5" style="border: 1px solid #d9d9d9; border-radius: 12px;"> -->
         <a-card class="" style="margin: -15px; border: 0px solid #d9d9d9; border-radius: 12px;">
         <!-- Head -->
         <div class="flex justify-between pl-0 pr-3 items-center" style="height: 48px; width: 100%; margin-left: -8px;"> 
-            <div><h1 style="font-weight: bold; font-size: 1.2rem;">{{ seleccionado }} de postulantes</h1></div>
+            <div><h1 style="font-weight: bold; font-size: 1.2rem;">Rep. {{ seleccionado }}</h1></div>
             <div class="flex">
                 <a-dropdown>
                     <template #overlay>
@@ -93,7 +92,6 @@
             {{ dataResidencia }}
         </pre> -->
 
-
     </a-card>
 
 </template>
@@ -102,54 +100,19 @@ import { DownOutlined, DownloadOutlined } from '@ant-design/icons-vue';
 import {ref} from 'vue';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, Title, LinearScale, PointElement, LineElement } from 'chart.js'
 import { Pie, Bar, Line } from 'vue-chartjs'
-//import jsonToExcel from 'json-as-xlsx';
-//import  json2excel  from 'json-as-xlsx'
-//import xlsx from 'json-as-xlsx'
-//import headerImage from '../../../../../assets/imagenes/logotiny.png'; // Importa la imagen como un módulo
-
 import * as XLSX from 'xlsx';
+const seleccionado = ref("Genero");     
 
-// Ruta de la imagen para el encabezado
-const headerImage = '../../../../../../imagenes/logotiny.png';
-
-// Datos de ejemplo
-// const data = [
-//   { nombre: 'Producto 1', cantidad: 10 },
-//   { nombre: 'Producto 2', cantidad: 20 },
-//   { nombre: 'Producto 3', cantidad: 15 },
-// ];
-
-// Función para exportar a Excel
 const exportToExcel = () => {
-  // Crear un libro de Excel
   const workbook = XLSX.utils.book_new();
-
-  // Agregar una hoja al libro
   const worksheet = XLSX.utils.json_to_sheet(datos.value);
-
-  // Agregar una imagen al encabezado
-  const img = new Image();
-  img.src = headerImage;
-  const canvas = document.createElement('canvas');
-  canvas.width = 100; // Ancho de la imagen
-  canvas.height = 50; // Altura de la imagen
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  const headerImageBase64 = canvas.toDataURL('image/png');
-  worksheet['A1'].l = { Target: headerImageBase64, Tooltip: 'Imagen' };
-
-  // Agregar la hoja al libro
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Productos');
-
-  // Crear un archivo Excel
-  XLSX.writeFile(workbook, 'productos.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, seleccionado.value);
+  XLSX.writeFile(workbook, seleccionado.value+'.xlsx');
 };
-
-
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend, PointElement, LineElement)
 
-const seleccionado = ref("Genero"); 
+
 const datos = ref(null);
 const dataEdades = ref(null);
 const dataEgreso = ref(null);
@@ -165,12 +128,15 @@ const dataProcedenciaColegio = ref(null);
 const header = ['nombre', 'cantidad'];
 const footer = [ { Fecha: '2023-09-14', 'Ariel luque': '' },];
 
-
-
+const excelData = [
+//   { ...data },
+  { ...header },
+  { ...footer },
+];
 
 const getGenero = () => { 
     seleccionado.value = 'Genero'
-    axios.get('get-inscritos-genero-reporte')
+    axios.get('/simulacro/get-inscritos-genero-reporte')
     .then((response) => { 
         datos.value = response.data.datos;
         dataConvertida.value = {
@@ -209,7 +175,7 @@ const getEdad = () => {
 
 const getResidencia = () => {
     seleccionado.value = 'Residencia' 
-    axios.get('/simulacros/get-inscritos-residencia-reporte')
+    axios.get('get-inscritos-residencia-reporte')
     .then((response) => {
         datos.value = response.data.datos;
         dataResidencia.value = {
@@ -251,7 +217,7 @@ const getProcedencia = () => {
 
 const getEgreso = () => {
     seleccionado.value = 'Egreso' 
-    axios.get('/simulacro/get-inscritos-egreso-reporte')
+    axios.get('get-inscritos-egreso-reporte')
     .then((response) => {
         datos.value = response.data.datos;
         dataEgreso.value = {
@@ -261,7 +227,7 @@ const getEgreso = () => {
                     label: 'Año de Egreso',
                     backgroundColor: ['#20254B'],
                     data: response.data.datos.map(item => item.cant)
-                    }
+                }
             ]
         }
     })
@@ -375,10 +341,35 @@ const dataConvertida = ref(null);
 const options = {
   labels:"Reporte",
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: true,
+      callbacks: {
+        label: (context) => {
+          const label = context.label || '';
+          if (context.parsed && label) {
+            const value = context.parsed;
+            return `${label}: ${value}`;
+          }
+          return '';
+        },
+      },
+    },
+    segmentLabel: {
+      render: 'percentage',
+      fontSize: 16,
+      fontStyle: 'bold',
+      fontColor: 'white',
+      arc: true,
+    },
+  },
 }
 
-getGenero();
+getGenero()
 // getResidencia();
 </script>
   

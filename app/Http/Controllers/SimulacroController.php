@@ -11,6 +11,7 @@ use App\Models\Simulacro;
 use App\Models\InscripcionSimulacro;
 use App\Models\Postulante;
 use App\Models\Paso;
+use App\Models\Pago;
 use Barryvdh\DomPDF\Facade\Pdf;
 use TCPDF;
 use Illuminate\Support\Facades\DB;
@@ -357,6 +358,82 @@ class SimulacroController extends Controller
 
       return response()->json($this->response, 200);
 
+    }
+
+    public function postulantesInscritos() {
+
+      $nIns = InscripcionSimulacro::count();
+      $ultReg = InscripcionSimulacro::selectRaw('COUNT(*) as count, DATE(created_at) as fecha')
+      ->groupByRaw('DATE(created_at)')
+      ->orderByDesc('fecha')
+      ->first();
+
+      $this->response['inscritos'] = $nIns;
+      $this->response['ultimoinscrito'] = $ultReg;
+      $this->response['estado'] = true;
+
+      return response()->json($this->response, 200);
+
+    }
+
+    public function pagosRegistrados() {
+
+      $nPagos = Pago::count();
+      $ultReg = Pago::selectRaw('COUNT(*) as count, DATE(created_at) as fecha')
+      ->groupByRaw('DATE(created_at)')
+      ->orderByDesc('fecha')
+      ->first();
+
+      $this->response['n_pagos'] = $nPagos;
+      $this->response['ultimoregistro'] = $ultReg;
+      $this->response['estado'] = true;
+
+      return response()->json($this->response, 200);
+
+    }
+
+    public function postulantexPrograma(){
+        $programasConCantidad = InscripcionSimulacro::selectRaw('COUNT(*) as cantidad, programa.nombre as programa, programa.id as id_programa')
+        ->join('programa', 'inscripcion_simulacro.id_programa', '=', 'programa.id')
+        ->groupBy('programa.id')
+        ->orderByDesc('cantidad')
+        ->get();
+
+        $this->response['datos'] = $programasConCantidad;
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+    }
+
+
+    //REPORTES
+
+    public function reporteInscritosGenero(){
+    
+      $resultados = InscripcionSimulacro::join('participantes_simulacro', 'participantes_simulacro.id', '=', 'inscripcion_simulacro.id_estudiante')
+        ->selectRaw('COUNT(*) AS cant, participantes_simulacro.sexo')
+        ->where('inscripcion_simulacro.estado', '=', 1)
+        ->where('inscripcion_simulacro.id_simulacro', '=', 3)
+        ->groupBy('participantes_simulacro.sexo')
+        ->orderByDesc('cant')
+        ->get();
+  
+      $this->response['datos'] = $resultados;
+      $this->response['estado'] = true;
+      return response()->json($this->response, 200);
+    }
+
+    public function reporteInscritosAreas(){
+    
+      $resultados = InscripcionSimulacro::join('programa', 'inscripcion_simulacro.id_programa', '=', 'programa.id')
+        ->selectRaw('COUNT(*) AS cant, programa.area as areas')
+        ->where('inscripcion_simulacro.estado', '=', 1)
+        ->where('inscripcion_simulacro.id_simulacro', '=', 3)
+        ->groupBy('programa.area')
+        ->get();
+  
+      $this->response['datos'] = $resultados;
+      $this->response['estado'] = true;
+      return response()->json($this->response, 200);
     }
 
 

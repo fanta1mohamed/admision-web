@@ -293,8 +293,14 @@ Route::get('/get-pre', [PreguntaController::class, 'getPreguntasPerfiles2']);
 Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     Route::get('/', fn () => Inertia::render('Simulacro/Admin/index'))->name('simulacro-inicio');
     Route::get('/get-nro-participantes', [SimulacroController::class, 'postulantesRegistrados']);
+    Route::get('/get-nro-inscritos', [SimulacroController::class, 'postulantesInscritos']);
+    Route::get('/get-nro-pagos', [SimulacroController::class, 'pagosRegistrados']);
+    Route::get('/postulantes-por-programas', [SimulacroController::class, 'postulantexPrograma']);
 
 
+    //REPORTES
+    Route::get('get-inscritos-genero-reporte', [SimulacroController::class, 'reporteInscritosGenero']);
+    Route::get('get-inscritos-areas-reporte', [SimulacroController::class, 'reporteInscritosAreas']);
     
 
     //Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacros');
