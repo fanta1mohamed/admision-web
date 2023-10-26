@@ -143,7 +143,7 @@ const getGenero = () => {
             labels: ['Hombres', 'Mujeres'],
             datasets: [
                 {
-                    backgroundColor: ['#666666','#20254B'],
+                    backgroundColor: ['#A2DED0','#FFD3E4'],
                     data: response.data.datos.map(item => item.cant)
                 }
             ]

@@ -142,7 +142,7 @@ const getAreas = () => {
             datasets: [
                 {
                     label: 'Rep. Areas',
-                    backgroundColor: ['#6cd3b2','#E0254B','#d4f443'],
+                    backgroundColor: ['#A2DED0','#FFD3E4','#D7BDE2'],
                     data: response.data.datos.map(item => item.cant)
                 }
             ]
