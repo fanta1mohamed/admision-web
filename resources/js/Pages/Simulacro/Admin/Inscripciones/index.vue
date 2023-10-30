@@ -285,7 +285,7 @@ const getUbigeosResidencia = async () => {
 
 const inscritos = ref([]);
 const getInscritos = async () => { 
-    let res = await axios.post( "get-inscritos-simulacro",{
+    let res = await axios.post( "get-inscritos-simulacro?page="+pagina.value,{
         "term": buscar.value,
         paginashoja: pageSize.value
     });
