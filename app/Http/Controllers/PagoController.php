@@ -87,8 +87,9 @@ class PagoController extends Controller
             return $query
                 ->orWhere('dni', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('fullname', 'LIKE', '%' . $request->term . '%');
-        })->paginate(10);
-            //  ->paginate($request->paginashoja);
+        })
+        //->paginate(10);
+        ->paginate($request->paginashoja);
     
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
