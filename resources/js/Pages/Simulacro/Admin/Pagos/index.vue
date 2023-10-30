@@ -45,7 +45,7 @@
     </div>
     <div class="flex justify-between mb-6 mt-2 pr-4">
         <div>
-            <a-pagination v-model:current="pagina" simple :total="totalRegistros" show-less-items />
+            <a-pagination v-model:current="pagina" :page-size="pageSize" simple :total="totalRegistros" show-less-items />
         </div>
         <div clas="" style="scale: 0.9;"> 
             <a-select
