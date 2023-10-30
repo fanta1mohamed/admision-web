@@ -45,7 +45,7 @@
     </div>
     <div class="flex justify-between mb-6 mt-2 pr-4">
         <div>
-            <a-pagination v-model:current="pagina" simple :total="totalRegistros" show-less-items />
+            <a-pagination v-model:current="pagina" :page-size="pageSize" simple :total="totalRegistros" show-less-items />
         </div>
         <div clas="" style="scale: 0.9;"> 
             <a-select
@@ -285,7 +285,10 @@ const getUbigeosResidencia = async () => {
 
 const inscritos = ref([]);
 const getInscritos = async () => { 
-    let res = await axios.post( "get-inscritos-simulacro",{"term": buscar.value,});
+    let res = await axios.post( "get-inscritos-simulacro",{
+        "term": buscar.value,
+        paginashoja: pageSize.value
+    });
     inscritos.value = res.data.datos.data
     totalRegistros.value = res.data.datos.total;
 }
