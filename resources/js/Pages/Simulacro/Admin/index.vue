@@ -1,6 +1,7 @@
 <template>
 <Layout>
-<div style="">
+
+<div class="mb-4" style="width: 100%;">
     <a-row :gutter="[16, 8]">
       <a-col :xs="24" :sm="12" :md="8" :lg="8">
         <div class="p-4" style="background: white; border-radius: 12px;" >
@@ -12,9 +13,9 @@
               </div>
             </div>
           </div>
-          <div style="margin-top: 50px;">
+          <div style="margin-top: 20px;">
             <div v-if="nParticpantes"> 
-              <span style="font-size: 1.5rem; font-weight: bold;">
+              <span style="font-size: 2.5rem; font-weight: bold;">
                 {{ nParticpantes }}
               </span>
             </div>
@@ -32,23 +33,23 @@
       <a-col :xs="24" :sm="12" :md="8" :lg="8">        
         <div class="p-4" style="background: white; border-radius: 12px;">
           <div class="flex justify-between">
-            <div><span style="font-weight: bold;">Inscritos</span></div>
+            <div><span style="font-weight: bold; font-size: 1.1rem;">Inscritos</span></div>
             <div class="p-1 pl-2 pr-2" style="background: #6db6e753; border-radius: 50%;">
               <div style="margin-top: -5px;">
                 <span style="color: var(--primary-color); font-size: 1.15em;"><team-outlined /></span>
               </div>
             </div>
           </div>
-          <div style="margin-top: 50px;">
+          <div style="margin-top: 20px;">
             <div> 
-              <span style="font-size: 1.5rem; font-weight: bold;">
+              <span style="font-size: 2.5rem; font-weight: bold;">
                 {{ nInscritos }}
               </span>
             </div>
           </div>
           <div class="flex justify-start">
             <div v-if="uInscritos"> 
-              <span style="color: #00af00; font-weight:bold; "> {{ uInscritos.count }} inscritos <span style="color: gray;">el {{ formatearFecha(uInscritos.fecha) }}</span> </span>
+              <span style="color: #00af00;  font-weight:bold; "> {{ uInscritos.count }} inscritos <span style="color: gray;">el {{ formatearFecha(uInscritos.fecha) }}</span> </span>
             </div>
           </div>
 
@@ -60,16 +61,16 @@
 
         <div class="p-4" style="background: white; border-radius: 12px;">
           <div class="flex justify-between">
-            <div><span style="font-weight: bold;">Pagos</span></div>
+            <div><span style="font-weight: bold; font-size: 1.1rem;">Pagos</span></div>
             <div class="p-1 pl-2 pr-2" style="background: #6db6e753; border-radius: 50%;">
               <div style="margin-top: -5px;">
                 <span style="color: var(--primary-color); font-size: 1.15em;"><team-outlined /></span>
               </div>
             </div>
           </div>
-          <div style="margin-top: 50px;">
+          <div style="margin-top: 20px;">
             <div v-if="nPagos"> 
-              <span style="font-size: 1.5rem; font-weight: bold;">
+              <span style="font-size: 2.5rem; font-weight: bold;">
                 {{ nPagos }}
               </span>
             </div>
@@ -88,9 +89,9 @@
     <a-row :gutter="[16, 8]" class="mt-4">
       <a-col :xs="24" :sm="12" :md="12" :lg="16">
         <div class="flex mb-4" style="justify-content: space-between;">
-            <div v-for="(item, index) in areas" :key="index"  :style="{'background':areasColores[index] }" style="border-radius: 12px; height: 100px; width: 32%; padding:20px; color: white;">
-              <div><span style="font-weight: bold; font-weight: bold; font-size: 1.2rem;;"> {{  item.areas }}</span></div>
-              <div class="flex" style="justify-content: flex-end;"><span style="font-size:2.2rem;"> {{ item.cant }} </span></div>
+            <div v-for="(item, index) in areas" :key="index"  :style="{'background':areasColores[index] }" style="border-radius: 12px; height: 100px; width: 32%; padding:20px; padding-left: 10px; padding-top: 15px; color: white; text-align: left;">
+              <div style="text-align: left;"><span style="font-weight: bold; font-weight: bold; font-size: 1rem;;"> {{  item.areas }}</span></div>
+              <div class="flex" style="justify-content: flex-end;"><span style="font-size:2.5rem;"> {{ item.cant }} </span></div>
             </div>
         </div>
         <div class="p-4" style="background: white; border-radius: 12px;" >
@@ -100,7 +101,10 @@
 
       <a-col :xs="24" :sm="12" :md="12" :lg="8" style="height: 100%;">        
         <div class="p-4" style="background: white; border-radius: 12px; height: calc(200% - 100px);">
-          <Reportes/>
+          <div style="background: yellow;" class="p-3">
+            <Reportes/>
+          </div>
+
         </div>
       </a-col>
 
@@ -119,7 +123,7 @@
             </div>
           </div>
           <div style="margin-top: 10px;">
-            <a-table :columns="columns" :data-source="participantes" size="small">
+            <a-table :columns="columns" :data-source="participantes" :pagination="false" size="small">
             </a-table>
           </div>
         </div>
@@ -202,7 +206,7 @@ const getParticipantes = () => {
   .catch((error) => {  console.error('Error al realizar la solicitud:', error); });
 }
 
-const areasColores = ref(['#A2DED0','#FFD3E4','#D7BDE2']); 
+const areasColores = ref(['#82DED7','#FFB3E4','#c09cd8']); 
 
 getParticipantes();
 
@@ -213,13 +217,17 @@ const formatearFecha = (fecha) => {
 
 const columns = [
   {
-    title: 'Cantidad',
+    title: 'Cant',
     dataIndex: 'cantidad'
   },
   {
     title: 'Programa',
     dataIndex: 'programa'
   },
+  {
+    title: 'Areas',
+    dataIndex: 'area'
+  }
 ];
 
 

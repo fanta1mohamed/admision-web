@@ -1,11 +1,14 @@
 @import 'ant-design-vue/dist/antd.css';
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@300;400;500;600;700&display=swap');
 :root {
   --primary-color: #476175 !important;
 }
 
 *{
-  font-family: Arial, Helvetica, sans-serif; font-weight: 400;
-  font-size: .95rem;
+  font-family: 'Playpen Sans', cursive;
+  /* font-family: Arial, Helvetica, sans-serif;  */
+  font-weight: 400;
+  font-size: .90rem;
 }
 
 

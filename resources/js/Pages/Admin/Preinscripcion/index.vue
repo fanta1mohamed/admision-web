@@ -287,7 +287,7 @@ watch(visible, ( newValue, oldValue ) => {
         inscripcion.value.observacion = "",
         postulante.value.nombre = null,
         postulante.value.dni = null,
-        postulante.value.id = null
+        postulante.value.id = null 
     }
 })
 

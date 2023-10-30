@@ -11,9 +11,30 @@ class Colegio extends Model
 
     protected $table = 'colegios';
 
-    // protected $fillable = [
-    //     'nombre',
-    //     'codigo',
-    //     'id_usuario'
-    // ];
+    protected $fillable = [
+        'cod_modular',
+        'cod_local',
+        'nombre',
+        'nivel',
+        'forma',
+        'sexo',
+        'id_gestion',
+        'gestion',
+        'cod_sector',
+        'sector',
+        'telefono',
+        'correo',
+        'direccion',
+        'zona',
+        'ubigeo_inei',
+        'ubigeo',
+        'drep',
+        'ugel',
+        'funciona',
+        'observacion'
+    ];
 }
+
+
+
+

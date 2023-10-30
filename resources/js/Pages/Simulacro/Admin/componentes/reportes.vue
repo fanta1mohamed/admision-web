@@ -1,10 +1,9 @@
 <template>
-
-        <a-card class="" style="margin: -15px; border: 0px solid #d9d9d9; border-radius: 12px;">
+    <a-card class="" style="margin: -25px; border: 0px solid #d9d9d9; border-radius: 12px;">
         <!-- Head -->
-        <div class="flex justify-between pl-0 pr-3 items-center" style="height: 48px; width: 100%; margin-left: -8px;"> 
-            <div><h1 style="font-weight: bold; font-size: 1.2rem;">Rep. {{ seleccionado }}</h1></div>
-            <div class="flex">
+        <div class="flex justify-between pl-0" style="height: 38px; width: 100%; margin-left: 0px;"> 
+            <div style=""><h1 style="font-weight: bold; font-size: 1.2rem;">Rep. {{ seleccionado }}</h1></div>
+            <div class="flex justify-end">
                 <a-dropdown>
                     <template #overlay>
                         <a-menu>
@@ -46,7 +45,7 @@
         </pre> -->
 
         <div v-if="dataConvertida != null && seleccionado =='Genero'">
-            <Pie :data="dataConvertida" :options="options" />
+            <Pie :data="dataConvertida" :options="options" style="width: 185%; height: 185%;" />
         </div>
 
         <div v-if=" dataEdades != null && seleccionado =='Edad'">

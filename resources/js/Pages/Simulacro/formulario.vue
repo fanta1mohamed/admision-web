@@ -264,7 +264,7 @@
                                         @select="onSelectResidencias"
                                         :disabled="!form.terminos"
                                     >
-                                        <a-input
+                                        <a-input 
                                             placeholder="Departamento"
                                             v-model:value="buscarResidencia"
                                             @keypress="handleKeyPress"

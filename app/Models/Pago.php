@@ -25,6 +25,5 @@ class Pago extends Model
         'totalForProvider',
         'type',
         'codigo'
-
     ];
 }

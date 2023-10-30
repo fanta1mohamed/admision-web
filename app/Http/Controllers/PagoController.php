@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Pago;
 use App\Models\Comprobante;
+use DB;
 
 class PagoController extends Controller
 {
@@ -67,6 +68,32 @@ class PagoController extends Controller
     
         return response()->json($this->response, 200);
     
+    }
+
+    public function getPagosSimulacro(Request $request){
+        $columnas = [
+            'fullname as nombre',
+            'dni as nro_doc',
+            'description AS concepto',
+            'confirmedDate as fec_confirmacion', 
+            'authorizationCode as cod_autorizacion', 
+            'total',
+            DB::raw('(totalForProvider - total) AS comision'),
+            'type'
+        ];
+    
+        $res = Pago::select($columnas)
+        ->where(function ($query) use ($request) {
+            return $query
+                ->orWhere('dni', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('fullname', 'LIKE', '%' . $request->term . '%');
+        })->paginate(10);
+            //  ->paginate($request->paginashoja);
+    
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+
     }
 
 

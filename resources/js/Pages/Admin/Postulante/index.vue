@@ -20,7 +20,6 @@
     size="small"
     > 
     <template #bodyCell="{ column, index, record}">
-        
         <template v-if="column.dataIndex === 'ver_postulante'">
             <a-button type="true" @click="goPostulante(record.nro_doc)" size="small" style="height: 30px; display: flex; align-items: center;">
                 <EyeOutlined />
@@ -47,7 +46,6 @@
             </a-popconfirm>
         </template>
     </template>
-
 </a-table> 
 <a-pagination v-model:current="pagina" :total="totalRegistros" show-less-items />
 

@@ -379,7 +379,7 @@ class PreinscripcionController extends Controller
 
 
     public function getPreinscripcionesAdmin(Request $request) {
-
+  
         $query_where = [];
 
         if ($request->programa) array_push($query_where,[DB::raw('pre_inscripcion.id_programa'), '=', $request->programa]); 

@@ -28,6 +28,76 @@ class SimulacroController extends Controller
       $this->fondo = public_path('imagenes/simulacro/sim40.png');
   }
 
+  public function getInscritosSimulacro(Request $request){
+      $columnas = [
+        'inscripcion_simulacro.id as id_inscripcion',
+        'participantes_simulacro.id AS id_participante',
+        'participantes_simulacro.nro_doc', 'participantes_simulacro.paterno', 'participantes_simulacro.materno',
+        'participantes_simulacro.nombres', 'participantes_simulacro.sexo','programa.nombre as programa',
+        'colegios.nombre as colegio',
+        DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre) as lugar')
+      ];
+
+      $res = InscripcionSimulacro::select($columnas)
+          ->join('participantes_simulacro','participantes_simulacro.id','inscripcion_simulacro.id_estudiante')
+          ->join('programa','inscripcion_simulacro.id_programa','programa.id')
+          ->join('colegios','colegios.id','participantes_simulacro.id_colegio')
+          ->join('ubigeo', 'ubigeo.ubigeo', '=', 'colegios.ubigeo')
+          ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
+          ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
+          ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
+          ->where(function ($query) use ($request) {
+              return $query
+              ->orWhere('participantes_simulacro.nombres','%' . $request->term . '%')
+              ->orWhere('participantes_simulacro.paterno','%' . $request->term . '%')
+              ->orWhere('participantes_simulacro.materno','%' . $request->term . '%')
+              ->orWhere('participantes_simulacro.nro_doc','%' . $request->term . '%')
+              ->orWhere('colegios.nombre', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('programa.nombre', 'LIKE', '%' . $request->term . '%')
+              ->orWhere(DB::raw('CONCAT(participantes_simulacro.nombres," ", participantes_simulacro.paterno," ", participantes_simulacro.materno)'),'LIKE','%'.$request->term . '%')
+              ->orWhere(DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre)'),'LIKE','%'.$request->term . '%');
+          })
+          // ->paginate(10);
+          ->paginate($request->paginashoja);
+
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+      return response()->json($this->response, 200);
+  }
+
+
+  public function getParticipantesSimulacro(Request $request){
+    $columnas = [
+      'participantes_simulacro.id AS id_participante',
+      'participantes_simulacro.nro_doc', 'participantes_simulacro.paterno', 'participantes_simulacro.materno',
+      'participantes_simulacro.nombres', 'participantes_simulacro.sexo', 
+      'participantes_simulacro.grado_instruccion as instruccion', 
+      DB::raw('date_format(participantes_simulacro.fec_nacimiento, "%d/%m/%Y") as fec_nacimiento'),
+      DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre) as lugar')
+    ];
+
+    $res = ParticipanteSimulacro::select($columnas)
+        ->join('ubigeo', 'ubigeo.ubigeo', '=', 'participantes_simulacro.ubi_residencia')
+        ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
+        ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
+        ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
+        ->where(function ($query) use ($request) {
+            return $query
+            ->orWhere('participantes_simulacro.nombres','%' . $request->term . '%')
+            ->orWhere('participantes_simulacro.paterno','%' . $request->term . '%')
+            ->orWhere('participantes_simulacro.materno','%' . $request->term . '%')
+            ->orWhere('participantes_simulacro.nro_doc','%' . $request->term . '%')
+            ->orWhere(DB::raw('CONCAT(participantes_simulacro.nombres," ", participantes_simulacro.paterno," ", participantes_simulacro.materno)'),'LIKE','%'.$request->term . '%')
+            ->orWhere(DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre)'),'LIKE','%'.$request->term . '%');
+        })
+        ->paginate($request->paginashoja);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+}
+
+
   public function getSimulacros(Request $request)
   {
     $query_where = [];
@@ -59,6 +129,7 @@ class SimulacroController extends Controller
               ->orWhere('nombres', 'LIKE', '%' . $request->term . '%')
               ->orWhere('primer_apellido', 'LIKE', '%' . $request->term . '%');
       })->orderBy('id', 'ASC')
+ 
       ->paginate(10);
 
     $this->response['estado'] = true;
@@ -67,30 +138,30 @@ class SimulacroController extends Controller
   }
 
 
-  public function getParticipantesSimulacro(Request $request)
-  {  
-    $res = DetalleExamenSimulacro::select(
-      'examen_simulacro.area',
-      'participantes_simulacro.nro_doc as dni', 
-      'participantes_simulacro.nombres', 'participantes_simulacro.primer_apellido', 
-      'participantes_simulacro.segundo_apellido', 
-      DB::raw('SUM(nota) AS nota'))
-      ->leftjoin('participantes_simulacro','detalle_examen_simulacro.dni_postulante','participantes_simulacro.nro_doc')  
-      ->leftjoin('examen_simulacro','detalle_examen_simulacro.id_examen_simulacro','examen_simulacro.id')
-      ->where('detalle_examen_simulacro.id_examen_simulacro','=',$request->examen)
-      ->where(function ($query) use ($request) {
-          return $query
-              ->orWhere('participantes_simulacro.nro_doc', 'LIKE', '%' . $request->term . '%')
-              ->orWhere('participantes_simulacro.nombres', 'LIKE', '%' . $request->term . '%')
-              ->orWhere('participantes_simulacro.primer_apellido', 'LIKE', '%' . $request->term . '%');
-      })->orderBy('nota', 'DESC')
-      ->groupBy('participantes_simulacro.id', 'participantes_simulacro.id','examen_simulacro.id')
-      ->paginate(100);
+  // public function getParticipantesSimulacro(Request $request)
+  // {  
+  //   $res = DetalleExamenSimulacro::select(
+  //     'examen_simulacro.area',
+  //     'participantes_simulacro.nro_doc as dni', 
+  //     'participantes_simulacro.nombres', 'participantes_simulacro.primer_apellido', 
+  //     'participantes_simulacro.segundo_apellido', 
+  //     DB::raw('SUM(nota) AS nota'))
+  //     ->leftjoin('participantes_simulacro','detalle_examen_simulacro.dni_postulante','participantes_simulacro.nro_doc')  
+  //     ->leftjoin('examen_simulacro','detalle_examen_simulacro.id_examen_simulacro','examen_simulacro.id')
+  //     ->where('detalle_examen_simulacro.id_examen_simulacro','=',$request->examen)
+  //     ->where(function ($query) use ($request) {
+  //         return $query
+  //             ->orWhere('participantes_simulacro.nro_doc', 'LIKE', '%' . $request->term . '%')
+  //             ->orWhere('participantes_simulacro.nombres', 'LIKE', '%' . $request->term . '%')
+  //             ->orWhere('participantes_simulacro.primer_apellido', 'LIKE', '%' . $request->term . '%');
+  //     })->orderBy('nota', 'DESC')
+  //     ->groupBy('participantes_simulacro.id', 'participantes_simulacro.id','examen_simulacro.id')
+  //     ->paginate(100);
 
-    $this->response['estado'] = true;
-    $this->response['datos'] = $res;
-    return response()->json($this->response, 200);
-  }
+  //   $this->response['estado'] = true;
+  //   $this->response['datos'] = $res;
+  //   return response()->json($this->response, 200);
+  // }
 
 
   public function saveSimulacro(Request $request ) {
@@ -218,7 +289,7 @@ class SimulacroController extends Controller
       } else {
         $this->response['tipo'] = 'info';
         $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
-        $this->response['mensaje'] = 'Los dato del colegio de '.$postulante->nombres.' se actualizó.';
+        $this->response['mensaje'] = 'Los datos del colegio de '.$postulante->nombres.' se actualizó.';
         $this->response['estado'] = true;
         $this->response['datos'] = $postulante;
       }
@@ -393,9 +464,9 @@ class SimulacroController extends Controller
     }
 
     public function postulantexPrograma(){
-        $programasConCantidad = InscripcionSimulacro::selectRaw('COUNT(*) as cantidad, programa.nombre as programa, programa.id as id_programa')
+        $programasConCantidad = InscripcionSimulacro::selectRaw('COUNT(*) as cantidad, programa.nombre as programa, programa.area as area')
         ->join('programa', 'inscripcion_simulacro.id_programa', '=', 'programa.id')
-        ->groupBy('programa.id')
+        ->groupBy('programa.nombre','programa.area')
         ->orderByDesc('cantidad')
         ->get();
 
@@ -435,6 +506,8 @@ class SimulacroController extends Controller
       $this->response['estado'] = true;
       return response()->json($this->response, 200);
     }
+
+
 
 
 }
