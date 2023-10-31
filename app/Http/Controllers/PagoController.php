@@ -21,11 +21,11 @@ class PagoController extends Controller
         $data = $request->pagos;
 
         foreach ($data as $item) {
-            $response = Http::post("https://service2.unap.edu.pe/PAYMENTS_MNG/v1/setStatus/".$item['id']."/", []);
+            // $response = Http::post("https://service2.unap.edu.pe/PAYMENTS_MNG/v1/setStatus/".$item['id']."/", []);
 
-            if ($response->successful()) {
+            // if ($response->successful()) {
                 if($item['total'] == 10.00){
-                    Pago::create([
+                    $pago =  Pago::create([
                         'codigo' => $item['id'],
                         'authorizationCode' => $item['autorizationCode'],
                         'fullname' => $item['fullname'],
@@ -43,31 +43,33 @@ class PagoController extends Controller
                     ]);
 
                 }
-
+                $this->response['id_pago'] = $pago->id;
                 $this->response['estado'] = true;
                 return response()->json($this->response, 200);
-            } else {
-                return response()->json(['error' => 'La solicitud POST no fue exitosa. Código de estado: ' . $response->status()], $response->status());
-            }
+            // } else {
+            //     return response()->json(['error' => 'La solicitud POST no fue exitosa. Código de estado: ' . $response->status()], $response->status());
+            // }
         
         }
 
     }
 
-    public function pagoSimulacro($dni){
-
-        $exists = Pago::where('dni', $dni)->where('total',10)->exists();
+    public function pagoSimulacro($dni) {
+        $pago = Pago::where('dni', $dni)
+            ->where('total', 10)
+            ->where('status', 1)
+            ->first();
     
-        if ($exists) {
-          $this->response['mensaje'] = 'Pagó 10 soles';
-          $this->response['estado'] = true;
+        if ($pago) {
+            $this->response['id_pago'] = $pago->id;
+            $this->response['mensaje'] = 'Pagó 10 soles';
+            $this->response['estado'] = true;
         } else {
-          $this->response['mensaje'] = 'No pagó aún';
-          $this->response['estado'] = false;
+            $this->response['mensaje'] = 'No pagó aún';
+            $this->response['estado'] = false;
         }
     
         return response()->json($this->response, 200);
-    
     }
 
     public function getPagosSimulacro(Request $request){
@@ -79,9 +81,11 @@ class PagoController extends Controller
             'authorizationCode as cod_autorizacion', 
             'total',
             DB::raw('(totalForProvider - total) AS comision'),
-            'type'
+            'type',
+            DB::raw('if(id_inscripcion IS NOT NULL, 1, 0 ) AS estado'),
+            'id_inscripcion',
+            'email'
         ];
-    
         $res = Pago::select($columnas)
         ->where(function ($query) use ($request) {
             return $query

@@ -507,6 +507,7 @@ const form = reactive({
     ubigeo_colegio:null, 
     id_colegio: null, 
     terminos:false,
+    id_pago:null,
 });
 
 const dniInput = (event) => { form.nro_doc = event.target.value.replace(/\D/g, ''); };
@@ -603,6 +604,7 @@ const getPagado = async () => {
     axios.get("/get-pago-simulacro/"+form.nro_doc)
     .then((response) => {
         pagado.value = response.data.estado;
+        form.id_pago = response.data.id_pago;
         if(response.data.estado === true){
             activeKey.value = '2';
         }
@@ -697,6 +699,7 @@ const limpiar = () => {
     form.ubigeo_colegio = null; 
     form.id_colegio = null; 
     form.terminos = false;
+    form.id_pago = null;
     redseleccionado.valu = true
     residencia.value = null
     redseleccionado.value = null
@@ -732,6 +735,7 @@ const enviarPago = async () => {
     axios.post("/subir-pagos",{"pagos": selectedItems.value, "dni": form.nro_doc  })
     .then((response) => {
         confirmarcion.value = response.data.estado;
+        form.id_pago = response.data.id_pago;
         console.log(response.data.estado.estado)
         if(response.data.estado === true) 
         { 

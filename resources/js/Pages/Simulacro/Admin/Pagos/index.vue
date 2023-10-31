@@ -17,9 +17,12 @@
                 <template v-if="column.dataIndex === 'nro_doc'">                    
                     <a-tag color="#4f4f4f" style="width:80px;">{{  record.nro_doc }}</a-tag>
                 </template>
-                <template v-if="column.dataIndex === 'nombres'">
+                <template v-if="column.dataIndex === 'nombre'">
                     <div>
-                        <span>{{ record.nombres }} {{ record.paterno }} {{ record.materno }}</span>
+                        <span>{{ record.nombre }}</span>
+                    </div>
+                    <div>
+                        <span style="color: gray;">{{ record.email }}</span>
                     </div>
                 </template>
                 <template v-if="column.dataIndex === 'acciones'">
@@ -40,6 +43,10 @@
                     </a-popconfirm>
     
                 </template>    
+                <template v-if="column.dataIndex === 'estado'">                    
+                    <a-tag v-if="record.estado === 1" color="purple" style="width:80px;"> inscrito </a-tag>
+                    <a-tag v-else color="red" style="width:80px;">No inscrito </a-tag>
+                </template>
             </template>
         </a-table>
     </div>
@@ -255,6 +262,12 @@ const columns= ref([
     {
         title:'Tipo',
         dataIndex: 'type',
+        width:'120px',
+        align:'center'
+    },
+    {
+        title:'Estado',
+        dataIndex: 'estado',
         width:'120px',
         align:'center'
     }

@@ -397,6 +397,12 @@ class SimulacroController extends Controller
               'terminos' => $request->terminos,
               'id_programa' => $request->programa
           ]);
+
+          $pago = Pago::find($request->id_pago);
+          $pago->id_inscripcion = $inscripcion->id;
+          $pago->status = 0;
+          $pago->save();
+
   
           DB::commit();
   
