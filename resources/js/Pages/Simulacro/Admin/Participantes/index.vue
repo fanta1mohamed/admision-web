@@ -26,14 +26,14 @@
                     <template v-if="column.dataIndex === 'instruccion'" >
                         <a-select
                             ref="select"
-                            v-model:value="record.sexo"
+                            v-model:value="record.instruccion"
                             placeholder="Seleccionar"
                             style="width: 100px;"
                             >
-                            <a-select-option value='1'><span>SEC TERMINADA</span></a-select-option>
-                            <a-select-option value='2'><span>5TO AÑO</span></a-select-option>
-                            <a-select-option value='3'><span>4TO AÑO</span></a-select-option>
-                            <a-select-option value='4'><span>3ER AÑO</span></a-select-option>
+                            <a-select-option :value='1'><span>SEC TERMINADA</span></a-select-option>
+                            <a-select-option :value='2'><span>5TO AÑO</span></a-select-option>
+                            <a-select-option :value='3'><span>4TO AÑO</span></a-select-option>
+                            <a-select-option :value='4'><span>3ER AÑO</span></a-select-option>
                         </a-select>
                         <!-- <a-tag v-if="record.sexo === '1'" color="blue">M</a-tag>
                         <a-tag v-if="record.sexo === '2'" color="pink">F</a-tag> -->
