@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-c27b6911.js";import{f as t,o as a,c,a as n,w as r,d as s}from"./app-9738b48d.js";const _={},l=s("h1",null,"EXTRAORDINARIO",-1);function d(f,m){const e=t("a-card");return a(),c("div",null,[n(e,null,{default:r(()=>[l]),_:1})])}const u=o(_,[["render",d]]);export{u as default};

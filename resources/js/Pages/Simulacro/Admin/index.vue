@@ -1,6 +1,6 @@
 <template>
+<Head title="Inicio"/>    
 <Layout>
-
 <div class="mb-4" style="width: 100%;">
     <a-row :gutter="[16, 8]">
       <a-col :xs="24" :sm="12" :md="8" :lg="8">

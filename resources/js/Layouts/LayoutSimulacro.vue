@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="flex h-screen bg-gray-50" style="position: relative;"> 
+  <div style="background:#e7e7e7a9;">
+    <div class="flex h-screen bg-gray-60" style="position: relative;"> 
       <div class="men"  style="width: 50px; height: 30px; position: absolute; transition: all 0.3s ease; z-index: 11; top: 20px; padding-left: 15px;" :style="{'left': sidewidth } ">
         <button @click="sidechange" class="p-1 mr-5 -ml-1 rounded-md focus:outline-none focus:shadow-outline-purple" aria-label="Menu">
           <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
@@ -8,13 +8,13 @@
           </svg>
         </button>  
       </div>
-      <!-- <NavigationMobile /> -->
+      <NavigationMobile />
       <Navigation :style="{ 'width': sidewidth }" style="transition: all 0.3s ease;" />
       <div class="flex flex-col flex-1 w-full">
         <TopMenu :usuario="usu"/>
 
         <main class="h-full overflow-y-auto">
-          <div class="container px-4 pt-6 mx-auto grid" style="background: #dddde6; min-height: calc(100vh - 65px); align-items: flex-start; display: flex;">
+          <div class="container px-4 pt-4 mx-auto grid" style="background: none; min-height: calc(100vh - 160px); align-items: flex-start; display: flex;">
             <h2 class="my-2 text-2xl font-semibold text-gray-700" >
               <slot name="header" />
             </h2>
@@ -29,7 +29,7 @@
 <script setup>
 import Navigation from './NavigationSimulacro.vue';
 import TopMenu from "./TopMenu.vue";
-//import NavigationMobile from './NavigationMobile.vue';
+import NavigationMobile from './NavigationMobileSimulacro.vue';
 import {ref, onMounted} from 'vue'
 
 const sidewidth = ref('230px')

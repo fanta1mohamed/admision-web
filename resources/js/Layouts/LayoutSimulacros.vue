@@ -1,7 +1,7 @@
 <template>
     <a-layout style="min-height: 100vh">
       <a-layout>        
-      <div class="headPre" style="height: 200px;">
+      <div class="headPre" style="height: 200px; margin-top: -20px;">
         <div class="logoPre"><div style="height: 60px;"></div></div>
         <div class="flex justify-center titulo-pre ">
             <div>  
@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="aviso-container">
-          <div class="flex ml-2 mr-2" style="height: 50px; align-items: center; justify-content: center; text-align: center;">
+          <div class="flex mx-2" style="height: 40px; align-items:center; justify-content: center; text-align: center;">
             <span class="aviso-pre">NO OTORGA  ADMISIÓN DIRECTA NI VACANTES A LA UNA PUNO</span>
           </div>
       </div> 
@@ -19,11 +19,11 @@
 
       <a-layout-content
         style="min-height: 20px; padding: 0px 0px;">
-        <div style="border-radius: 10px 10px 0px 0px; box-shadow: 1px 1px 1px 2px #a5a5a53f ;  padding: 0px  0px; margin-top: -0px; background: #f3f3f3; min-height: 280px;">
+        <div style="border-radius: 10px 10px 0px 0px; box-shadow: 1px 1px 1px 2px #a5a5a53f ;  padding: 0px  0px; margin-top: -0px; background: #e3e3e3; min-height: 280px;">
             <slot />
             <div class="aviso-container2">
-                <div class="flex ml-2 mr-2" style="height: 50px; align-items: center; justify-content: center; text-align: center;">
-                  <span class="aviso-pre">© 2023 OTI - UNA PUNO. Todos los derechos reservados.</span>
+                <div class="flex ml-2 mr-2" style="height: 46px; align-items: center; justify-content: center; text-align: center;">
+                  <span class="aviso-pre" style="color:#2e2e2e;">© 2023 OTI - UNA PUNO. TODOS LOS DERECHOS RESERVADOS.</span>
                 </div>
             </div> 
         </div>        
@@ -52,8 +52,8 @@
 }
 .headPre{
     background-repeat: no-repeat;
-    background-size: cover;
-    background-image: linear-gradient(#932dd6, #1202a0be), url('./../../assets/imagenes/administración.JPG');
+    background-size: cover; 
+    background-image: linear-gradient(#6102a07a, #58178d7a), url('./../../assets/imagenes/f-head-sim.jpg');
 }
 .logoPre{
     display: flex;
@@ -77,8 +77,8 @@
 }
 .line-pre{ width: 30px; border: solid 2px #ff006a;}
 .aviso-pre { color: white; font-size: 0.9;}
-.aviso-container { background: black; margin-top: -50px;}
-.aviso-container2 { background: black; margin-top: 20px;}
+.aviso-container { background: black; margin-top: -40px;}
+.aviso-container2 { background: #e3e3e3; margin-top: 15px; border-top: 1px solid #cdcdcdd9;}
 
 @media (min-height: 680px), screen and (orientation: portrait) {
     .logoPre img{ width: 26px; }
@@ -89,7 +89,7 @@
     .titulo-pre{ margin-top: 30px;}
     .titulo-pre span{ font-size: 1.7rem;  }
     .aviso-pre{ font-size: 0.8rem;  }
-    .aviso-container { height: 50px;}
+    .aviso-container { height: 40px;}
     .line-pre { border: solid 1px #ff0015e8; }
 }
 </style>

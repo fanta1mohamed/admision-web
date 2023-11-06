@@ -310,6 +310,10 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     Route::get('/participantes', fn () => Inertia::render('Simulacro/Admin/Participantes/index'))->name('simulacro-participantes');
     Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);
 
+
+    //ENTRADA 
+    Route::get('/entrada', fn () => Inertia::render('Simulacro/Entrada/index'));
+
     //PAGOS
     Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
     Route::post('/get-pagos-simulacro', [PagoController::class, 'getPagosSimulacro']);

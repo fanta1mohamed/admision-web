@@ -42,7 +42,7 @@
    
 </div>
 
-<div v-if="inscrito === false" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;  background:white;">
+<div v-if="inscrito === false" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px; background:white; border:solid 1px #d9d9d99d;">
 
     <a-tabs v-model:activeKey="activeKey"  type="card" size="small">
         <a-tab-pane key="1" class="pl-6 pb-6 pr-6" tab="Validación de pago" force-render :disabled="!confirmacion">
@@ -109,7 +109,7 @@
 
                     <a-row>
                         <div class="flex justify-center" style="width:100%; ">
-                            <a-button type="primary" :loading="pagosloading" style="width:180px; background:#713EDA; border-radius:4px;" @click="enviarPago()"> Continuar </a-button>
+                            <a-button type="primary" :loading="pagosloading" style="width:180px; background:#340691; border-radius:4px; border: none;" @click="enviarPago()"> Continuar </a-button>
                         </div>
                     </a-row>
 
@@ -419,7 +419,7 @@
                             <a-col :span="24">
                                 <div class="flex justify-end">
                                     <a-button class="mr-4" @click="Cancelar()"> Cancelar </a-button>                          
-                                    <a-button type="primary" @click="save()" :disabled="!form.terminos">Guardar</a-button>
+                                    <a-button type="primary" style="width:90px; background:#340691; border-radius:4px; border: none;" @click="save()" :disabled="!form.terminos">Guardar</a-button>
                                 </div>
                             </a-col>
                             </a-row>
@@ -442,8 +442,8 @@
     </div>
     <template #footer>
         <a-button key="back" @click="cancelar()">No Acepto</a-button>
-        <a-button v-if="childData === false" type="primary" :loading="loading" @click="aceptarT" disabled>Acepto</a-button>
-        <a-button v-else type="primary" :loading="loading" @click="aceptarT">Acepto</a-button>
+        <a-button v-if="childData === false" type="primary" style="width:100px;" :loading="loading" @click="aceptarT" disabled>Acepto</a-button>
+        <a-button v-else type="primary" :loading="loading" style="width:100px; background:#340691; border-radius:4px; border: none;" @click="aceptarT">Acepto</a-button>
     </template>
 
 </a-modal>
