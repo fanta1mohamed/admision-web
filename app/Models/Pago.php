@@ -24,6 +24,7 @@ class Pago extends Model
         'total',
         'totalForProvider',
         'type',
-        'codigo'
+        'codigo',
+        'id_inscripcion'
     ];
 }
