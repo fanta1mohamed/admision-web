@@ -21,9 +21,9 @@ class PagoController extends Controller
         $data = $request->pagos;
 
         foreach ($data as $item) {
-            // $response = Http::post("https://service2.unap.edu.pe/PAYMENTS_MNG/v1/setStatus/".$item['id']."/", []);
+            $response = Http::post("https://service2.unap.edu.pe/PAYMENTS_MNG/v1/setStatus/".$item['id']."/", []);
 
-            // if ($response->successful()) {
+            if ($response->successful()) {
                 if($item['total'] == 10.00){
                     $pago =  Pago::create([
                         'codigo' => $item['id'],
@@ -46,9 +46,9 @@ class PagoController extends Controller
                 $this->response['id_pago'] = $pago->id;
                 $this->response['estado'] = true;
                 return response()->json($this->response, 200);
-            // } else {
-            //     return response()->json(['error' => 'La solicitud POST no fue exitosa. Código de estado: ' . $response->status()], $response->status());
-            // }
+            } else {
+                return response()->json(['error' => 'La solicitud POST no fue exitosa. Código de estado: ' . $response->status()], $response->status());
+            }
         
         }
 
