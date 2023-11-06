@@ -156,7 +156,7 @@ const getUbigeosResidencia = async () => {
 
 const inscritos = ref([]);
 const getInscritos = async () => { 
-    let res = await axios.post( "get-pagos-simulacro",{"term": buscar.value, paginashoja: pageSize.value});
+    let res = await axios.post( "get-pagos-simulacro?page="+pagina.value ,{"term": buscar.value, paginashoja: pageSize.value});
     inscritos.value = res.data.datos.data
     totalRegistros.value = res.data.datos.total;
 }
