@@ -644,11 +644,11 @@ function validateFechaNacimiento(rule, value) {
       const fechaMinima = new Date();
       const fechaMaxima = new Date();
 
-      fechaMinima.setFullYear(fechaMinima.getFullYear() - 18);
+      fechaMinima.setFullYear(fechaMinima.getFullYear() - 20);
       fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 13);
 
       if (fechaNacimiento > fechaMaxima || fechaNacimiento < fechaMinima) {
-        reject(new Error('Debes tener entre 14 y 17 años'));
+        reject(new Error('Debes tener entre 13 y 20 años'));
       } else {
         resolve();
       }

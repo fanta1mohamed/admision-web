@@ -59,7 +59,7 @@
           </li>
 
           <li class="relative px-4 py-1">
-            <ResponsiveNavLink :href="route('about')" :active="route().current('about')">
+            <ResponsiveNavLink :href="route('simulacro-participantes')" :active="route().current('about')">
               <template #icon>
                 <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                      stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
