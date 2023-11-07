@@ -644,7 +644,7 @@ function validateFechaNacimiento(rule, value) {
       const fechaMinima = new Date();
       const fechaMaxima = new Date();
 
-      fechaMinima.setFullYear(fechaMinima.getFullYear() - 20);
+      fechaMinima.setFullYear(fechaMinima.getFullYear() - 21);
       fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 13);
 
       if (fechaNacimiento > fechaMaxima || fechaNacimiento < fechaMinima) {
