@@ -41,8 +41,8 @@ onMounted(() => { scrollContainer.value.addEventListener('scroll', checkScrollPo
   
 const checkScrollPosition = () => {
   const el = scrollContainer.value;
-  if (el.scrollTop + el.clientHeight >= el.scrollHeight) {
-    console.log('¡Has llegado al final del scroll!');
+  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
+
     final.value = true;
     localData.value = true;
     emit('update-parent-data', localData.value);
