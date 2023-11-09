@@ -88,10 +88,10 @@ class SimulacroController extends Controller
           ->join('provincia as p', 'u.id_provincia', '=', 'p.id')
           ->join('distritos as di', 'u.id_distrito', '=', 'di.id')
           ->leftjoin('colegios', 'colegios.id', '=', 'ps.id_colegio')
-          ->join('ubigeo as uc', 'uc.ubigeo', '=', 'colegios.ubigeo')
-          ->join('departamento as dc', 'uc.id_departamento', '=', 'dc.id')
-          ->join('provincia as pc', 'uc.id_provincia', '=', 'pc.id')
-          ->join('distritos as dic', 'uc.id_distrito', '=', 'dic.id')
+          ->leftjoin('ubigeo as uc', 'uc.ubigeo', '=', 'colegios.ubigeo')
+          ->leftjoin('departamento as dc', 'uc.id_departamento', '=', 'dc.id')
+          ->leftjoin('provincia as pc', 'uc.id_provincia', '=', 'pc.id')
+          ->leftjoin('distritos as dic', 'uc.id_distrito', '=', 'dic.id')
           ->where(function ($query) use ($request) {
               return $query
                   ->orWhere('ps.nombres', 'LIKE', '%' . $request->term . '%')
