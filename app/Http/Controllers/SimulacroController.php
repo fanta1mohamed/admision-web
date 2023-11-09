@@ -16,6 +16,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use TCPDF;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use App\Models\Dataversion;
 
 
 class SimulacroController extends Controller
@@ -434,6 +435,7 @@ class SimulacroController extends Controller
     public function updateParticipante(Request $request){
         $participante = ParticipanteSimulacro::find($request->id);
         $temp = $participante->getAttributes();
+        $tempP = $participante;
 
         $participante->nro_doc = $request->nro_doc;
         $participante->nombres = $request->nombres;
@@ -447,8 +449,8 @@ class SimulacroController extends Controller
         $participante->grado_instruccion = $request->grado;
         $participante->id_colegio = $request->id_colegio;
         $participante->tipo_doc = $request->tipo_doc;
-
         if ($temp != $participante->getAttributes()) {
+          Dataversion::create([ 'registro_id' => $tempP->id, 'tabla' => $tempP->getTable(),  'usuario_id' => auth()->id(), 'fecha' => now(), 'datos' => $tempP->toJson() ]);
           $participante->save();
           $this->response['tipo'] = 'info';
           $this->response['titulo'] = '!REGISTRO MODIFICADO!';
