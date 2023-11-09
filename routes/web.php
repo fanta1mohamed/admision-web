@@ -309,6 +309,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     //PARTICIPANTES
     Route::get('/participantes', fn () => Inertia::render('Simulacro/Admin/Participantes/index'))->name('simulacro-participantes');
     Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);
+    Route::post('/save-simulacro-participante', [SimulacroController::class, 'updateParticipante']);
 
 
     //ENTRADA 

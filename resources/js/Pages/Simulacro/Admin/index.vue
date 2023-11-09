@@ -77,7 +77,7 @@
           </div>
           <div class="flex justify-start">
             <div v-if="uPagos">
-              <span style="color: #00af00; font-weight:bold; "> {{ uPagos.count }} pagos registrados <span style="color: gray;">el {{ formatearFecha(uPagos.fecha) }}</span> </span>
+              <span style="color: #00af00; font-weight:bold; "> {{ uPagos.count }} pagos reg. <span style="color: gray;">el {{ formatearFecha(uPagos.fecha) }}</span> </span>
             </div>
           </div>
 

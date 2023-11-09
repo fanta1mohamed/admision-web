@@ -21,9 +21,6 @@
                     <div>
                         <span>{{ record.nombre }}</span>
                     </div>
-                    <div>
-                        <span style="color: gray;">{{ record.email }}</span>
-                    </div>
                 </template>
                 <template v-if="column.dataIndex === 'acciones'">
                     <a-button type="success" class="mr-1" style="color: #476175;" size="small" disabled>
@@ -233,6 +230,11 @@ const columns= ref([
         responsive: ['xs','sm','md','lg'],
     },
     {
+        title: 'Correo',
+        dataIndex: 'email',
+        responsive: ['lg'],
+    },
+    {
         title: 'Concepto',
         dataIndex: 'concepto',
         responsive: ['md'],
@@ -251,27 +253,31 @@ const columns= ref([
         title:'Total',
         dataIndex: 'total',
         width:'120px',
-        align:'center'
+        align:'center',
+        responsive:['md','lg']
     },
     {
         title:'Comision',
         dataIndex: 'comision',
         width:'120px',
-        align:'center'
+        align:'center',
+        responsive:['md','lg']
     },
     {
         title:'Tipo',
         dataIndex: 'type',
         width:'120px',
-        align:'center'
+        align:'center',
+        responsive:['md']
     },
     {
         title:'Estado',
         dataIndex: 'estado',
         width:'120px',
-        align:'center'
+        align:'center',
+        responsive:['xs','sm','md','lg']
     }
-],
+    ],
 );
 
 

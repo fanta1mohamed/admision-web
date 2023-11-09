@@ -66,36 +66,47 @@ class SimulacroController extends Controller
   }
 
 
-  public function getParticipantesSimulacro(Request $request){
-    $columnas = [
-      'participantes_simulacro.id AS id_participante',
-      'participantes_simulacro.nro_doc', 'participantes_simulacro.paterno', 'participantes_simulacro.materno',
-      'participantes_simulacro.nombres', 'participantes_simulacro.sexo', 
-      'participantes_simulacro.grado_instruccion as instruccion', 
-      DB::raw('date_format(participantes_simulacro.fec_nacimiento, "%d/%m/%Y") as fec_nacimiento'),
-      DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre) as lugar')
-    ];
-
-    $res = ParticipanteSimulacro::select($columnas)
-        ->join('ubigeo', 'ubigeo.ubigeo', '=', 'participantes_simulacro.ubi_residencia')
-        ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
-        ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
-        ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
-        ->where(function ($query) use ($request) {
-            return $query
-            ->orWhere('participantes_simulacro.nombres','%' . $request->term . '%')
-            ->orWhere('participantes_simulacro.paterno','%' . $request->term . '%')
-            ->orWhere('participantes_simulacro.materno','%' . $request->term . '%')
-            ->orWhere('participantes_simulacro.nro_doc','%' . $request->term . '%')
-            ->orWhere(DB::raw('CONCAT(participantes_simulacro.nombres," ", participantes_simulacro.paterno," ", participantes_simulacro.materno)'),'LIKE','%'.$request->term . '%')
-            ->orWhere(DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre)'),'LIKE','%'.$request->term . '%');
-        })
-        ->paginate($request->paginashoja);
-
-    $this->response['estado'] = true;
-    $this->response['datos'] = $res;
-    return response()->json($this->response, 200);
-}
+  public function getParticipantesSimulacro(Request $request)
+  {
+      $columnas = [
+          'ps.id AS id_participante', 'ps.tipo_doc',
+          'ps.nro_doc', 'ps.paterno', 'ps.materno',
+          'ps.nombres', 'ps.sexo',
+          'ps.grado_instruccion as instruccion', 'ps.celular',
+          'ps.correo', 'ps.fec_nacimiento as fec_nac','ps.ubi_residencia as ubigeo',
+          DB::raw('date_format(ps.fec_nacimiento, "%d/%m/%Y") as fec_nacimiento'),
+          DB::raw('CONCAT(d.nombre, "/", p.nombre, "/", di.nombre) as lugar'),
+          DB::raw('CONCAT(dc.nombre, "/", pc.nombre, "/", dic.nombre) as lugarcolegio'),
+          'colegios.nombre as colegio','colegios.id as idcolegio', 'colegios.ubigeo as ubigeocolegio'
+      ];
+  
+      $res = ParticipanteSimulacro::from('participantes_simulacro as ps')
+          ->select($columnas)
+          ->join('ubigeo as u', 'u.ubigeo', '=', 'ps.ubi_residencia')
+          ->join('departamento as d', 'u.id_departamento', '=', 'd.id')
+          ->join('provincia as p', 'u.id_provincia', '=', 'p.id')
+          ->join('distritos as di', 'u.id_distrito', '=', 'di.id')
+          ->join('colegios', 'colegios.id', '=', 'ps.id_colegio')
+          ->join('ubigeo as uc', 'uc.ubigeo', '=', 'colegios.ubigeo')
+          ->join('departamento as dc', 'uc.id_departamento', '=', 'dc.id')
+          ->join('provincia as pc', 'uc.id_provincia', '=', 'pc.id')
+          ->join('distritos as dic', 'uc.id_distrito', '=', 'dic.id')
+          ->where(function ($query) use ($request) {
+              return $query
+                  ->orWhere('ps.nombres', 'LIKE', '%' . $request->term . '%')
+                  ->orWhere('ps.paterno', 'LIKE', '%' . $request->term . '%')
+                  ->orWhere('ps.materno', 'LIKE', '%' . $request->term . '%')
+                  ->orWhere('ps.nro_doc', 'LIKE', '%' . $request->term . '%')
+                  ->orWhere(DB::raw('CONCAT(ps.nombres," ", ps.paterno," ", ps.materno)'), 'LIKE', '%' . $request->term . '%')
+                  ->orWhere(DB::raw('CONCAT(d.nombre, "/", p.nombre, "/", di.nombre)'), 'LIKE', '%' . $request->term . '%');
+          })
+          ->paginate($request->paginashoja);
+  
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+      return response()->json($this->response, 200);
+  }
+  
 
 
   public function getSimulacros(Request $request)
@@ -418,6 +429,36 @@ class SimulacroController extends Controller
           $this->response['estado'] = false;
       }
   
+    }
+
+    public function updateParticipante(Request $request){
+        $participante = ParticipanteSimulacro::find($request->id);
+        $temp = $participante->getAttributes();
+
+        $participante->nro_doc = $request->nro_doc;
+        $participante->nombres = $request->nombres;
+        $participante->paterno = $request->paterno;
+        $participante->materno = $request->materno;
+        $participante->sexo = $request->sexo;
+        $participante->fec_nacimiento = substr($request->fec_nac, 0, 10);
+        $participante->celular = $request->celular;
+        $participante->correo = $request->correo;
+        $participante->ubi_residencia = $request->ubigeo_residencia;
+        $participante->grado_instruccion = $request->grado;
+        $participante->id_colegio = $request->id_colegio;
+        $participante->tipo_doc = $request->tipo_doc;
+
+        if ($temp != $participante->getAttributes()) {
+          $participante->save();
+          $this->response['tipo'] = 'info';
+          $this->response['titulo'] = '!REGISTRO MODIFICADO!';
+          $this->response['estado'] = true;
+
+        }else {
+          $this->response['estado'] = false;
+        }
+
+        return response()->json($this->response, 200);
     }
 
 
