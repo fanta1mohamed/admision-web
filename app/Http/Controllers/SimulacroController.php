@@ -87,7 +87,7 @@ class SimulacroController extends Controller
           ->join('departamento as d', 'u.id_departamento', '=', 'd.id')
           ->join('provincia as p', 'u.id_provincia', '=', 'p.id')
           ->join('distritos as di', 'u.id_distrito', '=', 'di.id')
-          ->join('colegios', 'colegios.id', '=', 'ps.id_colegio')
+          ->leftjoin('colegios', 'colegios.id', '=', 'ps.id_colegio')
           ->join('ubigeo as uc', 'uc.ubigeo', '=', 'colegios.ubigeo')
           ->join('departamento as dc', 'uc.id_departamento', '=', 'dc.id')
           ->join('provincia as pc', 'uc.id_provincia', '=', 'pc.id')
