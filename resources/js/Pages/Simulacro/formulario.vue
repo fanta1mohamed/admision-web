@@ -442,8 +442,8 @@
     </div>
     <template #footer>
         <a-button key="back" @click="cancelar()">No Acepto</a-button>
-        <a-button v-if="childData === false" type="primary" style="width:100px;" :loading="loading" @click="aceptarT">Acepto</a-button>
-        <!-- <a-button v-else type="primary" :loading="loading" style="width:100px; background:#340691; border-radius:4px; border: none;" @click="aceptarT">Acepto</a-button> -->
+        <a-button v-if="childData === false" type="primary" style="width:100px;" :loading="loading" @click="aceptarT" disabled>Acepto</a-button>
+        <a-button v-else type="primary" :loading="loading" style="width:100px; background:#340691; border-radius:4px; border: none;" @click="aceptarT">Acepto</a-button>
     </template>
 
 </a-modal>
@@ -644,7 +644,7 @@ function validateFechaNacimiento(rule, value) {
       const fechaMinima = new Date();
       const fechaMaxima = new Date();
 
-      fechaMinima.setFullYear(fechaMinima.getFullYear() - 41);
+      fechaMinima.setFullYear(fechaMinima.getFullYear() - 31);
       fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 13);
 
       if (fechaNacimiento > fechaMaxima || fechaNacimiento < fechaMinima) {
@@ -658,7 +658,7 @@ function validateFechaNacimiento(rule, value) {
 
 const pagosloading = ref(false);
 const cancelar = () => { modalAviso.value = false, childData.value = false; }
-const aceptarT = () => { form.terminos = false; modalAviso.value = false; }
+const aceptarT = () => { form.terminos = true; modalAviso.value = false; }
 const childData = ref(false);
 
 const handleUpdate = (newData) => {
