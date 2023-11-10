@@ -30,6 +30,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\AdministrativoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PruebasController;
 
 
 Route::middleware('auth')->get('/', function () {
@@ -429,6 +430,18 @@ Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
         return response()->json(['error' => 'La solicitud GET no fue exitosa. Código de estado: ' . $response->status()], $response->status());
     }
 });
+
+
+
+Route::get('/aleatorizar', [PruebasController::class, 'aleatorizar']);
+
+
+
+
+
+
+
+
 
 
 
