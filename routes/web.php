@@ -339,8 +339,10 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 });
 
 Route::prefix('simulacros')->group(function () {
-    Route::get('/formulario-inscripcionxxx', fn () => Inertia::render('Simulacro/formulario'));    
+     // Route::get('/formulario-inscripcion', fn () => Inertia::render('Simulacro/formulario'));    
 });
+
+Route::get('/resultado-simulacro', fn () => Inertia::render('Simulacro/resultados'));    
 
 //PREINSCRIPCION
 Route::get('/preinscripcion-adicional', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');

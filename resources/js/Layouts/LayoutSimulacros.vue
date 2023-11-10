@@ -6,7 +6,7 @@
         <div class="flex justify-center titulo-pre ">
             <div>  
                 <span> Examen simulacro </span>
-                <div class="flex justify-center"> <hr class="line-pre"> <div class="mr-2 ml-2" style="margin-top: -10px;"><span style="font-size: 1rem;"> Formulario </span></div><hr class="line-pre"> </div>
+                <div class="flex justify-center"> <hr class="line-pre"> <div class="mr-2 ml-2" style="margin-top: -10px;"><span style="font-size: 1rem;"> Resultados </span></div><hr class="line-pre"> </div>
             </div>
         </div>
       </div>
@@ -14,16 +14,15 @@
           <div class="flex mx-2" style="height: 40px; align-items:center; justify-content: center; text-align: center;">
             <span class="aviso-pre">NO OTORGA  ADMISIÓN DIRECTA NI VACANTES A LA UNA PUNO</span>
           </div>
-      </div> 
+      </div>
 
 
-      <a-layout-content
-        style="min-height: 20px; padding: 0px 0px;">
-        <div style="border-radius: 10px 10px 0px 0px; box-shadow: 1px 1px 1px 2px #a5a5a53f ;  padding: 0px  0px; margin-top: -0px; background: #e3e3e3; min-height: 280px;">
+      <a-layout-content style="min-height: 20px; padding: 0px 0px;">
+        <div style="border-radius: 10px 10px 0px 0px;   padding: 0px  0px; margin-top: -0px; background: #e3e3e3; min-height: 290px;">
             <slot />
-            <div class="aviso-container2">
+            <div class="aviso-container2" style="background:black; margin-top:21px; ">
                 <div class="flex ml-2 mr-2" style="height: 46px; align-items: center; justify-content: center; text-align: center;">
-                  <span class="aviso-pre" style="color:#2e2e2e;">© 2023 OTI - UNA PUNO. TODOS LOS DERECHOS RESERVADOS.</span>
+                  <span class="aviso-pre" style="color:white;">© 2023 OTI - UNA PUNO. TODOS LOS DERECHOS RESERVADOS.</span>
                 </div>
             </div> 
         </div>        
@@ -78,7 +77,7 @@
 .line-pre{ width: 30px; border: solid 2px #ff006a;}
 .aviso-pre { color: white; font-size: 0.9;}
 .aviso-container { background: black; margin-top: -40px;}
-.aviso-container2 { background: #e3e3e3; margin-top: 15px; border-top: 1px solid #cdcdcdd9;}
+.aviso-container2 { background: #e3e3e3; margin-top: 41px; border-top: 1px solid #cdcdcdd9;}
 
 @media (min-height: 680px), screen and (orientation: portrait) {
     .logoPre img{ width: 26px; }

@@ -97,8 +97,7 @@
                     </td>
                     <td style="border: solid 1px black; width:80px;">
                         70757838
-                    </td>
-                    <td style="border: solid 1px black; width:240px;">
+                    </td>>x;">
                         JAUN DLLSFDS SDFASDFAS  ASDFASDFASDFSADF 
                     </td>
                     <td style="border: solid 1px black; width:100px;">
