@@ -59,6 +59,33 @@ class TestController extends Controller
         return $resultado[0];
     }
 
+    public function Distribucion() {
+        $personas = DB::select("select nro_doc, nombres from postulante limit 20");
+    
+        $cant = 20;     
+        $personasPorGrupo = 5;
+        $arrayDeGrupos = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $grupo = [];
+        
+            for ($j = $i; $j <= $cant; $j += 5) {
+                if ($j <= $cant) {
+                    array_push($grupo, $personas[$j-1]);
+                }
+            }
+        
+            $arrayDeGrupos["$i"] = $grupo;
+        }
+
+        return $arrayDeGrupos;
+    }
+        
+    
+    
+    
+    
+    
+
 
   
 }

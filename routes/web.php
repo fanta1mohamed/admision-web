@@ -430,6 +430,11 @@ Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
     }
 });
 
+Route::get('/distribucion', [TestController::class, 'Distribucion']);
+
+
+
+
 
 
 
