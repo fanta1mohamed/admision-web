@@ -1,5 +1,25 @@
 <template>
-    <div class="scroll-container" ref="scrollContainer">
+    <div ref="scrollContainer">
+      <div style="background:white;  border-radius: 13px;">
+
+      </div>
+
+      <div>
+        <p>
+
+          Se informa a los participates que el período de inscripciones para el examen simulacro de la Universidad 
+          Nacional del Altiplano ha llegado a su fin. 
+        </p>
+        <p>
+          Agradecemos a la población por mostrar su interés en formar parte de este simulacro.
+
+          Hemos recibido un gran número de inscripciones y estamos agradecidos de ver tanto entusiasmo 
+          por parte de la comunidad. Ahora, estamos preparando todo para el sabado 11 de noviembre del 2023.
+        </p>
+      </div>
+
+    </div>
+    <!-- <div class="scroll-container" ref="scrollContainer">
       <div class="pr-3" style="text-align: justify;">
         <p>
           Este examen de simulacro de admisión tiene como objetivo proporcionar a los estudiantes de quinto 
@@ -24,7 +44,7 @@
 
         </p>
       </div>
-    </div>
+    </div> -->
   </template>
   
 <script setup>
@@ -41,12 +61,11 @@ onMounted(() => { scrollContainer.value.addEventListener('scroll', checkScrollPo
   
 const checkScrollPosition = () => {
   const el = scrollContainer.value;
-  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
-
+  // if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
     final.value = true;
     localData.value = true;
-    emit('update-parent-data', localData.value);
-  }
+    // emit('update-parent-data', localData.value);
+  // }
 };
 </script>
   
