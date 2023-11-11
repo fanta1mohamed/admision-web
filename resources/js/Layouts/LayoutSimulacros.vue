@@ -6,7 +6,7 @@
         <div class="flex justify-center titulo-pre ">
             <div>  
                 <span> Examen simulacro </span>
-                <div class="flex justify-center"> <hr class="line-pre"> <div class="mr-2 ml-2" style="margin-top: -10px;"><span style="font-size: 1rem;"> Resultados </span></div><hr class="line-pre"> </div>
+                <div class="flex justify-center"> <hr class="line-pre"> <div class="mr-2 ml-2" style="margin-top: -10px;"><span style="font-size: 1rem;"> Constancias </span></div><hr class="line-pre"> </div>
             </div>
         </div>
       </div>

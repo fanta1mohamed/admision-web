@@ -7,7 +7,7 @@
                     <div style="width:100%">
                         <div class="flex pb-4" style="justify-content:center; ">
                             <span style="font-weight:bold; font-size:1.1rem;">
-                                Consultar constancia
+                                Ingrese el Dni
                             </span>
 
                         </div>
