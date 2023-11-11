@@ -56,7 +56,7 @@ const imprimir = async () => {
 
 
 const imp = () => {
-  const pdfUrl = 'http://inscripciones.admision.unap.edu.pe/pdf-simulacro-inscripcion/' + dni.value;
+  const pdfUrl = 'https://inscripciones.admision.unap.edu.pe/pdf-simulacro-inscripcion/' + dni.value;
   const link = document.createElement('a');
   link.href = pdfUrl;
   link.target = '_blank';
