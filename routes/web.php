@@ -340,7 +340,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 });
 
 Route::prefix('simulacros')->group(function () {
-     // Route::get('/formulario-inscripcion', fn () => Inertia::render('Simulacro/formulario'));    
+     Route::get('/formulario_inscripcion', fn () => Inertia::render('Simulacro/formulario'));    
      Route::get('/descargar-constancia', fn () => Inertia::render('Simulacro/descargarHoja'));
 });
 
@@ -417,7 +417,7 @@ Route::get('/get-pagos-caja',[PagoController::class,'getPagosCaja']);
 //SIMULACROS
 Route::post('/get-ubigeo', [SeleccionDataController::class, 'getUbigeos']);
 Route::post('/get-colegios-ubigeo',[SeleccionDataController::class,'getColegiosUbigeo']);
-// Route::post('/save-simulacro-participante', [SimulacroController::class, 'saveParticipante']);
+Route::post('/save-simulacro-participante', [SimulacroController::class, 'saveParticipante']);
 Route::get('/pdf-simulacro-inscripcion/{dni}', [SimulacroController::class, 'pdfInscripcion']);
 Route::get('/get-inscrito-simulacro/{dni}', [SimulacroController::class, 'Inscrito']);
 
