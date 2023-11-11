@@ -96,8 +96,8 @@ const descargarBiomedicas = () => {
 }
 
 const nuevaConsulta = () => {
-    const dni = ref("");
-    const resultado = ref(null);
+    dni.value = "";
+    resultado.value = null;
 }
 
 
