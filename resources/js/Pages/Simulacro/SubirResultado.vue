@@ -1,29 +1,33 @@
 <template>
-    <h1>Subir Resultados</h1>
-     <div v-if="excelData">
-    </div>
-    <form @submit.prevent="submit">
-        <div class="flex justify-between">
-        <!-- <input type="file" @change="onChange"/> -->
-        <input type="file" @change="handleFileUpload" />
-        <div style="display:flex; justify-content:flex-end;">
-            <a-button class="mr-2" style="border-radius: 5px; height:38px; border: solid 1px var(--primary-color); color:var(--primary-color); " @click="subirResultados">Ejemplo</a-button>              
-            <a-button style="height:38px; border-radius: 5px; border:none; color:white; background: var(--primary-color)" @click="subirResultados"> Subir resultado</a-button>              
+<Head title="Inicio"/>    
+<Layout>
+    <div class="p-4" style="width:100%; max-width:1300px; background:white; border-radius:8px;">
+        <form @submit.prevent="submit">
+            <div class="flex justify-between">
+            <!-- <input type="file" @change="onChange"/> -->
+            <input type="file" @change="handleFileUpload" />
+            <div style="display:flex; justify-content:flex-end;">
+                <a-button class="mr-2" style="border-radius: 5px; height:38px; border: solid 1px var(--primary-color); color:var(--primary-color); " @click="subirResultados">Ejemplo</a-button>              
+                <a-button style="height:38px; border-radius: 5px; border:none; color:white; background: var(--primary-color)" @click="subirResultados"> Subir resultado</a-button>              
+            </div>
+            </div>
+        </form> 
+
+        <div style="display:flex;   ">
+            <a-progress :percent="progress" :status="estado"/>
         </div>
+
+        <div>
+            <a-table :dataSource="excelData" :columns="columns" />
         </div>
-    </form> 
-
-    <div style="display:flex;   ">
-        <a-progress :percent="progress" :status="estado"/>
     </div>
-
-    <div>
-        <a-table :dataSource="excelData" :columns="columns" />
-    </div>
-
+</Layout>
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
+import Layout from '@/Layouts/LayoutCalificador.vue'
+
 import { ref } from 'vue';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
@@ -34,7 +38,7 @@ const estado = ref("");
 
 const subirResultados = async () => {
   progress.value = 0; 
-
+  
   try {
     const response = await axios.post('subir-excel-simulacro', { data: excelData.value }, {
       onUploadProgress: (progressEvent) => {

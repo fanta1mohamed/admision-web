@@ -9,7 +9,6 @@
                             <span style="font-weight:bold; font-size:1.1rem;">
                                 Consultar puntaje
                             </span>
-
                         </div>
                         <div class="flex mb-6 mx-4" style="justify-content:center;">
                             <div class="flex" style="width:100%; max-width: 700px;">
@@ -18,24 +17,27 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-center" >
+                        <div v-if="resultado !== null " class="flex justify-center" >
                             <div class="p-4 px-5" style="border:1px solid #d9d9d9; border-radius: 8px; min-width: 380px">
                                 <div class="flex justify-between" >
                                     <div><span style="font-size: 1.2rem; font-weight: bold;">Examen simulacro</span></div> 
                                     <div><span style="font-size: 1.2rem; font-weight: bold; ">11-11-23</span></div> 
                                 </div>
                                 <div class="flex justify-center">
-                                    <span style="font-size: 3.3rem; font-weight: bold;"> 2500.001 </span>
+                                    <span style="font-size: 3.3rem; font-weight: bold;"> {{ resultado.puntaje }} </span>
                                     
                                 </div>
                                 <div class="flex justify-center">
                                     <span style="font-size: 1.5rem; font-weight: bold; ">
-                                        Puesto: 120
+                                        Puesto: {{ resultado.puesto_programa }}
                                     </span>
                                 </div>
                         
                                 <div class="flex justify-center mb-2 mt-3">
-                                    <a-button type="primary" style="width:100%; background:#340691; border-radius:4px; border: none;">Descargar examen</a-button>
+                                    <div v-if="resultado.area === 'INGENIERÍAS'" class="mr-3"> <a-button @click="descargarIngenierias" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>                                    
+                                    <div v-if="resultado.area === 'SOCIALES'" class="mr-3"> <a-button @click="descargarSociales" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>
+                                    <div v-if="resultado.area === 'BIOMÉDICAS'" class="mr-3"> <a-button @click="descargarBiomedicas" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>
+                                    <div> <a-button type="primary" style="width:100%; background:#340691; border-radius:4px; border: none;">Otra Consulta</a-button></div>
                                 </div>
                             </div>
                         </div>
@@ -63,13 +65,41 @@ import AuthenticatedLayout from '@/Layouts/LayoutSimulacros.vue'
 import { watch, ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import axios from 'axios';
+const baseUrl = window.location.origin;
  
 const dni = ref("");
+const resultado = ref(null);
+
+
+const getPuntaje = async () => {
+    axios.post("/get-puntaje-simulacro",{ dni:dni.value })
+    .then((response) => {
+        resultado.value = response.data.datos;
+    })
+    .catch((error) => {
+        if (error.response) {
+            console.error('Error de servidor:', error.response.data);
+        } else if (error.request) {
+            console.error('Error de red:', error.request);
+            } else { console.error('Error de configuración:', error.message); }
+  });
+}
+
+const descargarSociales = () => {
+    window.open(baseUrl+'/descargar-sociales', '_blank');
+}
+const descargarIngenierias = () => {
+    window.open(baseUrl+'/descargar-ingenierias', '_blank');
+}
+const descargarBiomedicas = () => {
+    window.open(baseUrl+'/descargar-biomedicas', '_blank');
+}
+
+
 
 watch(dni, ( newValue, oldValue ) => { 
     if(newValue.length == 8){ 
-        console.log("get resultado");
-        // getResultados();
+        getPuntaje();
     } 
 })
 

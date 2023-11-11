@@ -32,6 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if( auth()->user()->id_rol == 7 ) { return redirect('/calificacion/subir-resultado'); }
         if( auth()->user()->id_rol == 6 ) { return redirect('/simulacro'); }
         if( auth()->user()->id_rol == 1 ) { return redirect('/admin/dashboard'); } 
         if( auth()->user()->id_rol == 2 ) { return redirect('/revisor'); }        

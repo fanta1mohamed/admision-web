@@ -344,9 +344,21 @@ Route::prefix('simulacros')->group(function () {
      Route::get('/descargar-constancia', fn () => Inertia::render('Simulacro/descargarHoja'));
 });
 
-Route::get('/subir-resultado', fn () => Inertia::render('Simulacro/SubirResultado'));
-Route::get('/resultado-simulacro', fn () => Inertia::render('Simulacro/resultados'));
-Route::post('/subir-excel-simulacro', [ResultadosController::class, 'SubirResultado']);
+
+Route::prefix('calificacion')->group(function () {
+    Route::get('/subir-resultado', fn () => Inertia::render('Simulacro/SubirResultado'));
+    Route::get('/resultado-simulacro', fn () => Inertia::render('Simulacro/resultados'));
+    Route::post('/subir-excel-simulacro', [ResultadosController::class, 'SubirResultado']);
+});
+Route::post('/get-puntaje-simulacro', [ResultadosController::class, 'getResultados']);
+
+
+Route::get('/resultados-simulacro', fn () => Inertia::render('Simulacro/resultados'));
+
+Route::get('/descargar-ingenierias', [ResultadosController::class, 'getExamenIng']);
+Route::get('/descargar-biomedicas', [ResultadosController::class, 'getExamenBio']);
+Route::get('/descargar-sociales', [ResultadosController::class, 'getExamenSoc']);
+
 
 //PREINSCRIPCION
 Route::get('/preinscripcion-adicional', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');

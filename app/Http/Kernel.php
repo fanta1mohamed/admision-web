@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'revisor' => \App\Http\Middleware\Revisor::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'simulacro' => \App\Http\Middleware\Simulacro::class,
+        'calificador' => \App\Http\Middleware\Calificador::class,
 
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
