@@ -26,6 +26,11 @@ class ResultadosController extends Controller
         ->where('participantes_simulacro.nro_doc', $request->dni)
         ->first();
 
+        DB::table('revision_puntaje')->insert([
+            "dni"=>$request->dni
+        ]);
+        
+
         $this->response['datos'] = $resultado;
         $this->response['estado'] = true;  
         return response()->json($this->response, 200);
