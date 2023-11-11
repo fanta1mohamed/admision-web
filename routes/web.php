@@ -31,6 +31,7 @@ use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\AdministrativoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PruebasController;
+use App\Http\Controllers\ResultadosController;
 
 
 Route::middleware('auth')->get('/', function () {
@@ -340,9 +341,12 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 
 Route::prefix('simulacros')->group(function () {
      // Route::get('/formulario-inscripcion', fn () => Inertia::render('Simulacro/formulario'));    
+     Route::get('/descargar-constancia', fn () => Inertia::render('Simulacro/descargarHoja'));
 });
 
-Route::get('/resultado-simulacro', fn () => Inertia::render('Simulacro/resultados'));    
+Route::get('/subir-resultado', fn () => Inertia::render('Simulacro/SubirResultado'));
+Route::get('/resultado-simulacro', fn () => Inertia::render('Simulacro/resultados'));
+Route::post('/subir-excel-simulacro', [ResultadosController::class, 'SubirResultado']);
 
 //PREINSCRIPCION
 Route::get('/preinscripcion-adicional', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
@@ -419,6 +423,8 @@ Route::get('/get-inscrito-simulacro/{dni}', [SimulacroController::class, 'Inscri
 
 Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
 Route::get('/get-pago-simulacro/{dni}', [PagoController::class, 'pagoSimulacro']);
+
+
 
 
 Route::get('/get-e-oti', [IngresoController::class, 'getEstudianteOTI']);

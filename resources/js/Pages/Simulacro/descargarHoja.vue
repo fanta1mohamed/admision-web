@@ -7,7 +7,7 @@
                     <div style="width:100%">
                         <div class="flex pb-4" style="justify-content:center; ">
                             <span style="font-weight:bold; font-size:1.1rem;">
-                                Consultar puntaje
+                                Consultar constancia
                             </span>
 
                         </div>
@@ -18,37 +18,12 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-center" >
-                            <div class="p-4 px-5" style="border:1px solid #d9d9d9; border-radius: 8px; min-width: 380px">
-                                <div class="flex justify-between" >
-                                    <div><span style="font-size: 1.2rem; font-weight: bold;">Examen simulacro</span></div> 
-                                    <div><span style="font-size: 1.2rem; font-weight: bold; ">11-11-23</span></div> 
-                                </div>
-                                <div class="flex justify-center">
-                                    <span style="font-size: 3.3rem; font-weight: bold;"> 2500.001 </span>
-                                    
-                                </div>
-                                <div class="flex justify-center">
-                                    <span style="font-size: 1.5rem; font-weight: bold; ">
-                                        Puesto: 120
-                                    </span>
-                                </div>
-                        
-                                <div class="flex justify-center mb-2 mt-3">
-                                    <a-button type="primary" style="width:100%; background:#340691; border-radius:4px; border: none;">Descargar examen</a-button>
-                                </div>
-                            </div>
-                        </div>
-
-                        
-
-
                         <a-row>
-                            <!-- <div class="flex justify-center" style="width:100%; ">
+                            <div class="flex justify-center" style="width:100%; ">
                                 <a-button type="primary" :loading="pagosloading"
                                     style="width:180px; background:#340691; border-radius:4px; border: none;"
-                                    @click="enviarPago()"> Continuar </a-button>
-                            </div> -->
+                                    @click="imprimir()"> Descargar </a-button>
+                            </div>
                         </a-row>
 
                     </div>
@@ -74,8 +49,27 @@ watch(dni, ( newValue, oldValue ) => {
 })
 
 
+const imprimir = async () => {
+    imp();
+    await new Promise(resolve => setTimeout(resolve, 9000));
+}
+
+
+const imp = () => {
+  const pdfUrl = 'https://inscripciones.admision.unap.edu.pe/pdf-simulacro-inscripcion/' + dni.value;
+  const link = document.createElement('a');
+  link.href = pdfUrl;
+  link.target = '_blank';
+  link.download = 'inscripcion-simulacro.pdf';
+  link.click();
+};
+
+
+
+
 </script>
-<style scoped>.titulo-form {
+<style scoped>
+.titulo-form {
     margin-top: 20px;
     font-size: 1.2rem;
     color: #000000c4;

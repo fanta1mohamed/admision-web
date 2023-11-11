@@ -242,9 +242,9 @@ class SimulacroController extends Controller
         $output = $pdf->output();
 
         file_put_contents(public_path('/documentos/simulacro2023/').$dni.'.pdf', $output);
-        return $pdf->stream();
+        return $pdf->download();
       }
-      // return $pdf->download();
+      // // return $pdf->download();
 
   }
 
@@ -554,6 +554,13 @@ class SimulacroController extends Controller
       $this->response['datos'] = $resultados;
       $this->response['estado'] = true;
       return response()->json($this->response, 200);
+    }
+
+
+    public function descargarConstancia($dni)
+    {
+        $archivo = public_path('/ruta/a/tu/archivo/' . $nombre_archivo);
+        return response()->download($archivo);
     }
 
 

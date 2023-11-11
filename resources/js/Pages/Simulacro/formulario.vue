@@ -413,7 +413,7 @@
                             </a-col>
 
                         </a-row>
-
+ 
 
                         <a-row>
                             <a-col :span="24">
@@ -674,7 +674,7 @@ const imprimir = async () => {
 }
 
 const imp = () => {
-  const pdfUrl = 'http://inscripciones.admision.unap.edu.pe/pdf-simulacro-inscripcion/' + form.nro_doc;
+  const pdfUrl = 'https://inscripciones.admision.unap.edu.pe/pdf-simulacro-inscripcion/' + form.nro_doc;
   const link = document.createElement('a');
   link.href = pdfUrl;
   link.target = '_blank';
