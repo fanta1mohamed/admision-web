@@ -319,6 +319,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
 
     //PAGOS
     Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
+    Route::get('/pagos-consulta', fn () => Inertia::render('Simulacro/Admin/Pagos/consulta'))->name('simulacro-consulta-pagos');
     Route::post('/get-pagos-simulacro', [PagoController::class, 'getPagosSimulacro']);
 
     //REPORTES

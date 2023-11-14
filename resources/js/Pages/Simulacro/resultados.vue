@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="flex justify-center">
                                     <span style="font-size: 1.5rem; font-weight: bold; ">
-                                        Puesto: {{ resultado.puesto_programa }}
+                                        Puesto en programa: {{ resultado.puesto_programa }}
                                     </span>
                                 </div>
                         

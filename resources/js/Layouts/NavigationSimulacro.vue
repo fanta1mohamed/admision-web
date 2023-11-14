@@ -89,7 +89,20 @@
               Colegios
             </span>
           </NavLink>
-        </li>        
+        </li>
+        
+        <li class="relative px-0" :class="[route().current('simulacro-consulta-pagos')? 'activado':'']" style="margin-bottom: -15px;">
+          <NavLink :href="route('simulacro-consulta-pagos')" :active="route().current('simulacro-consulta-pagos')" style="padding: 10px 20px;">
+            <template #icon>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              </span>
+            </template>
+            <span>
+              Consultar pagos
+            </span>
+          </NavLink>
+        </li>
       </ul>
     </div>
   </aside>
