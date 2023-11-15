@@ -1,5 +1,5 @@
 <template>
-  <aside  class="z-20 hidden w-64 overflow-y-auto md:block flex-shrink-0" style="background:#476175; width: 230px; border-right: 1px solid #00000010;">
+  <aside  class="z-20 hidden w-64 overflow-y-auto md:block flex-shrink-0" style="background:  ; width: 230px; border-right: 1px solid #00000010;">
  
     <div class="text-gray-200" style="font-family: Arial, Helvetica, sans-serif; font-weight: 400; font-size: 10pt;">
       <Link class="text-lg font-bold text-gray-100" :href="route('simulacro-inicio')">

@@ -12,7 +12,7 @@
     </div>
 
     <div>
-        <a-table :dataSource="inscritos" size="" :columns="columns" :scroll="{ x: 600 }" :pagination="false">
+        <a-table :dataSource="inscritos" size="" :columns="columns" :scroll="{ x: 900 }" :pagination="false">
                 <template #bodyCell="{ column, index, record }">
                 <template v-if="column.dataIndex === 'nro_doc'">                    
                     <a-tag color="#4f4f4f" style="width:78px;">{{  record.dni }}</a-tag>

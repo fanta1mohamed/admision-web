@@ -3,11 +3,19 @@
 <Layout>
 <div class="mb-4" style="width:100%;">
 
+    
 <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.03) 0px 10px 10px -5px;">
-    <div class="flex justify-end mt-5 mb-4 mr-4">
-        <div class="flex justify-between" style="position: relative;" >
-            <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 340px; padding-left: 30px; border-radius: 6px;"/>
-            <div class="mr-2" style="position: absolute; left: 8px; top: 3px; "><search-outlined /></div>
+    <div class="flex justify-between mt-5 mb-4 mr-4 ml-4">
+        <div>
+            <div>
+                <a-button @click="modal = true" style="background-color:#476175; border-radius: 5px; border: none;" type="primary">nuevo</a-button>                
+            </div>
+        </div>
+        <div class="flex justify-between" style="position: relative;">
+            <div>
+                <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 340px; padding-left: 30px; border-radius: 6px;"/>
+                <div class="mr-2" style="position: absolute; left: 8px; top: 3px; "><search-outlined /></div>
+            </div>
         </div>
     </div>
 
@@ -61,10 +69,72 @@
 </div>
 </div>
 
-<a-modal v-model:visible="modal" :footer="false" centered style="width:100%; max-width: 900px;">
-    <div style="display: flex;">
-        <span v-if="form.id === null" style="font-weight: bold; font-size: 1.1rem;">Nuevo Colegio</span>
-        <span v-else style="font-weight: bold; font-size: 1.1rem;">Editar Colegio</span>
+<a-modal v-model:visible="modal" :footer="false" centered style="width:100%; max-width: 1000px;" :closable="false">
+    <div style="display: flex; justify-content: space-between; background: #476175; margin: -24px; margin-bottom: 0px; height: 46px;">
+        <div class="ml-3 mt-3">
+            <span style="color: white; font-size: 1.1rem;"> Nueva inscripcion </span>
+        </div>
+        <div class="mr-4 mt-1">
+            <span style="color: white; font-size: 1.4rem;">x</span>
+        </div>
+    </div>
+    <!-- <div style="display: flex; background: red; width: 100%;">
+        <span v-if="form.id === null" style="font-weight: bold; font-size: 1.1rem;"> Nueva inscripcion </span>
+        <span v-else style="font-weight: bold; font-size: 1.1rem;">Editar Inscripcion</span>
+    </div> -->
+
+    <div class="mt-4">
+        <label>Pago<span style="color:red;">*</span> {{ idpago }}</label>
+        <a-form-item name="ubigeo_colegio">
+            <a-auto-complete
+                v-model:value="idpago"                
+                :options="pagos"
+                @select="onSelectPagos"
+            >
+            <template #option="item">
+                <div class="flex justify-between">
+                    <div>
+                        <div>
+                            <span>
+                               <span style="font-weight: bold; font-size: .8rem;"> EXAMEN DE ADMISIÓN - SIMULACRO</span>  
+                            </span>
+                        </div>
+                        <div style="margin-top: -8px;">
+                            <span style="font-size: .6rem;">
+                               {{ (item.value) }} - {{ (item.nombre) }}
+                            </span>
+                        </div>
+
+                    </div>
+                    <div>
+                        <div>
+                            <span style="font-size: .9rem; font-weight: bold;">
+                                S/{{ parseInt(item.monto).toFixed(2) }}
+                            </span>
+                        </div>
+                        <div style="margin-top: -8px;">
+                            <span style="font-size: .6rem;"> 14-12-2023</span>
+                        </div>
+                     </div>
+
+                </div>
+
+
+                </template>
+
+                <a-input
+                    placeholder="Seleccionar pago"
+                    v-model:value="buscarPago"
+                    style="border-radius: 6px;"
+                >
+                    <template #suffix>
+                        <a-tooltip title="Extra information">
+                        <down-outlined/>
+                        </a-tooltip>
+                    </template>
+                </a-input>
+            </a-auto-complete>
+        </a-form-item>
     </div>
 
     <div class="flex justify-center">
@@ -73,7 +143,7 @@
             <a-form
                 ref="formDatos"
                 name="form"
-                :model="form" :rules="formRules">
+                :model="form">
                 <a-row :gutter="16" class="mt-3" >
                     <a-col :xs="24" :sm="12" :md="8" :lg="8">
                     <label>Cod. Modular</label>
@@ -135,7 +205,7 @@
                                     <a-input
                                         placeholder="Lugar"
                                         v-model:value="buscarResidencia"
-                                        @keypress="handleKeyPress"
+
                                     >
                                         <template #suffix>
                                             <a-tooltip title="Extra information">
@@ -184,6 +254,11 @@ import { TeamOutlined, FormOutlined, DownOutlined, PrinterOutlined, DeleteOutlin
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
     
+
+const idpago = ref(null);
+const buscarPago = ref(null);
+
+
 const colegios = ref([])
 const buscar = ref("")
 const pagina = ref(1)
@@ -320,6 +395,8 @@ watch(gestion, ( newValue, oldValue ) => {  if(newValue.length >= 3){ getColegio
 
 
 const onSelectResidencias = (value, option) => { form.ubigeo = option.key; };
+const onSelectPagos = (value, option) => {  idpago.value = option.value+"-"+option.nombre }
+
 const onSelectDepartamentos = (value, option) => { dep.value = option.key; getColegios(); getProvincias(); };
 const onSelectProvincias = (value, option) => { prov.value = option.key; getColegios(); getDistritos(); };
 const onSelectDistritos = (value, option) => { dist.value = option.key; getColegios() };
@@ -387,5 +464,27 @@ const columns= ref([
 ],
 );
 
+
+const pagos = ref([
+    {
+        nombre:"JHON ARIEL LUQUE CUSACANI",
+        value: "70757837",
+        monto: 15.00,
+        fecha: "12-12-2023"
+    },
+    {
+        nombre:"JHON ARIEL LUQUE CUSACANI",
+        value: "70757838",
+        monto: 15.00,
+        fecha: "12-12-2023"
+    },
+    {
+        nombre:"JHON ARIEL LUQUE CUSACANI",
+        value: "70757839",
+        monto: 15.00,
+        fecha: "12-12-2023"
+    },
+
+])
 
 </script>
