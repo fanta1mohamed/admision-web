@@ -12,7 +12,7 @@
     </div>
 
     <div>
-        <a-table :dataSource="inscritos" size="" :columns="columns" :pagination="false">
+        <a-table :dataSource="inscritos" size="" :columns="columns" :scroll="{ x: 600 }" :pagination="false">
                 <template #bodyCell="{ column, index, record }">
                 <template v-if="column.dataIndex === 'nro_doc'">                    
                     <a-tag color="#4f4f4f" style="width:78px;">{{  record.dni }}</a-tag>
@@ -237,9 +237,9 @@ const notificacion = (type, titulo, mensaje) => {
 const columns= ref([
     {
         title: 'Nro_Doc',
-        width:'80px',
+        width:'100px',
         dataIndex: 'nro_doc',
-        fixed: true,
+        fixed: 'left',
     },
     {
         title: 'Nombres',
@@ -270,28 +270,24 @@ const columns= ref([
     {
         title:'Total',
         dataIndex: 'total',
-        width:'120px',
         align:'center',
         responsive:['md','lg']
     },
     {
         title:'Comision',
         dataIndex: 'comision',
-        width:'120px',
         align:'center',
         responsive:['md','lg']
     },
     {
         title:'Tipo',
         dataIndex: 'medio',
-        width:'120px',
         align:'center',
         responsive:['md']
     },
     {
         title:'Estado',
         dataIndex: 'est',
-        width:'100px',
         align:'center',
         responsive:['xs','sm','md','lg']
     }
