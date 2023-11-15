@@ -432,36 +432,46 @@ class SimulacroController extends Controller
       }
   
     }
-
     public function updateParticipante(Request $request){
-        $participante = ParticipanteSimulacro::find($request->id);
-        $temp = $participante->getAttributes();
-        $tempP = $participante;
-
-        $participante->nro_doc = $request->nro_doc;
-        $participante->nombres = $request->nombres;
-        $participante->paterno = $request->paterno;
-        $participante->materno = $request->materno;
-        $participante->sexo = $request->sexo;
-        $participante->fec_nacimiento = substr($request->fec_nac, 0, 10);
-        $participante->celular = $request->celular;
-        $participante->correo = $request->correo;
-        $participante->ubi_residencia = $request->ubigeo_residencia;
-        $participante->grado_instruccion = $request->grado;
-        $participante->id_colegio = $request->id_colegio;
-        $participante->tipo_doc = $request->tipo_doc;
-        if ($temp != $participante->getAttributes()) {
-          Dataversion::create([ 'registro_id' => $tempP->id, 'tabla' => $tempP->getTable(),  'usuario_id' => auth()->id(), 'fecha' => now(), 'datos' => $tempP->toJson() ]);
-          $participante->save();
+      $participante = ParticipanteSimulacro::find($request->id);
+  
+      $atributosAnteriores = $participante->getAttributes();
+  
+      $participante->update([
+          'nro_doc' => $request->nro_doc,
+          'nombres' => $request->nombres,
+          'paterno' => $request->paterno,
+          'materno' => $request->materno,
+          'sexo' => $request->sexo,
+          'fec_nacimiento' => substr($request->fec_nac, 0, 10),
+          'celular' => $request->celular,
+          'correo' => $request->correo,
+          'ubi_residencia' => $request->ubigeo_residencia,
+          'grado_instruccion' => $request->grado,
+          'id_colegio' => $request->id_colegio,
+          'tipo_doc' => $request->tipo_doc,
+      ]);
+  
+      $atributosPosteriores = $participante->getAttributes();
+  
+      if ($atributosAnteriores != $atributosPosteriores) {
+           Dataversion::create([
+              'registro_id' => $participante->id,
+              'tabla' => $participante->getTable(),
+              'usuario_id' => auth()->id(),
+              'fecha' => now(),
+              'datos' => json_encode($atributosAnteriores),
+          ]);
+  
           $this->response['tipo'] = 'info';
           $this->response['titulo'] = '!REGISTRO MODIFICADO!';
           $this->response['estado'] = true;
-
-        }else {
+      } else {
+          // No hubo cambios
           $this->response['estado'] = false;
-        }
-
-        return response()->json($this->response, 200);
+      }
+  
+      return response()->json($this->response, 200);
     }
 
 

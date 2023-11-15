@@ -102,6 +102,40 @@ class PagoController extends Controller
     }
 
 
+    public function getPagosSimulacroConsulta(Request $request){
+        $columnas = [
+            'pagostemp.cod_pago',
+            'pagostemp.authorizationCode as cod_autorizacion',
+            'pagostemp.code as dni',
+            DB::raw('SUBSTRING(pagostemp.description,1,9) as concepto'),  
+            'pagostemp.names as nombres',
+            'pagostemp.surnames as apellidos',
+            'pagostemp.confirmedPaymentDate AS fecha', 
+            'pagostemp.paymentType AS medio',
+            'pagostemp.amount AS subtotal',
+            'pagostemp.totalAmount AS total',
+            'pagos_simulacro.status as est'
+        ];
+        $res = DB::table('pagostemp')
+        ->select($columnas)
+        ->leftJoin('pagos_simulacro', 'pagos_simulacro.codigo', '=', 'pagostemp.cod_pago')
+        ->where(function ($query) use ($request) {
+            $query
+                ->orWhere('pagostemp.code', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('pagostemp.names', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('pagostemp.surnames', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('pagostemp.authorizationCode', 'LIKE', '%' . $request->term . '%');
+        })
+        ->paginate($request->paginashoja);
+    
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+
+    }
+    
+
+
 
 
 
