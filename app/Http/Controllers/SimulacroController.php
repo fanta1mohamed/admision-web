@@ -565,6 +565,71 @@ class SimulacroController extends Controller
     }
 
 
+    public function getEntrada(Request $request){
+      $res = DB::table('entrada')
+      ->where('nro_doc', $request->dni)
+      ->first();
+
+      if($res){
+        $this->response['mensaje'] = "Participante encontrado";
+        $this->response['datos'] = $res;
+        $this->response['estado'] = true;
+      }else{
+        $this->response['mensaje'] = "Participnate no encontrado";
+        $this->response['datos'] = []; 
+        $this->response['estado'] = false;
+      }
+
+      return response()->json($this->response, 200);
+    }
+
+
+    public function saveEntrada(Request $request) {
+      $existingEntry = DB::table('entrada')
+          ->where('nro_doc', $request['data']['nro_doc'])
+          ->first();
+  
+      if ($existingEntry) {
+        DB::table('entrada')
+          ->where('nro_doc', $request['data']['nro_doc'])
+          ->update([
+            'fecha_ingreso' => now(),
+            'ingreso' => 1,
+        ]);
+        
+        $this->response['tipo'] = 'info';
+        $this->response['titulo'] = '!INGRESO REGISTRADO!';
+        $this->response['estado'] = true;
+      }
+
+      return response()->json($this->response, 200);
+
+    }
+
+    public function getTotalEntrada(Request $request) {
+        
+      $counters = DB::table('entrada')
+        ->selectRaw('COUNT(*) as total_count')
+        ->selectRaw('SUM(CASE WHEN area = "INGENIERÍAS" THEN 1 ELSE 0 END) as countI')
+        ->selectRaw('SUM(CASE WHEN area = "BIOMÉDICAS" THEN 1 ELSE 0 END) as countB')
+        ->selectRaw('SUM(CASE WHEN area = "SOCIALES" THEN 1 ELSE 0 END) as countS')
+        ->where('ingreso', '=', 1)
+        ->first();
+  
+      $count = $counters->total_count;
+      $countI = $counters->countI;
+      $countB = $counters->countB;
+      $countS = $counters->countS;
+
+      $this->response['data'] = $count; 
+      $this->response['dataI'] = $countI; 
+      $this->response['dataB'] = $countB; 
+      $this->response['dataS'] = $countS; 
+      $this->response['estado'] = true;
+
+      return response()->json($this->response, 200);
+
+    }
 
 
 }

@@ -314,8 +314,13 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     Route::post('/save-simulacro-participante', [SimulacroController::class, 'updateParticipante']);
 
 
-    //ENTRADA 
+    //ENTRADA
     Route::get('/entrada', fn () => Inertia::render('Simulacro/Entrada/index'));
+    Route::post('/get-participante', [SimulacroController::class, 'getEntrada']);
+    Route::post('/save-entrada', [SimulacroController::class, 'saveEntrada']);
+    Route::post('/get-total-entrada', [SimulacroController::class, 'getTotalEntrada']);
+    
+
 
     //PAGOS
     Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
