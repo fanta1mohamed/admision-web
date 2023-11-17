@@ -12,14 +12,29 @@
     </div>
 
     <div>
-        <a-table :dataSource="inscritos" size="" :columns="columns" :pagination="false">
+        <a-table :dataSource="inscritos" size="" :columns="columns" :scroll="{ x: 900 }" :pagination="false">
                 <template #bodyCell="{ column, index, record }">
                 <template v-if="column.dataIndex === 'nro_doc'">                    
-                    <a-tag color="#4f4f4f" style="width:80px;">{{  record.nro_doc }}</a-tag>
+                    <a-tag color="#4f4f4f" style="width:78px;">{{  record.dni }}</a-tag>
                 </template>
                 <template v-if="column.dataIndex === 'nombre'">
                     <div>
-                        <span>{{ record.nombre }}</span>
+                        <span>{{ record.nombres }}</span>
+                    </div>
+                </template>
+                <template v-if="column.dataIndex === 'apellidos'">
+                    <div>
+                        <span>{{ record.apellidos }}</span>
+                    </div>
+                </template>
+                <template v-if="column.dataIndex === 'total'">
+                    <div>
+                        <span>S/ {{ parseInt(record.total).toFixed(2) }}</span>
+                    </div>
+                </template>
+                <template v-if="column.dataIndex === 'comision'">
+                    <div>
+                        <span>S/ {{ (record.subtotal - record.total).toFixed(2) }}</span>
                     </div>
                 </template>
                 <template v-if="column.dataIndex === 'acciones'">
@@ -40,9 +55,9 @@
                     </a-popconfirm>
     
                 </template>    
-                <template v-if="column.dataIndex === 'estado'">                    
-                    <a-tag v-if="record.estado === 1" color="purple" style="width:80px;"> inscrito </a-tag>
-                    <a-tag v-else color="red" style="width:80px;">No inscrito </a-tag>
+                <template v-if="column.dataIndex === 'est'">                
+                    <a-tag v-if="record.est === '0'" color="red" style="width:70px;"> Usado </a-tag>
+                    <a-tag v-else color="purple" style="width:70px;">No usado </a-tag>
                 </template>
             </template>
         </a-table>
@@ -153,7 +168,7 @@ const getUbigeosResidencia = async () => {
 
 const inscritos = ref([]);
 const getInscritos = async () => { 
-    let res = await axios.post( "get-pagos-simulacro?page="+pagina.value ,{"term": buscar.value, paginashoja: pageSize.value});
+    let res = await axios.post( "get-pagos-simulacro-consulta?page="+pagina.value ,{"term": buscar.value, paginashoja: pageSize.value});
     inscritos.value = res.data.datos.data
     totalRegistros.value = res.data.datos.total;
 }
@@ -222,7 +237,9 @@ const notificacion = (type, titulo, mensaje) => {
 const columns= ref([
     {
         title: 'Nro_Doc',
+        width:'100px',
         dataIndex: 'nro_doc',
+        fixed: 'left',
     },
     {
         title: 'Nombres',
@@ -230,18 +247,19 @@ const columns= ref([
         responsive: ['xs','sm','md','lg'],
     },
     {
-        title: 'Correo',
-        dataIndex: 'email',
-        responsive: ['lg'],
+        title: 'Apellidos',
+        dataIndex: 'apellidos',
+        responsive: ['xs','sm','md','lg'],
     },
+
     {
         title: 'Concepto',
         dataIndex: 'concepto',
         responsive: ['md'],
     },
     {
-        title: 'F. Confirmacion',
-        dataIndex: 'fec_confirmacion',
+        title: 'F.Confirmacion',
+        dataIndex: 'fecha',
         responsive: ['lg'],
     },
     {
@@ -252,28 +270,24 @@ const columns= ref([
     {
         title:'Total',
         dataIndex: 'total',
-        width:'120px',
         align:'center',
         responsive:['md','lg']
     },
     {
         title:'Comision',
         dataIndex: 'comision',
-        width:'120px',
         align:'center',
         responsive:['md','lg']
     },
     {
         title:'Tipo',
-        dataIndex: 'type',
-        width:'120px',
+        dataIndex: 'medio',
         align:'center',
         responsive:['md']
     },
     {
         title:'Estado',
-        dataIndex: 'estado',
-        width:'120px',
+        dataIndex: 'est',
         align:'center',
         responsive:['xs','sm','md','lg']
     }
