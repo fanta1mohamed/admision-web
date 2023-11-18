@@ -100,6 +100,9 @@ import {ref} from 'vue';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, Title, LinearScale, PointElement, LineElement } from 'chart.js'
 import { Pie, Bar, Line } from 'vue-chartjs'
 import * as XLSX from 'xlsx';
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend, PointElement, LineElement)
+
+
 const seleccionado = ref("Genero");     
 
 const exportToExcel = () => {
@@ -109,7 +112,7 @@ const exportToExcel = () => {
   XLSX.writeFile(workbook, seleccionado.value+'.xlsx');
 };
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend, PointElement, LineElement)
+
 
 
 const datos = ref(null);

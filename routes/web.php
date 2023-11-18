@@ -319,7 +319,7 @@ Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
     Route::post('/get-participante', [SimulacroController::class, 'getEntrada']);
     Route::post('/save-entrada', [SimulacroController::class, 'saveEntrada']);
     Route::post('/get-total-entrada', [SimulacroController::class, 'getTotalEntrada']);
-    
+    Route::post('/get-simulacro-ingreso', [SimulacroController::class, 'getIngresos']);
 
 
     //PAGOS

@@ -641,5 +641,25 @@ class SimulacroController extends Controller
 
     }
 
+    public function getIngresos(Request $request)
+    {  
+      $res = DB::table('entrada')->
+      select('*')   
+        ->where(function ($query) use ($request) {
+            return $query
+                ->orWhere('nro_doc', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('nombres', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('paterno', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('materno', 'LIKE', '%' . $request->term . '%');
+        })->orderBy('id', 'DESC')
+        ->paginate(3);
+  
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+      return response()->json($this->response, 200);
+    }
+
+    
+
 
 }
