@@ -356,6 +356,13 @@ Route::prefix('calificacion')->group(function () {
     Route::get('/subir-resultado', fn () => Inertia::render('Simulacro/SubirResultado'));
     Route::get('/resultado-simulacro', fn () => Inertia::render('Simulacro/resultados'));
     Route::post('/subir-excel-simulacro', [ResultadosController::class, 'SubirResultado']);
+    
+    //CALIFICACIÓN
+    Route::get('/subir-lecturas', fn () => Inertia::render('Simulacro/Calificacion/lecturas'))->name('simulacro-lecturas');
+    Route::post('/carga-archivo', [ResultadosController::class, 'cargaArchivo'])->middleware('web');
+    Route::get('/leer-ide/{area}', [ResultadosController::class, 'leerIde']);
+
+
 });
 Route::post('/get-puntaje-simulacro', [ResultadosController::class, 'getResultados']);
 
@@ -463,6 +470,7 @@ Route::get('/pdf-lista', [TestController::class, 'pdfLista']);
 
 
 Route::get('/aleatorizar', [PruebasController::class, 'aleatorizar']);
+Route::get('/c-ides-bd/{area}', [ResultadosController::class, 'cargarIdeBD']);
 
 
 
