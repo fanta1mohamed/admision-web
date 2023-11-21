@@ -209,7 +209,7 @@ class ResultadosController extends Controller
 
         }
         
-        DB::table('puntajes_simulacro')->insert($comparaciones);
+        // DB::table('puntajes_simulacro')->insert($comparaciones);
 
         return response()->json(['comparaciones' => $comparaciones]);
 

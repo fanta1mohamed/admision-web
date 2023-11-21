@@ -27,11 +27,11 @@
                                     <span style="font-size: 3.3rem; font-weight: bold;"> {{ resultado.puntaje }} </span>
                                     
                                 </div>
-                                <div class="flex justify-center">
+                                <!-- <div class="flex justify-center">
                                     <span style="font-size: 1.5rem; font-weight: bold; ">
                                         Puesto en programa: {{ resultado.puesto_programa }}
                                     </span>
-                                </div>
+                                </div> -->
                         
                                 <div class="flex justify-center mb-2 mt-3" >
                                     <!-- <div v-if="resultado.area === 'INGENIERÍAS'" class="mr-3"> <a-button @click="descargarIngenierias" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>                                    
