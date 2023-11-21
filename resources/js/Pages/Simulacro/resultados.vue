@@ -21,7 +21,7 @@
                             <div class="p-4 px-5" style="border:1px solid #d9d9d9; border-radius: 8px; min-width: 380px">
                                 <div class="flex justify-between" >
                                     <div><span style="font-size: 1.2rem; font-weight: bold;">Examen simulacro</span></div> 
-                                    <div><span style="font-size: 1.2rem; font-weight: bold; ">11-11-23</span></div> 
+                                    <div><span style="font-size: 1.2rem; font-weight: bold; ">18-11-23</span></div> 
                                 </div>
                                 <div class="flex justify-center">
                                     <span style="font-size: 3.3rem; font-weight: bold;"> {{ resultado.puntaje }} </span>
@@ -33,10 +33,10 @@
                                     </span>
                                 </div>
                         
-                                <div class="flex justify-center mb-2 mt-3">
-                                    <div v-if="resultado.area === 'INGENIERÍAS'" class="mr-3"> <a-button @click="descargarIngenierias" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>                                    
+                                <div class="flex justify-center mb-2 mt-3" >
+                                    <!-- <div v-if="resultado.area === 'INGENIERÍAS'" class="mr-3"> <a-button @click="descargarIngenierias" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>                                    
                                     <div v-if="resultado.area === 'SOCIALES'" class="mr-3"> <a-button @click="descargarSociales" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>
-                                    <div v-if="resultado.area === 'BIOMÉDICAS'" class="mr-3"> <a-button @click="descargarBiomedicas" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div>
+                                    <div v-if="resultado.area === 'BIOMÉDICAS'" class="mr-3"> <a-button @click="descargarBiomedicas" type="primary" style="width:100%; background:none; color: #340691; border: 1px solid #340691; border-radius:4px;">Descargar examen</a-button> </div> -->
                                     <div> <a-button @click="nuevaConsulta" type="primary" style="width:100%; background:#340691; border-radius:4px; border: none;">Otra Consulta</a-button></div>
                                 </div>
                             </div>
