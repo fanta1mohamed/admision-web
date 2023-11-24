@@ -59,7 +59,7 @@
                 <div><span ><a-button @click="cerramodal()" style="background:none; border:none; color:white; font-size: 1rem;">x</a-button></span></div>
             </div>
 
-        </div>
+        </div> 
 
         <div class="flex" style="height: 100px; align-items: center;">
             <div style="width: 100%;" class="">

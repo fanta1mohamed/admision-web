@@ -465,7 +465,6 @@ import Terminos from './formulario3.vue'
 import { watch, watchEffect, computed, ref, unref, reactive, onMounted } from 'vue';
 import { DownOutlined, ExclamationCircleOutlined, FormOutlined, PrinterOutlined, DeleteOutlined, SearchOutlined, SaveOutlined, EyeOutlined} from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
-import { Form } from 'ant-design-vue';
 import { Head } from '@inertiajs/vue3';
 import axios from 'axios';
 
