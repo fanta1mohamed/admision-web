@@ -32,6 +32,7 @@ use App\Http\Controllers\AdministrativoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\ResultadosController;
+use App\Http\Controllers\CarpetaController;
 
 
 Route::middleware('auth')->get('/', function () {
@@ -471,6 +472,18 @@ Route::get('/pdf-lista', [TestController::class, 'pdfLista']);
 
 Route::get('/aleatorizar', [PruebasController::class, 'aleatorizar']);
 Route::get('/c-ides-bd/{area}', [ResultadosController::class, 'cargarIdeBD']);
+
+
+Route::middleware(['web'])->group(function () {
+    
+    Route::prefix('carpetas')->group(function () {
+        Route::post('/crear-carpeta', [CarpetaController::class, 'crearCarpeta']);
+        Route::get('/ver-contenido-carpeta/{id}', [CarpetaController::class, 'verContenidoCarpeta']);
+        Route::get('/', fn () => Inertia::render('Admin/Carpetas/index'));
+    });
+});
+
+
 
 
 
