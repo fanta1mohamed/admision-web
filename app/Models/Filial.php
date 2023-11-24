@@ -17,6 +17,8 @@ class Filial extends Model
         'id_dep',
         'id_prov',
         'estado',
+        'ubigeo',
+        'direccion',
         'id_usuario'
     ];
 }

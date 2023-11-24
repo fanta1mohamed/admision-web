@@ -3,7 +3,6 @@
 <AuthenticatedLayout>
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4" style="height: calc(100vh - 92px); border-radius: 10px;">
 
-<!-- {{ buscar }} -->
 <row class="flex justify-between mb-4" >
     <div class="mr-3">
     <a-button type="primary" @click="showModalFilial" style="background: #476175; border: none; border-radius: 5px;">Nuevo</a-button>
@@ -20,19 +19,43 @@
     :key="id"
     size="small"
     > 
-    <template #bodyCell="{ column, index }">
+    <template #bodyCell="{ column, index, record }">
+
+    <template v-if="column.dataIndex === 'codigo'">
+        <div class="flex" style="justify-content: center;">
+            <div class="px-2" style="background: #e3e3e3; border-radius: 4px;"><span style="font-weight: bold;">{{ record.codigo }}</span></div>
+        </div>
+    </template>
 
     <template v-if="column.dataIndex === 'estado'">
         <div class="flex" style="justify-content: center;">
-            <div v-if="1 == filiales[index].estado">
+            <div v-if="1 === record.estado">
                 <a-tag color="green">Vigente</a-tag>
             </div>
-            <div v-if="filiales[index].estado == 0">
+            <div v-else>
                 <a-tag color="red">No Vigente</a-tag>
             </div>
         </div>
     </template>
     <template v-if="column.dataIndex === 'acciones'">
+        <a-button type="success" class="mr-1" style="color: #476175;" @click="cambiarSexo(record.id_postulante, record.sexo )" size="small">
+            <template #icon><SaveOutlined/></template>
+        </a-button>
+        <a-button @click="abrirEditar(record)" class="mr-1" style="color: blue;" size="small">
+            <template #icon><form-outlined/></template>
+        </a-button>
+        <a-popconfirm
+            title="¿Estas seguro de eliminar?"
+            disabled
+            @confirm="eliminar(record)"
+            >
+            <a-button shape="" size="small" style="color: crimson;">
+                <template #icon><delete-outlined/></template>
+            </a-button>
+        </a-popconfirm>
+
+    </template>
+    <!-- <template v-if="column.dataIndex === 'acciones'">
         <a-button type="primary" @click="abrirEditar(filiales[index])" size="small">
         <template #icon><form-outlined/></template>
         </a-button>
@@ -40,11 +63,12 @@
         <a-button type="danger" @click="eliminar(filiales[index])" shape="" size="small">
         <template #icon><delete-outlined/></template>
         </a-button>
-    </template>
+    </template> -->
     </template>
 </a-table> 
 
 </div>
+
 
 </AuthenticatedLayout>
 
@@ -56,44 +80,34 @@
                 <div><span ><a-button @click="cerramodal()" style="background:none; border:none; color:white;">X</a-button></span></div>
             </div>
         </div>
+
         <a-form
-        ref="forFilial"
-        name="custom-validation"
-        :model="formState"
-        :rules="formRules"
+        ref="formFilial"
+        name="filial"
+        :model="filial" :rules="formRules"
         v-bind="layout"
         style="margin-bottom: -30px;"
         >
         <a-form-item 
-            has-feedback 
             label="Codigo" 
             name="codigo"
             :rules="[{ required: true, message: 'Ingrese el codigo', trigger: 'change' },]"
             >
-            <a-input style="border-radius:6px;" type="text" v-model:value="filial.codigo" autocomplete="off" />
+            <a-input style="border-radius:6px;" type="text" placeholder="Ingrese el codigo" v-model:value="filial.codigo" autocomplete="off" />
         </a-form-item>
-        <a-form-item has-feedback label="Nombre" name="nombre">
-            <a-input style="border-radius:6px;" type="text" v-model:value="filial.nombre" autocomplete="off" />
+        <a-form-item 
+            label="Nombre" 
+            :rules="[{ required: true, message: 'Ingrese el nombre', trigger: 'change' },]"
+            name="nombre">
+            <a-input style="border-radius:6px;" type="text" placeholder="Ingrese el nombre" v-model:value="filial.nombre" autocomplete="off" />
         </a-form-item>
 
-        <!-- <a-form-item has-feedback label="Departamento" name="departamento">
 
-            <a-auto-complete
-                v-model:value="dep"                
-                :options="departamentos"
-                style="width: 100%"
-                @select="onSelect"
+        <a-form-item 
+            label="lugar" 
+            name="lugar"
+            :rules="[{ required: true, message: 'Seleccione el lugar', trigger:'blur' }]"
             >
-                <a-input
-                    style="border-radius:6px;"
-                    placeholder="Buscar"
-                    v-model:value="buscarDep"
-                    @keypress="handleKeyPress"
-                />
-            </a-auto-complete>
-        </a-form-item> -->
-
-        <a-form-item label="Lugar" name="lugar">
                 <a-auto-complete
                     v-model:value="residencia"                
                     :options="residencias"
@@ -101,7 +115,7 @@
                     style="border-radius:6px; overflow:hidden; border:none;"
                 >
                     <a-input 
-                        placeholder="Departamento"
+                        placeholder="Dep/prov/dist"
                         v-model:value="buscarResidencia"
                         style="border-radius:6px; "
                     >
@@ -114,19 +128,18 @@
                 </a-auto-complete>
         </a-form-item>
 
-        <!-- <a-form-item has-feedback label="Provincia" name="provincia">
-                      
-            <a-select
-                :options="provincias"
-                ref="Tipo"
-                style="width: 100%; border-radius:6px;"
-                @focus="focus"
-                @change="handleChange"
-                v-model:value="filial.provincia"
-                >
-            </a-select>
-        </a-form-item> -->
-        <a-form-item has-feedback label="Vigente" name="estado">
+        <a-form-item 
+            label="Dirección" 
+            :rules="[{ required: true, message: 'Ingrese la dirección', trigger: 'change' },]"
+            name="direccion">
+            <a-input style="border-radius:6px;" type="text" placeholder="Ingrese el nombre" v-model:value="filial.direccion" autocomplete="off" />
+        </a-form-item>
+
+        <a-form-item 
+            label="Vigente" 
+            name="estado"
+            
+            >
             <a-switch v-model:checked="filial.estado"/>
         </a-form-item>
 
@@ -144,7 +157,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { watch, computed, ref, unref, reactive } from 'vue';
+import { watch, computed, ref, onMounted, reactive } from 'vue';
 import { 
     FormOutlined, DeleteOutlined, SearchOutlined,
     DownOutlined, ExclamationCircleOutlined, PrinterOutlined, SaveOutlined, EyeOutlined
@@ -154,18 +167,15 @@ import { notification } from 'ant-design-vue';
 import axios from 'axios';
 const loading = ref(false);
 const buscar = ref("");
-const dep = ref("PUNO")
 const filiales= ref([]);
 const visible = ref(false);
-const departamentos = ref([]);
-const provincias = ref([]);
-const buscarDep = ref("")
 const formFilial = ref();
 const filial = reactive({
     id:null,
     codigo:"",
     nombre:"",
-    lugar:"",
+    lugar:null,
+    direccion:"",
     estado: null,
 })
 
@@ -174,7 +184,10 @@ const residencias = ref([])
 const buscarResidencia = ref(null)
 const redseleccionado = ref(null)
 
-const onSelectResidencias = (value, option) => { redseleccionado.value = option.key; };
+const onSelectResidencias = (value, option) => { 
+    residencia.value = option.value; 
+    filial.lugar = option.key  
+};
 
 const showModalFilial = () => {
     visible.value = true;
@@ -187,11 +200,11 @@ const guardar = async () => {
     loading.value = true;
     try {
         const values = await formFilial.value.validateFields();
-
-        axios.post("save-filial", filiar).then((result) => {
-        notificacion('success',result.data.titulo, result.data.mensaje);
-        getFiliales();
-        visible.value = false;
+        axios.post("save-filial", filial).then((result) => {
+            notificacion('success',result.data.titulo, result.data.mensaje);
+            getFiliales();
+            visible.value = false;
+            resetForm()
         });
         
     } catch (error) {
@@ -224,9 +237,9 @@ const abrirEditar = (item) => {
     filial.id = item.id;
     filial.codigo = item.codigo;
     filial.nombre = item.nombre;
-    filial.departamento = item.id_dep;
-    filial.provincia = item.id_prov;
-
+    filial.lugar = item.ubigeo;
+    filial.direccion = item.direccion;
+    residencia.value = item.lugar;
     if(item.estado == 1){ filial.estado = true }
     else { filial.estado = false}
 }
@@ -242,8 +255,22 @@ const getFiliales =  async (term = "", page = 1) => {
 const eliminar = (item) => {
     axios.get("eliminar-filial/"+item.id).then((result) => {
         getFiliales();
-        notificacion('warning', 'PROCESO ELIMINADO', result.data.mensaje );
+        notificacion('error', 'PROCESO ELIMINADO', result.data.mensaje );
     });
+}
+
+const resetForm = () => {
+
+    filial.id = null;
+    filial.codigo = "";
+    filial.nombre = "";
+    filial.lugar = null;
+    filial.direccion = "";
+    filial.estado =  "";
+    residencia.value = "";
+    redseleccionado.value = ""
+    cerramodal();
+
 }
 
 
@@ -262,10 +289,10 @@ getUbigeosResidencia()
 
 
 const columnsFiliales = [
-    { title: 'Codigo', dataIndex: 'codigo', sorter :true },
-    { title: 'Nombre', dataIndex: 'nombre', sorter :true },
-    { title: 'Departamento', dataIndex: 'departamento', sorter :true },
-    { title: 'Provincia', dataIndex: 'provincia'},
+    { title: 'Codigo', dataIndex: 'codigo',},
+    { title: 'Nombre', dataIndex: 'nombre',},
+    { title: 'Lugar', dataIndex: 'lugar',},
+    { title: 'Dirección', dataIndex: 'direccion',},
     { title: 'Vigente', dataIndex: 'estado', align:'center', width:'100px'},
     { title: 'Acciones', dataIndex: 'acciones'},
 ];

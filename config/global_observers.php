@@ -6,5 +6,7 @@ return [
         App\Models\Programa::class,
         App\Models\Docente::class,
         App\Models\Administrativo::class,
+        // App\Models\Postulante::class,
+
     ],
 ];

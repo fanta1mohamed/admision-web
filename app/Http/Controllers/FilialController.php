@@ -16,29 +16,29 @@ class FilialController extends Controller
 
     public function getFiliales(Request $request)
     {
-      $query_where = [];
-     
-     // array_push($query_where, ['filial.cod_dep', '=', 'provincia.cod_dep']);
 
       $res = Filial::select(
         'filial.id',
         'filial.codigo',
         'filial.nombre',
-        'departamento.nombre AS departamento',
-        'departamento.id AS id_dep',
-        'provincia.nombre AS provincia',
-        'provincia.id as id_prov',
+        'filial.ubigeo',
         'filial.estado AS estado',
-        'filial.efi'
+        'filial.efi',
+        'filial.direccion',
+        DB::raw("CONCAT(departamento.nombre,'/',provincia.nombre,'/',distritos.nombre) AS lugar")
       )
-        ->join ('departamento', 'filial.id_dep', '=','departamento.id' )
-        ->join ('provincia', 'filial.id_prov', '=','provincia.id')
-        ->where($query_where)
+        ->join('ubigeo','ubigeo.ubigeo','filial.ubigeo')
+        ->join('departamento','departamento.id','ubigeo.id_departamento')
+        ->join('provincia','provincia.id','ubigeo.id_provincia')
+        ->join('distritos','distritos.id','ubigeo.id_distrito')
         ->where(function ($query) use ($request) {
             return $query
                 ->orWhere('filial.codigo', 'LIKE', '%' . $request->term . '%')
+                ->orWhere(DB::raw("CONCAT(departamento.nombre,'/',provincia.nombre,'/',distritos.nombre)"),'LIKE', '%' . $request->term . '%')
+                ->orWhere('filial.nombre', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('departamento.nombre', 'LIKE', '%' . $request->term . '%')
-                ->orWhere('filial.nombre', 'LIKE', '%' . $request->term . '%');
+                ->orWhere('provincia.nombre', 'LIKE', '%' . $request->term . '%')
+                ->orWhere('distritos.nombre', 'LIKE', '%' . $request->term . '%');
         })->orderBy('filial.id', 'DESC')
         ->paginate(10);
   
@@ -55,9 +55,9 @@ class FilialController extends Controller
             $filial = Filial::create([
                 'nombre' => $request->nombre,
                 'codigo' => $request->codigo,
-                'id_dep' => $request->id_dep,
-                'id_prov' => $request->id_prov,
+                'ubigeo' => $request->lugar,
                 'estado' => $request->estado,
+                'direccion' => $request->direccion,
                 'id_usuario' => auth()->id()
             ]);
             $this->response['titulo'] = 'REGISTRO NUEVO';
@@ -71,9 +71,9 @@ class FilialController extends Controller
 
             $filial->nombre = $request->nombre;
             $filial->codigo = $request->codigo;
-            $filial->id_dep = $request->id_dep;
-            $filial->id_prov = $request->id_prov;
+            $filial->ubigeo = $request->lugar;
             $filial->estado = $request->estado;
+            $filial->direccion = $request->direccion;
             $filial->id_usuario = auth()->id();
             $filial->save();  
 

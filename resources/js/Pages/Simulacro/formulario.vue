@@ -129,7 +129,8 @@
                         <a-form
                             ref="formDatos"
                             name="form"
-                            :model="form" :rules="formRules">
+                            :model="form" 
+                            :rules="formRules">
                             <a-row>
                                 <div style="margin-bottom: -10px;">
                                     <h1 class="titulo-form">Datos Personales</h1>
@@ -513,7 +514,7 @@ const dniInput = (event) => { form.nro_doc = event.target.value.replace(/\D/g, '
 const celularInput = (event) => { form.celular = event.target.value.replace(/\D/g, ''); };
 
 const save = async () => {
-    loading.value = true;
+    // loading.value = true;
     try {
         const values = await formDatos.value.validateFields();
         const response = await axios.post('/save-simulacro-participante', form);
@@ -527,7 +528,7 @@ const save = async () => {
     } catch (error) {
         console.error(error);
     }
-    loading.value = false;
+    // loading.value = false;
 }
 
 watch(buscarC, ( newValue, oldValue ) => { getColegios() })
