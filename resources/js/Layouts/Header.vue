@@ -2,7 +2,6 @@
     <a-dropdown :trigger="['click']">
       <a class="ant-dropdown-link" @click.prevent style="text-decoration: none; color: black;">
         {{ $page.props.auth.user.name }} &nbsp;
-      
         <DownOutlined />
       </a>
       <template #overlay>
@@ -35,30 +34,4 @@ import DropdownLink from '@/Components/DropdownLink.vue';
       DropdownLink
     },
   });
-  </script>
-
-
-<!-- <template>
-    <div class="flex items-center">
-        <dropdown>
-            <template #trigger>
-                <button @click="dropdownOpen = ! dropdownOpen" class="relative block overflow-hidden">
-                    {{ $page.props.auth.user.name }}
-                </button>
-            </template>
-
-            <template #content>
-
-
-                <dropdown-link class="w-full text-left" :href="route('logout')" method="post" as="button">
-                    Log out
-                </dropdown-link>
-            </template>
-        </dropdown>
-    </div>
-</template>
-
-<script setup>
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-</script> -->
+</script>

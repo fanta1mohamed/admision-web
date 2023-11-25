@@ -19,6 +19,7 @@ class Filial extends Model
         'estado',
         'ubigeo',
         'direccion',
+        'carpeta',
         'id_usuario'
     ];
 }

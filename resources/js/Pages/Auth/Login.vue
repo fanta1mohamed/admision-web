@@ -2,9 +2,10 @@
     <Head title="Log in" />
 
     <GuestLayout>
-    <div style="width: 300px;">
+    <div class="container-login">
+        <div style="width: 100%;">
         <Link href="/" class="flex items-center justify-center" >
-            <ApplicationLogo class="h-20 fill-current text-gray-500" />
+            <ApplicationLogo class=" fill-current text-gray-500" style="background: none" />
         </Link>
 
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
@@ -14,13 +15,13 @@
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="email" value="Correo" />
-                <TextInput id="email" type="email" class="mt-1 block w-full" style="height: 35px;"  v-model="form.email" required autofocus autocomplete="username" />
+                <TextInput id="email" type="email" class="mt-1 block w-full" style="height: 40px;"  v-model="form.email" required autofocus autocomplete="username" />
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-3">
                 <InputLabel for="password" value="Contraseña" />
-                <TextInput id="password" type="password" class="mt-1 block w-full" style="height: 35px;" v-model="form.password" required autocomplete="current-password" />
+                <TextInput id="password" type="password" class="mt-1 block w-full" style="height: 40px;" v-model="form.password" required autocomplete="current-password" />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
@@ -30,11 +31,11 @@
                     <span class="mx-2 text-sm text-gray-600">Recuerdame</span> </label>
             </div>
 
-            <div class="mt-6">
-                <PrimaryButton class="w-full primary"  style="background: linear-gradient(to right, #0079EA, #0006EB);  box-shadow: 0px 10px 20px -10px #0000FF9D;" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <div class="mt-8">
+                <PrimaryButton class="w-full primary"  style="height: 40px; background: linear-gradient(to right, #0079EA, #0006EB);  box-shadow: 0px 10px 20px -10px #0000FF9D;" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Ingresar al Sistema
                 </PrimaryButton>
-                <div style="display: flex; justify-content: center;" class="mt-2">
+                <div style="display: flex; justify-content: center;" class="mt-4">
                     <Link v-if="canResetPassword" :href="route('password.request')" style="font-size: .8rem; text-decoration: none;" class="text-sm text-gray-600 underline hover:text-gray-900">
                         ¿Olvidé mi contraseña?
                     </Link>
@@ -42,6 +43,7 @@
 
             </div>
         </form>
+        </div>
     </div>
     </GuestLayout>
 </template>
@@ -73,10 +75,17 @@ const submit = () => {
     });
 };
 </script>
-
 <style scoped>
-    .button-login{
-
+.container-login{
+    min-width: 310px;
+}
+@media (min-width: 1600px) {
+    .container-login{
+        width: 370px;
+        height: 390px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-
+}
 </style>

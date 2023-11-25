@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Filial;
+use App\Models\Carpeta;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Dataversion;
 
 class FilialController extends Controller
@@ -16,7 +18,6 @@ class FilialController extends Controller
 
     public function getFiliales(Request $request)
     {
-
       $res = Filial::select(
         'filial.id',
         'filial.codigo',
@@ -40,7 +41,7 @@ class FilialController extends Controller
                 ->orWhere('provincia.nombre', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('distritos.nombre', 'LIKE', '%' . $request->term . '%');
         })->orderBy('filial.id', 'DESC')
-        ->paginate(10);
+        ->paginate($request->paginasize);
   
       $this->response['estado'] = true;
       $this->response['datos'] = $res;
@@ -52,14 +53,28 @@ class FilialController extends Controller
 
         $filial = null;
         if (!$request->id) {
+            // $carpeta = Carpeta::create([
+            //     'nombre' => $request->nombre,
+            //     'carpeta_padre_id' => 1,
+            // ]);
+
+            $carpeta = 1;
             $filial = Filial::create([
                 'nombre' => $request->nombre,
                 'codigo' => $request->codigo,
                 'ubigeo' => $request->lugar,
                 'estado' => $request->estado,
+                'carpeta' => $carpeta,
                 'direccion' => $request->direccion,
                 'id_usuario' => auth()->id()
             ]);
+
+            // $carpeta->url = "/1/$carpeta->id";
+            // $carpeta->save();
+        
+            // $directorio = 'raiz/' . $carpeta->id;
+            // Storage::disk('local')->makeDirectory($directorio);
+
             $this->response['titulo'] = 'REGISTRO NUEVO';
             $this->response['mensaje'] = 'Filial '.$filial->nombre.' creada con exito';
             $this->response['estado'] = true;
@@ -98,6 +113,7 @@ class FilialController extends Controller
     $this->response['datos'] = $p;
     return response()->json($this->response, 200);
   }
+
 
     
 

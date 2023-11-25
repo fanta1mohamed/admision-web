@@ -475,8 +475,7 @@ Route::get('/c-ides-bd/{area}', [ResultadosController::class, 'cargarIdeBD']);
 
 
 Route::middleware(['web'])->group(function () {
-    
-    Route::prefix('carpetas')->group(function () {
+    Route::prefix('raiz')->group(function () {
         Route::post('/crear-carpeta', [CarpetaController::class, 'crearCarpeta']);
         Route::get('/ver-contenido-carpeta/{id}', [CarpetaController::class, 'verContenidoCarpeta']);
         Route::get('/', fn () => Inertia::render('Admin/Carpetas/index'));

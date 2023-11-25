@@ -88,18 +88,18 @@ import axios from 'axios';
 import { FolderOutlined, HomeOutlined } from '@ant-design/icons-vue';
 
 
-const breadcrumb = ref([{ "id": 31, "nombre": "home"}]);
+const breadcrumb = ref([{ "id": 1, "nombre": "home"}]);
 
 const archivos = ref([]);
 const carpeta = ref(null);
 const carpetas = ref([]);
-const carpetaId = ref(31);
+const carpetaId = ref(1);
 const modalNuevo = ref(false);
 const nombre = ref("");
 
 const getCarpetas = async ( ) => {
     try {
-        const response = await axios.get("/carpetas/ver-contenido-carpeta/"+carpetaId.value);
+        const response = await axios.get("/raiz/ver-contenido-carpeta/"+carpetaId.value);
         carpetas.value = response.data.carpetas;
         carpeta.value = response.data.carpeta;
     } catch (error) {

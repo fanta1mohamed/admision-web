@@ -26,7 +26,7 @@ class CarpetaController extends Controller
             'url' => $url,
         ]);
 
-        $directorio = 'carpetas/' . $url."/". $carpeta->id;
+        $directorio = 'raiz/' . $url."/". $carpeta->id;
         Storage::disk('local')->makeDirectory($directorio);
 
     }
@@ -39,7 +39,7 @@ class CarpetaController extends Controller
 
         $rutaCarpeta = $this->obtenerRutaCarpeta($carpeta);
     
-        $archivos = Storage::disk('local')->allFiles("carpetas/".$rutaCarpeta);
+        $archivos = Storage::disk('local')->allFiles("raiz/".$rutaCarpeta);
 
         $this->response['estado'] = true;
         $this->response['carpeta'] = $carpeta;
