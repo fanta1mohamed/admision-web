@@ -148,7 +148,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     //GET DATA 
     Route::get('/get-facultades', [SeleccionDataController::class, 'getFacultades']);
-    Route::post('/procesos/get-sedes', [SeleccionDataController::class, 'getSedes']);
+    Route::post('/get-sedes', [SeleccionDataController::class, 'getSedes']);
     Route::post('/get-departamentos', [SeleccionDataController::class, 'getDepartamento']);
     Route::get('/get-provincia-x-departamento/{cod}', [SeleccionDataController::class, 'getProvinciasPorDepartamento']);
     Route::post('/pre-inscripcion/get-comprobantes', [SeleccionDataController::class, 'getComprobanteByDni']);
@@ -353,14 +353,20 @@ Route::prefix('simulacros')->group(function () {
 });
 
 
+
 Route::prefix('calificacion')->group(function () {
     Route::get('/subir-resultado', fn () => Inertia::render('Simulacro/SubirResultado'));
     Route::get('/resultado-simulacro', fn () => Inertia::render('Simulacro/resultados'));
     Route::post('/subir-excel-simulacro', [ResultadosController::class, 'SubirResultado']);
     
     //CALIFICACIÓN
-    Route::get('/subir-lecturas', fn () => Inertia::render('Simulacro/Calificacion/lecturas'))->name('simulacro-lecturas');
-    Route::post('/carga-archivo', [ResultadosController::class, 'cargaArchivo'])->middleware('web');
+    Route::get('/calificacion', fn () => Inertia::render('Simulacro/Calificacion/lecturas'))->name('simulacro-calificacion');
+    
+    Route::post('/carga-ide', [ResultadosController::class, 'cargaArchivoIde']);
+    //TEMP
+    Route::post('/carga-ide/{proceso}/{area}', [ResultadosController::class, 'cargaArchivoIde'])->withoutMiddleware(['web']);
+
+    Route::post('/carga-res', [ResultadosController::class, 'cargaArchivoRes']);
     Route::get('/leer-ide/{area}', [ResultadosController::class, 'leerIde']);
 
 
@@ -452,8 +458,6 @@ Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
 Route::get('/get-pago-simulacro/{dni}', [PagoController::class, 'pagoSimulacro']);
 
 
-
-
 Route::get('/get-e-oti', [IngresoController::class, 'getEstudianteOTI']);
 Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
     // $response = Http::get("http://38.43.133.27/PAYMENTS_MNG/v1/{$dni}/9/");
@@ -481,6 +485,50 @@ Route::middleware(['web'])->group(function () {
         Route::get('/', fn () => Inertia::render('Admin/Carpetas/index'));
     });
 });
+
+// Route::get('/', function () { return view('welcome'); })->middleware('redirect');
+Route::middleware('redirect')->get('/', fn () => Inertia::render('Auth/Login'));
+
+//RUTAS TEMPORALES
+Route::get('/leer-ides', fn () => Inertia::render('Simulacro/Calificacion/components/leer-ide'));
+Route::get('/leer-ide/{area}', [ResultadosController::class, 'leerIde']);
+Route::get('/cal', fn () => Inertia::render('Simulacro/Calificacion/calificacion'));
+Route::post('/get-sim', [SimulacroController::class, 'getSimulacros']);
+Route::post('/get-archivos', [ResultadosController::class, 'getArchivos']);
+Route::get('/eliminar-archivo/{id}', [ResultadosController::class, 'eliminarArchivo']);
+Route::post('/get-ides', [ResultadosController::class, 'getIdes']);
+Route::post('/subir-participantes-simulacro', [ResultadosController::class, 'SubirParticipantes']);
+Route::post('/get-participantes-externo', [ResultadosController::class, 'getParticipantesSimulacro']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

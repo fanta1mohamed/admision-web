@@ -3,15 +3,15 @@
 <AuthenticatedLayout>
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
 
-<row class="flex justify-between mb-4" >
+<div class="flex justify-between mb-4" >
   <div class="mr-3">
-    <a-button type="primary" @click="showModalProceso">Nuevo</a-button>
+    <a-button type="primary" style="background: #476175; border: none; border-radius: 5px;" @click="showModalProceso">Nuevo</a-button>
   </div>
   <div class="flex justify-between" style="position: relative;" >
     <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 30px;"/>
     <div class="mr-2" style="position: absolute; left: 8px; top: 3px;"><search-outlined /></div>
   </div>
-</row>
+</div>
     
 <a-table 
   :columns="columnsProcesos" 
@@ -59,7 +59,13 @@
 
 <div>
 
-  <a-modal v-model:visible="visible" title="Nuevo Proceso" style="margin-top: -40px;">
+  <a-modal v-model:visible="visible" :closable="false" style="margin-top: -40px;">
+      <div style="background: #476175; height: 36px; margin-left:-24px; margin-right:-24px; margin-top:-24px; margin-bottom: 28px;">
+            <div class="flex justify-between ml-3 mr-1" style="height:36px; align-items: center;">
+                <div><span style="font-weight: bold; color:white; font-size:1rem;">Nuevo Proceso</span></div>
+                <div><span ><a-button @click="cerramodal()" style="background:none; border:none; color:white;">X</a-button></span></div>
+            </div>
+      </div>
       <!-- <pre> {{ proceso }} </pre>  -->
       <a-form
         ref="formRef"
@@ -122,7 +128,7 @@
 
     <template #footer>
       <a-button style="margin-left: 10px;" @click="resetForm">Cancelar</a-button>
-      <a-button type="primary" @click="guardar()">Guardar</a-button>
+      <a-button type="primary" style="background: #476175; border:none;" @click="guardar()">Guardar</a-button>
     </template>
   </a-modal>
 </div>
@@ -179,68 +185,24 @@
 
   const layout = {
       labelCol: {
-        span: 4,
+        span: 5,
       },
       wrapperCol: {
-        span: 14,
+        span: 19,
       },
   };
-
-  let validateNombre = async (_rule, value) => {
-    if (value === '') {
-      return Promise.reject('Ingrese su el nombre del proceso');
-    } else {
-      return Promise.resolve();
-    }
-  };
-
-  let validateSede = async (_rule, value) => {
-    if (value === '') {
-      return Promise.reject('Ingrese la sede del proceso');
-    } else {
-      return Promise.resolve();
-    }
-  };
-
-  const rules = {
-    nombre: [{
-      required: true,
-      validator: validateNombre,
-      trigger: 'change',
-    }],
-    sede: [{
-      required: true,
-      validator: validateSede,
-      trigger: 'change',
-    }],
-
-  };
-    
-  const roles = ref([])
-  const permisos = ref([]);
-    
-
-
-    const handleOk = e => {
-      console.log(e);
-      visible.value = false;
-    };
-    const getPermisos = async () => {  
-      let res = await axios.get(`get-permission`);
-      permisos.value = res.data.permisos;
-    }
  
-    const abrirEditar = (item) => {
-      visible.value = true;
-      proceso.value.id = item.id;
-      proceso.value.nombre = item.nombre;
-      proceso.value.sede = item.id_sede;
-      proceso.value.tipo = item.id_tipo;
-      proceso.value.modalidad = item.id_modalidad;
-      proceso.value.anio = item.anio;
-      if(item.estado == 1){ proceso.value.estado = true }
-      else { proceso.value.estado = false}
-    }
+  const abrirEditar = (item) => {
+    visible.value = true;
+    proceso.value.id = item.id;
+    proceso.value.nombre = item.nombre;
+    proceso.value.sede = item.id_sede;
+    proceso.value.tipo = item.id_tipo;
+    proceso.value.modalidad = item.id_modalidad;
+    proceso.value.anio = item.anio;
+    if(item.estado == 1){ proceso.value.estado = true }
+    else { proceso.value.estado = false}
+  }
 
     const getProcesos =  async (term = "", page = 1) => {
       let res = await axios.post(
@@ -252,7 +214,7 @@
 
     const getSedes =  async (term = "", page = 1) => {
       let res = await axios.post(
-        "procesos/get-sedes?page=" + page,
+        "get-sedes?page=" + page,
       );
       sedes.value = res.data.datos.data;
       proceso.value.sede = res.data.datos.data[0].value;
@@ -311,21 +273,6 @@
       { title: 'Acciones', dataIndex: 'acciones', width:'50px'},
     ];
 
-    
-    const selectedRowKeys = ref([]); 
-    const onSelectChange = changableRowKeys => {
-      console.log('selectedRowKeys changed: ', changableRowKeys);
-      selectedRowKeys.value = changableRowKeys;
-    };
-    const rowSelection = computed(() => {
-      return {
-        selectedRowKeys: unref(selectedRowKeys),
-        onChange: onSelectChange,
-        hideDefaultSelections: true,
-      };
-    });
-    
-
     const notificacion = (type, titulo, mensaje) => {
       notification[type]({
         message: titulo,
@@ -340,6 +287,4 @@
     getSedes()
     getTipos()
     getModalidades()
-    
-    
     </script>

@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="flex h-screen bg-gray-50" style="position: relative;"> 
+      <!-- <NavigationMobile /> -->
       <div class="men"  style="width: 50px; height: 30px; position: absolute; transition: all 0.3s ease; z-index: 11; top: 20px; padding-left: 15px;" :style="{'left': sidewidth } ">
         <button @click="sidechange" class="p-1 mr-5 -ml-1 rounded-md focus:outline-none focus:shadow-outline-purple" aria-label="Menu">
           <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
@@ -8,8 +9,6 @@
           </svg>
         </button>  
       </div>
-
-      <!-- <NavigationMobile /> -->
       <Navigation :style="{ 'width': sidewidth }" style="transition: all 0.3s ease;" />
       <div class="flex flex-col flex-1 w-full">
         <TopMenu :usuario="usu"/>

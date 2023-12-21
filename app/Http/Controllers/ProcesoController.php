@@ -105,7 +105,7 @@ class ProcesoController extends Controller
 
   
   public function getModalidades(){
-
+    
     $res = DB::select('SELECT id as value, nombre as label FROM modalidad_proceso');
     $this->response['estado'] = true;
     $this->response['datos'] = $res;

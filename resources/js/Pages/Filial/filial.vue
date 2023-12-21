@@ -3,7 +3,7 @@
 <AuthenticatedLayout>
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4" style="border-radius: 10px; min-height: calc(100vh - 92px);">
 
-<row class="flex justify-between mb-2" >
+<div class="flex justify-between mb-2" >
     <div class="mr-3">
     <a-button type="primary" @click="showModalFilial" style="background: #476175; border: none; border-radius: 5px;">Nuevo</a-button>
     </div>
@@ -11,7 +11,7 @@
         <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; border-radius:6px; padding-left: 30px;"/>
     <div class="mr-2" style="position: absolute; left: 8px; top: 3px; "><search-outlined /></div>
     </div>
-</row>
+</div>
 <a-table 
     :columns="columnsFiliales" 
     :data-source="filiales"
@@ -91,7 +91,7 @@
         <a-form
         ref="formFilial"
         name="filial"
-        :model="filial" :rules="formRules"
+        :model="filial"
         v-bind="layout"
         style="margin-bottom: -30px;"
         >

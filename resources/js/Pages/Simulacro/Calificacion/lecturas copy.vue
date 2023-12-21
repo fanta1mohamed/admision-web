@@ -2,55 +2,11 @@
   <Layout>
     <Head name="Subir Ides"/>
     <div class="p-4" style="background: white; width: 100%; min-height: calc(100vh - 90px); border-radius: 12px;">
-    <!-- <div class="flex justify-between">
-      <div><a-button type="primary" @click="visible = true" style="background: #476175; border: none; border-radius: 5px;">subir Ides</a-button></div>
-    </div> -->
+      <!-- <div class="flex justify-between">
+        <div><a-button type="primary" @click="visible = true" style="background: #476175; border: none; border-radius: 5px;">subir Ides</a-button></div>
+      </div> -->
 
-    <div class="flex justify-between">
-      <div>
-        <a-button type="primary" @click="mInicio = true" style="background: #476175; color: white; border: none; border-radius: 5px;">
-          <div class="flex" style="margin-left: -5px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span class="ml-2">Nuevo</span>
-          </div>
-        </a-button>
-      </div>
-      <div><a-input v-model:value="value" placeholder="Buscar" /></div>
-    </div>
-
-
-    <a-modal v-model:visible="mInicio" @ok="okey" :centered="true" style="max-width: 400px;">
-        <div class="flex pt-2 pb-4" style="margin-top: -10px; margin-bottom: 0px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#476175" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-          <span class="ml-2" style="font-size: 1rem; font-weight: bold; color: #476175;">Nuevo Proceso</span></div>
-        <div class="mt-3">
-          <div>
-            <label class="">Nombre: </label>
-          </div>
-          <div class="mt-2">
-            <a-input v-model:value="value" placeholder="Nombre del proceso" />
-          </div>
-        </div>
-
-        <div class="mt-3">
-          <div>
-            <label class="">Fecha:</label>
-          </div>
-          <div class="mt-2">
-            <a-input v-model:value="value" placeholder="Fecha del simulacro" />
-          </div>
-        </div>
-
-        <template #footer>
-          <div class="mb-3 pr-2">
-            <a-button v-if="current === 0" @click="mInicio = false" style="color: #466175; width: 100px; border: solid 1px #466175; border-radius: 5px;">Cancelar</a-button>
-            <a-button v-if="current === 0" @click="prev" style="color: white; width: 100px; background: #466175; border-radius: 5px;">Guardar</a-button>
-          </div>
-        </template>
-
-    </a-modal>
-
-    <!-- <div class="mt-4" style="height: 100%; min-height: calc(100vh - 130px); position: relative;">
+    <div class="mt-4" style="height: 100%; min-height: calc(100vh - 130px); position: relative;">
       <div>
         <a-steps :current="current" >
           <a-step key="uno" status="finish">
@@ -64,12 +20,12 @@
             </template>
           </a-step>
           <a-step key="dos" title="segundo" status=""/>
-          <a-step key="tres" title="tercero" status=""/> -->
+          <a-step key="tres" title="tercero" status=""/>
           <!-- <a-step v-for="item in steps" :key="item.title" :title="item.title" status="error"/> -->
-        <!-- </a-steps>
-      </div> -->
+        </a-steps>
+      </div>
 
-      <!-- <div class="steps-content mt-4" >
+      <div class="steps-content mt-4" >
         <div v-if="current === 0" style=" display: flex;height: calc(100vh - 210px);  border-radius: 12px; align-items: center; justify-content: center;">
             <a-card class="" style="min-width:320px; border-radius: 12px;">
               <div class="flex pb-4" style="margin-top: -10px; margin-bottom: 0px;">
@@ -114,7 +70,7 @@
           </a-button>
         </div>
       </div>
-    </div> -->
+    </div>
 
 
 
@@ -161,7 +117,6 @@ import { InboxOutlined, FolderOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 const baseUrl = window.location.origin;
 const fileList = ref([]);
-const mInicio = ref(false);
 
 const visible = ref(false);
 // const area = ref(null); 

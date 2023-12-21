@@ -36,6 +36,68 @@
               </nav-link>
             </a-menu-item>
 
+          
+          <a-sub-menu key="sub5">
+            <template #title>
+              <span>
+                <setting-filled/>
+                <span>Conf. Proceso</span>
+              </span>
+            </template>
+            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;"> 
+              <!-- <div v-if="route().current('proceso-index') && openKeys !== null" style="display: none;">{{ titleClick('sub3')  }}</div> -->
+
+              <nav-link :href="route('proceso-index')" :active="route().current('proceso-index')" style="margin: 0px; margin-left: -28px; ">
+                <div class="flex ml-6" style="align-items: center;">
+                  <setting-filled/>
+                  <span>Vacantes</span>
+                </div>
+              </nav-link>
+            </a-menu-item>
+
+            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;"> 
+              <!-- <div v-if="route().current('programa-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
+              <nav-link :href="route('programa-index')" :active="route().current('programa-index')" style="margin: 0px; margin-left: -28px; ">
+                <div class="flex ml-6" style="align-items: center;">
+                  <setting-filled/>
+                  <span>Tarifas</span>
+                </div>
+              </nav-link>
+            </a-menu-item>
+
+            <a-menu-item key="4" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
+              <!-- <div v-if="route().current('modalidad-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
+              <nav-link :href="route('modalidad-index')" :active="route().current('modalidad-index')" style="margin: 0px; margin-left: -28px; ">
+                <div class="flex ml-6" style="align-items: center;">
+                  <setting-filled/>
+                  <span>Usuarios</span>
+                </div>
+              </nav-link>
+            </a-menu-item>
+
+            <a-menu-item key="4" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
+              <!-- <div v-if="route().current('modalidad-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
+              <nav-link :href="route('modalidad-index')" :active="route().current('modalidad-index')" style="margin: 0px; margin-left: -28px; ">
+                <div class="flex ml-6" style="align-items: center;">
+                  <setting-filled/>
+                  <span>Inhabilitados</span>
+                </div>
+              </nav-link>
+            </a-menu-item>
+
+            <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;"> 
+              <!-- <div v-if="route().current('filial-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
+              <nav-link :href="route('filial-index')" :active="route().current('filial-index')" style="margin: 0px; margin-left: -28px;">
+                <div class="flex ml-6" style="align-items: center;">
+                  <setting-filled/>
+                  <span>Actividades</span>
+                </div>
+              </nav-link>
+            </a-menu-item>
+          </a-sub-menu>
+
+
+
           <a-sub-menu key="sub1">
             <template #title>
               <span>
@@ -47,7 +109,7 @@
               <!-- <div v-if="route().current('proceso-index') && openKeys !== null" style="display: none;">{{ titleClick('sub3')  }}</div> -->
 
               <nav-link :href="route('proceso-index')" :active="route().current('proceso-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex" style="align-items: center;">
+                <div class="flex ml-6" style="align-items: center;">
                   <setting-filled/>
                   <span>Procesos</span>
                 </div>
@@ -57,7 +119,7 @@
             <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;"> 
               <!-- <div v-if="route().current('programa-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
               <nav-link :href="route('programa-index')" :active="route().current('programa-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex" style="align-items: center;">
+                <div class="flex ml-6" style="align-items: center;">
                   <setting-filled/>
                   <span>programas</span>
                 </div>
@@ -67,7 +129,7 @@
             <a-menu-item key="4" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <!-- <div v-if="route().current('modalidad-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
               <nav-link :href="route('modalidad-index')" :active="route().current('modalidad-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex" style="align-items: center;">
+                <div class="flex ml-6" style="align-items: center;">
                   <setting-filled/>
                   <span>modalidades</span>
                 </div>
@@ -77,7 +139,7 @@
             <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;"> 
               <!-- <div v-if="route().current('filial-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
               <nav-link :href="route('filial-index')" :active="route().current('filial-index')" style="margin: 0px; margin-left: -28px;">
-                <div class="flex" style="align-items: center;">
+                <div class="flex ml-6" style="align-items: center;">
                   <setting-filled/>
                   <span>Filiales</span>
                 </div>
@@ -95,7 +157,7 @@
             <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;"> 
               <!-- <div v-if="route().current('roles-index') && openKeys !== null" style="display: none;">{{ titleClick('sub1') }}</div> -->
               <nav-link :href="route('roles-index')" :active="route().current('roles-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style="align-items: center;">
+                <div class="flex ml-6" style="align-items: center;">
                   <setting-filled/>
                   <span>Roles</span>
                 </div>
@@ -105,7 +167,7 @@
             <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom:-5px;"> 
               <!-- <div v-if="route().current('usuarios-index')" style="display: none;">{{ titleClick('sub1') }}</div> -->
               <nav-link :href="route('usuarios-index')" :active="route().current('usuarios-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style="align-items: center;">
+                <div class="flex ml-6" style="align-items: center;">
                   <setting-filled/>
                   <span>usuarios</span>
                 </div>
@@ -124,7 +186,7 @@
             </template>
             <a-menu-item style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
               <nav-link :href="route('admin-apoderado-index')" :active="route().current('admin-apoderado-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>Apoderados</span>
                 </div>
@@ -133,7 +195,7 @@
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <nav-link :href="route('admin-postulante-index')" :active="route().current('admin-postulante-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>Postulantes</span>
                 </div>
@@ -142,7 +204,7 @@
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <nav-link :href="route('admin-colegio-index')" :active="route().current('admin-colegio-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>Colegios</span>
                 </div>
@@ -151,7 +213,7 @@
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <nav-link :href="route('admin-documento-index')" :active="route().current('admin-documento-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>Documentos</span>
                 </div>
@@ -160,7 +222,7 @@
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <nav-link :href="route('admin-preinscripciones')" :active="route().current('admin-preinscripciones')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>Preinscripciones</span>
                 </div>
@@ -169,7 +231,7 @@
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
               <nav-link :href="route('admin-inscripciones')" :active="route().current('admin-inscripciones')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>
                     Inscripciones
@@ -190,7 +252,7 @@
             </template>
             <a-menu-item style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
               <nav-link :href="route('admin-participante-docente')" :active="route().current('admin-participante-docente')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>Docentes</span>
                 </div>
@@ -199,7 +261,7 @@
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
               <nav-link :href="route('admin-participante-administrativo')" :active="route().current('admin-participante-administrativo')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>
                     Administrativos
@@ -210,7 +272,7 @@
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
               <nav-link :href="route('admin-participante-sorteo')" :active="route().current('admin-participante-sorteo')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>
                     Sorteo
