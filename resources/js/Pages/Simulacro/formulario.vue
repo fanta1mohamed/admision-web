@@ -159,7 +159,7 @@
                                             <div>
                                                 <a-select
                                                     v-model:value="form.tipo_doc"
-                                                    style="width: 120px" :disabled="!form.terminos">
+                                                    style="width: 120px">
                                                     <a-select-option :value="1">DNI</a-select-option>
                                                     <a-select-option :value="2">Carnet. Ext</a-select-option>    
                                                 </a-select>

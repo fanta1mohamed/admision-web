@@ -15,14 +15,7 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
-        }),
-        Components({
-            resolvers: [
-              AntDesignVueResolver({
-                importStyle: false, // css in js
-              }),
-            ],
-        }),
+        })
     ],
     css: {
         preprocessorOptions: {

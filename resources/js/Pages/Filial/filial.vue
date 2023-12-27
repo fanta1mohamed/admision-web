@@ -278,8 +278,6 @@ const resetForm = () => {
 
 }
 
-
-
 const notificacion = (type, titulo, mensaje) => {
     notification[type]({
     message: titulo,
