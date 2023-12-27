@@ -22,7 +22,7 @@
             </div>
 
             <a-table 
-                :columns="columnsSimulacros" f
+                :columns="columnsSimulacros" 
                 :data-source="simulacros"
                 :key="id"
                 size="small"
@@ -51,8 +51,8 @@
                         </div>
                     </template>
                     <template v-if="column.dataIndex === 'acciones'">
-                        <a-button type="success" class="mr-1" style="color: #476175;" @click="cambiarSexo(record.id_postulante, record.sexo )" size="small">
-                            <template #icon><SaveOutlined/></template>
+                        <a-button type="gray" class="mr-1" style="color: #476175;" @click="verFicha(record.id)" size="small">
+                            <template #icon><EyeOutlined/></template>
                         </a-button>
                         <a-button @click="abrirEditar(record)" class="mr-1" style="color: blue;" size="small">
                             <template #icon><form-outlined/></template>
@@ -218,11 +218,18 @@
                         <Ides :proceso="procesoseleccionado"/>
                     </div>
                 </a-tab-pane>
-                <a-tab-pane key="3" tab="Respuestas">Content of Tab Pane 2</a-tab-pane>
+                <a-tab-pane key="3" tab="Respuestas" style="margin: -10px;">
+                    <div>
+                        <Resp :proceso="procesoseleccionado"/>
+                    </div>
+                </a-tab-pane>
                 <a-tab-pane key="4" tab="Res correctas">Content of Tab Pane 3</a-tab-pane>
                 <a-tab-pane key="5" disabled tab="Calificar">Content of Tab Pane 3</a-tab-pane>
             </a-tabs>
         </div>
+
+
+
     </div>
 </div>
 </Layout>    
@@ -231,10 +238,11 @@
 <script setup>
 import {ref, watch, reactive} from 'vue';
 import axios from 'axios';
-import { FolderOutlined, HomeOutlined, EnvironmentOutlined, DownOutlined, FormOutlined, DeleteOutlined, SaveOutlined, SearchOutlined } from '@ant-design/icons-vue';
+import { FolderOutlined, HomeOutlined, EnvironmentOutlined, DownOutlined, FormOutlined, DeleteOutlined, SaveOutlined, SearchOutlined, EyeOutlined } from '@ant-design/icons-vue';
 import { Head } from '@inertiajs/vue3';
 import Layout from '@/Layouts/LayoutCalificador.vue'
 import Ides from './components/leer-ide.vue'
+import Resp from './components/leer-resp.vue'
 import Participantes from './components/participantes.vue'
 
 const breadcrumb = ref([{ "id": 0, "nombre": "Simulacros"}]);
@@ -245,6 +253,9 @@ const carpetas = ref([]);
 const carpetaId = ref(1);
 const modalNuevo = ref(false);
 const nombre = ref("");
+
+
+
 
 const procesoseleccionado = ref(null)
 

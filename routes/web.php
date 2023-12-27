@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\SimulacroController;
-use App\Http\Controllers\HomeController;
+//use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\BlogController;
@@ -363,10 +363,12 @@ Route::prefix('calificacion')->group(function () {
     Route::get('/calificacion', fn () => Inertia::render('Simulacro/Calificacion/lecturas'))->name('simulacro-calificacion');
     
     Route::post('/carga-ide', [ResultadosController::class, 'cargaArchivoIde']);
+
     //TEMP
     Route::post('/carga-ide/{proceso}/{area}', [ResultadosController::class, 'cargaArchivoIde'])->withoutMiddleware(['web']);
+    Route::post('/carga-res/{proceso}/{area}', [ResultadosController::class, 'cargaArchivoRes'])->withoutMiddleware(['web']);
 
-    Route::post('/carga-res', [ResultadosController::class, 'cargaArchivoRes']);
+    // Route::post('/carga-res', [ResultadosController::class, 'cargaArchivoRes']);
     Route::get('/leer-ide/{area}', [ResultadosController::class, 'leerIde']);
 
 
@@ -494,11 +496,17 @@ Route::get('/leer-ides', fn () => Inertia::render('Simulacro/Calificacion/compon
 Route::get('/leer-ide/{area}', [ResultadosController::class, 'leerIde']);
 Route::get('/cal', fn () => Inertia::render('Simulacro/Calificacion/calificacion'));
 Route::post('/get-sim', [SimulacroController::class, 'getSimulacros']);
-Route::post('/get-archivos', [ResultadosController::class, 'getArchivos']);
+Route::post('/get-archivos', [ResultadosController::class, 'getArchivosIde']);
+Route::post('/get-archivos-res', [ResultadosController::class, 'getArchivosRes']);
 Route::get('/eliminar-archivo/{id}', [ResultadosController::class, 'eliminarArchivo']);
 Route::post('/get-ides', [ResultadosController::class, 'getIdes']);
+Route::post('/get-res', [ResultadosController::class, 'getRes']);
 Route::post('/subir-participantes-simulacro', [ResultadosController::class, 'SubirParticipantes']);
 Route::post('/get-participantes-externo', [ResultadosController::class, 'getParticipantesSimulacro']);
+
+Route::get('/ver-ficha', fn () => Inertia::render('Simulacro/Calificacion/components/ficha'));
+
+Route::get('/get-ficha-respuesta/{id}', [ResultadosController::class, 'getFichaRespuesta']);
 
 
 

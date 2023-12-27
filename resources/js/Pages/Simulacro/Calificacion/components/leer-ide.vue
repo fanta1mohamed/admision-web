@@ -90,8 +90,8 @@
             <template v-if="column.dataIndex === 'observaciones'">
                 <a-tag v-if="record.dni === null" color="pink"> Sin DNI</a-tag>
                 <a-tag v-if="record.aula === ''" color="purple"> Sin aula</a-tag>
-                <a-tag v-if="record.len_doc !== 8 || record.vdni === 0" color="green"> Dni erroneo</a-tag>
-                <a-tag v-if="record.vaula === 0" color="blue"> Error de aula</a-tag>
+                <a-tag v-if="record.len_doc !== 8 && record.dni !== null" color="green"> Dni erroneo</a-tag>
+                <a-tag v-if="record.vaula === 0 && record.aula !== ''" color="blue"> Error de aula</a-tag>
                 <a-tag v-if="record.tipo === ''" color="yellow"> Sin tipo</a-tag>
 
                 <!-- <span>{{ record.dni }} {{ record.aula }} {{ record.tipo }} {{ record.len_doc }} {{ record.vdni }} {{ record.vaula }} </span> -->

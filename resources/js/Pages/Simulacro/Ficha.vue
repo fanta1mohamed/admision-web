@@ -1,5 +1,5 @@
 <template>
-    <AuthenticatedLayout>
+<AuthenticatedLayout>
     <div style="">
       <a-card style="background: white;" class="m-0 p-0">
         <div class="mb-2 flex justify-between">
@@ -171,7 +171,7 @@
             </div>
           </div>
 
-      <!-- {{ marcadas }} -->
+
 
       <div style=" width: 200px;">
         <div v-for="number in 30" :key="number" style="padding: 0px; height: 16px;"> 
@@ -205,7 +205,7 @@
 
     </div>
     </div>
-
+    {{ marcadas }}
   <template v-slot:footer>
     <div style="text-align: right; margin-top:-40px; ">
       <a-button type="primary" @click="saveResp()">Guardar</a-button>
@@ -270,39 +270,8 @@ let settings = {
 xlsx(data, settings)
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const examen = ref(4);
 const marcadas = ref([]);
-
-const selectedOptions = ref([]);
 
 const abrir = () => {
   visible.value = true
@@ -321,11 +290,6 @@ const nombreP = ref("JHON ARIEL")
 const paterno = ref("LUQUE")
 const materno = ref("CUSACANI")
 const area_examen = ref(4)
-
-//---------------------------------------------
-const openModal = () => {
-    visible.value = true;
-}
 
 const anio = ref("2023")
 const nombre = ref(null)
