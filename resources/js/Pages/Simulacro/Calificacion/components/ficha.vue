@@ -3,8 +3,6 @@
         <div class="flex justify-center mt-6 mb-4" style="">
             <div class="flex justify-center p-3"
                 style="width: 820px; background: white; border: solid #d9d9d9 1px; border-radius: 10px;">
-
-                {{ respuestas}}
                 <div style="width:300px; margin-right: 10px;">
                     <div class="flex justify-center mb-2">
                         <img src="../../../../../assets/imagenes/logotiny.png" width="60" />
@@ -20,9 +18,16 @@
                             HOJA DE IDENTIFICACIÓN
                     </div>
 
+                    <div class="flex justify-center mb-3">
+                        <div style="border-radius: 5px; border: solid 1px #d9d9d9; margin:6px; width: 90px; text-align: center;">
+                            <span>Aula: {{ ficha_respuesta.id_aula }}</span>
+                        </div>
+                    </div>
+
+
                     <div class="flex justify-center">
                         <a-card class="pl-4" style="width: 300px;">
-                            <a-radio-group v-model:value="tipo">
+                            <a-radio-group v-model:value="ficha_respuesta.ide_tipo">
                                 <a-radio value="P">P</a-radio>
                                 <a-radio value="Q">Q</a-radio>
                                 <a-radio value="R">R</a-radio>
@@ -32,33 +37,36 @@
                         </a-card>
                     </div>
 
+                    <!-- {{ ficha_respuesta }} -->
+
+
                     <div class="ml-3 pr-4" style="">
 
-                        <div class="mt-3">
+                        <!-- <div class="mt-3">
                             <a-select ref="select" v-model:value="area_examen" style="width: 175px">
                                 <a-select-option :value="4">BIOMEDICAS</a-select-option>
                                 <a-select-option :value="6">INGENIERIAS</a-select-option>
                                 <a-select-option :value="5">SOCIALES</a-select-option>
                             </a-select>
 
-                        </div>
+                        </div> -->
 
 
                         <div class="mt-3">
                             <label>N° Documento</label>
-                            <a-input v-model:value="dni" />
+                            <a-input v-model:value="ficha_respuesta.dni" />
                         </div>
                         <div class="mt-3">
                             <label>Nombres</label>
-                            <a-input v-model:value="nombreP" />
+                            <a-input v-model:value="ficha_respuesta.nombres" />
                         </div>
                         <div class="mt-3">
                             <label>Apellido Paterno</label>
-                            <a-input v-model:value="paterno" />
+                            <a-input v-model:value="ficha_respuesta.paterno" />
                         </div>
                         <div class="mt-3">
                             <label>Apellido Materno</label>
-                            <a-input v-model:value="materno" />
+                            <a-input v-model:value="ficha_respuesta.materno" />
                         </div>
                     </div>
                 </div>
@@ -80,22 +88,29 @@
                                 <img src="../../../../../assets/imagenes/logoDAD.png" width="60" />
                             </div>
                         </div>
-                        <div class="flex justify-center" style="height: 30px; width: 400px; font-weight: bold;">
+                        <div class="flex justify-center" style="height: 30px; width: 100%; font-weight: bold;">
                             HOJA DE RESPUESTAS
                         </div>
                     </div>
                     <div class="flex justify-center mb-4">
-                        <a-card style="width: 300px; height: 50px;">
-                            <div style="margin-top: -10px">
-                                <a-radio-group v-model:value="tipo">
-                                    <a-radio value="P">P</a-radio>
-                                    <a-radio value="Q">Q</a-radio>
-                                    <a-radio value="R">R</a-radio>
-                                    <a-radio value="S">S</a-radio>
-                                    <a-radio value="T">T</a-radio>
-                                </a-radio-group>
+                        <div>
+                            <div class="flex justify-center" style="margin-top: 0px; z-index: 2;">
+                                <div style="border-radius: 5px; border: solid 1px #d9d9d9; margin:6px; width: 90px; text-align: center;">
+                                    <span>Aula: {{ ficha_respuesta.res_aula }}</span>
+                                </div>
                             </div>
-                        </a-card>
+                            <a-card style="width: 300px; height: 50px; z-index: 1;">
+                                <div style="margin-top: -10px">
+                                    <a-radio-group v-model:value="tipo">
+                                        <a-radio value="P">P</a-radio>
+                                        <a-radio value="Q">Q</a-radio>
+                                        <a-radio value="R">R</a-radio>
+                                        <a-radio value="S">S</a-radio>
+                                        <a-radio value="T">T</a-radio>
+                                    </a-radio-group>
+                                </div>
+                            </a-card>
+                        </div>
                     </div>
                     <div class="flex justify-center">
                         <div style="margin-right: 30px;">
@@ -196,10 +211,11 @@ const getFichaRespuesta =  async () => {
     let res = await axios.get("/get-ficha-respuesta/" + id_resp.id_resp );
     ficha_respuesta.value = res.data.datos;
     respuestas.value = res.data.datos.respuestas;
+    tipo.value = res.data.datos.res_tipo;
     respp();
 }
 
-const marcadas = null;
+const marcadas = ref([]);
 
 const respuestas = ref("DDDBBAA   DD A DD AA")
 
@@ -224,7 +240,9 @@ const respp =  () => {
     marcadas.value = resultArray;
 }
 
-
+watch(id_resp, ( newValue, oldValue ) => { 
+    getFichaRespuesta();
+})
 
 
 const visible = ref(false);     

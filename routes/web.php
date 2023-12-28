@@ -33,6 +33,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\ResultadosController;
 use App\Http\Controllers\CarpetaController;
+use App\Http\Controllers\PonderacionController;
+
 
 
 Route::middleware('auth')->get('/', function () {
@@ -506,7 +508,14 @@ Route::post('/get-participantes-externo', [ResultadosController::class, 'getPart
 
 Route::get('/ver-ficha', fn () => Inertia::render('Simulacro/Calificacion/components/ficha'));
 
+
+Route::get('/ponderacion', fn () => Inertia::render('Simulacro/Calificacion/ponderacion'));
+
+Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacrosSelect']);
 Route::get('/get-ficha-respuesta/{id}', [ResultadosController::class, 'getFichaRespuesta']);
+Route::post('/save-ponderacion', [PonderacionController::class, 'save']);
+Route::post('/get-ponderaciones', [PonderacionController::class, 'getPonderaciones']);
+
 
 
 

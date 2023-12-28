@@ -84,7 +84,7 @@
             <template #bodyCell="{ column, index, record }">
     
                 <template v-if="column.dataIndex === 'nro'">
-                    <span>{{ index + 1 }}</span>
+                    <span>{{ index + 1 }} {{ record.id }}</span>
                 </template>
     
                 <template v-if="column.dataIndex === 'observaciones'">

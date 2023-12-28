@@ -128,6 +128,24 @@ class SimulacroController extends Controller
     return response()->json($this->response, 200);
   }
 
+  public function getSimulacrosSelect(Request $request)
+  {
+    $query_where = [];
+  
+    $res = Simulacro::select(
+      'simulacro.id as key','simulacro.nombre as value')
+      ->where($query_where)
+      ->where(function ($query) use ($request) {
+          return $query
+              ->orWhere('simulacro.nombre', 'LIKE', '%' . $request->term . '%');
+      })->orderBy('simulacro.id', 'DESC')
+      ->paginate(10);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
   public function getParticipantes(Request $request)
   {  
     $res = ParticipanteSimulacro::select(
