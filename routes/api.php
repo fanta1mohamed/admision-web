@@ -35,5 +35,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/get-puntaje/{dni}', [BlogController::class, 'getPuntajes']);
 
-Route::get('/get-puntaje-cepre/{dni}', [ResCepreController::class, 'obtenerInformacionEstudiante']);
+Route::get('/v1/resultados_simulacro/{dni}', [ResCepreController::class, 'obtenerInformacionEstudiante']);
 
