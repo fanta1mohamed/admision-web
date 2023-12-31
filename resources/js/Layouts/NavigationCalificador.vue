@@ -20,8 +20,8 @@
       <ul class="mt-6 ">
         <div class="ml-6" style="margin-top: 40px; margin-bottom: 10px;"> <span style="font-weight: 700; letter-spacing: normal;"> INICIO </span> </div>
 
-        <li class="relative px-0" :class="[route().current('simulacro-calificacion')? 'activado':'']" style="margin-bottom: -15px;">
-          <NavLink :href="route('simulacro-calificacion')" :active="route().current('simulacro-calificacion')" style="padding: 10px 20px;">
+        <li class="relative px-0" :class="[route().current('calificar-cal')? 'activado':'']" style="margin-bottom: -15px;">
+          <NavLink :href="route('calificar-cal')" :active="route().current('calificar-cal')" style="padding: 10px 20px;">
             <template #icon>
               <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -48,8 +48,8 @@
           </NavLink>
         </li>
 
-        <li class="relative px-0" :class="[route().current('simulacro-inscritos')? 'activado':'']" style="margin-bottom: -15px;">
-          <NavLink :href="route('simulacro-inscritos')" :active="route().current('simulacro-inscritos')" style="padding: 10px 20px;">
+        <li class="relative px-0" :class="[route().current('calificar-ponderacion')? 'activado':'']" style="margin-bottom: -15px;">
+          <NavLink :href="route('calificar-ponderacion')" :active="route().current('calificar-ponderacion')" style="padding: 10px 20px;">
             <template #icon>
               <span style="margin-left:2px; margin-right:-10px;">
                 <svg fill="#FFFFFF" width="27" height="27" viewBox="0 0 24 24" id="register-16px" xmlns="http://www.w3.org/2000/svg">

@@ -13,15 +13,9 @@
                   <span style="color: #0000009d; margin-top: -6px;"><SearchOutlined/></span>
               </template>
           </a-input>
-              <!-- <div><a-button type="primary" @click="visible = true" style="background: #476175; border: none; border-radius: 5px;">subir Ides</a-button></div>
-              -->
-                <!-- <p>proceso: {{ proceso }}</p> -->
+
         </div>
-    
-    
-    
-        
-    
+       
     
         <div v-if="tabPosition === 'archivos'" class="mt-3 mb-3" style="margin-left: -5px;">
         <a-table 
@@ -87,19 +81,6 @@
                     <span> {{ index + 1 }} </span>
                 </template>
     
-                <template v-if="column.dataIndex === 'observaciones'">
-                    <a-tag v-if="record.dni === null && record.ide_litho !== null" color="pink"> Sin DNI</a-tag>
-                    <a-tag v-if="record.aula === ''" color="purple"> Sin aula</a-tag>
-                    <a-tag v-if="record.len_doc !== 8 && record.ide_litho !== null && record.dni !== null" color="green"> Dni erroneo</a-tag>
-                    <a-tag v-if="record.vaula === 0" color="blue"> Error de aula</a-tag>
-                    <a-tag v-if="record.tipo === '' && record.ide_litho !== null" color="yellow"> Sin tipo</a-tag>
-                    <a-tag v-if="record.c_tipo === 0 && record.ide_litho !== null " color="navy"> Tipo diferente</a-tag>
-                    <a-tag v-if="record.c_aula === 0 && record.ide_litho !== null" color="brown"> Aula diferente</a-tag>
-                    <a-tag v-if="record.ide_litho === null" color="crimson"> SIN IDE</a-tag>
-    
-                    <!-- <span>{{ record.dni }} {{ record.aula }} {{ record.tipo }} {{ record.len_doc }} {{ record.vdni }} {{ record.vaula }} </span> -->
-                </template>
-    
                 <template v-if="column.dataIndex === 'acciones'">
                     <a-button type="success" class="mr-1" style="color: #476175;" size="small" @click="verFicha(record.id)">
                         <template #icon><EyeOutlined/></template>
@@ -137,7 +118,7 @@
             v-model:fileList="fileList"
             name="file"
             :multiple="true"
-            :action="baseUrl + '/calificacion/carga-res/'+proceso+'/'+area+aula"
+            :action="baseUrl + '/calificacion/carga-pat/'+proceso+'/'+area+aula"
             @change="handleChange"
             @drop="handleDrop"
             list-type="picture"
@@ -191,7 +172,7 @@
     const baseUrl = window.location.origin;
 
     const tabPosition = ref('contenido')
-    const aula = ref()
+
     const fileList = ref([]);
 
     const id_respuesta = ref(null);
@@ -236,7 +217,7 @@
     const buscar = ref("");
     
     const getArchivos = async () => {
-        axios.post("/get-archivos-res",{"term": buscar.value, "proceso": props.proceso})
+        axios.post("/get-archivos-pat",{"term": buscar.value, "proceso": props.proceso})
         .then((response) => {
             archivos.value = response.data.datos.data;
         })
@@ -250,7 +231,7 @@
     }
     
     const getIdes = async () => {
-        axios.post("/get-res",{"term": buscar.value, "proceso": props.proceso})
+        axios.post("/get-pat",{"term": buscar.value, "proceso": props.proceso})
         .then((response) => {
             identificaciones.value = response.data.datos.data;
         })
@@ -271,7 +252,7 @@
         }, 300);    
     })
 
-
+const aula = ref("");
 const modalficha = ref(false);
 const verFicha = (id_res) => {
     id_respuesta.value = id_res;
@@ -296,19 +277,17 @@ const verFicha = (id_res) => {
     const columnsIdes = [
         { title: 'N°', dataIndex: 'nro', width:'40px', align:"center"},
         { title: 'N° lectura', dataIndex: 'n_lectura', align:'center'},
-        { title: 'DNI', dataIndex: 'dni', align:'center'},
-        { title: 'Aula', dataIndex: 'aula', width:'60px', align:"center"},
         { title: 'Tip', dataIndex: 'tipo', width:'60px', align:"center"},
         { title: 'Litho', dataIndex: 'res_litho', align:'center'},
+        { title: 'Area', dataIndex: 'area', align:'center'},
         { title: 'Respuestas', dataIndex: 'respuestas', align:'center'},
-        { title: 'Observaciones', dataIndex: 'observaciones', align:'center'},
         { title: 'Acciones', dataIndex: 'acciones', align:'center', width:'96px'},
     ];
     
     const eliminar = (item) => {
         axios.get("eliminar-archivo/"+item.id).then((result) => {
             getArchivos();
-            getIdes();
+            getIdes();     
             notificacion('error', result.data.titulo, result.data.mensaje );
         });
     }

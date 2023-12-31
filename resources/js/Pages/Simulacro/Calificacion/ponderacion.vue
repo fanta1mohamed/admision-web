@@ -135,8 +135,6 @@
                 </div>
             </div>
     
-            <!-- <div>{{ id_ponderacion }}</div> -->
-            <div>{{ pesos }}</div>
             <div style="width:100%;">
             <a-form
                 ref="formPesos"
@@ -192,7 +190,7 @@
             </div>
         <template #footer>
             <a-button style="margin-left: 6px; border-radius: 4px;" @click="resetForm">Cancelar</a-button>
-            <a-button type="primary" style="background: #476175; border:none; border-radius: 4px;" @click="guardar()">Guardar</a-button>
+            <a-button type="primary" style="background: #476175; border:none; border-radius: 4px;" @click="saveDetalle()">Guardar</a-button>
         </template>
         </a-modal>
     </div>
@@ -240,23 +238,6 @@
         }, 500); 
     })
     
-
-    
-    const getUbigeosResidencia = async () => {
-    
-        axios.post("/get-ubigeo",{"term": buscarResidencia.value})
-        .then((response) => {
-            residencias.value = response.data.datos.data;
-    
-        })
-        .catch((error) => {
-            if (error.response) {
-                console.error('Error de servidor:', error.response.data);
-            } else if (error.request) {
-                console.error('Error de red:', error.request);
-                } else { console.error('Error de configuración:', error.message); }
-      });
-    }
     
     const abrirEditar = (item) => {
     
@@ -357,6 +338,24 @@ const guardar = async () => {
     try {
         const values = await formPonderacion.value.validateFields();
         axios.post("save-ponderacion", ponderacion).then((result) => {
+            notificacion('success',result.data.titulo, result.data.mensaje);
+            //resetForm()
+            getPonderaciones()
+            visible.value = false;
+        });
+        
+    } catch (error) {
+        console.error(error);
+    }
+
+}
+
+
+const saveDetalle = async () => {
+    loading.value = true;
+    try {
+        // const values = await formPonderacion.value.validateFields();
+        axios.post("save-ponderacion-detalle", {"pesos":pesos.value, "id_ponderacion": id_ponderacion.value }).then((result) => {
             notificacion('success',result.data.titulo, result.data.mensaje);
             //resetForm()
             getPonderaciones()

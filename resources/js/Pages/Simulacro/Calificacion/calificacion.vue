@@ -136,7 +136,7 @@
                                     :rules="[ { required: true, message: 'Ingresa el nombre del proceso', trigger: 'change'},
                                     ]"
                                 >
-                                <label>Nombre<span style="color:red;">*</span></label>
+                                <label>Nombre<span style="">*</span></label>
                                 <a-input v-model:value="form.nombre" style="width:100%; border-radius: 4px; height: 36px;" placeholder="Nombre del proceso">
                                     <template #prefix>
                                         <span style="color: #0000009d; margin-top: -6px;"><FolderOutlined/></span>
@@ -223,13 +223,16 @@
                         <Resp :proceso="procesoseleccionado"/>
                     </div>
                 </a-tab-pane>
-                <a-tab-pane key="4" tab="Res correctas">Content of Tab Pane 3</a-tab-pane>
-                <a-tab-pane key="5" disabled tab="Calificar">Content of Tab Pane 3</a-tab-pane>
+                <a-tab-pane key="4" tab="Res correctas">
+                    <div>
+                        <Patron :proceso="procesoseleccionado"/>
+                    </div>
+                </a-tab-pane>
+                <a-tab-pane key="5" tab="Calificación">
+                    <Calificacion :proceso="procesoseleccionado"/>
+                </a-tab-pane>
             </a-tabs>
         </div>
-
-
-
     </div>
 </div>
 </Layout>    
@@ -243,7 +246,9 @@ import { Head } from '@inertiajs/vue3';
 import Layout from '@/Layouts/LayoutCalificador.vue'
 import Ides from './components/leer-ide.vue'
 import Resp from './components/leer-resp.vue'
+import Patron from './components/leer-patron.vue'
 import Participantes from './components/participantes.vue'
+import Calificacion from './components/calificacion.vue'
 
 const breadcrumb = ref([{ "id": 0, "nombre": "Simulacros"}]);
 

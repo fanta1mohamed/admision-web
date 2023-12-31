@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Ponderacion;
+use App\Models\PonderacionDetalle;
 
 class PonderacionController extends Controller
 {
@@ -74,4 +75,48 @@ class PonderacionController extends Controller
     $this->response['datos'] = $p;
     return response()->json($this->response, 200);
   }
+
+
+  public function insertarPonderacion(Request $request) {
+
+    $data = $request->input('pesos');
+    $id_ponderacion = $request->id_ponderacion;
+    $cont = 1;
+    foreach ($data as $index => $item) {
+        $nombre = $item['nombre'];
+        $ponderacion = $item['ponderacion'];
+        $n_preguntas = $item['n_preguntas'];
+
+        for ($i = 0; $i < $n_preguntas; $i++) {
+            PonderacionDetalle::create([
+                'asignatura' => $nombre,
+                'ponderacion' => $ponderacion,
+                'numero' => $cont,
+                'id_ponderacion_simulacro' => $id_ponderacion
+
+            ]);
+            $cont += 1;
+        }
+    }
+
+  } 
+  
+  public function getPonderacionesSelect(Request $request){
+    $res = Ponderacion::select(
+      'ponderacion_simulacro.id as key',
+      DB::raw("CONCAT('(', IF(AREA = 1, 'Biomédicas', IF(AREA = 2, 'Ingenierías', 'Sociales')), ') - ', nombre) AS 'value'")
+    )
+      ->where(function ($query) use ($request) {
+          return $query
+              ->orWhere('ponderacion_simulacro.nombre', 'LIKE', '%' . $request->term . '%');
+      })->orderBy('ponderacion_simulacro.id', 'DESC')
+      ->paginate($request->paginasize);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  
+  }
+
+
 }

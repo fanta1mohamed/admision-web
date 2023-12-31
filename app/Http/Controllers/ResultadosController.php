@@ -141,34 +141,45 @@ class ResultadosController extends Controller
     }
 
 
+    public function cargaArchivoPat(Request $request,$proceso,$ar)
+    {
+        $area = substr($ar,0,1);
+        $aula = substr($ar,1,3);
 
-    // public function cargaArchivoRes(Request $request)
-    // {
-    //     try {
-    //         $archivo = $request->file('file');
-    //         $extension = $archivo->getClientOriginalExtension();
+        try {
+            $archivo = $request->file('file');
+            $extension = $archivo->getClientOriginalExtension();
 
-    //         if (!in_array($extension, ['pdf', 'txt', 'dat'])) {
-    //             return response()->json(['error' => 'El archivo debe ser de tipo pdf, txt o dat'], 400);
-    //         }
+            if (!in_array($extension, ['txt', 'dat'])) { return response()->json(['error' => 'El archivo debe ser de tipo txt o dat'], 400); }
 
-    //         $nombreArchivo = $archivo->getClientOriginalName();
+            $tipo = $archivo->getClientOriginalExtension();
+            $nombreArchivo = $archivo->getClientOriginalName();
+            $areanombre = "";
+            if($area == 1){$archivo->move(storage_path('app/calificar/'.$proceso.'/patron/biomedicas/'), $nombreArchivo); $areanombre = "biomedicas"; }
+            if($area == 2){$archivo->move(storage_path('app/calificar/'.$proceso.'/patron/ingenierias/'), $nombreArchivo); $areanombre = "ingenierias";}
+            if($area == 3){$archivo->move(storage_path('app/calificar/'.$proceso.'/patron/sociales/'), $nombreArchivo); $areanombre = "sociales";}
+            
+            $archivo = ArchivoSimulacro::create([
+                'nombre' => $nombreArchivo ,
+                'tipo' => $extension,
+                'id_simulacro' => $proceso,
+                'fecha' =>date('Y-m-d'),
+                'area' => $area,
+                'categoria' => 'patron',
+                'url' => "app/calificar/$proceso/patron/$areanombre/$nombreArchivo"
+            ]);
 
-    //         $archivo->move(storage_path('app/calificar/res'), $nombreArchivo);
+            $this->subirPatBD(storage_path($archivo->url), $archivo->id, $aula);
 
-    //         $respuesta = [
-    //             'message' => 'Archivo subido y procesado exitosamente',
-    //             'archivo' => [
-    //                 'nombre' => $nombreArchivo,
-    //                 'ruta' => 'app/calificar/res'.$nombreArchivo,
-    //             ],
-    //         ];
+            $respuesta = [ 'message' => 'Archivo subido', 'archivo' => [ 'nombre' => $nombreArchivo ],];
 
-    //         return response()->json($respuesta, 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['error' => $e->getMessage()], 500);
-    //     }
-    // }
+            return response()->json($respuesta, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+    }
+
 
 
     public function leerIde($area)
@@ -408,8 +419,6 @@ class ResultadosController extends Controller
 
     }
 
-
-
     
     //ARCHIVOS
     public function getArchivosIde(Request $request){
@@ -435,6 +444,26 @@ class ResultadosController extends Controller
         $res = ArchivoSimulacro::select(DB::raw('COUNT(*) AS registros'), 'archivos_simulacro.*')
             ->join('res','res.id_archivo','archivos_simulacro.id')
             ->where('id_simulacro','=', $request->proceso)
+            ->where('categoria','=', 'respuesta')
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('archivos_simulacro.nombre', 'LIKE', '%' . $request->term . '%')
+                    ->orWhere('archivos_simulacro.tipo', 'LIKE', '%' . $request->term . '%');
+            })->groupBy('archivos_simulacro.id')
+            ->orderBy('archivos_simulacro.id', 'DESC')
+            ->paginate(10);
+        
+            $this->response['estado'] = true;
+            $this->response['datos'] = $res;
+            return response()->json($this->response, 200);            
+    }
+
+
+    public function getArchivosPat(Request $request){
+        $res = ArchivoSimulacro::select(DB::raw('COUNT(*) AS registros'), 'archivos_simulacro.*')
+            ->join('res','res.id_archivo','archivos_simulacro.id')
+            ->where('id_simulacro','=', $request->proceso)
+            ->where('archivos_simulacro.categoria','=','patron')
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('archivos_simulacro.nombre', 'LIKE', '%' . $request->term . '%')
@@ -454,7 +483,7 @@ class ResultadosController extends Controller
         $res = Ide::select(
             'ides.id','ides.camp1','ides.camp2','ides.camp3','ides.camp4','ides.litho','ides.dni', 'ides.aula', 'ides.tipo',
             'archivos_simulacro.id  as id_archivo', 'archivos_simulacro.url',
-            'participantes_simulacro_externo.dni',
+            'participantes_simulacro_externo.dni as dnip',
             'archivos_simulacro.nombre AS name_archivo',
             \DB::raw('LENGTH(TRIM(ides.dni)) AS len_doc'),
             \DB::raw('(ides.dni REGEXP \'^[0-9]+$\' ) AS vdni'),
@@ -462,13 +491,13 @@ class ResultadosController extends Controller
             )
             ->join('archivos_simulacro','archivos_simulacro.id','ides.id_archivo') 
             ->leftJoin('participantes_simulacro_externo', 'ides.dni', '=', 'participantes_simulacro_externo.dni')
-            #->where('archivos_simulacro.id_simulacro','=', $request->proceso)
+            ->where('archivos_simulacro.id_simulacro','=', $request->proceso)
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('ides.litho', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('ides.dni', 'LIKE', '%' . $request->term . '%');
             })->orderBy('ides.id', 'ASC')
-            ->paginate(500);
+            ->paginate(2000);
       
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -495,11 +524,37 @@ class ResultadosController extends Controller
             )
             ->join('archivos_simulacro','archivos_simulacro.id','res.id_archivo') 
             ->leftJoin('ides', 'res.litho', '=', 'ides.litho')
-            #->where('archivos_simulacro.id_simulacro','=', $request->proceso)
+            ->where('archivos_simulacro.id_simulacro','=', $request->proceso)
+            ->where('archivos_simulacro.categoria','=', 'respuesta')
             ->where(function ($query) use ($request) {
                 return $query
                     ->orWhere('res.litho', 'LIKE', '%' . $request->term . '%')
                     ->orWhere('ides.dni', 'LIKE', '%' . $request->term . '%');
+            })->orderBy('res.id', 'ASC')
+            ->paginate(1600);
+      
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);            
+    }
+
+    public function getPat(Request $request){
+
+        $res = Resp::select(
+            'res.id',
+            'res.n_lectura',
+            'res.litho as res_litho',
+            'res.tipo as tipo',
+            'res.aula as aula',
+            'res.respuestas',
+            DB::raw("if(archivos_simulacro.area = 1,'Biomédicas',if(archivos_simulacro.area = 2,'Ingenierías','Sociales')) as area")
+            )
+            ->join('archivos_simulacro','archivos_simulacro.id','res.id_archivo') 
+            ->where('archivos_simulacro.id_simulacro','=', $request->proceso)
+            ->where('archivos_simulacro.categoria','=', 'patron')
+            ->where(function ($query) use ($request) {
+                return $query
+                    ->orWhere('res.litho', 'LIKE', '%' . $request->term . '%');
             })->orderBy('res.id', 'ASC')
             ->paginate(500);
       
@@ -643,6 +698,47 @@ class ResultadosController extends Controller
         Resp::insert($datosParaInsercion);
     }
 
+    public function subirPatBD($archivo, $id, $aula)
+    { 
+        $ides = file($archivo, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    
+        $datosParaInsercion = [];
+    
+        foreach ($ides as $linea) {
+            $c1 = substr($linea, 0, 3);
+            $lectura = substr($linea, 3, 6);
+            $c3 = substr($linea, 9, 3);
+            $c4 = substr($linea, 12, 5);
+            $c5 = substr($linea, 17,4);
+            $c6 = substr($linea, 24,4);
+            $c7 = trim(substr($linea, 29,5));
+            $c8 = trim(substr($linea, 38,1));    
+            $litho = substr($linea, 40, 6);
+            $tipo = substr($linea, 46, 1);
+            $respuestas = substr($linea, 47, 60);
+    
+            if (strlen($c1) > 1) {
+                $datosParaInsercion[] = [
+                    'c1' => $c1,
+                    'n_lectura' => $lectura,
+                    'c3' => $c3,
+                    'c4' => $c4,
+                    'c5' => $c5,
+                    'c6' => $c6,
+                    'c7' => $c7,
+                    'c8' => $c8,
+                    'litho' => $litho,
+                    'tipo' => $tipo,
+                    'respuestas' => $respuestas,
+                    'id_archivo' => $id,
+                    'aula' => $aula
+                ];
+            }
+        }
+    
+        Resp::insert($datosParaInsercion);
+    }
+
 
     public function getFichaRespuesta($id){
         $res = Resp::select(
@@ -671,7 +767,82 @@ class ResultadosController extends Controller
         return response()->json($this->response, 200);
 
     }
-    
+
+
+
+    public function Calificar($area)
+    {
+        $ponderaciones = DB::select("SELECT * FROM ponderacion WHERE id_ponderacion_simulacro = $area");
+
+        $patrones = DB::select("SELECT i.*, asim.categoria AS ide_tipe FROM res i
+        JOIN archivos_simulacro asim ON asim.id = i.id_archivo
+        JOIN simulacro sim ON sim.id = asim.id_simulacro
+        WHERE sim.id = 5 AND asim.area = $area
+        AND asim.categoria = 'patron'");
+
+        $respuestas = DB::select("SELECT i.*, r.tipo AS ide_tipe FROM res i
+        JOIN archivos_simulacro asim ON asim.id = i.id_archivo
+        JOIN simulacro sim ON sim.id = asim.id_simulacro
+        LEFT JOIN ides r ON r.litho = i.litho
+        WHERE sim.id = 5 AND asim.area = $area
+        AND asim.categoria = 'respuesta'");
+
+        $comparaciones = [];
+
+        foreach ($respuestas as $line ){
+
+            $comparacionActual = "";
+            $puntaje = 0;
+
+            $correctas = "";
+
+            if($line->tipo == 'P'){ $correctas = $patrones[0]->respuestas; }
+            if($line->tipo == 'Q'){ $correctas = $patrones[1]->respuestas; }
+            if($line->tipo == 'R'){ $correctas = $patrones[2]->respuestas; }
+            if($line->tipo == 'S'){ $correctas = $patrones[3]->respuestas; }
+            if($line->tipo == 'T'){ $correctas = $patrones[4]->respuestas; }
+            
+            for ($i = 0; $i < 60; $i++) {
+                if(strlen($line->respuestas) == 60 && strlen($correctas) == 60 ){
+                    $caracterResp = $line->respuestas[$i];
+                    $caracterPatron = $correctas[$i];
+                    $puntuacion = 0;
+
+                    if($caracterResp === " "){
+                        $puntuacion = ($ponderaciones[$i]->ponderacion * 2);
+                    }else {
+                        if($caracterResp === $correctas[$i]){
+                            $puntuacion = ($ponderaciones[$i]->ponderacion * 10);
+                        }
+                        else{ $puntuacion = 0; }
+                    }
+                    $comparacionActual = $comparacionActual.$caracterResp;
+                    $puntaje = $puntaje + $puntuacion;
+                }
+        
+            }
+
+            $resp = Resp::find($line->id);
+            $resp->puntaje = round($puntaje,3);
+            $resp->save();
+
+            $comparaciones[] = [
+                'id'=> $line->id,
+                'respuestas' => $comparacionActual,
+                'puntaje' => round($puntaje,3)
+            ];
+
+        }
+
+
+
+        //DB::table('puntajes_simulacro')->insert($comparaciones);
+
+        return response()->json(['comparaciones' => $comparaciones]);
+
+    }
+
+
 
 
 

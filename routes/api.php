@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ApixController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ResCepreController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +34,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/get-puntaje/{dni}', [BlogController::class, 'getPuntajes']);
+
+Route::get('/get-puntaje-cepre/{dni}', [ResCepreController::class, 'obtenerInformacionEstudiante']);
+
