@@ -523,6 +523,9 @@ Route::post('/save-ponderacion-detalle', [PonderacionController::class, 'inserta
 Route::post('/get-ponderaciones-select', [PonderacionController::class, 'getPonderacionesSelect']);
 
 Route::get('/calific/{a}', [ResultadosController::class, 'Calificar']);
+Route::get('/pdf-errores/{D}', [ResultadosController::class, 'PdfErroresCalifacion']);
+
+
 
 
 

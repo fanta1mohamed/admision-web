@@ -7,6 +7,7 @@ use App\Models\ParticipanteSimulacro;
 use App\Models\Ide;
 use App\Models\Resp;
 use App\Models\ArchivoSimulacro;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 
 class ResultadosController extends Controller
@@ -839,6 +840,21 @@ class ResultadosController extends Controller
         //DB::table('puntajes_simulacro')->insert($comparaciones);
 
         return response()->json(['comparaciones' => $comparaciones]);
+
+    }
+
+
+    public function PdfErroresCalifacion($dni) {
+
+        $data = "hellow";
+        $pdf = Pdf::loadView('Calificacion.errores', compact('data'));
+        $pdf->setPaper('A4', 'portrait');
+        $output = $pdf->output();
+
+        // $rutaCarpeta = public_path('/documentos/general2023-II/'.$dni);
+        // file_put_contents(public_path('/documentos/general2023-II/').$dni.'.pdf', $output);
+
+        return $pdf->stream();
 
     }
 
