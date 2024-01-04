@@ -16,7 +16,7 @@
     <title>PDF - ERRORES</title>
     <style>
             @page{
-                margin: 3.5cm 0.5cm 2.5cm 0.5cm;
+                margin: 3.5cm 1cm 2.5cm 1cm;
                 font-family: Arial, Helvetica, sans-serif;
             }
            #header{
