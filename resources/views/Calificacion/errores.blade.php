@@ -15,9 +15,13 @@
     </script>
     <title>PDF - ERRORES</title>
     <style>
+            @page{
+                margin: 3.5cm 0.5cm 2.5cm 0.5cm;
+                font-family: Arial, Helvetica, sans-serif;
+            }
            #header{
                 position: fixed;
-                height: 100px;
+                height: 100%;
                 width: 100%;
                 top: -3cm;
                 left: 0cm;
@@ -57,30 +61,44 @@
 </head>
 <body style="font-family: Helvetica, sans-serif; margin-top:-3px">
 
-    <div>
-        <table style="width:100%; border:none;">
-            <tr  style="border:none;">
-                <td rowspan="1" align="left" style="border:none; width:10px;">
-                    <div align="center" rowspan="1" style="margin-top:-10px; border:none;" > <img src="{{ public_path('imagenes/logotiny.png')}}"  width="58"></div>
-                </td>
-                <td align="center" style="border:none; font-size:10pt; font-weight:700; text-align:left; margin-left:-50px;">
-                    <div>UNIVERSIDAD NACIONAL DEL ALTIPLANO</div>
-                    <div>VICERECTORADO ACADÉMICO</div>
-                    <div>DIRECCIÓN DE ADMISIÓN</div>
-                </td>
-                {{-- <td align="rigth" rowspan="1" style="border:none;"> <img src="{{ public_path('imagenes/logoDAD.jpg')}}"  width="70"></td> --}}
-            </tr>
-        </table>
+    <div id="header">
+        <div style="width: 100%; text-align:center;">
+            <table style="width: 100%">
+                <tr style="">
+                    <td align="right" style="border:none;" width="50">
+                        <div style="margin-top: -5px;">
+                            <img src="{{ public_path('imagenes/logotiny.png')}}"  width="65"/>
+                        </div>
+                    </td>
+                    <td style="width: 350px; border:none;">
+                        <div style="text-align: left; margin-left:-10px; margin-top: 10px; font-size:10pt;">
+                            <div>UNIVERSIDAD NACIONAL DEL ALTIPLANO</div>
+                            <div>VICERRECTORADO ACADÉMICO</div>
+                            <div>DIRECCIÓN DE ADMISIÓN </div>
+                        </div>
+                    </td>
+                    <td v-align="top" align="right" style="text-align:right; border:none;">
+                        <div style="margin-top: 5px">
+                            <img src="{{ public_path('imagenes/logoDAD.jpg')}}"  width="75">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="border-bottom: solid 1px #000000; margin-top:0px;">
+        </div>
+
     </div>
-    <div style="border-bottom: solid 1px #000000;">
+    <div id="footer">
     </div>
 
-    <div style="width: 100%; text-align:center; margin-top:20px; font-weight:bold;">
+    <div style="width: 100%; text-align:center; margin-top:0px; font-weight:bold; font-size:10pt;">
         INFORME DE OBSERVACIONES
         <div>(Fichas de identificación)</div>
     </div>
 
-    <div style="margin-top: 20px;"><span style="font-size: .8rem; font-weight:bold;">DNI duplicados</span></div>
+    <div style="margin-top: 15px;"><span style="font-size: .8rem; font-weight:bold;">DNI duplicados</span></div>
     <div style="margin-top:10px; font-size: .8rem;">
         <table style="width: 100%" class="l-table">
             <thead>
@@ -93,6 +111,7 @@
                     <th><div style="text-align: center;">Observación</div> </th>
                 </tr>
             </thead>
+            @if (count($duplicados_dni) > 0 )
             <tbody>
                 @foreach ($duplicados_dni as $index=>$item)
                 <tr>
@@ -110,6 +129,15 @@
                 </tr>   
                 @endforeach
             </tbody>
+            @else
+            <tbody>
+                <tr>
+                    <td colspan="6"><div style="text-align: center;"> No se encontraron duplicados</div> </td>
+                </tr>   
+            </tbody>
+            @endif
+
+
 
         </table>
     </div>
@@ -134,6 +162,7 @@
                     <th><div style="text-align: center;">Observación</div> </th>
                 </tr>
             </thead>
+            @if (count($errores) > 0 )
             <tbody>
                 @foreach ($errores as $index=>$item)
                 <tr>
@@ -158,6 +187,18 @@
                 </tr>   
                 @endforeach
             </tbody>
+            @else
+            <tbody>
+                <tr>
+                    <td colspan="8">
+                        <div style="text-align: center">
+                            No se encontraron datos
+                        </div>
+                    </td>
+                </tr>   
+            </tbody>
+
+            @endif
 
         </table>
     </div>
@@ -169,7 +210,7 @@
         if ( isset($pdf) ) {
             $pdf->page_script('
                 $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-                $pdf->text(70, 100, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 10);
+                $pdf->text(270, 800, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 10);
             ');
         }
     </script>

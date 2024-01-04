@@ -900,6 +900,8 @@ class ResultadosController extends Controller
 
         $data = "hellow";
         $pdf = Pdf::loadView('Calificacion.errores', compact('data','errores','duplicados_dni'));
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
