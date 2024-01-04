@@ -570,6 +570,9 @@ Route::get('/pdf-errores/{D}', [ResultadosController::class, 'PdfErroresCalifaci
 
 
 
+
+
+
 // Route::get('/get-biometricos-extraordinarios', function () {
 //     $documentos = [
 //         '60836477','73749385','76766782','75148837','76619018','74410191','71938666','74210522','76650758','74057961','73647476','76316812','60174501','75773845','75828188','74695346','71476905','72220072',

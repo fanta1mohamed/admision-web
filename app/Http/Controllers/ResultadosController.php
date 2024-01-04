@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\ParticipanteSimulacro;
 use App\Models\Ide;
 use App\Models\Resp;
+use App\Models\Simulacro;
 use App\Models\ArchivoSimulacro;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 class ResultadosController extends Controller
@@ -588,6 +590,7 @@ class ResultadosController extends Controller
 
     public function eliminarArchivo($id)
     {
+        
         $archivo = ArchivoSimulacro::find($id);
     
         if (!$archivo) {
@@ -846,6 +849,7 @@ class ResultadosController extends Controller
 
     public function PdfErroresCalifacion($sim) {
 
+        $proceso = Simulacro::find($sim);
 
         $errores = Ide::select(
             'archivos_simulacro.nombre AS archivo',
@@ -898,23 +902,37 @@ class ResultadosController extends Controller
         })
         ->get();
 
-        $data = "hellow";
-        $pdf = Pdf::loadView('Calificacion.errores', compact('data','errores','duplicados_dni'));
+        $pdf = Pdf::loadView('Calificacion.errores', compact('errores','duplicados_dni','proceso'));
         $pdf->getDomPDF()->set_option("isPhpEnabled", true);
         $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        // $rutaCarpeta = public_path('/documentos/general2023-II/'.$dni);
-        // file_put_contents(public_path('/documentos/general2023-II/').$dni.'.pdf', $output);
+        $rutaCarpeta = storage_path("/app/calificar/$sim/");
+        file_put_contents(storage_path("/app/calificar/$sim/").'reporte.pdf', $output);
 
-        return $pdf->stream();
+        
+        $rutaArchivo = "calificar/{$sim}/reporte.pdf";
+
+        if (Storage::exists($rutaArchivo)) {
+            return response()->stream(
+                function () use ($rutaArchivo) {
+                    $stream = Storage::readStream($rutaArchivo);
+                    fpassthru($stream);
+                    if (is_resource($stream)) {
+                        fclose($stream);
+                    }
+                },
+                200,
+                [
+                    'Content-Type' => Storage::mimeType($rutaArchivo),
+                    'Content-Disposition' => 'attachment; filename=reporte.pdf',
+                ]
+            );
+        }
+        
 
     }
-
-
-
-
 
 
 

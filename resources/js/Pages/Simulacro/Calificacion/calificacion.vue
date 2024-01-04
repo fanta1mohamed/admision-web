@@ -1,7 +1,7 @@
 <template>
 <Head title="Calificación"/>
 <Layout>  
-<div style="width: 100%;">
+<div class="mb-4" style="width: 100%;">
     <div class="p-4" style="background: white; width: 100%; min-height: calc(100vh - 90px); border-radius: 12px;" @click="clicIzquierdo" @contextmenu.prevent="handleContextMenu">
         <div class="ml-0 flex mb-0 mt-0" >
             <div class="flex">

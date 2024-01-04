@@ -116,6 +116,12 @@
             </template> 
         </template>
     </a-table> 
+
+    
+    <div class="flex justify-between mt-4 mb-4 ml-1"> 
+        <a-button type="primary" style="background: #476175; border:none; border-radius: 4px;" @click="descargarObservaciones(proceso)">Descargar observaciones</a-button>
+    </div>
+
     </div>
 
     <a-modal v-model:visible="visible" title="Cargar fichas de identificación" @ok="okey" :centered="true" style="max-height: calc(100vh - 100px); overflow-x: scroll; cursor: pointer;">
@@ -169,8 +175,10 @@
         </a-menu>
     </div>
 
+</div>
 
-</div>  
+
+
 </template>
   
 <script setup>
@@ -292,6 +300,16 @@ const eliminar = (item) => {
 }
 
 const notificacion = (type, titulo, mensaje) => { notification[type]({ message: titulo, description: mensaje, }); };
+
+const descargarObservaciones = (pro) => {
+  const url = baseUrl + "/pdf-errores/" + pro;
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'observaciones.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 </script>
   

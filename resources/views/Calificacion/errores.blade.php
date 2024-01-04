@@ -93,9 +93,12 @@
     <div id="footer">
     </div>
 
-    <div style="width: 100%; text-align:center; margin-top:0px; font-weight:bold; font-size:10pt;">
-        INFORME DE OBSERVACIONES
-        <div>(Fichas de identificación)</div>
+    <div style="width: 100%; text-align:center; margin-top:0px; font-size:10pt;">
+        <div>
+            <div><span style="font-weight:bold; text-transform:uppercase">{{ $proceso->nombre }} - {{ date('d/m/Y')}} </span></div>
+            INFORME DE OBSERVACIONES
+            <div>(Fichas de identificación)</div>
+        </div>
     </div>
 
     <div style="margin-top: 15px;"><span style="font-size: .8rem; font-weight:bold;">DNI duplicados</span></div>
