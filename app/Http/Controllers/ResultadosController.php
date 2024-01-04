@@ -844,10 +844,62 @@ class ResultadosController extends Controller
     }
 
 
-    public function PdfErroresCalifacion($dni) {
+    public function PdfErroresCalifacion($sim) {
+
+
+        $errores = Ide::select(
+            'archivos_simulacro.nombre AS archivo',
+            'ides.camp2 AS lectura',
+            'ides.litho',
+            'ides.dni', 
+            'ides.tipo', 
+            'ides.aula', 
+            'participantes_simulacro_externo.dni AS dnip',
+            \DB::raw('LENGTH(TRIM(ides.dni)) AS len_doc'),
+            \DB::raw('(ides.dni REGEXP \'^[0-9]+$\' ) AS vdni'),
+            \DB::raw('(ides.aula REGEXP \'^[0-9]+$\' ) AS vaula'),
+            \DB::raw('(ides.litho REGEXP \'^[0-9]+$\' ) AS vlitho')
+        )
+        ->join('archivos_simulacro', 'archivos_simulacro.id', 'ides.id_archivo')
+        ->LEFTJOIN('participantes_simulacro_externo', 'ides.dni', 'participantes_simulacro_externo.dni')
+        ->WHERE('archivos_simulacro.id_simulacro' ,'=', $sim)
+        ->where(function ($query) {
+            $query->whereNull('ides.dni')
+                ->orWhereNull('ides.tipo')
+                ->orWhereNull('ides.aula')
+                ->orWhereNull('participantes_simulacro_externo.dni')
+                ->orWhere(\DB::raw('LENGTH(TRIM(ides.dni))'), '!=', 8)
+                ->orWhere(\DB::raw('(ides.dni REGEXP \'^[0-9]+$\' )'), '=', 0)
+                ->orWhere(\DB::raw('(ides.litho REGEXP \'^[0-9]+$\' )'), '=', 0)
+                ->orWhere(\DB::raw('(ides.aula REGEXP \'^[0-9]+$\' )'), '=', 0);
+        })
+        ->get();
+
+        $duplicados_dni = Ide::select(
+            'archivos_simulacro.nombre AS archivo',
+            'ides.camp2 AS lectura',
+            'ides.litho',
+            'ides.dni',     
+            'participantes_simulacro_externo.dni AS dnip'
+        )
+        ->join('archivos_simulacro', 'archivos_simulacro.id', '=', 'ides.id_archivo')
+        ->leftJoin('participantes_simulacro_externo', 'ides.dni', '=', 'participantes_simulacro_externo.dni')
+        ->where('archivos_simulacro.id_simulacro', '=', $sim)
+        ->whereIn('ides.dni', function ($query) use ($sim) {
+            $query->select('dni')
+                ->from('ides')
+                ->whereIn('id_archivo', function ($innerQuery) use ($sim) {
+                    $innerQuery->select('id')
+                        ->from('archivos_simulacro')
+                        ->where('id_simulacro', '=', $sim);
+                })
+                ->groupBy('dni')
+                ->havingRaw('COUNT(*) > 1');
+        })
+        ->get();
 
         $data = "hellow";
-        $pdf = Pdf::loadView('Calificacion.errores', compact('data'));
+        $pdf = Pdf::loadView('Calificacion.errores', compact('data','errores','duplicados_dni'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
