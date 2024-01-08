@@ -4,7 +4,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use App\Http\Controllers\SimulacroController;
 //use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
@@ -34,7 +33,8 @@ use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\ResultadosController;
 use App\Http\Controllers\CarpetaController;
 use App\Http\Controllers\PonderacionController;
-
+use App\Http\Controllers\CepreController;
+use Inertia\Inertia;
 
 
 Route::middleware('auth')->get('/', function () {
@@ -524,6 +524,12 @@ Route::post('/get-ponderaciones-select', [PonderacionController::class, 'getPond
 
 Route::get('/calific/{a}', [ResultadosController::class, 'Calificar']);
 Route::get('/pdf-errores/{D}', [ResultadosController::class, 'PdfErroresCalifacion']);
+
+//PREINSCRIPCIONES CEPREUNA
+Route::get('{p}/preinscripcion', [ProcesoController::class, 'getFormulario']);
+Route::prefix('cepre')->group(function () {
+    Route::get('/get-participante-cepre/{dni}', [CepreController::class, 'getParticipanteCepre']);
+});
 
 
 

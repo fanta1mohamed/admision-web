@@ -8,10 +8,9 @@ use App\Models\TipoProceso;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-
-
 class ProcesoController extends Controller
 {
+  
   public function index()
   {
       return Inertia::render('Procesos/procesos');        
@@ -103,14 +102,25 @@ class ProcesoController extends Controller
   
   }
 
-  
-  public function getModalidades(){
-    
+
+  public function getModalidades(){ 
     $res = DB::select('SELECT id as value, nombre as label FROM modalidad_proceso');
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
+  }
+
   
+  public function getFormulario($nombreProceso)
+  {
+
+    $proceso = Proceso::where('slug', $nombreProceso)->where('estado',1)->first();
+    if($proceso){ 
+      return Inertia::render('Publico/preinscripcioncepre', ['procceso_seleccionado' => $proceso]); 
+    } else {
+      abort(404);
+    }
+
   }
 
 
