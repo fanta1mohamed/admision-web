@@ -1246,14 +1246,14 @@
             <div>
               <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
                 <div><span style="font-size:1.4rem;">
-                  !VERIFICACIÓN FINALIZADA!  
+                  VERIFICACIÓN FINALIZADA  
                 </span></div>
               </div>
               <div class="mt-3 mb-3 flex justify-center" style="text-align:justify;">
                 <div><span style="font-size:1rem;">
                   Hemos revisado tu información y cumples con los requisitos 
                   para postular
-                  en el EXAMEN CEPREUNA han sido verificados y estás autorizados. 
+                  en el EXAMEN CEPREUNA. 
                   Para continuar con el proceso de postulación, sigue estos pasos:</span></div>
               </div>
 
