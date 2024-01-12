@@ -2016,7 +2016,7 @@ const getParticipanteCepre =  async () => {
   datacepre.value = null;
   try {
     let res = await axios.get("/get-participante-cepre/" + formState.dni);
-      if (res.data.estado === true) {
+      if (res.data.estado === true ) {
         datacepre.value = res.data.datos;
         datospersonales.tipo_doc = 1;
         datospersonales.nombres = datacepre.value.nombres;
@@ -2025,7 +2025,6 @@ const getParticipanteCepre =  async () => {
         datospersonales.sexo = datacepre.value.sexo;
         datospersonales.ubigeo_residencia = datacepre.value.codigo_distrito;
         datoscolegio.egreso = datacepre.value.anio_egreso;
-
         participa.value = 1;
         getDataPrisma()
       } else {

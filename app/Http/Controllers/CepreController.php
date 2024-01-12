@@ -21,7 +21,7 @@ class CepreController extends Controller
             ]);
 
             $data = json_decode($response->getBody(), true);
-            if(count($data) > 0){
+            if(count($data) > 0 && $data[0]['habilitado'] == 1){
                 $this->response['estado'] = true;
                 $this->response['datos'] = $data[0];
                 return response()->json($this->response, 200);
