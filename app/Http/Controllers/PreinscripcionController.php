@@ -349,12 +349,12 @@ class PreinscripcionController extends Controller
                 'id_postulante' => $res[0]->idP,
                 'id_tipo_documento' => 6,
                 'estado' => 1,
-                'url' => 'documentos/'.$name.'/'.'/preinscripcion'.$res[0]->dni.'.pdf',
+                'url' => 'documentos/'.$name.'/'.'/preinscripcion/'.$res[0]->dni.'.pdf',
                 'fecha' => date('Y-m-d')
             ]);
         }
 
-        file_put_contents(public_path('/documentos/'.$name.'/preinscripcion').$res[0]->dni.'.pdf', $output);
+        file_put_contents(public_path('/documentos/'.$name.'/preinscripcion/').$res[0]->dni.'.pdf', $output);
         return $pdf->download();
         
     }
