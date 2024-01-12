@@ -11,10 +11,12 @@ use App\Models\AvancePostulante;
 use App\Models\Paso;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Carbon\CarbonInterface;
 use Inertia\Inertia;
 use Carbon\Carbon;
-use Carbon\CarbonInterface;
-use Illuminate\Support\Facades\File;
+
 use setasign\Fpdi\Fpdi;
 
 class PreinscripcionController extends Controller
@@ -59,12 +61,11 @@ class PreinscripcionController extends Controller
         DB::beginTransaction();
             
             $proceso = 0;
-            if ($request->modalidad == 9) { $proceso = 4; } elseif ($request->modalidad == 8 || $request->modalidad == 7) { $proceso = 5; }
 
             $pre = Preinscripcion::create([
                 'id_postulante'=> $request->id_postulante,
                 'id_programa' => $request->programa,
-                'id_proceso' => $proceso,
+                'id_proceso' => $request->id_proceso,
                 'id_modalidad' => $request->modalidad,
                 'estado' => 1
             ]);
@@ -119,7 +120,7 @@ class PreinscripcionController extends Controller
 
             $ava = AvancePostulante::create([
                 'dni_postulante'=> $request->dni,
-                'id_proceso' => $proceso,
+                'id_proceso' => $request->id_proceso,
                 'avance' => 1,
             ]);
         
@@ -287,11 +288,14 @@ class PreinscripcionController extends Controller
         return $pdf->stream();
     }
 
-    public function pdfsolicitud($dni) {
+    public function pdfsolicitud($pro, $dni) {
+
+        $carreras_previas = DB::select("SELECT codigo, cod_car, nombre, condicion FROM carreras_previas
+        WHERE dni_postulante = $dni");
 
         $preinscrito = DB::select("SELECT COUNT(*) AS cont FROM pre_inscripcion
         JOIN postulante ON postulante.id = pre_inscripcion.id_postulante
-        WHERE postulante.nro_doc = ".$dni);
+        WHERE postulante.nro_doc = $dni AND pre_inscripcion.id_proceso = $pro");
         
         $res = Preinscripcion::select(
             'tipo_documento_identidad.nombre AS tipo_doc',
@@ -305,7 +309,10 @@ class PreinscripcionController extends Controller
             'distritos.nombre AS distrito',
             'procesos.id as id_proceso',
             'procesos.nombre AS proceso',
-            'programa.nombre AS programa' 
+            'procesos.id_modalidad_proceso',
+            'procesos.fecha_examen AS fecha_examen',
+            'programa.nombre AS programa'
+
         )
           ->leftjoin ('postulante', 'postulante.id', '=','pre_inscripcion.id_postulante')
           ->join ('procesos', 'procesos.id', '=','pre_inscripcion.id_proceso')
@@ -315,19 +322,19 @@ class PreinscripcionController extends Controller
           ->join ('ubigeo', 'ubigeo.ubigeo', '=','postulante.ubigeo_residencia')
           ->join ('distritos', 'distritos.id', '=','ubigeo.id_distrito')
           ->join ('tipo_documento_identidad','tipo_documento_identidad.id', '=', 'postulante.tipo_doc')
+          ->where('pre_inscripcion.id_proceso','=', $pro)
           ->where('postulante.nro_doc','=', $dni)->get();
 
-        // $name = "cepre2023-II";
-        $name = "general2023-II";
 
+        $name = $res[0]->proceso;
         $data = $res[0];
         setlocale(LC_TIME, 'es_ES.utf8'); 
         $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
-        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date'));
+        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date','carreras_previas'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
     
-        $rutaCarpeta = public_path('/documentos/'.$name.'/'.$res[0]->dni);
+        $rutaCarpeta = public_path('/documentos/'.$name.'/preinscripcion');
 
         if (!File::exists($rutaCarpeta)) {
             File::makeDirectory($rutaCarpeta, 0755, true, true);
@@ -342,12 +349,12 @@ class PreinscripcionController extends Controller
                 'id_postulante' => $res[0]->idP,
                 'id_tipo_documento' => 6,
                 'estado' => 1,
-                'url' => 'documentos/'.$name.'/'.$res[0]->dni.'/'.'solicitud-1.pdf',
+                'url' => 'documentos/'.$name.'/'.'/preinscripcion'.$res[0]->dni.'.pdf',
                 'fecha' => date('Y-m-d')
             ]);
         }
 
-        file_put_contents(public_path('/documentos/'.$name.'/'.$res[0]->dni.'/').'solicitud-1.pdf', $output);
+        file_put_contents(public_path('/documentos/'.$name.'/preinscripcion').$res[0]->dni.'.pdf', $output);
         return $pdf->download();
         
     }
@@ -453,6 +460,45 @@ class PreinscripcionController extends Controller
     }
 
 
+
+    public function generarCaptcha()
+    {
+        $captchaText = Str::random(6);
+        session(['captcha' => $captchaText]);
+
+        return response()->json(['captcha' => $captchaText]);
+    }
+
+    public function estaPreinscrito($id_proceso, $dni){
+        $preinscripcion = Preinscripcion::where('postulante.nro_doc', $dni)
+        ->where('id_proceso', $id_proceso)
+        ->join('postulante','postulante.id','pre_inscripcion.id_postulante')
+        ->first();
+        
+        if($preinscripcion){ $this->response['estado'] = true;
+        }else{ $this->response['estado'] = false; }
+
+        return response()->json($this->response, 200);
+    }
+
+    public function pasoRegistrado ($id_proceso, $dni){
+        $paso = Paso::join('postulante', 'paso.postulante', '=', 'postulante.id')
+        ->where('paso.proceso', $id_proceso)
+        ->where('postulante.nro_doc', $dni)
+        ->orderByDesc('paso.nro')
+        ->select('paso.nro', 'paso.avance', 'paso.postulante')
+        ->first();
+        
+        if($paso){
+            $this->response['estado'] = true;
+            $this->response['datos'] = $paso;
+            return response()->json($this->response, 200);
+        }
+        else{
+            $this->response['estado'] = false;
+            return response()->json($this->response, 200);
+        }
+    }
     
 
 }

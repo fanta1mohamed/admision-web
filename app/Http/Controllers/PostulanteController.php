@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Proceso;
 use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
+use App\Models\CarrerasPrevias;
 use App\Models\Postulante;
 use App\Models\Paso;
 use App\Models\Cambio;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class PostulanteController extends Controller
@@ -23,6 +24,7 @@ class PostulanteController extends Controller
       'postulante.id','postulante.primer_apellido', 'postulante.segundo_apellido', 'postulante.nombres',
       'postulante.email AS correo', 'postulante.celular', 'postulante.fec_nacimiento',
       'postulante.ubigeo_nacimiento as ubigeo', 'postulante.ubigeo_residencia', 'postulante.direccion',
+      'postulante.sexo', 'postulante.estado_civil',
       'departamento.nombre as departamento', 'departamento.codigo as dep', 
       'provincia.nombre as provincia','provincia.codigo as prov', 
       'distritos.nombre as distrito', 'distritos.codigo as dist' 
@@ -32,7 +34,38 @@ class PostulanteController extends Controller
     ->leftjoin('provincia','ubigeo.id_provincia','provincia.id') 
     ->leftjoin('distritos','distritos.id','ubigeo.id_distrito') 
     ->where('postulante.nro_doc','=',$request->nro_doc)
-    ->where('postulante.ubigeo_nacimiento','=',$request->ubigeo)
+    //->where('postulante.ubigeo_nacimiento','=',$request->ubigeo)
+    ->get(); 
+
+    if(count($res) > 0){
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+      return response()->json($this->response, 200);
+    }
+    else{
+      $this->response['estado'] = false;
+      return response()->json($this->response, 200);
+    }
+  
+  }
+
+
+  public function getPostulanteXDni2(Request $request)
+  {
+    $res = Postulante::select(
+      'postulante.id','postulante.primer_apellido', 'postulante.segundo_apellido', 'postulante.nombres',
+      'postulante.email AS correo', 'postulante.celular', 'postulante.fec_nacimiento',
+      'postulante.ubigeo_nacimiento as ubigeo', 'postulante.ubigeo_residencia', 'postulante.direccion', 
+      'postulante.sexo', 'postulante.estado_civil',
+      'departamento.nombre as departamento', 'departamento.codigo as dep', 
+      'provincia.nombre as provincia','provincia.codigo as prov', 
+      'distritos.nombre as distrito', 'distritos.codigo as dist' 
+    )
+    ->leftjoin('ubigeo','postulante.ubigeo_residencia','ubigeo.ubigeo')
+    ->leftjoin('departamento','ubigeo.id_departamento','departamento.id') 
+    ->leftjoin('provincia','ubigeo.id_provincia','provincia.id') 
+    ->leftjoin('distritos','distritos.id','ubigeo.id_distrito') 
+    ->where('postulante.nro_doc','=',$request->nro_doc)
     ->get(); 
 
     $this->response['estado'] = true;
@@ -40,7 +73,6 @@ class PostulanteController extends Controller
     return response()->json($this->response, 200);
   
   }
-
 
 
   public function saveDniPostulante(Request $request) {
@@ -387,5 +419,56 @@ public function savePostulanteAdmin(Request $request ) {
   }
 
 
+  public function getDataPrisma($dni)
+  {
+      $url = "https://erpprisma.com/rucdni/l_dni.php?dni=" . $dni;
+      
+      $response = Http::get($url);
+      $data = explode("|", $response->body());
+
+      if(count($data) >= 5){
+          $resultado = [
+            'dni' => $data[1],
+            'nombre' => $data[2],
+            'paterno' => $data[3],
+            'materno' => $data[4],
+        ];
+        $this->response['datos'] = $resultado;
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+      }
+      else{
+        $this->response['estado'] = false;
+        return response()->json($this->response, 200);
+      }
+
+  }
+
+//  protected $fillable = ['cod_car', 'fecha', 'id_estudiante' ];
+
+  public function registrarCarreras(Request $request){
+
+    $postulante = Postulante::where('nro_doc', $request->dni)->first();
+    if($postulante){
+      $postulante->carreras_previas = count($request->carreras);
+      $postulante->save();
+    }
+
+    foreach($request->carreras as $item){
+      $carreras = CarrerasPrevias::create([
+        'cod_car' => $item['careerId'],
+        'nombre' => $item['career'],
+        'fecha' => date('Y-m-d h:m:s'),
+        'dni_postulante' => $request->dni,
+        'codigo' =>  $item['code'],
+        'condicion' => $item['cond1tion']
+      ]);       
+
+    }
+
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+
+  }
 
 }

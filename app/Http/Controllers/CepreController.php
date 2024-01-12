@@ -22,9 +22,12 @@ class CepreController extends Controller
 
             $data = json_decode($response->getBody(), true);
             if(count($data) > 0){
-                return $data[0];
-            }else {
-                return "Estudiante no encontrado";
+                $this->response['estado'] = true;
+                $this->response['datos'] = $data[0];
+                return response()->json($this->response, 200);
+            }else { 
+                $this->response['estado'] = false;
+                return response()->json($this->response, 200);
             }
 
         } catch (\Exception $e) {

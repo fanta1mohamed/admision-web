@@ -34,6 +34,7 @@ class Postulante extends Model
         'observaciones',
         'id_colegio',
         'id_usuario',
+        'carreras_previas'
     ];
  
     

@@ -9,9 +9,8 @@ class Sancionado extends Model
 {
     use HasFactory;
 
-    protected $table = 'sancionado';
+    protected $table = 'sancionados';
 
     protected $filable = ['dni','paterno','materno','motivo','observacion'];
-    
     
 }

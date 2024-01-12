@@ -1,16 +1,16 @@
 <template>
-    <a-layout style="min-height: 100vh">
+    <a-layout style="min-height: 100vh;">
       <a-layout>
         <!-- <a-layout-header style="background: #f50000; height: 230px; padding: 0; position: relative;" >
         <div style="border-bottom: 1px solid #00000013;">
             <h1>Header</h1>
         </div>
       </a-layout-header> -->
-      <div class="headPre" style="height: 200px;">
-        <div class="flex justify-between" >  
+      <div class="headPre" style="height: 230px; margin-top:-26px;">
+        <div class="flex justify-between" style="margin-top:30px;">  
             <div class="logoPre">
                 <div style="margin-top: -10px;"> <img src="./../../assets/imagenes/logotiny.png" width="45" /> </div>
-                <div class="x"> <div class="container-pre"><span style="letter-spacing: 0.1rem;">DIRECCIÓN DE</span></div> <h1 class="logoPreAD" > ADMISIÓN </h1> </div>
+                <div class="x"> <div class="container-pre"><span style="letter-spacing: 0.23rem;">DIRECCIÓN DE</span></div> <h1 class="logoPreAD" > ADMISIÓN </h1> </div>
                 <div style="margin-top: -10px;"> <img src="./../../assets/imagenes/logoDAD.png" width="45" /> </div>
             </div>
             <!-- <div style="padding-top: 10px;">
@@ -18,18 +18,24 @@
             </div> -->
         </div>
 
-
+        <div class="flex justify-center title-proceso-container">
+            <span class="title-proceso">EXAMEN CEPREUNA 2024-I</span>
+        </div>    
         <div class="flex justify-center titulo-pre">
             <div>  
-                <span> Preinscripción </span>
-                <div class="flex justify-center"> <hr class="line-pre"> </div>
+                <!-- <span> Preinscripción </span> -->
+                <div class="flex justify-center">
+                    <hr class="line-pre mr-3" style="margin-top:18px;"> 
+                        <span style="font-size:1.6rem; text-transform:capitalize;">Preinscripción</span> 
+                    <hr class="line-pre ml-3" style="margin-top:18px;"> 
+                </div>
             </div>
         </div>
       </div>
       <a-layout-content
         style="min-height: 280px; padding: 0px 0px;">
         <!-- style="min-height: 280px; padding: 0px 10px;"> -->
-        <div style="border-radius: 10px 10px 0px 0px; box-shadow: 1px 1px 1px 2px #a5a5a53f ; min-height: calc(100vh - 160px); padding: 0px  0px; margin-top: -40px; background: #ffffff; min-height: 280px;">
+        <div style="border-radius: 10px 10px 0px 0px; box-shadow: 1px 1px 1px 2px #a5a5a53f ; min-height: calc(100vh - 180px); padding: 0px  0px; margin-top: -40px;  background:#e3e3e3;">
             <slot />
         </div>        
       </a-layout-content>
@@ -41,7 +47,7 @@
     .headPre{
         background-repeat: no-repeat;
         background-size: cover;
-        background-image: linear-gradient(#174dff38, #174dff38), url('./../../assets/imagenes/administración.JPG');
+        background-image: linear-gradient(#3076b8b2, #22428893), url('./../../assets/imagenes/f-head-sim.jpg');
     }
     .logoPre{
         display: flex;
@@ -66,21 +72,30 @@
     }
 
     .line-pre{
-        width: 70px; border: solid 2px #ff0015e8;
+        width: 25px; border: solid 2px #ff0015e8;
+    }
+
+    .title-proceso {
+        font-size:2.7rem; color:white; font-weight:bold;
+    }
+
+    .title-proceso-container {
+        margin-top: -30px;
     }
 
 
 
     @media (min-height: 680px), screen and (orientation: portrait) {
-        .logoPre img{ width: 26px; }
-        .logoPre div{margin-top: -10px;}
-        .logoPre span{ font-size: 0.6rem; letter-spacing: 0.001rem !important; }
-        .logoPreAD{ font-size: 0.76rem; }
+        .logoPre img{ width: 36px; }
+        .logoPre div{margin-top: -0px;}
+        .logoPre span{ font-size: 0.8rem; letter-spacing: 0.061rem !important; }
+        .logoPreAD{ font-size: 1.2rem; }
         .logoPre .container-pre{ margin-bottom: -8px; margin-top: 5px; }
-        .titulo-pre{ margin-top: 50px;}
+        .titulo-pre{ margin-top: 0px;}
         .titulo-pre div span{ font-size: 1.7rem;  }
-        .line-pre {         width: 50px; border: solid 1px #ff0015e8; }
-
+        .line-pre { width: 30px; border: solid 3px #ff0015e8; }
+        .title-proceso { font-size:1.8rem; color:white; font-weight:bold; }
+        .title-proceso-container { margin-top: 10px; margin-bottom:0px; }
     }
 
 </style>

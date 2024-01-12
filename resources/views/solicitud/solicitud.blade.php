@@ -8,6 +8,7 @@
     .fondo{
         
         font-family: 'Gill Sans Extrabold', Helvetica, sans-serif;
+        font-size: 10pt;
         *{margin:2cm 2cm; padding:65px 65px 0px 90px; }
     }           
 
@@ -15,8 +16,10 @@
 </head>
 <body class="fondo" >
     <div style="margin-top:0px; background: #ffffff">
-        <div style="width: 100%; text-align:center; margin-bottom:20px; font-style: italic;">
-            “Año de la unidad, la paz y el desarrollo”
+        <div style="margin:auto; width:400px; text-align:center; margin-bottom:14px; font-size:9pt; font-style: italic;">
+            <span>
+                “Año del Bicentenario, de la consolidación de nuestra Independencia, y de la conmemoración de las heroicas batallas de Junín y Ayacucho”
+            </span>
         </div>
         <div>
             <table style="width:100%;">
@@ -28,18 +31,18 @@
                 </tr>
             </table>    
         </div>
-        <div style="margin-top: 16px;">
+        <div style="margin-top: 14px;">
             <table>
                 <tr style="">
                     <td style="width: 100%">
                         <div style="margin-bottom: 5px;"><span style="font-weight:bold">Dr. Juan Carlos Benavides Huanca</span></div>
-                        <div> <span style="font-weight:bold; font-size:11.5pt;">Director de la Dirección de Admisión de la Universidad Nacional del Altiplano – Puno</span></div>
+                        <div> <span style="font-weight:bold; font-size:10pt;">Director de la Dirección de Admisión de la Universidad Nacional del Altiplano – Puno</span></div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <div style="margin-top: 16px;">
+        <div style="margin-top: 14px;">
             <table style="width:100%;">
                 <tr style="">
                     <td style="width: 50%"></td>
@@ -55,7 +58,7 @@
             </table>    
         </div>
 
-        <div style="margin-top: 16px;">
+        <div style="margin-top: 14px;">
             <table>
                 <tr style="">
                     <td style="width: 100%">
@@ -67,34 +70,78 @@
                                 <span style="font-weight:bold">
                                 SOLICITO la inscripción para postular en el EXAMEN
                                 {{ $data->proceso }}
-                                </span> que se llevará a cabo los días 12 y 13 de 
-                                agosto del año en curso. Asimismo, pongo a vuetro conocimiento que 
+                                </span> que se llevará a cabo los días {{ $data->fecha_examen }}
+                                del año en curso. Asimismo, pongo a vuetro conocimiento que 
                                 postulo al programa de estudios de <span style="font-weight: bold;"> {{ $data->programa }}</span> 
                                 bajo la modalidad  <span style="font-weight: bold;">{{ $data->modalidad }}</span>.
                             </p>
                         </div>
-                        <div  style="margin-top: 16px;">
+                        <div  style="margin-top: 14px;">
                             Adjunto a esta solicitud los siguientes documentos:
                         </div>
-                        <div style="padding-left:20px; margin-top: 16px;">
+                        <div style="padding-left:20px; margin-top: 14px;">
                             <div  style="margin-top: 5px;">1.	Comprobante de pago (original y copia).</div>
                             <div  style="margin-top: 5px;">2.	Documento de identidad (original y copia).</div>
                             <div  style="margin-top: 5px;">3.	Certificado de estudios (original y copia).</div> 
                         </div>
 
-                        <div style="text-align: justify; margin-top:16px;" >
+                        <div style="margin-top: 14px; text-align:justify;">
+                            <P style="line-height:1.5rem;">
+ 
+                            @if($carreras_previas != null)
+                                Adicionalmente, deseo informar que estoy postulando a mi
+                                @if(count($carreras_previas) == 1)
+                                    segunda carrera
+                                @elseif( count($carreras_previas) == 2 )
+                                    tercera carrera
+                                @elseif( count($carreras_previas) == 3 )
+                                    cuarta carrera
+                                @elseif( count($carreras_previas) == 4 )
+                                    quinta carrera
+                                @else
+                                @endif 
+                                en esta prestigiosa universidad. 
+                                He tenido ingresos previos en las siguientes carreras:                             
+                                @foreach ($carreras_previas as $index=>$item)
+                                    <div style="margin-top: 8px; margin-left:20px;">
+                                        {{$index + 1}}. {{ $item->nombre }} - CODIGO: <span style="font-weight: bold;">{{ $item->codigo }} </span>
+                                    </div>                                
+                                @endforeach
+                            @else
+                            @endif
+                        </div>
+
+                        <div style="text-align: justify; margin-top:12px;" >
+                                                    
+                            @if( $data->id_modalidad_proceso == 1)
                             <p style="line-height:1.5rem;">
                                 Agradezco su atención a la presente y me comprometo a cumplir con la inscripción presencial 
                                 según el último digito de mi DNI, tal como se encuentra especificado en el cronograma.
                             </p>
+                            
+                            @else 
+                            
+                            <p style="line-height:1.5rem;">
+                                Agradezco su atención a la presente y me comprometo a cumplir con la inscripción presencial 
+                                según como se encuentra especificado en el cronograma.
+                            </p>
+                            {{-- <p style="line-height:1.5rem;">
+                                Agradezco su atención y me comprometo a realizar la inscripción presencial de acuerdo con el 
+                                área del programa que he seleccionado, siguiendo rigurosamente las fechas indicadas en el cronograma. 
+                                Estoy consciente de la importancia de este proceso y aseguro cumplir con todos los requisitos establecidos. 
+                                Quedo a disposición para cualquier información adicional que se requiera. Gracias.
+                            </p> --}}
+                            @endif 
+
                         </div>
+
 
                     </td>
                 </tr>
             </table>
         </div>
 
-        <div style="margin-top: 16px;">
+        <div style="margin-top: 14px;">
             <table style="width: 100%;">
                 <tr>
                     <td style=""  >
@@ -106,7 +153,7 @@
             </table>
         </div>
 
-        <div style="margin-top:150px">  
+        <div style="margin-top:128px">  
 
             <table style="width:100%; bakcground:orange; margin-top:0px">
                 <tr>

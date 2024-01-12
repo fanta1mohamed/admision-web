@@ -33,6 +33,7 @@ use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\ResultadosController;
 use App\Http\Controllers\CarpetaController;
 use App\Http\Controllers\PonderacionController;
+use App\Http\Controllers\SancionadoController;
 use App\Http\Controllers\CepreController;
 use Inertia\Inertia;
 
@@ -110,6 +111,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     //PREINSCRIPCION
     Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
+    Route::post('/get-postulante-datos-personales2', [PostulanteController::class, 'getPostulanteXDni2']);
     Route::get('/inscripciones', fn () => Inertia::render('Admin/Inscripcion/index'))->name('admin-inscripciones');
 
     Route::post('/actualizar-inscripcion', [InscripcionController::class, 'Actualizar']);
@@ -397,6 +399,7 @@ Route::post('/save-respuesta', [DetalleExamenVocacionalController::class, 'saveR
 
 Route::post('save-pasos-preinscripcion', [PreinscripcionController::class, 'savePasos']);
 Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
+Route::post('/get-postulante-datos-personales2', [PostulanteController::class, 'getPostulanteXDni2']);
 Route::post('/save-postulante-dni', [PostulanteController::class, 'saveDniPostulante']);
 Route::post('/save-postulante', [PostulanteController::class, 'savePostulante']);
 Route::post('/save-postulante-residencia', [PostulanteController::class, 'saveResidencia']);
@@ -424,7 +427,7 @@ Route::post('/get-datos-examen2', [PreguntaController::class, 'getDatosExamen2']
 Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'saveVocacional']);
 
 Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocacional']);
-Route::get('/pdf-solicitud/{dni}', [PreinscripcionController::class, 'pdfsolicitud']);
+Route::get('/pdf-solicitud/{p}/{dni}', [PreinscripcionController::class, 'pdfsolicitud']);
 
 Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 
@@ -527,18 +530,19 @@ Route::get('/pdf-errores/{D}', [ResultadosController::class, 'PdfErroresCalifaci
 
 //PREINSCRIPCIONES CEPREUNA
 Route::get('{p}/preinscripcion', [ProcesoController::class, 'getFormulario']);
-Route::prefix('cepre')->group(function () {
-    Route::get('/get-participante-cepre/{dni}', [CepreController::class, 'getParticipanteCepre']);
-});
+Route::get('/get-participante-cepre/{dni}', [CepreController::class, 'getParticipanteCepre']);
+Route::get('/get-sancionado/{dni}/{pro}', [SancionadoController::class, 'getSancionado']);
+
+Route::get('/generar-captcha', [PreinscripcionController::class, 'generarCaptcha']);
+Route::get('/participa-proceso/{pro}/{post}', [PreinscripcionController::class, 'estaPreinscrito']);
 
 
+Route::get('/carreras-previas', fn () => Inertia::render('Publico/components/carrerasPrevias'));
+Route::get('/get-data-prisma/{dni}', [PostulanteController::class, 'getDataPrisma']);
 
-
-
-
-
-
-
+//Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
+Route::post('/registrar-carreras-previas', [PostulanteController::class, 'registrarCarreras']);
+Route::get('/get-paso-registrado/{p}/{dni}', [PreinscripcionController::class, 'pasoRegistrado']);
 
 
 
