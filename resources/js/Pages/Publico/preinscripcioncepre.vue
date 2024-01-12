@@ -1247,7 +1247,7 @@
           <div>
             <div class="flex justify-end mt-6 mb-3"> 
               <a-button @click="cancelarInscripcion()" class="mr-2" style="color: #476175; border: 1px solid #476175; border-radius:5px;">Cancelar</a-button>
-              <a-button @click="registrarPrevias()" style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
+              <a-button @click="registrarPrevias()" :disabled="selectedItems.length = 0"  style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
             </div>
           </div>
       </div> 
