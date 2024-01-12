@@ -61,7 +61,7 @@
 
           <div class="datos-column">
             <label for="name">Ubigeo de nacimiento: <span></span>  </label>
-            <input type="text" disabled :value="formState.ubigeo"/>
+            <input type="text" disabled :value="datospersonales.ubigeo"/>
           </div>
           <div class="datos-column">
         </div>
@@ -299,7 +299,7 @@
       <div class="datos-column" style="margin-top:-20px;">
         <div class="flex">
           <input class="checkbox mr-2" type="checkbox" :value="checkbox1" v-model="checkbox1"/>
-          <span> Certifico que la información brindada es correcta</span>
+          <span style="font-size: 1.2rem; font-weight:bold;"> Certifico que la información brindada es correcta</span>
         </div>
       </div>
 
@@ -472,7 +472,7 @@
                 </a-row>
 
                 <a-row :gutter="[16, 0]" class="form-row" style="margin-top: -20px;">
-                  <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                  <a-col :span="24" :md="24" :lg="16" :xl="16" :xxl="16">
                     <a-form-item
                         name="correo"
                         :rules="[
@@ -481,6 +481,17 @@
                         ]">
                       <div><label>Correo:</label></div>
                       <a-input type="email" @input="correoInput"  v-model:value="datospersonales.correo" />
+                    </a-form-item>
+                  </a-col>
+
+                  <a-col :span="24" :md="24" :lg="8" :xl="8" :xxl="8">
+                    <a-form-item
+                        name="ubigeo"
+                        :rules="[
+                          { required: true, message: 'Ingresa ubigeo de nacimiento', trigger: 'change'},
+                        ]">
+                      <div><label>Ubigeo de nacimiento:</label></div>
+                      <a-input type="email" @input="correoInput"  v-model:value="datospersonales.ubigeo" />
                     </a-form-item>
                   </a-col>
                 </a-row>
@@ -1014,6 +1025,7 @@
                             <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
                             <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
                             <a-select-option :value='44'>TURISMO</a-select-option>
+                            <a-select-option :value='45'>PSICOLOGÍA</a-select-option>
                         </a-select>
 
                       </a-form-item>
@@ -1021,7 +1033,7 @@
 
                     <a-col v-if="datos_preinscripcion.programa === 38 || datos_preinscripcion.programa === 16" :span="24" :md="24" :lg="12" :xl="24" :xxl="24">
                       <a-form-item>
-                        <div><label>Cod. de examen médico:</label></div>
+                        <div><label>Cod. de constancia de examen médico:</label></div>
                         <a-input placeholder="Cod Examen médico" v-model:value="datos_preinscripcion.codigo_medico"/>
                       </a-form-item>
                     </a-col>
@@ -1542,7 +1554,7 @@ const getDatosPersonales = async () => {
         datospersonales.correo = res.data.datos[0].correo
         datospersonales.celular = res.data.datos[0].celular
         if(res.data.datos[0].fec_nacimiento){ datospersonales.fec_nacimiento = dayjs(res.data.datos[0].fec_nacimiento) }
-        formState.ubigeo = res.data.datos[0].ubigeo
+        datospersonales.ubigeo = res.data.datos[0].ubigeo
         datosresidencia.direccion = res.data.datos[0].direccion
         depseleccionado.value = res.data.datos[0].dep;
         datosresidencia.dep = res.data.datos[0].departamento
@@ -1655,7 +1667,7 @@ const saveDatosPersonales =  async () => {
       sexo: datospersonales.sexo,
       estado_civil: datospersonales.estado_civil,
       fec_nacimiento: format(new Date(datospersonales.fec_nacimiento), 'yyyy-MM-dd'),
-      ubigeo_nacimiento: formState.ubigeo,
+      ubigeo_nacimiento: datospersonales.ubigeo,
       //ubigeo_residencia: datospersonales.ubigeo_residencia,
       direccion: datosresidencia.direccion
     }
