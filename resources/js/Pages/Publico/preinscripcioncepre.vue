@@ -30,7 +30,7 @@
           </div>
 
           <div class="datos-column">
-            <label for="name">Prenombres: <span></span>  </label>
+            <label for="name">Pre Nombres: <span></span>  </label>
             <input type="text" disabled :value="datospersonales.nombres"  />
           </div>
 
@@ -267,6 +267,7 @@
               <option :value='42'>SOCIOLOGÍA</option>
               <option :value='43'>TRABAJO SOCIAL</option>
               <option :value='44'>TURISMO</option>
+              <option :value='45'>PSICOLOGÍA</option>
             </select>
           </div>
 
@@ -307,10 +308,10 @@
     <div>
         <div class="datos-column" style="width:100%;">
             <div v-if="checkbox1 == true" class="flex justify-end">
-              <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Guardar</a-button>
+              <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">GUARDAR DATOS</a-button>
             </div>
             <div v-else class="flex justify-end">
-              <a-button html-type="submit" @click="submit" type="primary" disabled class="boton-siguiente">Guardar</a-button>
+              <a-button html-type="submit" @click="submit" type="primary" disabled class="boton-siguiente">GUARDAR DATOS</a-button>
             </div>
         </div>
       </div>
@@ -459,10 +460,10 @@
                   </a-col>
                   <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                     <a-form-item>
-                      <div><label>Prenombres:</label></div>
+                      <div><label>Pre Nombres:</label></div>
                       <a-form-item
                         name="nombres"
-                        :rules="[{ required: true, message: 'Ingresa tus Prenombres', trigger: 'change'}]"
+                        :rules="[{ required: true, message: 'Ingresa tus Pre Nombres', trigger: 'change'}]"
                       >
                         <a-input @input="nombresInput" v-model:value="datospersonales.nombres" />
                       </a-form-item>
@@ -1111,7 +1112,7 @@
         </div>
         <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary" >Finalizar</a-button>
+          <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary" >VERIFICAR DATOS</a-button>
           <!-- <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>     -->
         </div>
       </a-affix>
@@ -1243,11 +1244,32 @@
       <div v-if="anteriores.length === 0 && confirmacion === false" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;">    
           <div class="flex justify-center">
             <div>
-              <div class="mt-4 flex justify-center" style="text-align:center;">
-                <span> No se han encontrado registros de su Persona presione "continuar"</span>
+              <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
+                <div><span style="font-size:1.4rem;">
+                  !VERIFICACIÓN FINALIZADA!  
+                </span></div>
+              </div>
+              <div class="mt-3 mb-3 flex justify-center" style="text-align:justify;">
+                <div><span style="font-size:1rem;">
+                  Hemos revisado tu información y cumples con los requisitos 
+                  para postular
+                  en el EXAMEN CEPREUNA han sido verificados y estás autorizados. 
+                  Para continuar con el proceso de postulación, sigue estos pasos:</span></div>
+              </div>
+
+              <div>
+                <div> 1. Presiona en "CONTINUAR". </div>
+                <div> 2. Ingresa el código secreto proporcionado. </div>
+                <div> 3. Presiona en "Iniciar Postulación". </div>
+              </div>
+<!-- 
+              {{datacepre}} -->
+
+              <div class="mt-4 mb-4">
+                <a-alert message="!Importante! los datos compatibles con el sistema del CEPREUNA se cargarán automáticamente" type="info" show-icon />
               </div>
               <div class="flex justify-center mt-4">
-                  <a-button style="background: #452c4c; color:white; width:120px;" @click="modalcarrerasprevias = false">Continuar</a-button>
+                  <a-button type="primary" style="color:white; width:120px; height:42px;" @click="modalcarrerasprevias = false">Continuar</a-button>
               </div>
             </div>
           </div>
@@ -1984,6 +2006,14 @@ const getParticipanteCepre =  async () => {
     let res = await axios.get("/get-participante-cepre/" + formState.dni);
       if (res.data.estado === true) {
         datacepre.value = res.data.datos;
+        datospersonales.tipo_doc = 1;
+        datospersonales.nombres = datacepre.value.nombres;
+        datospersonales.primerapellido = datacepre.value.paterno;
+        datospersonales.segundoapellido = datacepre.value.materno;
+        datospersonales.sexo = datacepre.value.sexo;
+        datospersonales.ubigeo_residencia = datacepre.value.codigo_distrito;
+        datoscolegio.egreso = datacepre.value.anio_egreso;
+
         participa.value = 1;
         getDataPrisma()
       } else {
@@ -1995,6 +2025,7 @@ const getParticipanteCepre =  async () => {
     console.error("Error al obtener datos del participante", error);
 }
 }
+
 
 const codigo_aleatorio = ref(null);
 
