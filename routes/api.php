@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ApixController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ResCepreController;
+use App\Http\Controllers\SancionadoController;
 
 
 /*
@@ -36,3 +37,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/get-puntaje/{dni}', [BlogController::class, 'getPuntajes']);
 
 Route::get('/v1/resultados_simulacro/{dni}', [ResCepreController::class, 'obtenerInformacionEstudiante']);
+Route::get('/v1/get-observados/{p}/{dni}', [SancionadoController::class, 'getObservados']);
+
