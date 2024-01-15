@@ -1,13 +1,13 @@
 <template>
 <Head title="Inscripciones-impresión"/>
 <AuthenticatedLayout>
-<div>
+<div style="">
 <a-tabs v-model:activeKey="tabactive" type="card">
   <a-tab-pane key="1" tab="Inscripcion" >
-    <div style="padding: 0px 15px;">
-      <div class="flex justify-end">
+    <div style="padding: 0px 15px; background: white; border-radius: 10px; margin-top:-10px;">
+      <div class="flex justify-end pt-6" style="background:white;">
         <div>
-            <label style="margin-right: 10px;"> Buscar:</label>
+          <label style="margin-right: 10px;"> Buscar:</label>
             <a-auto-complete
             v-model:value="dniseleccionado"
             :options="postulantes"
@@ -29,11 +29,15 @@
           </a-auto-complete>
         </div>
       </div>
+      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1.2rem; font-weight:bold;"> Comprobantes de pago </span></div>
+      <div>
+        <div v-if="dni !== null && dni.length === 8">
+          <Vouchers :dni="dni"/>
+        </div>
+      </div>
     
        <div style=" width:100%; border: solid 1px #f3f3f3; margin: 20px 0px">
-      
         <div class="container-principal">
-
           <a-col flex="1 1">
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
@@ -365,6 +369,7 @@ import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined } 
 import dayjs from 'dayjs';
 import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
+import Vouchers from './components/voucherBN.vue'
 
 const baseUrl = window.location.origin;
  
@@ -404,9 +409,7 @@ const apoderados = ref([])
 const vouchers = ref([])
 const documentos = ref ([])
 
-const onSelect = () => {
-  console.log('onSelect', dniseleccionado);
-};
+const onSelect = () => { console.log('onSelect', dniseleccionado); };
 
 const handleKeyPress = (ev) => {
   console.log('handleKeyPress', ev);
@@ -418,16 +421,6 @@ const getPostulantes =  async (term = "", page = 1) => {
       { term: dni.value }
   );
   postulantes.value = res.data.datos.data;
-}
-
-const postcepre = ref(null)
-const getDatosCepre = async () => {
-  let res = await axios.get('https://sistemas.cepreuna.edu.pe/api/v1/'+dniseleccionado.value, {
-    headers: { Authorization: 'cepreuna_v1_api' }
-  });
-  if(res.data) {
-    postcepre.value = res.data[0]
-  } 
 }
 
 const getPostulantesByDni =  async () => {
@@ -540,8 +533,6 @@ const Inscribir =  async () => {
 }
 
 watch(dni, ( newValue, oldValue ) => {
-  // console.log("new:", newValue);
-  // console.log("old:", oldValue);
   getPostulantes();
   //getDatosCepre();
 })

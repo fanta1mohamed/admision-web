@@ -296,7 +296,7 @@
 
         <!-- {{ datos_preinscripcion }} -->
       </div>
-      <div class="datos-column" style="margin-top:-20px;">
+      <div class="datos-column" style="margin-top:-20px; display:flex; width:100%;">
         <div class="flex">
           <input class="checkbox mr-2" type="checkbox" :value="checkbox1" v-model="checkbox1"/>
           <span style="font-size: 1.2rem; font-weight:bold;"> Certifico que la información brindada es correcta</span>
@@ -338,7 +338,7 @@
       <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
 
       <div class="flex mt-3 justify-center align-center" style=" width: 100%; min-height: calc(100vh - 300px)">
-        <a-card v-if="pagina_pre === 0"  style="width: 100%;  max-width: 350px; max-height:360px" class="pl-3 pr-3 cardInicio" >
+        <a-card v-if="pagina_pre === 0"  style="width: 100%;  max-width: 350px; max-height:380px" class="pl-3 pr-3 cardInicio" >
           <div>
             <h1 style="font-size: 1.1rem;">Datos de validación</h1>
           </div>
@@ -365,7 +365,7 @@
 
             <a-card class="mt-3">
               <div class="flex justify-center" style="margin: -20px; cursor: none; pointer-events:none;">
-                <span style="text-decoration:line-through; font-weight:bold; font-size:2.1rem; letter-spacing:1rem;"> {{ codigo_aleatorio }} </span>
+                <span style="text-decoration:line-through; font-family:helvetica; font-weight:bold; font-size:2.2rem; letter-spacing:1rem;"> {{ codigo_aleatorio }} </span>
               </div>
             </a-card>
             <div class="mb-4">
@@ -425,7 +425,7 @@
                     <div> Estado civil </div>
                     <a-form-item
                         name="estado_civil"
-                        :rules="[{ required: true, message: 'Ingresa tu Primer Apellido', trigger: 'change'},]"
+                        :rules="[{ required: true, message: 'Elije tu estado civil', trigger: 'change'},]"
                       >
                       <a-select
                         ref="select"
@@ -1232,7 +1232,7 @@
               </a-col>
           </a-row>
           <div class="my-2 mb-4">
-            <a-alert message="Si no reconoce haber ingresado a ninguna de esas carreras presione en cancelar y aproximese a OTI" type="warning" show-icon />
+            <a-alert message="Si no reconoce haber ingresado a ninguna de esas carreras o ya renunció presione en CANCELAR y aproximese a OTI" type="warning" show-icon />
           </div>
           <div class="flex justify-center" v-if="confirmacion === true">
             <div>
@@ -1245,9 +1245,11 @@
             </div>
           </div>
           <div>
+
             <div class="flex justify-end mt-6 mb-3"> 
               <a-button @click="cancelarInscripcion()" class="mr-2" style="color: #476175; border: 1px solid #476175; border-radius:5px;">Cancelar</a-button>
-              <a-button @click="registrarPrevias()" :disabled="selectedItems.length = 0"  style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
+              <a-button v-if="selectedItems.length === 0" disabled style=" border: 1px solid gray; border-radius:5px;">Continuar</a-button>
+              <a-button v-if="selectedItems.length > 0" @click="registrarPrevias()" style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
             </div>
           </div>
       </div> 
@@ -1509,6 +1511,9 @@ watch(() => datosmadre.dni, (newValue, oldValue) => {
 watch(() => formState.dni, (newValue, oldValue) => {
   if(newValue.length == 8){
     getPasoRegistrado();
+    selectedItems.value = [];
+    datacepre.value = [];
+    anteriores.value = [];
   }
 });
 
@@ -1772,8 +1777,8 @@ const savecolegio = async () => {
       colegio: datoscolegio.colegio,
       actualizar: ac,
       proceso: props.procceso_seleccionado.id
-    },
-    getPasos());
+    },);
+    getPasos()
   } catch (error) {
     console.error(error);
   }
@@ -2021,7 +2026,7 @@ const getParticipanteCepre =  async () => {
         datospersonales.tipo_doc = 1;
         datospersonales.nombres = datacepre.value.nombres;
         datospersonales.primerapellido = datacepre.value.paterno;
-        datospersonales.segundoapellido = datacepre.value.materno;
+        datospersonales.segundo_apellido = datacepre.value.materno;
         datospersonales.sexo = datacepre.value.sexo;
         datospersonales.ubigeo_residencia = datacepre.value.codigo_distrito;
         datoscolegio.egreso = datacepre.value.anio_egreso;

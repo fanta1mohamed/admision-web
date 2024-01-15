@@ -360,7 +360,7 @@
       style="height: calc(100vh - 94px); margin-top:14px;"
       class="custom-scrollbar2"
       >
-      <div  style=" padding:0px 14px 14px 14px;">
+      <div style=" padding:0px 14px 14px 14px; ">
           <slot />
       </div>
 

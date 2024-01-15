@@ -16,13 +16,14 @@ class DocumentoController extends Controller {
     $query_where = [];
 
     $res = Documento::select(
-      'documento.id as id', 'documento.codigo as cod', 'tipo_documento.nombre as tipo',
+      'documento.id as id', 'documento.codigo as cod', 'tipo_documento.nombre as tipo_certificado',
       'documento.verificado', 'documento.url',
+      'documento.observacion as tipo',
       'postulante.nro_doc as dni', 'postulante.primer_apellido AS paterno', 
       'postulante.segundo_apellido AS materno', 'postulante.nombres'
     )
-    ->join('tipo_documento','documento.id_tipo_documento','tipo_documento.id')
-    ->join('postulante','postulante.id','documento.id_postulante')
+    ->leftjoin('tipo_documento','documento.id_tipo_documento','tipo_documento.id')
+    ->leftjoin('postulante','postulante.id','documento.id_postulante')
     // ->join('pre_inscripcion','pre_inscripcion.id_postulante', 'postulante.id')
     ->where($query_where)
     ->where('tipo_documento.id','=', 1)
@@ -30,7 +31,9 @@ class DocumentoController extends Controller {
       return $query
           ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
           ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
-          ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%');
+          ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%')
+          ->orWhere('postulante.segundo_apellido', 'LIKE', '%' . $request->term . '%')
+          ->orWhere('tipo_documento.nombre', 'LIKE', '%' . $request->term . '%');
   })->paginate($request->paginasize);
 
     $this->response['estado'] = true;

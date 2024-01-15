@@ -230,10 +230,13 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/documentos', fn () => Inertia::render('Revisor/documentos'))->name('revisor-documentos');
     Route::get('/imprimir', fn () => Inertia::render('Revisor/imprimir'))->name('revisor-imprimir');
     Route::get('/postulantes', fn () => Inertia::render('Revisor/postulantes'))->name('revisor-postulantes');
-    
+   
+    Route::get('/comprobantes-xd', fn () => Inertia::render('Revisor/components/voucher'));
+
     Route::post('/get-certificados-revision', [DocumentoController::class, 'getCertificadosRevision']);
     Route::post('/cambiar-estado', [DocumentoController::class, 'cambiarEstado']);
     Route::post('/get-comprobantes', [SeleccionDataController::class, 'getComprobantesDNI']);
+    Route::post('/get-comprobantes-banco', [PagoBancoController::class, 'getComprobantesDNI']);
     Route::post('/verificar-comprobante', [SeleccionDataController::class, 'verificarComprobante']);
 
     Route::get('/get-requisitos', [SeleccionDataController::class, 'getRequisitos']);    
@@ -543,6 +546,7 @@ Route::get('/get-data-prisma/{dni}', [PostulanteController::class, 'getDataPrism
 //Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
 Route::post('/registrar-carreras-previas', [PostulanteController::class, 'registrarCarreras']);
 Route::get('/get-paso-registrado/{p}/{dni}', [PreinscripcionController::class, 'pasoRegistrado']);
+
 
 
 

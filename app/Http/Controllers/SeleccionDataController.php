@@ -228,8 +228,8 @@ class SeleccionDataController extends Controller
       'comprobante.verificado'
     )
     ->join('postulante','postulante.nro_doc','comprobante.ndoc_postulante')
-    ->where('estado','=',1)
     ->where('comprobante.ndoc_postulante','=',$request->dni)
+    ->where('comprobante.fecha','>','2023-07-01')
     ->get(); 
 
     $this->response['estado'] = true;

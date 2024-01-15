@@ -2,30 +2,58 @@
 <html>
 <head>
     <title>Constancia de inscripción</title>
+    <style>
+        *{ font-family: 'Roboto Condensed', sans-serif; }
+        .truncate-text {
+            width: 340px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: -8px;
+        }
+    </style>
+
 </head>
-<body style="font-family: 'Gill Sans Extrabold', Helvetica, sans-serif; margin-top:125px">
+<body style="font-family: 'Roboto Condensed'; font-weigth:200; margin-top:125px; font-size:12pt; ">
     <div>
-        <div style="display: none;"> <h1>Hora actual: {{ date('H:i:s') }}</h1></div>
+        {{-- <div style="display:block"> <h1>Hora actual: {{ date('H:i:s') }}</h1></div> --}}
         <div>
             <table>
                 <tr>
                     <td width="100"></td>
-                    <td align="center"><div style="text-align: center"><span style="font-weight:bold"> CONSTANCIA DE INSCRIPCIÓN AL EXAMEN {{$data->proceso}}</span></div></td>
+                    <td align="center">
+                        <div>
+                        <div style="text-align: center"><span style="font-weight:bold; letter-spacing:.11rem; "> CONSTANCIA DE INSCRIPCIÓN AL EXAMEN {{$data->proceso}}</span></div>
+                        <div style="display: none;"> {{ $nro_carreras = count($carreras_previas) }}  </div>
+                        @if ($nro_carreras == 1 )
+                            <div style="text-transform:uppercase; font-family:'Roboto Condensed';  font-size:10pt; letter-spacing:.06rem">(Postulante a segunda carrera)</div>                            
+                        @elseif ($nro_carreras == 2 )
+                            <div style="text-transform:uppercase; font-family:'Roboto Condensed';  font-size:10pt; letter-spacing:.06rem">(Postulante a tercera carrera)</div>                            
+                        @elseif ($nro_carreras == 3 )
+                            <div style="text-transform:uppercase; font-family:'Roboto Condensed';  font-size:10pt; letter-spacing:.06rem">(Postulante a cuarta carrera)</div>                            
+                        @elseif ($nro_carreras == 4 )
+                            <div style="text-transform:uppercase; font-family:'Roboto Condensed';  font-size:10pt; letter-spacing:.06rem">(Postulante a quinta carrera)</div>                            
+                        @elseif ($nro_carreras == 5 )
+                            <div style="text-transform:uppercase; font-family:'Roboto Condensed';  font-size:10pt; letter-spacing:.06rem">(Postulante a sexta carrera)</div>                            
+                        @else
+                            <div style="height: 14px;"></div>
+                        @endif
+                    </td>
                     <td width="100"></td>
                 </tr>
-            </table>
+             </table>
         </div>
 
-        <div style="margin-top:6px; ">
-            <table style="font-size:11pt; font-weight:bold; width:100%;">
+        <div style="margin-top:6px;">
+            <table style="font-size:10pt; font-weight:bold; width:100%;">
                 <tr style="height:85px; padding:0;">
-                    <td style="" width="195px" align="left" valign="top">MODALIDAD</td>
+                    <td style="" width="180px" align="left" valign="top">MODALIDAD</td>
                     <td style="" width="5px" align="left" valign="top">:</td>
                     <td style="" align="left" valign="top"><div style="text-align: justify; font-weight: regular;"><span>{{$data->modalidad}}</span></div></td>
                     <td style="" rowspan="7" align="right"  width="150px" valign="top">
                         <div style="position:relative; border:solid 1px #d9d9d9; padding:1px; width:140px; overflow-hidden; margin-right:-40px;" >
-                            <div style=" position:absolute; font-size: 2.5rem; top:-40px; right:-4px;">
-                                {{$data->id_programa}}
+                            <div style=" position:absolute; font-size: 2.5rem; top:-45px; right:-4px;">
+                               <span> {{ $data->id_programa }} </span>
                             </div>
 
                             <div style="overflow: hidden; height:170px; width:140px; margin-right:-10px;">
@@ -36,40 +64,40 @@
                     </td>
                 </tr>
                 <tr style="margin-bottom:-12px;">
-                    <td width="195px" align="left" valign="top"><div style="margin-top: -6px;">PROGRAMA DE ESTUDIOS</div></td>
-                    <td width="5px" align="left" valign="top"><div style="margin-top: -6px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -6px;"><span style="text-transform: uppercase;"> {{ $data->programa }} </span></div></td>
+                    <td width="180px" align="left" valign="top"><div style="margin-top: -8px;">PROGRAMA DE ESTUDIOS</div></td>
+                    <td width="5px" align="left" valign="top"><div style="margin-top: -8px;">:</div></td>
+                    <td align="left" valign="top">
+                        <div class="truncate-text"> {{ $data->programa }}</div></td>
                 </tr>
                 <tr>
-                    <td width="195px" align="left" valign="top"><div style="margin-top: -12px;"> NRO. DE DOCUMENTO:</div></td>
-                    <td width="5px" align="left" valign="top"><div style="margin-top: -18px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -12px;"><span style="text-transform: uppercase;">{{$data->dni}}</span></div></td>
+                    <td width="180px" align="left" valign="top"><div style="margin-top: -16px;"> NRO. DE DOCUMENTO</div></td>
+                    <td width="5px" align="left" valign="top"><div style="margin-top: -16px;">:</div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -16px;"><span style="text-transform: uppercase;">{{$data->dni}}</span></div></td>
                 </tr>
                 <tr>
-                    <td width="195px" align="left" valign="top"><div style="margin-top: -18px;"> PRIMER APELLIDO </div></td>
-                    <td width="5px" align="left" valign="top"><div style="margin-top: -18px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -18px;"><span style="text-transform: uppercase;"> {{$data->paterno}} </span></div></td>
-                </tr>
-                <tr>
-                    <td width="195px" align="left" valign="top"><div style="margin-top: -24px;"> SEGUNDO APELLIDO </div></td>
+                    <td width="180px" align="left" valign="top"><div style="margin-top: -24px;"> PRIMER APELLIDO </div></td>
                     <td width="5px" align="left" valign="top"><div style="margin-top: -24px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -24px;"><span style="text-transform: uppercase;"> {{$data->materno}} </span></div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -24px;"><span style="text-transform: uppercase;"> {{$data->paterno}} </span></div></td>
                 </tr>
                 <tr>
-                    <td width="195px" align="left" valign="top"><div style="margin-top: -30px;"> PRENOMBRES </div></td>
-                    <td width="5px" align="left" valign="top"><div style="margin-top: -30px;">:</div></td>
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -30px;"><span style="text-transform: uppercase;"> {{ $data->nombre }} </span></div></td>
+                    <td width="180px" align="left" valign="top"><div style="margin-top: -32px;"> SEGUNDO APELLIDO </div></td>
+                    <td width="5px" align="left" valign="top"><div style="margin-top: -32px;">:</div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -32px;"><span style="text-transform: uppercase;"> {{$data->materno}} </span></div></td>
                 </tr>
                 <tr>
-                    <td width="195px" align="left" valign="top"><div style="margin-top: -36px;"> FECHA Y HORA </div></td>
-                    <td width="5px" align="left" valign="top"><div style="margin-top: -36px;">:</div></td>
-                    {{-- <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;">{{$fecha}}</span></div></td> --}}
-                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -36px;"><span style="text-transform: uppercase;"> {{$data->fecha}}</span></div></td>
+                    <td width="180px" align="left" valign="top"><div style="margin-top: -40px;"> PRE NOMBRES </div></td>
+                    <td width="5px" align="left" valign="top"><div style="margin-top: -40px;">:</div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -40px;"><span style="text-transform: uppercase;"> {{ $data->nombre }} </span></div></td>
+                </tr>
+                <tr>
+                    <td width="180px" align="left" valign="top"><div style="margin-top: -48px;"> FECHA Y HORA </div></td>
+                    <td width="5px" align="left" valign="top"><div style="margin-top: -48px;">:</div></td>
+                    <td align="left" valign="top"><div style="text-align: justify; font-weight: regular; margin-top: -48px;"><span style="text-transform: uppercase;"> {{$data->fecha}}</span></div></td>
                 </tr>
             </table>
         </div>
 
-        <div style="margin-top:-30px">
+        <div style="margin-top:-50px">
             <table style="font-size:11pt;  width:100%;">
                 <tr style="height:85px; padding:0;">
                     <td>
@@ -78,18 +106,16 @@
                                 DECLARACIÓN JURADA
                             </span>
                         </div>
-                        <div style="text-align: justify;">
+                        <div style="text-align: justify; margin-top:-10px; font-size:11pt;">
                             <p>
-                                El que suscribe declara bajo juramento que la información 
-                                proporcionada durante el proceso de inscripción es veraz y 
-                                de mi entera responsabilidad. Reconozco y 
-                                acepto los términos estipulados en el Reglamento del 
-                                EXAMEN DE ADMISIÓN GENERAL 2023-II, así como someterme 
-                                a una rigurosa revisión física exhaustiva para acceder 
-                                a la Ciudad Universitaria y realizar el examen de admisión. 
-                                En caso de obtener una vacante, me comprometo a cumplir con 
-                                lo estipulado en el Reglamento. Como muestra de conformidad, 
-                                firmo la presente constancia de inscripción.
+                                El declarante afirma solemnemente que la información proporcionada 
+                                durante la inscripción es precisa y de su total responsabilidad. 
+                                Reconoce y acepta los términos establecidos en el 
+                                Regalmento General de Admisión de Pregrado de la Universidad Nacionadl del Altiplano de Puno 2024 - I, 
+                                comprometiéndose a someterse a una exhaustiva revisión física 
+                                para acceder a la Ciudad Universitaria y realizar el examen de admisión. 
+                                En caso de obtener una vacante, se compromete a cumplir con lo estipulado en el reglamento. 
+                                Su firma en la constancia de inscripción demuestra su conformidad.
                             </p>
                         </div>
                     </td>
@@ -98,50 +124,72 @@
             </table>
         </div>
 
-        <div style="margin-top:0px">
+        <div style="margin-top:-10px">
             <table style="font-size:11pt;  width:100%;">
                 <tr>
-                    <td width="390" style="" valign="top">
+                    <td width="400" style="" valign="top">
                         <div>
                             <span style="font-weight:bold;">
-                                DÍA DEL EXAMEN PRESENTAR LO SIGUIENTE CON ESTRICTO CUMPLIMIENTO:
+                                INSTRUCCIONES PARA EL DÍA DEL EXAMEN:
                             </span>
     
-                            <div style="margin-top: 16px">
-                                <div><span>- </span><span>Documento Nacional de Identidad (original)</span></div>
-                                <div><span>- </span><span>Constancia de Inscripción </span></div>
-                                <div><span>- </span><span>Lápiz 2B, borrador y tajador</span></div>
-                                <div><span>- </span><span>De preferencia vestir con buzo sin capucha ni metales.</span></div>
-                                <div><span>- </span><span>Visible el cuello, las orejas, cabello recogido (mujeres) y cabello corto (varones).</span></div>
-                                <div style="margin-top: 16px"><span style="font-weight:bold">!Importante: de no presentar lo indicado no podrá ingresar a rendir su examen!</span></div>
+                            <div style="margin-top: -8px; margin-left:-5px;">
+                                <ul>
+                                    <li>Presentar Constancia de Inscripción DNI (original)</li>
+                                    <li>Portar lápiz 2B, borrador y tajador</li>
+                                    <li>Vestir sin capucha ni metales</li>
+                                    <li>Tener cabello recogido (mujeres), cabello corto (varones), el cuello y orejas deben estar visibles</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="margin-top: -8px;">
+                            <span style="font-weight:bold;">
+                                HORARIOS PARA TODOS (27 de enero ):
+                            </span>
+                            <div style="margin-top: -8px; margin-left:-5px;">
+                                <ul>
+                                    <li>Ingreso: 6:30 a 9:30 horas</li>
+                                    <li>Inicio de examen: 10:00 horas</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="margin-top: -8px; margin-left:-5px;">
+                            <span style="font-weight:bold;">
+                                HORARIOS SOLO PARA CLASIFICADOS (28 de enero):
+                            </span>
+                            <div style="margin-top: -8px">
+                                <ul>
+                                    <li>Ingreso: 12:30 a 13:30 horas.</li>
+                                    <li>Inicio de examen: 14:00 horas</li>
+                                </ul>
                             </div>
                         </div>
                     </td>
 
                     <td valign="top">
-                        <div>
-                            <div style=" width 80px; height: 95px; border:solid 1px black;">
+                        <div style="font-size: 8pt;">
+                            <div style=" width 80px; height: 101px; border:solid 1px black;">
                                 {{-- <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="95">  --}}
-                                <img src="{{ public_path('fotos/huella/'.$data->dni.'.jpg') }}" alt="foto" width="75"> 
+                                <img src="{{ public_path('fotos/huella/'.$data->dni.'.jpg') }}" alt="foto" width="76"> 
                             </div>
-                            <div style="text-align: center" >Indice Derecho </div>
-                            <div style=" width 80px; height: 95px; margin-top:10px; border:solid 1px black;">
-                                <img src="{{ public_path('fotos/huella/'.$data->dni.'x.jpg') }}" alt="foto" width="75"> 
+                            <div style="text-align: center; margin-top:6px;"><span>Indice Derecho</span></div>
+                            <div style=" width 80px; height: 101px; margin-top:10px; overflow:hidden; border:solid 1px black;">
+                                <img src="{{ public_path('fotos/huella/'.$data->dni.'x.jpg') }}" alt="foto" width="76"> 
                             </div>
-                            <div style="text-align: center">Indice Izquierdo</div>
+                            <div style="text-align: center; margin-top:6px;">Indice Izquierdo</div>
                         </div>
                         
                     </td>
 
                     <td valign="top">
-                        <div>
-                            <div style="border:solid 1px black; width 85px; height: 95px; margin-top:-2px;">
+                        <div style="font-size: 8pt; margin-top:2px;">
+                            <div style="border:solid 1px black; width 85px; height: 101px; margin-top:-2px;">
 
                             </div>
-                            <div style="text-align: center;"  >Indice Derecho </div>
-                            <div style="border:solid 1px black; width 85px; height: 95px; margin-top:10px;">
+                            <div style="text-align: center; margin-top:6px;"  >Indice Derecho </div>
+                            <div style="border:solid 1px black; width 85px; height: 101px; margin-top:10px;">
                             </div>
-                            <div style="text-align: center">Indice Izquierdo</div>
+                            <div style="text-align: center; margin-top:6px;" >Indice Izquierdo</div>
                         </div>
                         
                     </td>
@@ -153,15 +201,15 @@
 
  
         <div style="margin-top:110px">
-            <table style="font-size:11pt;  width:100%;">
+            <table style="font-size:10pt;  width:100%;">
                 <tr>
 
                 </tr>
 
                 <tr>
                     <td>
-                        <div style="width:260px;">
-                            <div style="margin-left:20px; margin-right:20px; border-top: 1px solid black; text-align:center; padding-top:5px;">
+                        <div style="width:240px;">
+                            <div style="margin-left:10px; margin-right:10px; border-top: 1px solid black; text-align:center; padding-top:5px;">
                                 <span>DIRECTOR DE ADMISIÓN</span>
                             </div>
                         </div>
@@ -169,25 +217,25 @@
                     <td>
                      </td>
                     <td>
-                        <div style="padding 20px; width:260px">
-                            <div style="margin-left:20px; margin-right:20px; border-top: 1px solid black; text-align:center; padding-top:5px;">
+                        <div style="padding 10px; width:240px">
+                            <div style="margin-left:0px; margin-right:10px; border-top: 1px solid black; text-align:center; padding-top:5px;">
                                 <span>POSTULANTE</span>
                             </div>
                         </div>
-                    </td>
+                    </td> 
 
-                    <td>
-                        <div style="magin-rigth -20px; width:145px; margin-top:-120px;">
-                            <div style="text-align: center">
-                                <span style="font-size:12pt; text-align:center"><?php echo DNS1D::getBarcodeHTML($data->dni ,'C128');?> </span>
+                    <td style="width: 190px">
+                        <div style="magin-rigth 0px; width:145px; margin-top:-100px;">
+                            <div style="text-align: left;">
+                                <span style="margin-right:14px; text-align:left"><?php echo DNS1D::getBarcodeHTML($data->dni ,'C128',2.5,50);?> </span>
                             </div>
-                            <div style="margin-right:-14px; text-align: right; font-size:2.3rem;">
+                            <div style="margin-right:-59px; text-align: ; font-size:2.25rem; margin-top:-20px;">
                                 {{$data->codigo}}
                             </div>
-                            <div style="text-align: center">
+                            <div style="margin-right:-59px; text-align: center;">
                                 <span style="text-transform: uppercase;">{{ strtoupper(substr($data->name, 0, 1)) }}. {{$data->upaterno}} </span>
                             </div>
-                            <div style="text-align: center;">
+                            <div style=" margin-right:-59px; text-align: center;">
                                 <span style="text-transform: uppercase; font-size:0.6rem;">inscriptor</span>
                             </div>
                         </div>

@@ -454,17 +454,33 @@ public function savePostulanteAdmin(Request $request ) {
       $postulante->save();
     }
 
-    foreach($request->carreras as $item){
-      $carreras = CarrerasPrevias::create([
-        'cod_car' => $item['careerId'],
-        'nombre' => $item['career'],
-        'fecha' => date('Y-m-d h:m:s'),
-        'dni_postulante' => $request->dni,
-        'codigo' =>  $item['code'],
-        'condicion' => $item['cond1tion']
-      ]);       
+    foreach ($request->carreras as $item) {
+      $carrera = CarrerasPrevias::firstOrNew([
+          'dni_postulante' => $request->dni,
+          'cod_car' => $item['careerId']
+      ], [
+          'nombre' => $item['career'],
+          'fecha' => now(),
+          'codigo' => $item['code'],
+          'condicion' => $item['cond1tion']
+      ]);
+  
+      if (!$carrera->exists) {
+          $carrera->save();
+      }
+  }
 
-    }
+    // foreach($request->carreras as $item){
+    //   $carreras = CarrerasPrevias::create([
+    //     'cod_car' => $item['careerId'],
+    //     'nombre' => $item['career'],
+    //     'fecha' => date('Y-m-d h:m:s'),
+    //     'dni_postulante' => $request->dni,
+    //     'codigo' =>  $item['code'],
+    //     'condicion' => $item['cond1tion']
+    //   ]);       
+
+    // }
 
     $this->response['estado'] = true;
     return response()->json($this->response, 200);

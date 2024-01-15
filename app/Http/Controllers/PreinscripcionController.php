@@ -21,6 +21,13 @@ use setasign\Fpdi\Fpdi;
 
 class PreinscripcionController extends Controller
 {
+  private $fondo;
+
+  public function __construct()
+  {
+      $this->fondo = public_path('imagenes/cepre-agua.png');
+  }
+  
   public function index()
   {
       return Inertia::render('Preinscripcion/index');        
@@ -56,12 +63,9 @@ class PreinscripcionController extends Controller
 
   public function preinscribir(Request $request) 
   {
-
     try {
         DB::beginTransaction();
             
-            $proceso = 0;
-
             $pre = Preinscripcion::create([
                 'id_postulante'=> $request->id_postulante,
                 'id_programa' => $request->programa,
@@ -118,11 +122,19 @@ class PreinscripcionController extends Controller
                 ]);
             }
 
-            $ava = AvancePostulante::create([
-                'dni_postulante'=> $request->dni,
-                'id_proceso' => $request->id_proceso,
-                'avance' => 1,
-            ]);
+            $resultado = AvancePostulante::where('id_proceso', $request->id_proceso)
+            ->where('dni_postulante', $request->dni)
+            ->exists();
+
+            if($resultado){
+                print("Avance ya registrado");
+            }else{
+                $ava = AvancePostulante::create([
+                    'dni_postulante'=> $request->dni,
+                    'id_proceso' => $request->id_proceso,
+                    'avance' => 1,
+                ]);
+            }
         
         DB::commit();
         return response()->json(['message' => 'Preinscripción exitosa'], 200);
@@ -288,6 +300,7 @@ class PreinscripcionController extends Controller
         return $pdf->stream();
     }
 
+    
     public function pdfsolicitud($pro, $dni) {
 
         $carreras_previas = DB::select("SELECT codigo, cod_car, nombre, condicion FROM carreras_previas
@@ -312,7 +325,6 @@ class PreinscripcionController extends Controller
             'procesos.id_modalidad_proceso',
             'procesos.fecha_examen AS fecha_examen',
             'programa.nombre AS programa'
-
         )
           ->leftjoin ('postulante', 'postulante.id', '=','pre_inscripcion.id_postulante')
           ->join ('procesos', 'procesos.id', '=','pre_inscripcion.id_proceso')
@@ -325,72 +337,50 @@ class PreinscripcionController extends Controller
           ->where('pre_inscripcion.id_proceso','=', $pro)
           ->where('postulante.nro_doc','=', $dni)->get();
 
-
-        $name = $res[0]->proceso;
-        $data = $res[0];
-        setlocale(LC_TIME, 'es_ES.utf8'); 
-        $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
-        $pdf = Pdf::loadView('solicitud.solicitud', compact('data','date','carreras_previas'));
-        $pdf->setPaper('A4', 'portrait');
-        $output = $pdf->output();
+        if (count($res) === 0) {
+            return "No registrado";
+        }else {
+            $data = $res[0];
     
-        $rutaCarpeta = public_path('/documentos/'.$name.'/preinscripcion');
-
-        if (!File::exists($rutaCarpeta)) {
-            File::makeDirectory($rutaCarpeta, 0755, true, true);
-        }
-
-        if($preinscrito[0]->cont == 0){
-
-            $doc = Documento::create([
-                'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
-                'nombre' => 'SOLICITUD DE POSTULACIÓN',
-                'numero' => 1,
-                'id_postulante' => $res[0]->idP,
-                'id_tipo_documento' => 6,
-                'estado' => 1,
-                'url' => 'documentos/'.$name.'/'.'/preinscripcion/'.$res[0]->dni.'.pdf',
-                'fecha' => date('Y-m-d')
-            ]);
-        }
-
-        file_put_contents(public_path('/documentos/'.$name.'/preinscripcion/').$res[0]->dni.'.pdf', $output);
-        return $pdf->download();
+            setlocale(LC_TIME, 'es_ES.utf8');
+            $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+            $pdf = Pdf::loadView('solicitud.solicitud', ['data'=>$data, 'date'=>$date,'carreras_previas'=>$carreras_previas, 'fondo'=>$this->fondo]);
+            $pdf->setPaper('A4', 'portrait');
+            $output = $pdf->output();
         
-    }
+            $rutaCarpeta = public_path('/documentos/'.$pro.'/preinscripcion/solicitudes/');
 
-    public function UnirPDF($dni){
-        
-        $pdf = new Fpdi();
-        
-        $files = [
-            public_path('/documentos/cepre2023-II/'.$dni.'/').'solicitud-1.pdf',
-        ];
-
-        foreach ($files as $file) {
-            $pageCount = $pdf->setSourceFile($file);
-            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                $template = $pdf->importPage($pageNo);
-                $pdf->AddPage();
-                $pdf->useTemplate($template);
+            if (!File::exists($rutaCarpeta)) {
+                File::makeDirectory($rutaCarpeta, 0755, true, true);
             }
+
+            if($preinscrito[0]->cont == 0){
+
+                $doc = Documento::create([
+                    'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
+                    'nombre' => 'SOLICITUD DE POSTULACIÓN',
+                    'numero' => 1,
+                    'id_postulante' => $res[0]->idP,
+                    'id_tipo_documento' => 6,
+                    'estado' => 1,
+                    'url' => 'documentos/'.$pro.'/'.'/preinscripcion/solicitudes/'.$res[0]->dni.'.pdf',
+                    'fecha' => date('Y-m-d')
+                ]);
+            }
+
+            file_put_contents(public_path('/documentos/'.$pro.'/preinscripcion/solicitudes/').$res[0]->dni.'.pdf', $output);
+            return $pdf->download('solicitud-postulante.pdf');
         }
-
-        $outputFilePath = public_path('/documentos'.'/'.$dni.'.pdf');
-        $pdf->Output($outputFilePath, 'F');
-
-        return response()->download($outputFilePath);
-        // return response()->download($outputFilePath)->deleteFileAfterSend();
-
+        
     }
-
 
     public function getPreinscripcionesAdmin(Request $request) {
   
         $query_where = [];
 
         if ($request->programa) array_push($query_where,[DB::raw('pre_inscripcion.id_programa'), '=', $request->programa]); 
-        array_push($query_where,[DB::raw('pre_inscripcion.id_proceso'), '=', 5]);
+        array_push($query_where,[DB::raw('pre_inscripcion.id_proceso'), '=', auth()->user()->id_proceso]);
+
 
         $res = Preinscripcion::select(
             'pre_inscripcion.id as id', 'postulante.id as id_postulante', 'postulante.nro_doc AS dni',
@@ -402,7 +392,10 @@ class PreinscripcionController extends Controller
             'inscripciones.estado'
         )
         ->join('postulante','pre_inscripcion.id_postulante', 'postulante.id')
-        ->leftjoin('inscripciones','inscripciones.id_postulante', 'postulante.id')
+        ->leftJoin('inscripciones', function($join) {
+            $join->on('inscripciones.id_postulante', '=', 'postulante.id')
+                 ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso);
+        })
         ->join('programa','pre_inscripcion.id_programa', 'programa.id')
         ->join('modalidad','pre_inscripcion.id_modalidad', 'modalidad.id')        
         ->join('procesos','pre_inscripcion.id_proceso', 'procesos.id')
@@ -430,15 +423,18 @@ class PreinscripcionController extends Controller
         $preinscripcion = Preinscripcion::find($request->id);
 
         if( $preinscripcion->id_programa != $request->id_programa) {
+            $preinscripcion->observacion = "$preinscripcion->observacion - Cambio de programa de $preinscripcion->id_programa a $request->id_programa ";
             $preinscripcion->id_programa = $request->id_programa;
-            //$preinscripcion->observacion = "Cambio de programa a $request->id_programa";
         }
         if ( $preinscripcion->id_modalidad != $request->id_modalidad ) {
+            $preinscripcion->observacion = "$preinscripcion->observacion, Cambio de modalidad de $preinscripcion->id_modalidad a $request->id_modalidad";
             $preinscripcion->id_modalidad = $request->id_modalidad;
-            //$preinscripcion->observacion = "$preinscripcion->observacion, Cambio de modalidad a $request->id_modalidad";
+        }
+        if($request->observacion != ''){
+            $preinscripcion->observacion = "$preinscripcion->observacion, ( $request->observacion )";
         }
         $preinscripcion->save();
-        $this->pdfsolicitud($request->dni);
+        $this->pdfsolicitud(auth()->user()->id_proceso,$request->dni);
 
         $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
         $this->response['mensaje'] = '';

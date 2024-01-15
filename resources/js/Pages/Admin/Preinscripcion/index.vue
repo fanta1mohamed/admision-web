@@ -206,6 +206,7 @@
                             <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
                             <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
                             <a-select-option :value='44'>TURISMO</a-select-option>
+                            <a-select-option :value='45'>PSICOLOGÍA</a-select-option>
                         </a-select>
                     </div>
                 </a-form-item>
@@ -218,6 +219,7 @@
                             class="selector-modalidad"
                             style="width: 100%;"
                             >
+                            <a-select-option :value='9'>CEPREUNA</a-select-option>
                             <a-select-option :value='8'>EXAMEN GENERAL</a-select-option>
                             <a-select-option :value='7'>CONADIS</a-select-option>
                         </a-select>

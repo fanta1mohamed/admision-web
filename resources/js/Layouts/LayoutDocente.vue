@@ -14,7 +14,7 @@
         <TopMenu :usuario="usu"/>
 
         <main class="h-full overflow-y-auto">
-          <div class="container px-4 mx-auto grid">
+          <div class="container px-4 mx-auto grid" style="background: #f4f4f5da;">
             <h2 class="my-2 text-2xl font-semibold text-gray-700">
               <slot name="header" />
             </h2>

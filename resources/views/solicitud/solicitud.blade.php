@@ -3,19 +3,24 @@
 <head>
     <title>SOLICITUD</title>
     <style>
-
-    *{margin:0;}
-    .fondo{
+    .{
+        margin: 0px;
+        padding: 0px;
+    }
         
+    .fondo{
         font-family: 'Gill Sans Extrabold', Helvetica, sans-serif;
-        font-size: 10pt;
         *{margin:2cm 2cm; padding:65px 65px 0px 90px; }
     }           
 
     </style>
 </head>
-<body class="fondo" >
-    <div style="margin-top:0px; background: #ffffff">
+<body>
+<div style="position: relative;">
+        <img src="{{ $fondo }}" alt="foto" width="97%"> 
+</div>
+<div class="fondo" style="position: absolute; top:0px;">
+    <div style="margin-top:0px;"> 
         <div style="margin:auto; width:400px; text-align:center; margin-bottom:14px; font-size:9pt; font-style: italic;">
             <span>
                 “Año del Bicentenario, de la consolidación de nuestra Independencia, y de la conmemoración de las heroicas batallas de Junín y Ayacucho”
@@ -42,7 +47,7 @@
             </table>
         </div>
 
-        <div style="margin-top: 14px;">
+        <div style="margin-top: 12px;">
             <table style="width:100%;">
                 <tr style="">
                     <td style="width: 50%"></td>
@@ -58,7 +63,7 @@
             </table>    
         </div>
 
-        <div style="margin-top: 14px;">
+        <div style="margin-top: 12px;">
             <table>
                 <tr style="">
                     <td style="width: 100%">
@@ -71,7 +76,7 @@
                                 SOLICITO la inscripción para postular en el EXAMEN
                                 {{ $data->proceso }}
                                 </span> que se llevará a cabo los días {{ $data->fecha_examen }}
-                                del año en curso. Asimismo, pongo a vuetro conocimiento que 
+                                del año en curso. Asimismo, pongo a vuestro conocimiento que 
                                 postulo al programa de estudios de <span style="font-weight: bold;"> {{ $data->programa }}</span> 
                                 bajo la modalidad  <span style="font-weight: bold;">{{ $data->modalidad }}</span>.
                             </p>
@@ -80,9 +85,13 @@
                             Adjunto a esta solicitud los siguientes documentos:
                         </div>
                         <div style="padding-left:20px; margin-top: 14px;">
-                            <div  style="margin-top: 5px;">1.	Comprobante de pago (original y copia).</div>
-                            <div  style="margin-top: 5px;">2.	Documento de identidad (original y copia).</div>
-                            <div  style="margin-top: 5px;">3.	Certificado de estudios (original y copia).</div> 
+                            <div  style="margin-top: 5px;">1.	Comprobante de pago.</div>
+                            <div  style="margin-top: 5px;">2.	Documento de identidad (<span style="color:red;">*</span>original y copia).</div>
+                            <div  style="margin-top: 5px;">3.	Certificado de estudios (<span style="color:red;">*</span>original y copia).</div> 
+                            <div  style="margin-top: 5px;">4.	Constancia de no adeudo al CEPREUNA.</div> 
+                        </div>
+                        <div style="margin-top:10px; margin-bottom:-14px;">
+                            Nota (<span style="color:red;">*</span> Solo para verificación</span>)
                         </div>
 
                         <div style="margin-top: 14px; text-align:justify;">
@@ -153,7 +162,7 @@
             </table>
         </div>
 
-        <div style="margin-top:128px">  
+        <div style="margin-top:108px">  
 
             <table style="width:100%; bakcground:orange; margin-top:0px">
                 <tr>
@@ -181,5 +190,6 @@
         </div>
 
     </div>
+</div>
 </body>
 </html>
