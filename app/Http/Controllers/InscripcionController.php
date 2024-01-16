@@ -43,20 +43,11 @@ class InscripcionController extends Controller
 
     public function getPostulanteByDni($dni){
         
-        $existeRegistro = DB::table('puntajes')
-            ->where('dni', $dni)
-            ->where('apto', 'SI')
-            ->exists();
-
         $sancionados = DB::table('sancionados')
             ->where('dni', $dni)
             ->exists();
 
-        $ingresantes = DB::table('resultados')
-            ->where('dni_postulante', $dni)
-            ->exists();
-
-        if($existeRegistro || $sancionados || $ingresantes ){
+        if( $sancionados ){
             return $existeRegistro;
         }
         else {
@@ -64,7 +55,7 @@ class InscripcionController extends Controller
             postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
             postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento,
             programa.id AS id_programa, programa.nombre as programa, programa.codigo as cod_programa,
-            colegios.id AS id_colegio, colegios.nombre AS colegio,
+            colegios.id AS id_colegio, concat(colegios.gestion,".'" - "'.", colegios.nombre) AS colegio,
             modalidad.id AS id_modalidad, modalidad.nombre as modalidad,
             procesos.nombre AS proceso, procesos.id as id_proceso,
             departamento.nombre AS departamento, provincia.nombre AS provincia, distritos.nombre AS distrito
@@ -128,14 +119,16 @@ class InscripcionController extends Controller
         FROM documento
         left JOIN tipo_documento ON tipo_documento.id = documento.id_tipo_documento        
         JOIN postulante ON documento.id_postulante = postulante.id
-        WHERE postulante.nro_doc  = ' . $dni);
+        WHERE documento.id_tipo_documento IN (1,4)
+        AND documento.codigo IS NOT null
+        AND postulante.nro_doc  = ' . $dni);
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
     public function getPreinscipciones($dni){
-        $res = DB::select('SELECT 
+        $res = DB::select("SELECT 
         pre_inscripcion.estado AS estado,
         programa.nombre AS programa, 
         procesos.nombre AS proceso,
@@ -145,7 +138,7 @@ class InscripcionController extends Controller
         JOIN procesos ON procesos.id = pre_inscripcion.id_proceso
         JOIN modalidad ON modalidad.id = pre_inscripcion.id_modalidad
         JOIN postulante ON postulante.id = pre_inscripcion.id_postulante    
-        WHERE postulante.nro_doc = ' . $dni);
+        WHERE postulante.nro_doc =  $dni AND pre_inscripcion.id_proceso = ". auth()->user()->id_proceso );
         
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -154,7 +147,7 @@ class InscripcionController extends Controller
 
     public function getInscripciones($dni){
         
-        $res = DB::select('SELECT 
+        $res = DB::select("SELECT 
         inscripciones.estado AS estado,
         programa.codigo as cod_programa,
         programa.nombre AS programa, 
@@ -165,7 +158,7 @@ class InscripcionController extends Controller
         JOIN procesos ON procesos.id = inscripciones.id_proceso
         JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
         JOIN postulante ON postulante.id = inscripciones.id_postulante    
-        WHERE postulante.nro_doc = ' . $dni);
+        WHERE postulante.nro_doc = $dni AND inscripciones.id_proceso = ". auth()->user()->id_proceso);
         
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -176,12 +169,12 @@ class InscripcionController extends Controller
      
         $prog = $request['postulante']['cod_programa'];
 
-        $res = DB::select("SELECT COALESCE(LPAD(MAX(CAST(SUBSTRING(codigo, 6) AS UNSIGNED)) + 1, 4, '0'), '0001') AS siguiente
-        FROM inscripciones
-        WHERE codigo LIKE '24".$prog."%'");
+        $res = $siguiente = Inscripcion::where('codigo', 'like', 'C12427%')
+        ->max(\DB::raw('CAST(SUBSTRING(codigo, 8) AS UNSIGNED)')) + 1;
+        $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
         $inscripcion = Inscripcion::create([
-            'codigo'=>'C124'.$request['postulante']['cod_programa'].$res[0]->siguiente,
+            'codigo' => 'C124' . $prog . $res,
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> auth()->user()->id_proceso,
             'id_programa' => $request['postulante']['id_programa'],
@@ -270,8 +263,13 @@ class InscripcionController extends Controller
         JOIN users on inscripciones.id_usuario = users.id
         WHERE postulante.nro_doc = $dni AND inscripciones.estado = 0 AND inscripciones.id_proceso = ". auth()->user()->id_proceso);
 
+
+        $foto = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/' . $dni . '.jpg');
+        $huellaIzquierda = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/' . $dni . '.jpg');
+        $huellaDerecha = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/'. $dni . 'x.jpg');
+
         $data = $datos[0];
-        $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data','carreras_previas'));
+        $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data','carreras_previas','foto','huellaIzquierda','huellaDerecha'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 

@@ -57,7 +57,7 @@
                             </div>
 
                             <div style="overflow: hidden; height:170px; width:140px; margin-right:-10px;">
-                                <img src="{{ public_path('fotos/inscripcion/'.$data->dni.'.jpg') }}" alt="foto" width="150"> 
+                                <img src="{{ $foto }}" alt="foto" width="150"> 
                             </div>
                             {{-- <div ><span style="color:red; font-size:14pt;">DUPLICADO</span></div> --}}
                         </div>
@@ -170,11 +170,11 @@
                         <div style="font-size: 8pt;">
                             <div style=" width 80px; height: 101px; border:solid 1px black;">
                                 {{-- <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="95">  --}}
-                                <img src="{{ public_path('fotos/huella/'.$data->dni.'.jpg') }}" alt="foto" width="76"> 
+                                <img src="{{ $huellaIzquierda }}" alt="foto" width="76"> 
                             </div>
                             <div style="text-align: center; margin-top:6px;"><span>Indice Derecho</span></div>
                             <div style=" width 80px; height: 101px; margin-top:10px; overflow:hidden; border:solid 1px black;">
-                                <img src="{{ public_path('fotos/huella/'.$data->dni.'x.jpg') }}" alt="foto" width="76"> 
+                                <img src="{{ $huellaIzquierda }}" alt="foto" width="76"> 
                             </div>
                             <div style="text-align: center; margin-top:6px;">Indice Izquierdo</div>
                         </div>

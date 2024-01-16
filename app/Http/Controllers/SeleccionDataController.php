@@ -324,11 +324,11 @@ class SeleccionDataController extends Controller
           DB::raw("CONCAT( postulante.nombres,' ',postulante.primer_apellido,' ', postulante.segundo_apellido) as label")
       )
       ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
-      ->where('pre_inscripcion.id_proceso','=',5)
+      ->where('pre_inscripcion.id_proceso','=',auth()->user()->id_proceso)
       ->where($query_where)
       ->where(function ($query) use ($request) {
           return $query
-            ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('postulante.nro_doc', 'LIKE', '%' . $request->term . '%')
             ->orWhere('postulante.nombres', 'LIKE', '%' . $request->term . '%')
             ->orWhere('postulante.primer_apellido', 'LIKE', '%' . $request->term . '%');
         })->orderBy('postulante.id', 'DESC')

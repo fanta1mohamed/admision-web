@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class FotoController extends Controller {
 
@@ -16,18 +17,22 @@ class FotoController extends Controller {
             $photo = str_replace(' ', '+', $photo);
             $photoData = base64_decode($photo);
     
-            // Genera un nombre único para la foto recortada
             $fileName = $request->dni . '.jpg';
-            // Define la ruta donde se guardará la foto recortada
-            $filePath = public_path('fotos/inscripcion/' . $fileName);
     
+            $rutaCarpeta = public_path('documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/');
+            if (!File::exists($rutaCarpeta)) {
+                File::makeDirectory($rutaCarpeta, 0755, true, true);
+            }
+    
+            $filePath = $rutaCarpeta . $fileName;
             file_put_contents($filePath, $photoData);
-        
+    
             return response()->json(['message' => 'Foto recortada guardada correctamente']);
         }
     
         return response()->json(['error' => 'No se proporcionó ninguna foto recortada'], 400);
     }
+
 
     public function guardarFotoBiometrico(Request $request)
     {

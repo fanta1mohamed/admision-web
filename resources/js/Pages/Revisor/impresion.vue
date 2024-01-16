@@ -3,6 +3,8 @@
 <AuthenticatedLayout>
 <div style="">
 <a-tabs v-model:activeKey="tabactive" type="card">
+
+  {{ dniseleccionado }}
   <a-tab-pane key="1" tab="Inscripcion" >
     <div style="padding: 0px 15px; background: white; border-radius: 10px; margin-top:-10px;">
       <div class="flex justify-end pt-6" style="background:white;">
@@ -18,7 +20,6 @@
           <a-input
             placeholder="Buscar"
             v-model:value="dni"
-            @keypress="handleKeyPress"
           />
           <template #option="{ value: val, label:lab }" style="background-color: blue;">
             <div style="height: 34px;">
@@ -29,47 +30,133 @@
           </a-auto-complete>
         </div>
       </div>
-      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1.2rem; font-weight:bold;"> Comprobantes de pago </span></div>
-      <div>
-        <div v-if="dni !== null && dni.length === 8">
+      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1rem; font-weight:bold;"> Comprobantes de pago </span></div>
+      <div class="mb-6">
+        <div>
           <Vouchers :dni="dni"/>
         </div>
       </div>
+
+      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1rem; font-weight:bold;"> Documentos </span></div>
+      <div class="mb-6">
+        <div>
+          <a-table :dataSource="documentos" :columns="colDocumentos" size="small" :pagination="false">
+            <template #bodyCell="{ column, index, record}">
+              <template v-if="column.dataIndex === 'verificado'">
+                <div v-if="record.verificado == 1" type="primary" ghost>
+                  <a-tag color="green"> verificado </a-tag>            
+                </div>
+                <div v-else type="danger" ghost>
+                  <a-tag color="pink"> No verificado </a-tag>            
+                </div>
+              </template>
+
+              <template v-if="column.dataIndex === 'acciones'">
+                <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
+                <template #icon><form-outlined/></template>
+                </a-button>
+                <a-divider type="vertical" />
+                  <a :href="'../../'+record.url" target="_blank">
+                    <a-button type="primary"  @click="eliminar(filiales[index])" shape="" size="small">
+                        <template #icon><eye-outlined/></template>
+                    </a-button>
+                  </a>  
+              </template>
+            </template>    
+          </a-table>
+        </div>
+      </div>
+
+
+      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1rem; font-weight:bold;"> Preinscripción </span></div>
+      <div class="mb-6">
+        <div>
+          <a-table :dataSource="preinscripciones" :columns="colPreinscripciones" size="small" :pagination="false">
+            <template #bodyCell="{ column, index, record}">
+              <template v-if="column.dataIndex === 'estado'">
+                  <div v-if="record.estado == 1" type="primary" ghost>
+                    <a-tag color="green"> Disponible </a-tag>            
+                  </div>
+                  <div v-else type="danger" ghost>
+                    <a-tag color="pink"> Bloqueado </a-tag>            
+                  </div>
+              </template>
+
+              <template v-if="column.dataIndex === 'acciones'">
+                <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
+                  <template #icon><eye-outlined/></template>
+                </a-button>
+              </template>
+
+            </template>
+          </a-table>
+        </div>
+      </div>
+
+
+      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1rem; font-weight:bold;"> Inscripciones </span></div>
+      <div class="mb-6">
+        <div>
+          <a-table :dataSource="inscripciones" :columns="colPreinscripciones" size="small" :pagination="false">
+            <template #bodyCell="{ column, index, record}">
+              <template v-if="column.dataIndex === 'estado'">
+                  <div v-if="record.estado == 1" type="primary" ghost>
+                    <a-tag color="green"> Disponible </a-tag>            
+                  </div>
+                  <div v-else type="danger" ghost>
+                    <a-tag color="pink"> Bloqueado </a-tag>            
+                  </div>
+              </template>
+
+              <template v-if="column.dataIndex === 'acciones'">
+                <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
+                  <template #icon><eye-outlined/></template>
+                </a-button>
+              </template>
+            </template>
+          </a-table>
+        </div>
+      </div>
+
     
-       <div style=" width:100%; border: solid 1px #f3f3f3; margin: 20px 0px">
+
+
+
+
+      <div style=" width:100%; border: solid 1px #f3f3f3; margin: 20px 0px">
         <div class="container-principal">
           <a-col flex="1 1">
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
-                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/fotos/inscripcion/'+postulante.dni_temp+'.jpg'"/> 
+                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/6/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
                   <div class="datos-postulante"> 
                     <div class="mb-2">
-                      <a-label>Primer apellido</a-label>
+                      <label>Primer apellido</label>
                       <a-input v-model:value="postulante.primer_apellido" placeholder="Primer apellido" />
                     </div>
 
                     <div class="mb-2">
-                      <a-label>Segundo apellido</a-label>
+                      <label>Segundo apellido</label>
                       <a-input v-model:value="postulante.segundo_apellido" placeholder="Segundo apellido" />
                     </div>
 
                     <div class="mb-2">
-                      <a-label>Prenombres</a-label>
+                      <label>Prenombres</label>
                       <a-input v-model:value="postulante.nombres" placeholder="Prenombres" />
                     </div>
 
                     <div class="flex">
                       <div class="mr-3" style="width:100%">
-                        <a-label>Fecha Nac</a-label>
+                        <label>Fecha Nac</label>
                         <div style="width: 100%;">
                           <a-date-picker style="width: 100%;" v-model:value="postulante.fec_nacimiento" format='DD/MM/YYYY'/>
                         </div>
                       </div>
                       <div style="width: 200px;">
-                        <a-label>Sexo</a-label>
+                        <label>Sexo</label>
                         <a-select
                           ref="select"
                           v-model:value="postulante.sexo"
@@ -89,19 +176,19 @@
             <div>
                 <div class="container-postulante mb-2">
                   <div style="width: 100%;">
-                    <a-label>Colegio</a-label>
+                    <label>Colegio</label>
                      <a-input v-model:value="postulante.colegio" disabled placeholder="Colegio" />
                   </div>
                 </div>
                 <div class="container-postulante mb-2">
                   <div style="width: 100%;">
-                    <a-label>Procedencia</a-label>
+                    <label>Procedencia</label>
                      <a-input v-model:value="postulante.procedencia" disabled placeholder="Procedencia" />
                   </div>
                 </div>
                 <div class="container-postulante">
                   <div style="width: 100%;">
-                    <a-label>Proceso</a-label>
+                    <label>Proceso</label>
                      <a-input v-model:value="postulante.proceso" disabled placeholder="Proceso" />
                   </div>
                 </div>
@@ -111,7 +198,7 @@
           <a-col flex="0 1 400px">
             <div>
                 <div class="mb-2">
-                  <a-label>Modalidad</a-label>
+                  <label>Modalidad</label>
                   <a-select
                     ref="select"
                     v-model:value="postulante.modalidad"
@@ -124,7 +211,7 @@
                   </a-select>
                 </div>
                 <div>
-                  <a-label>Programa de estudios</a-label>
+                  <label>Programa de estudios</label>
                   <a-select
                     ref="select"
                     v-model:value="postulante.programa"
@@ -179,11 +266,11 @@
             <!-- {{ baseUrl+'/huellas/inscripcion/'+dniseleccionado+'.jpg' }} -->
             <div class="mt-4 container-huellas">
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%; overflow-y: hidden;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/fotos/huella/'+postulante.dni_temp+'.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/6/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/fotos/huella/'+postulante.dni_temp+'x.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/6/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
             </div>
@@ -235,122 +322,11 @@
       </template>    
     
     </a-table>
-    <!-- <pre>{{apoderados}}</pre> -->
-  </a-tab-pane>
-  <a-tab-pane key="3"  style="">
-    <template #tab >
-      <div class="flex" style="align-items:center;">
-        <div v-if="vouchers.length === 0 && postulante.dni_temp !== ''" style="color:red; margin-top:-8px">
-          <span><exclamation-circle-outlined/></span>
-        </div>
-          vouchers
-      </div>
-    </template>
-    <a-table :dataSource="vouchers" :columns="colVouchers"> 
-      <template #bodyCell="{ column, index, record }">
-        <template v-if="column.dataIndex === 'codigo'">
-          <div v-if="record.codigo == 26">
-            <a-tag color="green"> Derechos de admisión </a-tag>            
-          </div>
-          <div v-if="record.codigo == 39">
-            <a-tag color="pink"> Examen médico </a-tag>            
-          </div>
-        </template>
-
-        <template v-if="column.dataIndex === 'monto'">
-          <div>
-            <span>S/ {{ record.monto.toFixed(2) }}</span>
-          </div>
-        </template>
-      </template>
-    </a-table>    <!-- <pre>{{vouchers}}</pre> -->
-  </a-tab-pane>
-  <a-tab-pane key="4">
-    <template #tab >
-      <div class="flex" style="align-items:center;">
-        <div v-if="documentos.length < 3  && postulante.dni_temp !== ''" style="color:red; margin-top:-8px">
-          <span><exclamation-circle-outlined/></span>
-        </div>
-          Documentos
-      </div>
-    </template>
-
-    <a-table :dataSource="documentos" :columns="colDocumentos" size="small">
-      <template #bodyCell="{ column, index, record}">
-        <template v-if="column.dataIndex === 'verificado'">
-          <div v-if="record.verificado == 1" type="primary" ghost>
-            <a-tag color="green"> verificado </a-tag>            
-          </div>
-          <div v-else type="danger" ghost>
-            <a-tag color="pink"> No verificado </a-tag>            
-          </div>
-        </template>
-
-        <template v-if="column.dataIndex === 'acciones'">
-          <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
-          <template #icon><form-outlined/></template>
-          </a-button>
-          <a-divider type="vertical" />
-            <a :href="'../../'+record.url" target="_blank">
-              <a-button type="primary"  @click="eliminar(filiales[index])" shape="" size="small">
-                  <template #icon><eye-outlined/></template>
-              </a-button>
-            </a>  
-        </template>
-
-      </template>    
-    </a-table>
-    <!-- <pre>{{documentos}}</pre> -->
-  </a-tab-pane>
-  <a-tab-pane key="5" tab="Inscripciones">
-    <!-- <pre>{{ inscripciones }}</pre> -->
-    <a-table :dataSource="inscripciones" :columns="colPreinscripciones" size="small">
-      <template #bodyCell="{ column, index, record}">
-        <template v-if="column.dataIndex === 'estado'">
-            <div v-if="record.estado == 1" type="primary" ghost>
-              <a-tag color="green"> Disponible </a-tag>            
-            </div>
-            <div v-else type="danger" ghost>
-              <a-tag color="pink"> Bloqueado </a-tag>            
-            </div>
-        </template>
-
-        <template v-if="column.dataIndex === 'acciones'">
-          <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
-            <template #icon><eye-outlined/></template>
-          </a-button>
-        </template>
-
-      </template>
-    </a-table>
-  </a-tab-pane>
-  <a-tab-pane key="6" tab="Pre inscripciones">
-    <!-- {{ preinscripciones }} -->
-    <a-table :dataSource="preinscripciones" :columns="colPreinscripciones" size="small">
-      <template #bodyCell="{ column, index, record}">
-        <template v-if="column.dataIndex === 'estado'">
-            <div v-if="record.estado == 1" type="primary" ghost>
-              <a-tag color="green"> Disponible </a-tag>            
-            </div>
-            <div v-else type="danger" ghost>
-              <a-tag color="pink"> Bloqueado </a-tag>            
-            </div>
-        </template>
-
-        <template v-if="column.dataIndex === 'acciones'">
-          <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
-            <template #icon><eye-outlined/></template>
-          </a-button>
-        </template>
-
-      </template>
-    </a-table>
   </a-tab-pane>
 
   <a-tab-pane key="7" tab="Constancia">
       <div v-if="dniseleccionado" style="width:100%">            
         <iframe :src="'https://inscripciones.admision.unap.edu.pe/documentos/general2023-II/'+dniseleccionado+'.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
-        <!-- <iframe :src="baseUrl+'/documentos/cepre2023-II/'+dniseleccionado+'/inscripcion-1.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe> -->
       </div>
     </a-tab-pane>
 </a-tabs>
@@ -370,18 +346,15 @@ import dayjs from 'dayjs';
 import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
 import Vouchers from './components/voucherBN.vue'
-
 const baseUrl = window.location.origin;
  
-const botomm = ref(false);
 const props = defineProps({  baseUrl: String });
 
-
+const botomm = ref(false);
 const dni = ref("")
 const tabactive = ref('1')
 
 const dniseleccionado = ref(null)
-// const postulante = ref({dni:"", nombres:"", primer_apellido:"",segundo_apellido:"", sexo:"", fec_nacimiento:"" })
 const preinscripciones = ref(null)
 const inscripciones = ref(null)
 
@@ -406,28 +379,17 @@ const postulante = ref({
 })
 
 const apoderados = ref([])
-const vouchers = ref([])
 const documentos = ref ([])
 
 const onSelect = () => { console.log('onSelect', dniseleccionado); };
 
-const handleKeyPress = (ev) => {
-  console.log('handleKeyPress', ev);
-};
-
 const getPostulantes =  async (term = "", page = 1) => {
-  let res = await axios.post(
-      "get-postulantes?page=" + page,
-      { term: dni.value }
-  );
+  let res = await axios.post( "get-postulantes?page=" + page, { term: dni.value });
   postulantes.value = res.data.datos.data;
 }
 
 const getPostulantesByDni =  async () => {
-  const numerorandom = ref();
-  let res = await axios.get(
-      "get-postulante-dni/" + dniseleccionado.value
-  );
+  let res = await axios.get("get-postulante-dni/" + dniseleccionado.value);
     postulante.value.id = res.data.datos.id_postulante;    
     postulante.value.nombres = res.data.datos.nombres;
     postulante.value.primer_apellido = res.data.datos.primer_apellido;
@@ -444,64 +406,26 @@ const getPostulantesByDni =  async () => {
     postulante.value.id_proceso = res.data.datos.id_proceso;
     postulante.value.id_modalidad = res.data.datos.id_modalidad;
     postulante.value.dni_temp = res.data.datos.dni;
-
     botomm.value = buscarPostulante(res.data.datos.id_postulante, postulante.value.id_proceso);
 }
 
 const getApoderados =  async () => {
-  let res = await axios.get(
-    "get-apoderados-postulante/" + dniseleccionado.value
-  );
+  let res = await axios.get( "get-apoderados-postulante/" + dniseleccionado.value);
   apoderados.value = res.data.datos;
 }
 
-// const getVouchers =  async () => {
-//   let res = await axios.get(
-//       "http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w=" + dniseleccionado.value
-//   );
-//   vouchers.value = res.data;
-// }
-
-// const getVouchers = async () => {
-//   const url = 'http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w='+ dniseleccionado.value;
-//   try {    
-//     const response = await axios.get(url,{
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Access-Control-Allow-Origin': 'https://inscripciones.admision.unap.edu.pe' // Agregar la cabecera para permitir el dominio
-//       }
-//     });
-//     console.log(response.data);
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// };
-
-const getVouchers = async() => {
-  try {    
-    const response = await axios.get('api-pagos/'+ dniseleccionado.value);
-    vouchers.value = response.data.data;
-  } catch (error) { console.error('Error:', error); }
-};
-
 const getDocumentos =  async () => {
-  let res = await axios.get(
-    "get-documentos-postulante/" + dniseleccionado.value
-  );
+  let res = await axios.get( "get-documentos-postulante/" + dniseleccionado.value);
   documentos.value = res.data.datos;
 }
 
 const getPreinscripciones =  async () => {
-  let res = await axios.get(
-      "get-preinscripciones-postulante/" + dniseleccionado.value
-  );
+  let res = await axios.get("get-preinscripciones-postulante/" + dniseleccionado.value);
   preinscripciones.value = res.data.datos;
 }
 
 const getInscripciones =  async () => {
-  let res = await axios.get(
-      "get-inscripciones-postulante/" + dniseleccionado.value
-  );
+  let res = await axios.get("get-inscripciones-postulante/" + dniseleccionado.value);
   inscripciones.value = res.data.datos;
 }
 
@@ -512,7 +436,6 @@ const Inscribir =  async () => {
   dniseleccionado.value = "";
   dni.value = "";
 
-  //postulantes.value = res.data.datos.data;
   postulante.value = { 
     id:"",
     nombres:"", 
@@ -532,41 +455,29 @@ const Inscribir =  async () => {
   }
 }
 
+
+let timeout2;
 watch(dni, ( newValue, oldValue ) => {
-  getPostulantes();
-  //getDatosCepre();
+  clearTimeout(timeout2);
+    timeout2 = setTimeout(() => {
+      getPostulantes();
+    }, 500);
 })
 
-
-const numerorandom = ref();
-const generateRandomNumber = () => {
- numerorandom.value = Math.floor(Math.random() * 100) + 1;
-}
-
-
+let timeout;
 watch(dniseleccionado, ( newValue, oldValue ) => {
-    //getDatosCepre();
-    getInscripciones()
-    getPostulantesByDni()
-    getVouchers()
-    //getDocumentos()
+  clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      getPreinscripciones()
+      getInscripciones()
+      getPostulantesByDni()
+      getDocumentos()
+    }, 500);
 })
 
 watch(tabactive, ( newValue, oldValue ) => {
   if (tabactive.value == 2){
     getApoderados()
-  }
-  if (tabactive.value == 3){
-    getVouchers()
-  }
-  if (tabactive.value == 4){
-    getDocumentos()
-  }
-  if (tabactive.value == 5){
-    getInscripciones()
-  }
-  if (tabactive.value == 6){
-    getPreinscripciones()
   }
 })
 
@@ -578,31 +489,6 @@ const imprimirPDF =  (dnni) => {
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
 }
-
-const colApoderados = [
-  { title: 'DNI', dataIndex: 'nro_documento', key: 'nro_documento',},
-  { title: 'Nombres', dataIndex: 'nombres', key: 'nombres',},
-  { title: 'Paterno', dataIndex: 'paterno', key: 'paterno',},
-  { title: 'Materno', dataIndex: 'materno', key: 'materno', },
-  { title: 'Parentesco', dataIndex: 'parentesco' },
-  { title: 'Acciones', dataIndex: 'acciones'}  
-]
-
-const colVouchers =  [
-  { title: 'N° Operación', dataIndex: 'paymentTitle'},
-  { title: 'Fecha', dataIndex: 'paymentDatetime', key: 'fecha',},
-  { title: 'Hora', dataIndex: 'paymentDatetime', key: 'hora', },
-  { title: 'Concepto', dataIndex: 'paymentTitle', },
-  { title: 'Monto', dataIndex: 'paymentAmount', key: 'monto', },
-]
-
-const colDocumentos =  [
-  { title: 'Codigo', dataIndex: 'codigo', key: 'codigo',},
-  { title: 'Documento', dataIndex: 'nombre', key: 'nombre',},
-  { title: 'Tipo', dataIndex: 'tipo', key: 'tipo',},
-  { title: 'estado', dataIndex: 'verificado'},
-  { title: 'Acciones', dataIndex: 'acciones'}  
-]
 
 const buscarPostulante = (postul, proc ) => {
   const postulanteEnProceso = inscripciones.value.find(item => {
@@ -616,12 +502,7 @@ const buscarPostulante = (postul, proc ) => {
   }
 };
 
-const notificacion = (type, titulo, mensaje) => {
-  notification[type]({
-    message: titulo,
-    description: mensaje,
-  });
-};
+const notificacion = (type, titulo, mensaje) => { notification[type]({ message: titulo, description: mensaje, });};
 
 const actualizarPostulante =  async () => {
   let res = await axios.post( "actualizar-postulante", {
@@ -638,7 +519,22 @@ const actualizarPostulante =  async () => {
   }
 }
 
+const colApoderados = [
+  { title: 'DNI', dataIndex: 'nro_documento', key: 'nro_documento',},
+  { title: 'Nombres', dataIndex: 'nombres', key: 'nombres',},
+  { title: 'Paterno', dataIndex: 'paterno', key: 'paterno',},
+  { title: 'Materno', dataIndex: 'materno', key: 'materno', },
+  { title: 'Parentesco', dataIndex: 'parentesco' },
+  { title: 'Acciones', dataIndex: 'acciones'}  
+]
 
+const colDocumentos =  [
+  { title: 'Codigo', dataIndex: 'codigo', key: 'codigo',},
+  { title: 'Documento', dataIndex: 'nombre', key: 'nombre',},
+  { title: 'Tipo', dataIndex: 'tipo', key: 'tipo',},
+  { title: 'estado', dataIndex: 'verificado'},
+  { title: 'Acciones', dataIndex: 'acciones'}  
+]
 const colPreinscripciones =  [
   { title: 'Programa', dataIndex: 'programa', key: 'programa',},
   { title: 'Proceso', dataIndex: 'proceso', key: 'proceso',},
