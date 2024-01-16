@@ -326,7 +326,7 @@
 
   <a-tab-pane key="7" tab="Constancia">
       <div v-if="dniseleccionado" style="width:100%">            
-        <iframe :src="'https://inscripciones.admision.unap.edu.pe/documentos/general2023-II/'+dniseleccionado+'.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
+        <iframe :src="'https://inscripciones.admision.unap.edu.pe/documentos/6/inscripciones/constancias/'+dniseleccionado+'.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
       </div>
     </a-tab-pane>
 </a-tabs>
@@ -484,7 +484,7 @@ watch(tabactive, ( newValue, oldValue ) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/general2023-II/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/6/inscripciones/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
