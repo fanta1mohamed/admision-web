@@ -108,14 +108,14 @@
                         </div>
                         <div style="text-align: justify; margin-top:-10px; font-size:11pt;">
                             <p>
-                                El declarante afirma solemnemente que la información proporcionada 
-                                durante la inscripción es precisa y de su total responsabilidad. 
-                                Reconoce y acepta los términos establecidos en el 
-                                Regalmento General de Admisión de Pregrado de la Universidad Nacionadl del Altiplano de Puno 2024 - I, 
-                                comprometiéndose a someterse a una exhaustiva revisión física 
+                                El que suscribe declara bajo juramento que la información proporcionada 
+                                durante el proceso de inscripción es veraz y de mi entera responsabilidad. 
+                                Reconozco y acepto los términos establecidos en el 
+                                Regalmento General de Admisión de 2024 - I,
+                                así como permitir una rigurosa revisión física exhaustiva
                                 para acceder a la Ciudad Universitaria y realizar el examen de admisión. 
-                                En caso de obtener una vacante, se compromete a cumplir con lo estipulado en el reglamento. 
-                                Su firma en la constancia de inscripción demuestra su conformidad.
+                                En caso de obtener una vacante, me comprometo a cumplir con lo estipulado en el reglamento. 
+                                Como muestra de conformidad, firmo la presente constancia de inscripción.
                             </p>
                         </div>
                     </td>
@@ -149,7 +149,7 @@
                             <div style="margin-top: -8px; margin-left:-5px;">
                                 <ul>
                                     <li>Ingreso: 6:30 a 9:30 horas</li>
-                                    <li>Inicio de examen: 10:00 horas</li>
+                                    {{-- <li>Inicio de examen: 10:00 horas</li> --}}
                                 </ul>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                             <div style="margin-top: -8px">
                                 <ul>
                                     <li>Ingreso: 12:30 a 13:30 horas.</li>
-                                    <li>Inicio de examen: 14:00 horas</li>
+                                    {{-- <li>Inicio de examen: 14:00 horas</li> --}}
                                 </ul>
                             </div>
                         </div>
