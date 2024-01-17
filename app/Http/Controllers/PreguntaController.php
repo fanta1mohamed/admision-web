@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetalleExamenVocacional;
 use App\Models\Pregunta;
 use App\Models\Respuesta;
+use App\Models\Inscripcion;
 use App\Models\ExamenVocacional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -146,17 +147,19 @@ class PreguntaController extends Controller
 
     public function getDatosExamen2(Request $request)
     {
-        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 5');
+        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 6');
+
 
         if($examen[0]->vocacional == 0) {
 
-            $res = DB::select(
-                'SELECT examen_vocacional.id as id_vocacional, programa.nombre, postulante.*  
-                 FROM inscripciones
-                 JOIN postulante ON postulante.id = inscripciones.id_postulante
-                 JOIN programa ON inscripciones.id_programa  = programa.id
-                 JOIN examen_vocacional ON inscripciones.id_programa = examen_vocacional.programa
-                 WHERE postulante.nro_doc = '.$request->dni.' AND inscripciones.codigo = '.$request->codigo.';');
+            $res = Inscripcion::select('examen_vocacional.id as id_vocacional', 'programa.nombre', 'postulante.*')
+            ->join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
+            ->join('programa', 'inscripciones.id_programa', '=', 'programa.id')
+            ->join('examen_vocacional', 'inscripciones.id_programa', '=', 'examen_vocacional.programa')
+            ->where('postulante.nro_doc', $request->dni)
+            ->where('inscripciones.id_proceso', 6)
+            ->where('inscripciones.codigo', $request->codigo)
+            ->get();
      
              $this->response['estado'] = true;
              $this->response['datos'] = $res;
@@ -261,22 +264,24 @@ class PreguntaController extends Controller
 
         $pos = $request->postulante;
         $cod = $request->codigo;
-
-        $programa = DB::select("SELECT inscripciones.id_programa FROM inscripciones 
-        WHERE inscripciones.id_postulante = ".$pos." AND codigo = ".$cod);
-
-        $res = DB::select('SELECT preguntas.id AS id_pregunta, preguntas.pregunta FROM preguntas
-        JOIN examen_vocacional ON examen_vocacional.id = preguntas.id_examen_vocacional
-        JOIN programa ON programa.id = examen_vocacional.programa
-        WHERE programa.id = '. $programa[0]->id_programa);
+       
+        $res = DB::table('preguntas')
+        ->select('preguntas.id AS id_pregunta', 'preguntas.pregunta')
+        ->join('examen_vocacional', 'examen_vocacional.id', '=', 'preguntas.id_examen_vocacional')
+        ->where('examen_vocacional.area', 'biomedicas')
+        ->inRandomOrder()
+        ->limit(10)
+        ->get();
         
         $preguntas = collect();
-        $rangos = [[431, 435], [436, 440], [441, 447], [448, 452], [453,457]];
 
-        foreach ($rangos as $rango) {
+        $perfiles = ['perfil3','perfil4','perfil9','perfil10','perfil11'];
+
+
+        foreach ($perfiles as $perfil) {
             $preguntasDeRango = DB::table('preguntas')
                 ->select('preguntas.id as id_pregunta','pregunta')
-                ->whereBetween('id', $rango)
+                ->where('observacion', $perfil)
                 ->inRandomOrder()
                 ->limit(2)
                 ->get();
