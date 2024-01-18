@@ -374,6 +374,8 @@ class PreinscripcionController extends Controller
         
     }
 
+
+
     public function getPreinscripcionesAdmin(Request $request) {
   
         $query_where = [];
@@ -495,6 +497,81 @@ class PreinscripcionController extends Controller
             return response()->json($this->response, 200);
         }
     }
+
+
+
+    public function pdfsolicitudextra($pro, $dni) {
+
+        $carreras_previas = DB::select("SELECT codigo, cod_car, nombre, condicion FROM carreras_previas
+        WHERE dni_postulante = $dni");
+
+        $preinscrito = DB::select("SELECT COUNT(*) AS cont FROM pre_inscripcion
+        JOIN postulante ON postulante.id = pre_inscripcion.id_postulante
+        WHERE postulante.nro_doc = $dni AND pre_inscripcion.id_proceso = $pro");
+        
+        $res = Preinscripcion::select(
+            'tipo_documento_identidad.nombre AS tipo_doc',
+            'postulante.direccion', 
+            'postulante.id as idP',
+            'postulante.nro_doc as dni', 
+            'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido',
+            'postulante.anio_egreso AS egreso',
+            'colegios.nombre AS colegio',
+            'modalidad.nombre as modalidad',
+            'paises.nombre AS pais',
+            'procesos.id as id_proceso',
+            'procesos.nombre AS proceso',
+            'procesos.id_modalidad_proceso',
+            'procesos.fecha_examen AS fecha_examen',
+            'programa.nombre AS programa'
+        )
+          ->leftjoin ('postulante', 'postulante.id', '=','pre_inscripcion.id_postulante')
+          ->join ('procesos', 'procesos.id', '=','pre_inscripcion.id_proceso')
+          ->join ('programa', 'programa.id', '=','pre_inscripcion.id_programa')
+          ->join ('modalidad', 'modalidad.id', '=','pre_inscripcion.id_modalidad')
+          ->join ('colegios', 'colegios.id', '=','postulante.id_colegio')
+          ->join ('paises','paises.id','postulante.id')
+          ->join ('tipo_documento_identidad','tipo_documento_identidad.id', '=', 'postulante.tipo_doc')
+          ->where('pre_inscripcion.id_proceso','=', $pro)
+          ->where('postulante.nro_doc','=', $dni)->get();
+
+        if (count($res) === 0) {
+            return "No registrado";
+        }else {
+            $data = $res[0];
+    
+            setlocale(LC_TIME, 'es_ES.utf8');
+            $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+            $pdf = Pdf::loadView('solicitud.solicitud_extranjero', ['data'=>$data, 'date'=>$date,'carreras_previas'=>$carreras_previas, 'fondo'=>$this->fondo]);
+            $pdf->setPaper('A4', 'portrait');
+            $output = $pdf->output();
+        
+            $rutaCarpeta = public_path('/documentos/'.$pro.'/preinscripcion/solicitudes_extrangeros/');
+
+            if (!File::exists($rutaCarpeta)) {
+                File::makeDirectory($rutaCarpeta, 0755, true, true);
+            }
+
+            // if($preinscrito[0]->cont == 0){
+
+            //     $doc = Documento::create([
+            //         'codigo' => '23-2-SOL-'.$res[0]->dni.'-1', 
+            //         'nombre' => 'SOLICITUD DE POSTULACIÓN',
+            //         'numero' => 1,
+            //         'id_postulante' => $res[0]->idP,
+            //         'id_tipo_documento' => 6,
+            //         'estado' => 1,
+            //         'url' => 'documentos/'.$pro.'/'.'/preinscripcion/solicitudes_extrangeros/'.$res[0]->dni.'.pdf',
+            //         'fecha' => date('Y-m-d')
+            //     ]);
+            // }
+
+            //        file_put_contents(public_path('/documentos/'.$pro.'/preinscripcion/solicitudes/').$res[0]->dni.'.pdf', $output);
+            return $pdf->stream('solicitud-postulante.pdf');
+        }
+        
+    }
+
     
 
 }

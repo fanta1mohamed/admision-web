@@ -19,7 +19,7 @@ class PagoBancoController extends Controller
     ])
     ->leftjoin('procesos','procesos.id','banco_pagos.id_proceso')
     ->where(\DB::raw('SUBSTRING(num_doc, 8, 8)'), '=', $request->dni)
-    ->where('banco_pagos.fch_pag', '>', '2023-07-01')
+    ->where('banco_pagos.fch_pag', '>', '2024-01-01')
     ->get(); 
 
     $this->response['estado'] = true;
@@ -28,7 +28,7 @@ class PagoBancoController extends Controller
   }
 
   public function verificarComprobanteProceso(Request $request){
-;
+
     $comprobante = PagoBanco::where('fch_pag', $request['comp']['fch_pag'])
     ->where('secuencia', $request['comp']['secuencia'])
     ->first();
