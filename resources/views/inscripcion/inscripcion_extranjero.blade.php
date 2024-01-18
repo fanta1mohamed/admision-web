@@ -170,7 +170,7 @@
                         <div style="font-size: 8pt;">
                             <div style=" width 80px; height: 101px; border:solid 1px black;">
                                 {{-- <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="95">  --}}
-                                <img src="{{ $huellaDerecha }}" alt="foto" width="76"> 
+                                <img src="{{ $huellaIzquierda }}" alt="foto" width="76"> 
                             </div>
                             <div style="text-align: center; margin-top:6px;"><span>Indice Derecho</span></div>
                             <div style=" width 80px; height: 101px; margin-top:10px; overflow:hidden; border:solid 1px black;">
