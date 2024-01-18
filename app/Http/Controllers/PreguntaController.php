@@ -263,12 +263,14 @@ class PreguntaController extends Controller
     public function getpreguntas2(Request $request){
 
         $pos = $request->postulante;
-        $cod = $request->codigo;
+        $cod = substr($request->codigo, 4, 2);
+
+        $area = $this->obtenerAreaPorCodigo($cod);
        
         $res = DB::table('preguntas')
         ->select('preguntas.id AS id_pregunta', 'preguntas.pregunta')
         ->join('examen_vocacional', 'examen_vocacional.id', '=', 'preguntas.id_examen_vocacional')
-        ->where('examen_vocacional.area', 'biomedicas')
+        ->where('examen_vocacional.area', $area)
         ->inRandomOrder()
         ->limit(10)
         ->get();
@@ -293,6 +295,7 @@ class PreguntaController extends Controller
 
 
         $combinados = collect($res)->merge($preguntas);
+
 
         $this->response['estado'] = true;
         $this->response['datos'] = $combinados;
@@ -330,6 +333,65 @@ class PreguntaController extends Controller
 
         return $preguntas;
 
+    }
+
+
+    private function obtenerAreaPorCodigo($codigo) {
+        $programas = [
+            [ 'cod'=> '08', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '09', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '10', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '23', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '38', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '39', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '40', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '41', 'area'=> 'biomedicas' ],
+            [ 'cod'=> '03', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '13', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '14', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '24', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '25', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '26', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '27', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '28', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '29', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '30', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '31', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '32', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '33', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '34', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '35', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '36', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '37', 'area'=> 'ingenierias' ],
+            [ 'cod'=> '01', 'area'=> 'sociales' ],
+            [ 'cod'=> '02', 'area'=> 'sociales' ],
+            [ 'cod'=> '04', 'area'=> 'sociales' ],
+            [ 'cod'=> '05', 'area'=> 'sociales' ],
+            [ 'cod'=> '06', 'area'=> 'sociales' ],
+            [ 'cod'=> '07', 'area'=> 'sociales' ],
+            [ 'cod'=> '11', 'area'=> 'sociales' ],
+            [ 'cod'=> '12', 'area'=> 'sociales' ],
+            [ 'cod'=> '15', 'area'=> 'sociales' ],
+            [ 'cod'=> '16', 'area'=> 'sociales' ],
+            [ 'cod'=> '17', 'area'=> 'sociales' ],
+            [ 'cod'=> '18', 'area'=> 'sociales' ],
+            [ 'cod'=> '19', 'area'=> 'sociales' ],
+            [ 'cod'=> '20', 'area'=> 'sociales' ],
+            [ 'cod'=> '21', 'area'=> 'sociales' ],
+            [ 'cod'=> '22', 'area'=> 'sociales' ],
+            [ 'cod'=> '42', 'area'=> 'sociales' ],
+            [ 'cod'=> '43', 'area'=> 'sociales' ],
+            [ 'cod'=> '44', 'area'=> 'sociales' ],
+            [ 'cod'=> '45', 'area'=> 'sociales' ]
+        ];
+    
+        foreach ($programas as $programa) {
+            if ($programa['cod'] === $codigo) {
+                return $programa['area'];
+            }
+        }
+    
+        return 'sin area';
     }
 
 
