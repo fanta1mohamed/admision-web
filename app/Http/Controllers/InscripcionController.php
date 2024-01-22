@@ -205,16 +205,15 @@ class InscripcionController extends Controller
             $inscripcion->observaciones = "Cambio de programa a $request->id_programa";
             $inscripcion->save();
 
-            $program = DB::table('programa')->select('codigo')->where('id', $request->id_programa)->first();
+            $res = $siguiente = Inscripcion::where('codigo', 'like', 'C124'.$request->id_programa.'%')
+            ->max(\DB::raw('CAST(SUBSTRING(codigo, 8) AS UNSIGNED)')) + 1;
+            $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
-            $res = DB::select("SELECT COALESCE(LPAD(MAX(CAST(SUBSTRING(codigo, 6) AS UNSIGNED)) + 1, 4, '0'), '0001') AS siguiente
-            FROM inscripciones
-            WHERE codigo LIKE '23".$program->codigo."%'");
 
             $inscripcion = Inscripcion::create([
-                'codigo'=>'23'.$program->codigo.$res[0]->siguiente,
+                'codigo' => 'C124' . $request->id_programa . $res,
                 'id_postulante'=> $request->id_postulante,
-                'id_proceso'=> 5,
+                'id_proceso'=> auth()->user()->id_proceso,
                 'id_programa' => $request->id_programa,
                 'id_modalidad' => $request->id_modalidad, 
                 'estado' => 0,

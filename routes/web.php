@@ -487,7 +487,6 @@ Route::get('/distribucion', [TestController::class, 'Distribucion']);
 Route::get('/pdf-lista', [TestController::class, 'pdfLista']);
 
 
-
 Route::get('/aleatorizar', [PruebasController::class, 'aleatorizar']);
 Route::get('/c-ides-bd/{area}', [ResultadosController::class, 'cargarIdeBD']);
 
@@ -542,7 +541,6 @@ Route::get('/get-sancionado/{dni}/{pro}', [SancionadoController::class, 'getSanc
 Route::get('/generar-captcha', [PreinscripcionController::class, 'generarCaptcha']);
 Route::get('/participa-proceso/{pro}/{post}', [PreinscripcionController::class, 'estaPreinscrito']);
 
-
 Route::get('/carreras-previas', fn () => Inertia::render('Publico/components/carrerasPrevias'));
 Route::get('/get-data-prisma/{dni}', [PostulanteController::class, 'getDataPrisma']);
 
@@ -550,11 +548,7 @@ Route::get('/get-data-prisma/{dni}', [PostulanteController::class, 'getDataPrism
 Route::post('/registrar-carreras-previas', [PostulanteController::class, 'registrarCarreras']);
 Route::get('/get-paso-registrado/{p}/{dni}', [PreinscripcionController::class, 'pasoRegistrado']);
 
-
-
-
-
-
+Route::get('/pdf-resultados', [ResultadosController::class, 'generarReportePrograma']);
 
 
 

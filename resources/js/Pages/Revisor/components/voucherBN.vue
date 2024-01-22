@@ -10,7 +10,7 @@
                     <a-tag v-if="record.id_modalidad_proceso === 1" color="blue">{{ record.proceso }}</a-tag>
                 </template>
                 <template v-if="column.dataIndex === 'opcion'">
-                    <div v-if="record.estado === 2"> 
+                    <div v-if="record.estado === 0"> 
                         <a-button @click="verificar(record)" style="background: #133466; border:none; color: white;"> seleccionar </a-button> 
                     </div>
                     <div v-if="record.estado === 1"> 

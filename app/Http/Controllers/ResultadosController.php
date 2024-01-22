@@ -935,6 +935,58 @@ class ResultadosController extends Controller
     }
 
 
+    public function generarReportePrograma()
+    {
+        $rutaFuente = storage_path('app/fonts/Arialnl.ttf');
+
+        // Obtén los estudiantes agrupados por programa
+        $estudiantesPorPrograma = DB::select("SELECT dni, paterno, materno, nombres, puntaje, programa, apto AS ingreso 
+        FROM puntajes
+        WHERE programa IS NOT NULL
+        ORDER BY programa, puntaje DESC LIMIT 200");
+    
+        $programaEstudiantes = [];
+    
+        // Recorre los estudiantes y agrúpalos por programa
+        foreach ($estudiantesPorPrograma as $estudiante) {
+            $programaActual = $estudiante->programa;
+    
+            // Inicializa el array de estudiantes para el nuevo programa si es la primera vez
+            if (!isset($programaEstudiantes[$programaActual])) {
+                $programaEstudiantes[$programaActual] = [];
+            }
+    
+            // Agrega el estudiante al programa actual
+            $programaEstudiantes[$programaActual][] = [
+                'dni' => $estudiante->dni,
+                'paterno' => $estudiante->paterno,
+                'materno' => $estudiante->materno,
+                'nombres' => $estudiante->nombres,
+                'puntaje' => $estudiante->puntaje,
+                'ingreso' => $estudiante->ingreso,
+            ];
+        }
+    
+        foreach ($programaEstudiantes as $programa => $estudiantes) {
+            // Cargar la vista 'Calificacion.puntajes' con los datos de los estudiantes
+            $pdf = PDF::loadView('Calificacion.puntajes', compact('estudiantes','programa'));
+            $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+            $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+            $pdf->setPaper('A4', 'portrait');
+        
+            // Guardar el PDF en el almacenamiento de Laravel
+            $rutaCarpeta = storage_path("/app/");
+            $nombreArchivo = "reporte_{$programa}.pdf";
+            $rutaCompleta = $rutaCarpeta . $nombreArchivo;
+        
+            $pdf->save($rutaCompleta);
+    
+        }
+
+    }
+    
+
+
 
 
 

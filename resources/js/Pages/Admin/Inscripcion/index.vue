@@ -75,7 +75,7 @@
         <template #bodyCell="{ column, index, record }">
 
             <template v-if="column.dataIndex === 'codigo'" >
-                <a-tag color="success" style="padding-top: 3px;">
+                <a-tag color="blue" style="padding-top: 3px; color:#164753; width: 116px;">
                     <span style="font-size: 1rem; font-weight: bold;">{{ record.codigo }}</span>
                 </a-tag>
                 <!-- <span style="font-size: 1.1rem; font-weight: bold;">{{ record.codigo }}</span> -->
@@ -102,11 +102,11 @@
             </template>
 
             <template v-if="column.dataIndex === 'acciones'">
-                <a-button type="success" style="background:#52c41a; color: white;" @click="imprimirPDF(record.dni)" size="small">
+                <a-button type="success" style="color: #164753;" @click="imprimirPDF(record.dni)" size="small">
                     <template #icon><printer-outlined/></template>
                 </a-button>
                 <a-divider type="vertical" />
-                <a-button type="primary" @click="abrirEditar(record)" size="small">
+                <a-button type="" style="color: #af7200;" @click="abrirEditar(record)" size="small">
                     <template #icon><form-outlined/></template>
                 </a-button>
                 <a-divider type="vertical" />
@@ -116,7 +116,7 @@
                     disabled
                     @confirm="eliminar(record)"
                     >
-                    <a-button type="danger" shape="" size="small">
+                    <a-button style="color:crimson;" shape="" size="small">
                         <template #icon><delete-outlined/></template>
                     </a-button>
                 </a-popconfirm>
@@ -370,7 +370,7 @@ const notificacion = (type, titulo, mensaje) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/general2023-II/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/6/inscripciones/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();

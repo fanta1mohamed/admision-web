@@ -161,23 +161,25 @@ class PagoController extends Controller
                 if ($response->successful()) {
                     // Obtener los datos JSON de la respuesta
                     $data = $response->json();
+
+                    return $data;
                     // Verificar si los datos son un array
-                    if (is_array($data)) {
-                        foreach ($data['data'] as $item) {
-                                // if ($item['descr'] !== null && ($item['descr'] === '00000026' || $item['descr'] === '00000039')) {
-                                    Comprobante::create([
-                                        'ndoc_postulante' => $dni,
-                                        'codigo' => '00000026',
-                                        'nro_operacion' => $item['paymentTitle'],
-                                        'monto' => $item['paymentAmount'],
-                                        'fecha' => substr($item['paymentDatetime'], 0 ,10),
-                                        'temp_fecha' => substr($item['paymentDatetime'], 0 ,10)
-                                    ]);
-                                // }
+                    // if (is_array($data)) {
+                    //     foreach ($data['data'] as $item) {
+                    //             // if ($item['descr'] !== null && ($item['descr'] === '00000026' || $item['descr'] === '00000039')) {
+                    //                 Comprobante::create([
+                    //                     'ndoc_postulante' => $dni,
+                    //                     'codigo' => '00000026',
+                    //                     'nro_operacion' => $item['paymentTitle'],
+                    //                     'monto' => $item['paymentAmount'],
+                    //                     'fecha' => substr($item['paymentDatetime'], 0 ,10),
+                    //                     'temp_fecha' => substr($item['paymentDatetime'], 0 ,10)
+                    //                 ]);
+                    //             // }
 
 
-                        }
-                    }
+                    //     }
+                    // }
 
             }
 
