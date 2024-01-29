@@ -123,7 +123,7 @@
 
                     <div class="p-3 mt-5" style="background: #e3e3e33d; border-radius: 5px;">
                         <div class="mb-3">
-                            <span style="font-size: 1.1rem;"> Seleección de certificado en PDF </span>
+                            <span style="font-size: 1.1rem;"> DNI en PDF </span>
                         </div>
                         <a-space class="mb-2" direction="vertical" style="width: 100%" size="large">
                             <a-upload
@@ -135,7 +135,7 @@
                                 >
                                 <a-button style="background: #cccccc8d;">
                                     <upload-outlined></upload-outlined>
-                                    Seleccionar certificado en PDF
+                                    Seleccionar DNI en pdf
                                 </a-button>
                             </a-upload>
                         </a-space>
@@ -163,7 +163,7 @@
                         </div>
 
                         <div class="flex justify-center mb-4 pt-3">
-                            <a-button style="width: 180px;" @click="finalizar()" type="primary">Finalizar</a-button>
+                            <a-button style="width: 180px;" @click="finalizar()" type="primary">Guardar</a-button>
                         </div>
 
                         <!-- <div class="flex justify-center mb-4 pt-3">
