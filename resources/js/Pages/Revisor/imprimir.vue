@@ -311,13 +311,8 @@ const dniseleccionado = ref(null)
 const postulantes = ref([])
 
 const anteriores = ref([]);
-const numerorandom = ref();
 
 const n_carrera = ref(0)
-
-const generateRandomNumber = () => {
- numerorandom.value = Math.floor(Math.random() * 100) + 1;
-}
 
 function focusInput() { save() }
 const checkedList = ref([]);
@@ -425,8 +420,9 @@ const getPostulantesByDni = async () => {
 }
 
 watch(dni, (newValue, oldValue ) => {
-  if(newValue.length >= 8){
-    getPostulantes();
+  if(newValue.length >= 0){
+    // getPostulantes();
+    getPostulantesByDni()
   } 
 })
 

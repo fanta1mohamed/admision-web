@@ -67,14 +67,14 @@ class IngresoController extends Controller
         resultados.puesto,
         resultados.puesto_general,
         resultados.fecha as fecha
-        FROM resultados
-        JOIN postulante ON postulante.nro_doc = resultados.dni_postulante
-        JOIN inscripciones ON postulante.id = inscripciones.id_postulante
-        JOIN programa ON programa.id = inscripciones.id_programa
-        JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
-        JOIN procesos ON procesos.id = inscripciones.id_proceso
-        WHERE postulante.nro_doc = $dni 
-        AND inscripciones.id_proceso = 5");
+      FROM resultados
+      JOIN postulante ON postulante.nro_doc = resultados.dni_postulante
+      JOIN inscripciones ON postulante.id = inscripciones.id_postulante
+      JOIN programa ON programa.id = inscripciones.id_programa
+      JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
+      JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = inscripciones.id_proceso
+      WHERE inscripciones.id_proceso = ".auth()->user()->id_proceso."
+      AND postulante.nro_doc = $dni ");
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res[0];

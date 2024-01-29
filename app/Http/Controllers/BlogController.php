@@ -47,21 +47,15 @@ class BlogController extends Controller
         return Inertia::render('Blogs/editar', ['blogs' => $blog]);
     }
 
-    public function update(Request $request, Blog $blog)
-    {
-        request()->validate([
-            'titulo'=>'required',
-            'contenido'=>'required'
-        ]);
-
+    public function update(Request $request, Blog $blog) {
+        request()->validate([ 'titulo'=>'required', 'contenido'=>'required']);
         $blog->update($request->all());
         return redirect()->route('blogs.index');
     }
 
-    public function destroy(Blog $blog)
-    {
+    public function destroy(Blog $blog) {
         $blog->delete();
-        return redirect()->route(blogs.index);        
+        return redirect()->route(blogs.index);
     }
 
     public function verPuntajes(){
@@ -69,8 +63,17 @@ class BlogController extends Controller
     }
 
     public function getPuntajes($dni){
+        $res = DB::select("SELECT 
+            pun.fecha, pun.dni, pos.nombres, pos.primer_apellido, pos.segundo_apellido,
+            modalidad, pun.puntaje, pun.apto as condicion, pun.programa, pro.nombre AS programa
+        FROM puntajes pun
+        JOIN postulante pos ON pos.nro_doc = pun.dni
+        JOIN inscripciones ins ON ins.id_postulante = pos.id 
+        JOIN programa pro ON pro.id = ins.id_programa
+        WHERE pun.dni = $dni AND pun.id_proceso = 6 
+        AND ins.id_proceso = 6
+        ORDER BY pun.fecha DESC;");
 
-        $res = DB::select('SELECT * FROM puntajes WHERE dni = '.$dni. ' ORDER BY fecha DESC;');
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }

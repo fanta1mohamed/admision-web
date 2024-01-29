@@ -9,6 +9,7 @@ use App\Models\TipoProceso;
 use App\Models\Preinscripcion;
 use App\Models\CarrerasPrevias;
 use App\Models\Postulante;
+use App\Models\Apoderado;
 use App\Models\Paso;
 use App\Models\Cambio;
 use Inertia\Inertia;
@@ -470,20 +471,21 @@ public function savePostulanteAdmin(Request $request ) {
       }
   }
 
-    // foreach($request->carreras as $item){
-    //   $carreras = CarrerasPrevias::create([
-    //     'cod_car' => $item['careerId'],
-    //     'nombre' => $item['career'],
-    //     'fecha' => date('Y-m-d h:m:s'),
-    //     'dni_postulante' => $request->dni,
-    //     'codigo' =>  $item['code'],
-    //     'condicion' => $item['cond1tion']
-    //   ]);       
-
-    // }
-
     $this->response['estado'] = true;
     return response()->json($this->response, 200);
+
+  }
+
+  public function verificarPadres (Request $request){
+      $cantidad = Apoderado::join('postulante as pos', 'apoderado.id_postulante', '=', 'pos.id')
+      ->whereIn('apoderado.nro_documento', [$request->dnipadre, $request->dnimadre])
+      ->where('pos.nro_doc', $request->dni)
+      ->count();
+     
+      if($cantidad >= 2){ return response()->json(['estado' => true]); }
+      { return response()->json(['estado' => false]); }
+
+      return $cantidad;
 
   }
 

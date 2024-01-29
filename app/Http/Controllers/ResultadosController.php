@@ -984,10 +984,34 @@ class ResultadosController extends Controller
         }
 
     }
-    
 
 
 
+    public function cargaArchivoPDF(Request $request,$dni,$codigo,$tipo)
+    {
+        try {
+            $archivo = $request->file('file');
+            $extension = $archivo->getClientOriginalExtension();
+
+            if (!in_array($extension, ['pdf'])) { 
+                return response()->json(['error' => 'El archivo debe ser de tipo pdf'], 400); }
+
+            $tipoA = $archivo->getClientOriginalExtension();
+            $nombreArchivo = $archivo->getClientOriginalName();
+            
+            if( $tipo == print($tipo)){ 
+                $archivo->move(public_path('documentos/6/inscripciones/certificados/'), $dni.$codigo.'.pdf');
+            } else { 
+                $archivo->move(public_path('documentos/6/inscripciones/dnis/'), $codigo.$dni.'.pdf');
+            }
+            $respuesta = [ 'message' => 'Archivo subido', 'estado'=>true, 'archivo' => [ 'nombre' => $nombreArchivo ],];
+
+            return response()->json($respuesta, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+    }
 
 
 

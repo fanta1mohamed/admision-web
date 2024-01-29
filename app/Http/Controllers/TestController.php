@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Options;
+use App\Models\DetalleExamenVocacional;
 
 
 class TestController extends Controller
@@ -153,10 +154,7 @@ class TestController extends Controller
         // return $pdf->download();
   
     }
-    
-    
-    
-    
+
     
 
 
