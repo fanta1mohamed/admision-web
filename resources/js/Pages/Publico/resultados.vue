@@ -112,6 +112,7 @@
                                 :max-count="1"
                                 :action="'subir-pdf/'+dni+'/'+codigo+'/1'"
                                 @change="handleFileChange"
+                                :before-upload="beforeUpload"
                                 >
                                 <a-button style="background: #cccccc8d;">
                                     <upload-outlined></upload-outlined>
