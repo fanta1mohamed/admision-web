@@ -119,7 +119,8 @@ class IngresoController extends Controller
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
-            AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = 5;");
+            AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ".auth()->user()->id_proceso.
+            " AND inscripciones.id_proceso = ".auth()->user()->id_proceso.";" );
 
             try {
                 DB::transaction(function () use ($request, $re) {
@@ -129,11 +130,14 @@ class IngresoController extends Controller
                     if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
 
                     $database2 = 'mysql_secondary';
-                    $rs = DB::connection($database2)->select("SELECT CONCAT('23', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '23' ;");
+//                    $rs = DB::connection($database2)->select("SELECT CONCAT('24', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '24' ;");
+                    $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
+
+                    
                     $nuevoCodigo = $rs[0]->siguiente;
  
                     $biometric = ControlBiometrico::create([
-                        'id_proceso' => 5,
+                        'id_proceso' => 6,
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
@@ -214,11 +218,11 @@ class IngresoController extends Controller
         $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
-        $rutaCarpeta = public_path('/documentos/cepre2023-II/'.$datos->dni);
+        $rutaCarpeta = public_path('/documentos/6/control_biometrico/constancias/'.$datos->dni);
         if (!File::exists($rutaCarpeta)) {
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
-        file_put_contents(public_path('/documentos/cepre2023-II/'.$datos->dni.'/').'control-biometrico-1.pdf', $output);
+        file_put_contents(public_path('/documentos/6/control_biometrico/constancias/').$datos->dni.'.pdf', $output);
         return $pdf->stream();
     }
 
@@ -252,22 +256,18 @@ class IngresoController extends Controller
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
-            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 4"
+            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 6 AND inscripciones.id_proceso = 6"
         );
 
         $data = $datos[0];
-        $hinsI = public_path('fotos/huella/').$dni.'x.jpg';
-        $hinsD = public_path('fotos/huella/').$dni.'.jpg';
-        $hexaI = public_path('hexamencepre/').$dni.'.jpg';
-        $hexaD = public_path('hexamencepre/').$dni.'x.jpg';
-        // $hexaI = public_path('hexamengeneral/').$dni.'.jpg';
-        // $hexaD = public_path('hexamengeneral/').$dni.'x.jpg';
-        $hbioI = public_path('hbiometricocepre/').$dni.'.jpg';
-        $hbioD = public_path('hbiometricocepre/').$dni.'x.jpg';
-        // $hbioI = public_path('hbiometricogeneral/').$dni.'.jpg';
-        // $hbioD = public_path('hbiometricogeneral/').$dni.'x.jpg';
-        $fins = public_path('fotos/inscripcion/').$dni.'.jpg';
-        $fbio = public_path('fotos/biometrico/').$dni.'.jpg';
+        $hinsI = public_path('documentos/6/inscripciones/huellas/').$dni.'x.jpg';
+        $hinsD = public_path('documentos/6/inscripciones/huellas/').$dni.'.jpg';
+        $hexaI = public_path('documentos/6/examen/huellas/').$dni.'.jpg';
+        $hexaD = public_path('documentos/6/examen/huellas/').$dni.'x.jpg';
+        $hbioI = public_path('documentos/6/control_biometrico/huellas/').$dni.'.jpg';
+        $hbioD = public_path('documentos/6/control_biometrico/huellas/').$dni.'x.jpg';
+        $fins = public_path('documentos/6/inscripciones/fotos/').$dni.'.jpg';
+        $fbio = public_path('documentos/6/control_biometrico/fotos/').$dni.'.jpg';
         // $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');
@@ -275,8 +275,8 @@ class IngresoController extends Controller
         $date = \Carbon\Carbon::createFromFormat('Y-m-d', $fecha)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
         $fec_imp = '2023-07-31';
-        $fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
-        //$fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+        //$fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+        $fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
         $fec_nac = $datos[0]->fec_nacimiento;
         $fnac = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_nac)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');

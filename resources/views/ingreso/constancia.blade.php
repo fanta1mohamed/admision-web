@@ -39,7 +39,7 @@
                         <div style="text-align: justify">
                             <span style="line-height:1.4rem;">
                                 La Dirección de admisión de la Universidad Nacional del Altiplano de Puno,
-                                conforme al cumplimento del reglamento general del Examen {{ $data->proceso}},
+                                conforme al cumplimento del reglamento General de Admisión 2024-I,
                                 certifica que <span style="text-transform: uppercase"> {{ $data->nombres }} {{$data->paterno}} {{$data->materno}}</span>, con DNI N° {{ $data->dni }}, 
                                 es ingresante al programa de estudios de {{$data->programa}}, 
                                 bajo la modalidad {{ $data->modalidad}}, realizado el {{ $dateI }}.

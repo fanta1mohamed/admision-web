@@ -36,8 +36,8 @@
     <div style="text-align: justify;">
     
         <p style="line-height: 1.5rem;">
-            La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, en cumplimiento pleno del Reglamento General del 
-            Examen <label style="font-weight:bold;">{{$data->proceso}}</label>, <label style="font-weight:bold;">HACE CONSTAR </label> 
+            La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, en cumplimiento pleno del 
+            Reglamento General de Admisión 2024-I, <label style="font-weight:bold;">HACE CONSTAR </label> 
             que <label style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</label>, identificado (a) con 
             DNI N° <label style="font-weight:bold;">{{$data->dni}}</label>, es 
             <label style="font-weight:bold;">INGRESANTE APTO</label> al programa de estudios de <label style="font-weight:bold;">{{$data->programa}}</label>, 
@@ -185,7 +185,7 @@
         <p style="line-height: 1.5rem;">
             Así mismo, se deja constancia que ha validado su identidad a 
             través del control biométrico y acreditó los documentos personales, según 
-            los requisitos exigidos en el Art. 27 del Reglamento del Examen de Admisión {{ $data->proceso }}. De 
+            los requisitos exigidos en el Reglamento General de Admisión 2024-I. De 
             igual manera se proporciona al ingresante 
             un correo institucional de gran utilidad para fines académicos y administrativos.
         </p>
@@ -196,8 +196,8 @@
                 Use el correo institucional que ya tiene asignado<br>
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @else
-                Correo institucional: <span style="font-weight: bold"> {{$data->dni}}@est.unap.edu.pe </span><br> 
-                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}} </span><br>
+                Correo institucional: <span style="font-weight: bold"> {{$data->dni}}.cepre2024@est.unap.edu.pe </span><br> 
+                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.cepre.2024 </span><br>
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @endif
         </p>
