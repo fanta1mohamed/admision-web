@@ -641,7 +641,7 @@ const abrirVentana = async () => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/control-biometrico-general/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/6/control_biometrico/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
