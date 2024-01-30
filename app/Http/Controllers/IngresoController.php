@@ -218,11 +218,13 @@ class IngresoController extends Controller
         $pdf = Pdf::loadView('ingreso.datosbiometricos', compact('data'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
-        $rutaCarpeta = public_path('/documentos/6/control_biometrico/constancias/'.$datos->dni);
+
+        $rutaCarpeta = public_path('/documentos/'.auth()->user()->id_proceso.'/control_biometrico/constancias/');
         if (!File::exists($rutaCarpeta)) {
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
-        file_put_contents(public_path('/documentos/6/control_biometrico/constancias/').$datos->dni.'.pdf', $output);
+        file_put_contents($rutaCarpeta . $dni . '.pdf', $output);
+        
         return $pdf->stream();
     }
 
@@ -285,7 +287,7 @@ class IngresoController extends Controller
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        file_put_contents(public_path('/documentos/control-biometrico-general/').$dni.'.pdf', $output);
+        file_put_contents(public_path('/documentos/6/control_biometrico/constancias/').$dni.'.pdf', $output);
         return $pdf->stream();
     }
 
