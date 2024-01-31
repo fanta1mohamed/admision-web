@@ -355,7 +355,7 @@
 
       </div>
     </div>
-    <a-modal v-model:visible="modal" :closable="false" :maskClosable="false" style="width:900px;" centered >
+    <a-modal v-model:visible="modal" :closable="false" :maskClosable="false" style="width:1200px;" centered >
 
       <div class="flex justify-center">
         <span style="font-size:1.4rem; font-weight:bold;">Información del postulante</span>
