@@ -97,7 +97,7 @@ class ApixController extends Controller {
     public function getPostulantePago($dni, $proceso){
         try {
             $res = null;
-        if($proceso == 4 ){
+        if($proceso == 6 ){
             $res = Postulante::select(
                 'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
                 'postulante.nombres', 'colegios.id_gestion', 'pre_inscripcion.id_programa',
@@ -182,9 +182,9 @@ class ApixController extends Controller {
     }
 
     public function getBiometrico($codigo){
-        $res = DB::select(" SELECT control_biometrico.estado FROM control_biometrico
+        $res = DB::select("SELECT control_biometrico.estado FROM control_biometrico
             JOIN postulante ON postulante.id = control_biometrico.id_postulante
-            WHERE postulante.nro_doc = ".$codigo);
+            WHERE control_biometrico.id_proceso = 6 AND postulante.nro_doc = ".$codigo );
 
         if (count($res) > 0 ){
             return response()->json(['status' => true, 'data' => $res[0]], 200);
