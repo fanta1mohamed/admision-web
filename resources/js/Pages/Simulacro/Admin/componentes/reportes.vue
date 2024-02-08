@@ -112,9 +112,6 @@ const exportToExcel = () => {
   XLSX.writeFile(workbook, seleccionado.value+'.xlsx');
 };
 
-
-
-
 const datos = ref(null);
 const dataEdades = ref(null);
 const dataEgreso = ref(null);

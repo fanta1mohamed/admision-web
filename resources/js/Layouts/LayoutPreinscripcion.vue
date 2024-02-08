@@ -19,10 +19,11 @@
         </div>
 
         <div class="flex justify-center title-proceso-container">
-            <span class="title-proceso">EXAMEN CEPREUNA 2024-I</span>
+            <span class="title-proceso">EXAMEN {{ props.nombre }}</span>
         </div>    
+        
         <div class="flex justify-center titulo-pre">
-            <div>  
+            <div>
                 <!-- <span> Preinscripción </span> -->
                 <div class="flex justify-center">
                     <hr class="line-pre mr-3" style="margin-top:18px;"> 
@@ -42,61 +43,63 @@
     </a-layout>
   </a-layout>
 </template>
-  
+<script setup>
+import { defineProps, watch, ref } from 'vue';
+
+const props = defineProps(['nombre']);
+</script>
 <style scope>
-    .headPre{
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-image: linear-gradient(#3076b8b2, #22428893), url('./../../assets/imagenes/f-head-sim.jpg');
-    }
-    .logoPre{
-        display: flex;
-        margin-top: 5px;
-        margin-left: 10px;
-        justify-content: left;
-        align-items: center;
-        color: white;
-    }
-    .logoPreAD {
-        font-weight: 700; color: white; font-size: 1.6rem;
-    }
-    .container-pre{
-        margin-bottom: -8px; margin-top: 10px;
-    }
+.headPre{
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: linear-gradient(#3076b8b2, #22428893), url('./../../assets/imagenes/f-head-sim.jpg');
+}
+.logoPre{
+    display: flex;
+    margin-top: 5px;
+    margin-left: 10px;
+    justify-content: left;
+    align-items: center;
+    color: white;
+}
+.logoPreAD {
+    font-weight: 700; color: white; font-size: 1.6rem;
+}
+.container-pre{
+    margin-bottom: -8px; margin-top: 10px;
+}
 
-    .titulo-pre div span{
-        color: white;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 2.7rem;
-    }
+.titulo-pre div span{
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 2.7rem;
+}
 
-    .line-pre{
-        width: 25px; border: solid 2px #ff0015e8;
-    }
+.line-pre{
+    width: 25px; border: solid 2px #ff0015e8;
+}
 
-    .title-proceso {
-        font-size:2.7rem; color:white; font-weight:bold;
-    }
+.title-proceso {
+    font-size:2.7rem; color:white; font-weight:bold;
+}
 
-    .title-proceso-container {
-        margin-top: -30px;
-    }
+.title-proceso-container {
+    margin-top: -30px;
+}
 
-
-
-    @media (min-height: 680px), screen and (orientation: portrait) {
-        .logoPre img{ width: 36px; }
-        .logoPre div{margin-top: -0px;}
-        .logoPre span{ font-size: 0.8rem; letter-spacing: 0.061rem !important; }
-        .logoPreAD{ font-size: 1.2rem; }
-        .logoPre .container-pre{ margin-bottom: -8px; margin-top: 5px; }
-        .titulo-pre{ margin-top: 0px;}
-        .titulo-pre div span{ font-size: 1.7rem;  }
-        .line-pre { width: 30px; border: solid 3px #ff0015e8; }
-        .title-proceso { font-size:1.8rem; color:white; font-weight:bold; }
-        .title-proceso-container { margin-top: 10px; margin-bottom:0px; }
-    }
+@media (min-height: 680px), screen and (orientation: portrait) {
+    .logoPre img{ width: 36px; }
+    .logoPre div{margin-top: -0px;}
+    .logoPre span{ font-size: 0.8rem; letter-spacing: 0.061rem !important; }
+    .logoPreAD{ font-size: 1.2rem; }
+    .logoPre .container-pre{ margin-bottom: -8px; margin-top: 5px; }
+    .titulo-pre{ margin-top: 0px;}
+    .titulo-pre div span{ font-size: 1.7rem;  }
+    .line-pre { width: 30px; border: solid 3px #ff0015e8; }
+    .title-proceso { font-size:1.8rem; color:white; font-weight:bold; }
+    .title-proceso-container { margin-top: 10px; margin-bottom:0px; }
+}
 
 </style>
   

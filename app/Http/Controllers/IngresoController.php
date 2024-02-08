@@ -9,6 +9,7 @@ use App\Models\Preinscripcion;
 use App\Models\Documento;
 use App\Models\Estudiante;
 use App\Models\AvancePostulante;
+use App\Models\carrerasPrevias;
 use App\Models\Paso;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -228,7 +229,6 @@ class IngresoController extends Controller
         return $pdf->stream();
     }
 
-
     public function pdfbiometrico2($dni){
 
         $datos = DB::select(
@@ -374,8 +374,14 @@ class IngresoController extends Controller
             }
         }
 
+    }
 
+    public function carrerasPrevias($dni){
+        $res = carrerasPrevias::select('*')->where('dni_postulante',$dni)->get();
 
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
     }
 
 

@@ -1,7 +1,6 @@
 <template style="background:pink;">
   <Head title="Preinscipción"/>
-  <Layout v-if="examen === 0">
-
+  <Layout v-if="examen === 0" :nombre="props.procceso_seleccionado.nombre">
     <!-- <a-button @click="abrirModalDatos()">abrir</a-button> -->
     <a-modal v-model:visible="open" centered style="width: 100%; max-width:1200px;" :footer="false" >
       <div>
@@ -341,6 +340,7 @@
         <a-card v-if="pagina_pre === 0"  style="width: 100%;  max-width: 350px; max-height:380px" class="pl-3 pr-3 cardInicio" >
           <div>
             <h1 style="font-size: 1.1rem;">Datos de validación</h1>
+            
           </div>
           <a-form
               ref="formRef" :model="formState"

@@ -13,4 +13,4 @@ class CarrerasPrevias extends Model
 
     protected $fillable = ['codigo', 'cod_car','nombre', 'fecha','condicion', 'dni_postulante' ];
 
-}
+}   

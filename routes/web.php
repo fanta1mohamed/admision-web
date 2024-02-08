@@ -293,7 +293,6 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 });
 Route::get('/pdf-datos-biometrico/{dni}', [IngresoController::class, 'pdfbiometrico2']);
 
-
 Route::get('/examen-vocacional2', fn () => Inertia::render('Publico/exvocacional2'))->name('ex-vocacional2');
 Route::post('/get-avance-postulante', [TestController::class, 'getAvancePostulante']);
 Route::post('/get-avance-postulante2', [TestController::class, 'getAvancePostulante2']);
@@ -486,10 +485,8 @@ Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
 Route::get('/distribucion', [TestController::class, 'Distribucion']);
 Route::get('/pdf-lista', [TestController::class, 'pdfLista']);
 
-
 Route::get('/aleatorizar', [PruebasController::class, 'aleatorizar']);
 Route::get('/c-ides-bd/{area}', [ResultadosController::class, 'cargarIdeBD']);
-
 
 Route::middleware(['web'])->group(function () {
     Route::prefix('raiz')->group(function () {
@@ -552,13 +549,7 @@ Route::get('/pdf-resultados', [ResultadosController::class, 'generarReporteProgr
 
 Route::get('/ver-puntaje-alcanzado', fn () => Inertia::render('Publico/resultados'));
 
-
-
-
-
-
-
-
+Route::get('/carreras-previas/{dni}', [IngresoController::class, 'carrerasPrevias']);
 
 Route::get('/subir-archivos-pdf', fn () => Inertia::render('Publico/subir-archivos'));
 Route::post('/verificar-padres', [PostulanteController::class, 'verificarPadres']);
