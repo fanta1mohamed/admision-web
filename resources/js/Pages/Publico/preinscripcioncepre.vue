@@ -960,7 +960,7 @@
                             <a-select-option :value="3">TRASLADO EXTERNO</a-select-option>
                             <a-select-option :value="4">PRIMEROS PUESTOS</a-select-option>
                             <a-select-option :value="5">DEPORTISTAS DESTCADOS</a-select-option>
-                            <a-select-option :value="8">PIR - VICTIMAS DEL TERRORISMO</a-select-option>
+                            <a-select-option :value="12">PIR - VICTIMAS DEL TERRORISMO</a-select-option>
                           </a-select>
                         </a-form-item>
                       </div>
