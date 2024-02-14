@@ -1428,7 +1428,7 @@
               </div>
 
               <div class="mt-4 mb-4">
-                <a-alert message="!Importante! los datos compatibles con el sistema del CEPREUNA se cargarán automáticamente" type="info" show-icon />
+                <a-alert message="!Importante! los datos registrados anteriormente se cargarán automáticamente" type="info" show-icon />
               </div>
               <div class="flex justify-center mt-4">
                   <a-button type="primary" style="color:white; width:120px; height:42px;" @click="modalcarrerasprevias = false">Continuar</a-button>
