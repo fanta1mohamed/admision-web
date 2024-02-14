@@ -25,7 +25,7 @@ class PreinscripcionController extends Controller
 
   public function __construct()
   {
-      $this->fondo = public_path('imagenes/cepre-agua.png');
+      $this->fondo = public_path('imagenes/extraordinario-agua.jpg');
   }
   
   public function index()
@@ -65,14 +65,25 @@ class PreinscripcionController extends Controller
   {
     try {
         DB::beginTransaction();
-            
-            $pre = Preinscripcion::create([
-                'id_postulante'=> $request->id_postulante,
-                'id_programa' => $request->programa,
-                'id_proceso' => $request->id_proceso,
-                'id_modalidad' => $request->modalidad,
-                'estado' => 1
-            ]);
+            if($request->id_anterior != 'null'){
+                $pre = Preinscripcion::create([
+                    'id_postulante'=> $request->id_postulante,
+                    'id_programa' => $request->programa,
+                    'id_proceso' => $request->id_proceso,
+                    'id_modalidad' => $request->modalidad,
+                    'id_anterior' => $request->id_anterior,
+                    'estado' => 1
+                ]);                
+            }else{
+                $pre = Preinscripcion::create([
+                    'id_postulante'=> $request->id_postulante,
+                    'id_programa' => $request->programa,
+                    'id_proceso' => $request->id_proceso,
+                    'id_modalidad' => $request->modalidad,
+                    'estado' => 1
+                ]);
+            }
+
 
             $doc = [];
             $dooc = Documento::where('id_postulante', $request->id_postulante)->first();
@@ -317,23 +328,25 @@ class PreinscripcionController extends Controller
             'postulante.nro_doc as dni', 
             'postulante.nombres', 'postulante.primer_apellido', 'postulante.segundo_apellido',
             'postulante.anio_egreso AS egreso',
-            'colegios.nombre AS colegio',
+            'modalidad.id as id_modalidad',
             'modalidad.nombre as modalidad',
             'distritos.nombre AS distrito',
             'procesos.id as id_proceso',
             'procesos.nombre AS proceso',
             'procesos.id_modalidad_proceso',
             'procesos.fecha_examen AS fecha_examen',
-            'programa.nombre AS programa'
+            'programa.nombre AS programa',
+            'carreras_previas.codigo as cod_car',
+            'carreras_previas.nombre as nom_car'
         )
           ->leftjoin ('postulante', 'postulante.id', '=','pre_inscripcion.id_postulante')
           ->join ('procesos', 'procesos.id', '=','pre_inscripcion.id_proceso')
           ->join ('programa', 'programa.id', '=','pre_inscripcion.id_programa')
           ->join ('modalidad', 'modalidad.id', '=','pre_inscripcion.id_modalidad')
-          ->join ('colegios', 'colegios.id', '=','postulante.id_colegio')
           ->join ('ubigeo', 'ubigeo.ubigeo', '=','postulante.ubigeo_residencia')
           ->join ('distritos', 'distritos.id', '=','ubigeo.id_distrito')
           ->join ('tipo_documento_identidad','tipo_documento_identidad.id', '=', 'postulante.tipo_doc')
+          ->leftjoin ('carreras_previas','carreras_previas.id', '=', 'pre_inscripcion.id_anterior')
           ->where('pre_inscripcion.id_proceso','=', $pro)
           ->where('postulante.nro_doc','=', $dni)->get();
 

@@ -67,19 +67,17 @@
             <table>
                 <tr style="">
                     <td style="width: 100%">
-                        <div style="text-align: justify">
-                            <p style="line-height:1.5rem;">
-                                Que, habiendo culminado mis estudios en el la Institución 
-                                Educativa Secundaria 
-                                {{ $data->colegio}} en el año {{ $data->egreso }}, 
-                                <span style="font-weight:bold">
-                                SOLICITO la inscripción para postular en el EXAMEN
-                                {{ $data->proceso }}
-                                </span> que se llevará a cabo los días {{ $data->fecha_examen }}
+                        <div style="text-align: justify;">
+                            <div style="line-height:1.5rem;">
+                                Que, al cumplir con todos los requisitos establecidos 
+                                por la dirección de admisión de la UNA Puno,
+                                <strong>SOLICITO la inscripción para postular en el EXAMEN
+                                {{ $data->proceso }}</strong>
+                                que se llevará a cabo el {{ $data->fecha_examen }}
                                 del año en curso. Asimismo, pongo a vuestro conocimiento que 
                                 postulo al programa de estudios de <span style="font-weight: bold;"> {{ $data->programa }}</span> 
                                 bajo la modalidad  <span style="font-weight: bold;">{{ $data->modalidad }}</span>.
-                            </p>
+                            </div>
                         </div>
                         <div  style="margin-top: 14px;">
                             Adjunto a esta solicitud los siguientes documentos:
@@ -88,37 +86,48 @@
                             <div  style="margin-top: 5px;">1.	Comprobante de pago.</div>
                             <div  style="margin-top: 5px;">2.	Documento de identidad (<span style="color:red;">*</span>original y copia).</div>
                             <div  style="margin-top: 5px;">3.	Certificado de estudios (<span style="color:red;">*</span>original y copia).</div> 
-                            <div  style="margin-top: 5px;">4.	Constancia de no adeudo al CEPREUNA.</div> 
+                            <div  style="margin-top: 5px;">4.	Otros requisitos según lo estipulado en el Art. 18 del reglamento general de admisión 2024-I, punto 18.3, y conforme a la modalidad de postulación..</div> 
                         </div>
                         <div style="margin-top:10px; margin-bottom:-14px;">
                             Nota (<span style="color:red;">*</span> Solo para verificación</span>)
                         </div>
 
                         <div style="margin-top: 14px; text-align:justify;">
-                            <P style="line-height:1.5rem;">
- 
-                            @if($carreras_previas != null)
-                                Adicionalmente, deseo informar que estoy postulando a mi
-                                @if(count($carreras_previas) == 1)
-                                    segunda carrera
-                                @elseif( count($carreras_previas) == 2 )
-                                    tercera carrera
-                                @elseif( count($carreras_previas) == 3 )
-                                    cuarta carrera
-                                @elseif( count($carreras_previas) == 4 )
-                                    quinta carrera
+                            @if( $data->id_modalidad != 2)
+                                <P style="line-height:1.5rem;"> 
+                                @if($carreras_previas != null)
+                                    Adicionalmente, deseo informar que estoy postulando a mi
+                                    @if(count($carreras_previas) == 1)
+                                        segunda carrera
+                                    @elseif( count($carreras_previas) == 2 )
+                                        tercera carrera
+                                    @elseif( count($carreras_previas) == 3 )
+                                        cuarta carrera
+                                    @elseif( count($carreras_previas) == 4 )
+                                        quinta carrera
+                                    @else
+                                    @endif 
+                                    en esta prestigiosa universidad. 
+                                    He tenido ingresos previos en las siguientes carreras:                             
+                                    @foreach ($carreras_previas as $index=>$item)
+                                        <div style="margin-top: 8px; margin-left:20px;">
+                                            {{$index + 1}}. {{ $item->nombre }} - CODIGO: <span style="font-weight: bold;">{{ $item->codigo }} </span>
+                                        </div>                                
+                                    @endforeach
                                 @else
-                                @endif 
-                                en esta prestigiosa universidad. 
-                                He tenido ingresos previos en las siguientes carreras:                             
-                                @foreach ($carreras_previas as $index=>$item)
-                                    <div style="margin-top: 8px; margin-left:20px;">
-                                        {{$index + 1}}. {{ $item->nombre }} - CODIGO: <span style="font-weight: bold;">{{ $item->codigo }} </span>
-                                    </div>                                
-                                @endforeach
-                            @else
+                                @endif
+                            @endif
+
+                            @if( $data->id_modalidad == 2)
+                                <p style="line-height:1.5rem;"> 
+                                    Adicionalmente, deseo informar que me encuentro matriculado en:    
+                                        <div style="margin-top: 8px; margin-left:20px;">
+                                            {{ $data->nom_car }} con el CODIGO: <span style="font-weight: bold;">{{ $data->cod_car }} </span>
+                                        </div>                                
+                                </p>
                             @endif
                         </div>
+
 
                         <div style="text-align: justify; margin-top:12px;" >
                                                     
@@ -134,12 +143,6 @@
                                 Agradezco su atención a la presente y me comprometo a cumplir con la inscripción presencial 
                                 según como se encuentra especificado en el cronograma.
                             </p>
-                            {{-- <p style="line-height:1.5rem;">
-                                Agradezco su atención y me comprometo a realizar la inscripción presencial de acuerdo con el 
-                                área del programa que he seleccionado, siguiendo rigurosamente las fechas indicadas en el cronograma. 
-                                Estoy consciente de la importancia de este proceso y aseguro cumplir con todos los requisitos establecidos. 
-                                Quedo a disposición para cualquier información adicional que se requiera. Gracias.
-                            </p> --}}
                             @endif 
 
                         </div>

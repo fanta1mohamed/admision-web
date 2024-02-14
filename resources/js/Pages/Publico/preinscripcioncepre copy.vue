@@ -198,7 +198,7 @@
       <div>
         <h1 style="font-weight:bold; font-size:1.2rem;">Datos de postulación</h1>
         <hr>
-        
+
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Modalidad:</label>
@@ -957,7 +957,7 @@
                           <a-select v-if="props.procceso_seleccionado.id_modalidad_proceso === 3" ref="select" v-model:value="datos_preinscripcion.modalidad" placeholder="Seleccionar modalidad" class="selector-modalidad">
                             <a-select-option :value="1">TITULADOS Y GRADUADOS</a-select-option>
                             <a-select-option :value="2">TRASLADO INTERNO</a-select-option>
-                            <!-- <a-select-option :value="3">TRASLADO EXTERNO</a-select-option> -->
+                            <a-select-option :value="3">TRASLADO EXTERNO</a-select-option>
                             <a-select-option :value="4">PRIMEROS PUESTOS</a-select-option>
                             <a-select-option :value="5">DEPORTISTAS DESTCADOS</a-select-option>
                             <a-select-option :value="8">PIR - VICTIMAS DEL TERRORISMO</a-select-option>
@@ -980,36 +980,6 @@
                   </div>
 
                   <a-row :gutter="[16, 0]" class="form-row">
-                    <a-col :span="24">
-                      <a-row :gutter="16" style="display:fleX; justify-content:center;">
-                          <a-col v-for="item in carreras_previas" :key="item" :xs="24" :sm="24" :md="24" :lg="24"
-                              style="margin-bottom: 10px;"
-                          >
-                              <div
-                                  @click="toggleSelection2(item)"
-                                  :class="{ 'selected': item.selected }"
-                                  style="height:80px; border-radius:5px; cursor:pointer; border:solid 1px #d9d9d9; align-items: center; "
-                                  class="flex p-4">
-                                  <div style="display:flex; justify-content: space-between; width: 100%; align-items: center;">
-                                      <div style="width: calc(100% - 50px);">
-                                        <div>
-                                          <span style="font-size:.8rem; text-transform: capitalize;">{{ item.nombre }}</span>
-                                        </div>
-                                        <div class="flex justify-left">
-                                          <span style="font-weight:bold; font-size:.8rem">cod: {{ item.codigo }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="flex justify-center" style="width: 50px; height: 50px; align-items: center;">
-                                          <img src="../../../assets/imagenes/logotiny.png" width="45px"/>
-                                      </div>
-                                  </div>
-                              </div>
-                          </a-col>
-                      </a-row>
-                  </a-col>
-
-                        
-                        
                     
                     <a-col :span="24" :md="24" :lg="12" :xl="24" :xxl="24">
                       <a-form-item
@@ -1018,7 +988,6 @@
                       >
                         <div><label>Programa de estudios</label></div>
                         <a-select
-                            v-if="datos_preinscripcion.modalidad == 4"
                             ref="select"
                             v-model:value="datos_preinscripcion.programa"
                             placeholder="Seleccionar programa"
@@ -1069,126 +1038,7 @@
                             <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
                             <a-select-option :value='44'>TURISMO</a-select-option>
                             <a-select-option :value='45'>PSICOLOGÍA</a-select-option>
-                          </a-select>
-
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 1"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                            <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                            <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
                         </a-select>
-
-                        <div v-if="bio.includes(carrera_anterior.cod_car)">
-                          <a-select
-                              ref="select"
-                              v-model:value="datos_preinscripcion.programa"
-                              placeholder="Seleccionar programa"
-                              class="selector-modalidad"
-                              style="min-width:360px;"
-                            >
-                              <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
-                              <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
-                              <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
-                              <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                              <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
-                              <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                              <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                              <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                          </a-select>
-                        </div>
-                        <div v-if="ing.includes(carrera_anterior.cod_car)">
-                          <a-select
-                              ref="select"
-                              v-model:value="datos_preinscripcion.programa"
-                              placeholder="Seleccionar programa"
-                              class="selector-modalidad"
-                              style="min-width:360px;"
-                            >
-                            <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
-                            <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
-                            <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
-                          </a-select>
-                        </div>
-                        <div v-if="soc.includes(carrera_anterior.cod_car)">
-                          <a-select
-                              ref="select"
-                              v-model:value="datos_preinscripcion.programa"
-                              placeholder="Seleccionar programa"
-                              class="selector-modalidad"
-                              style="min-width:360px;"
-                            >
-                            <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                            <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                            <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                            <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                            <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
-                            <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
-                            <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
-                            <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                          </a-select>
-                        </div>
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 2 && id_anterior == null"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                        </a-select>
-
-                        
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 3"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                          <a-select-option :value="27">INGENIERÍA CIVIL</a-select-option>
-                        </a-select>
-
-
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 5"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                            <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
-                            <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
-                            <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
-                            <a-select-option :value='5'>ARTE: DANZA</a-select-option>
-                            <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                            <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
-                            <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
-                            <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
-                            <a-select-option :value='15'>DERECHO</a-select-option>
-                            <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                            <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                            <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                            <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                            <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
-                            <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
-                            <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
-                            <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                            <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                            <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                            <a-select-option :value='44'>TURISMO</a-select-option>
-                          </a-select>
 
                       </a-form-item>
                     </a-col>
@@ -1286,20 +1136,30 @@
         </div>
         <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <div v-if="datos_preinscripcion.modalidad == 2">
-            <div v-if="id_anterior == null">
-              <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary" disabled>VERIFICAR DATOS</a-button>
-            </div>
-            <div v-else>
-              <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary">VERIFICAR DATOS</a-button>
-            </div>
-          </div>
-          <div v-else>
-            <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary">VERIFICAR DATOS</a-button>
-          </div>
+          <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary" >VERIFICAR DATOS</a-button>
           <!-- <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>     -->
         </div>
       </a-affix>
+
+  <!-- <a-modal v-model:visible="modalSancionado" :footer="false">
+    <div class="flex justify-center mt-6">
+      <img src="../../../assets/imagenes/alert.png" width="150"/>
+    </div>
+    <div>
+      <h2 class="text-center" style="font-size:1.8rem;">¡Importante!</h2>
+      <p class="text-center mx-4" style="font-size:1.2rem;">El participante no reúne las condiciones para participar en este proceso.</p>
+    </div>
+
+    <div>
+      <p v-if="datacepre === null" class="text-center mx-4" style="font-size:1.2rem;">Aproximese al CEPREUNA</p>
+    </div>
+
+    <div class="flex justify-center">
+      <a-button @click="modalSancionado = false;" style="background:#454554; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
+        Aceptar
+      </a-button>
+    </div>
+  </a-modal> -->
 
 
   <a-modal v-model:visible="modalcarrerasprevias" centered :keyboard="false" :footer="false" :closable="false" :maskClosable="false" >
@@ -1337,6 +1197,10 @@
             <h2 class="text-center" style="font-size:1.4rem;">¡Importante!</h2>
             <p class="text-center mx-4" style="font-size:1.1rem;">El participante no reúne las condiciones para participar en este proceso.</p>
           </div>
+
+          <!-- <div>
+            <p v-if="datacepre === null" class="text-center mx-4" style="font-size:1.1rem;">Aproximese al CEPREUNA</p>
+          </div> -->
 
           <div class="flex justify-center">
             <a-button @click="modalcarrerasprevias = false;" style="background:#454554; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
@@ -1396,10 +1260,8 @@
 
             <div class="flex justify-end mt-6 mb-3"> 
               <a-button @click="cancelarInscripcion()" class="mr-2" style="color: #476175; border: 1px solid #476175; border-radius:5px;">Cancelar</a-button>
-              <div v-if="selectedItems">
-                <a-button v-if="selectedItems.length === 0" disabled style=" border: 1px solid gray; border-radius:5px;">Continuar</a-button>
-                <a-button v-if="selectedItems.length > 0" @click="registrarPrevias()" style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
-              </div>
+              <a-button v-if="selectedItems.length === 0" disabled style=" border: 1px solid gray; border-radius:5px;">Continuar</a-button>
+              <a-button v-if="selectedItems.length > 0" @click="registrarPrevias()" style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
             </div>
           </div>
       </div> 
@@ -1426,6 +1288,8 @@
                 <div> 2. Ingresa el código secreto proporcionado. </div>
                 <div> 3. Presiona en "Iniciar Postulación". </div>
               </div>
+<!-- 
+              {{datacepre}} -->
 
               <div class="mt-4 mb-4">
                 <a-alert message="!Importante! los datos compatibles con el sistema del CEPREUNA se cargarán automáticamente" type="info" show-icon />
@@ -1657,29 +1521,24 @@ watch(() => datosmadre.dni, (newValue, oldValue) => {
 });
 
 watch(() => formState.dni, (newValue, oldValue) => {
-  if(newValue){
-    if(newValue.length == 8){
-      getPasoRegistrado();
-      if(selectedItems){selectedItems.value = [];}
-      datacepre.value = [];
-      anteriores.value = [];
-    }
+  if(newValue.length == 8){
+    getPasoRegistrado();
+    selectedItems.value = [];
+    datacepre.value = [];
+    anteriores.value = [];
   }
-
 });
 const traslado_interno = ref(false);
 
 watch(() => datos_preinscripcion.modalidad, (newValue, oldValue) => {
   if(newValue == 2 ){
     traslado_interno.value = true;
-    getCarrerasPreviasPostulacion();
-  }else{
-    traslado_interno.value = false;
-    carreras_previas.value = [];
   }
 });
 
 const participa = ref(0);
+
+const datareniec = ref(null)
 const getDatosApi = () => {
   const token = '70ab1cd1b9b452982370381fd0be605c85ddc8795aed972afca143fee05fde43';
   axios.get(`https://apiperu.dev/api/dni/${formState.dni}`, {
@@ -1960,6 +1819,21 @@ function validateFechaNacimiento(rule, value) {
     }
   });
 }
+// function validateFechaNacimiento(rule, value, callback) {
+//   if (!value) {
+//     callback (new Error(''));
+//   } else {
+//     const fechaNacimiento = new Date(value);
+//     const fechaMinima = new Date();
+//     fechaMinima.setFullYear(fechaMinima.getFullYear() - 16);
+
+//     if (fechaNacimiento > fechaMinima) {
+//       callback (new Error('Debes tener al menos 16 años'));
+//     } else {
+//       callback();
+//     }
+//   }
+// }
 
 function validateCodigoSecreto(rule, value) {
   return new Promise((resolve, reject) => {
@@ -1973,6 +1847,7 @@ function validateCodigoSecreto(rule, value) {
   });
 }
 
+//formDatosPadre
 const getApoderado = async () => {
   const res = await axios.post("/get-apoderado", { id_postulante: datospersonales.id, tipo: 1 });
   if(res.data.datos.length !== 0){
@@ -2044,6 +1919,7 @@ const saveApoderadoM = async () => {
     });
     getPasos();
   } catch (error) {
+    // Manejar el error en caso de que la solicitud falle
     console.error(error);
   }
 }
@@ -2097,7 +1973,6 @@ const submit = async () => {
   fd.append('codigo_medico', datos_preinscripcion.codigo_medico)
   fd.append('id_postulante', datospersonales.id)
   fd.append('id_proceso', props.procceso_seleccionado.id)
-  fd.append('id_anterior', id_anterior.value )
   await axios.post("/save-pre-inscripcion", fd).then(res=>{
       if( avance_current.value < 100){ 
         savePasos("Registro de datos preinscripcion", 6, 110) 
@@ -2140,8 +2015,6 @@ const props = defineProps(['procceso_seleccionado']);
 
 const sancionado = ref(null)
 const modalSancionado = ref(false);
-const id_anterior = ref(null);
-const carreras_previas = ref([]);
 
 const getSancionado =  async () => {
   participa.value = 0;
@@ -2240,6 +2113,7 @@ getCodigoAleatorio();
 
 const modalcarrerasprevias = ref(false);
 const participante = ref(null);
+
 const anteriores = ref([]);
 
 const getDataPrisma = async () => {
@@ -2251,8 +2125,6 @@ const getDataPrisma = async () => {
     }
     getCarrerasPrevias();
 }
-
-
 
 const getCarrerasPrevias = async () => {
     if(participante.value != null){
@@ -2318,35 +2190,11 @@ const selectedItems = computed(() => {
     }
 });
 
-
-const carrera_anterior = ref({});
-const toggleSelection2 = (item) => {
-    item.selected = !item.selected;
-    if(item.selected == true){
-      id_anterior.value = item.id;
-      carrera_anterior.value = item;
-    }else{
-      id_anterior.value = null;
-      carrera_anterior.value = {};
-    }
-};
-
 const cancelarInscripcion = () => {
     modalcarrerasprevias.value = false;
     location.reload(true);
 }
 
-
-const getCarrerasPreviasPostulacion = async () => {
-  const response = await axios.get('/carreras-previas/'+formState.dni);
-  carreras_previas.value = response.data.datos;
-}
-
-
-
-const bio = ['04','08','15', '27', '28','29'];
-const ing = ['01', '02', '03', '05', '10', '22', '23', '24', '26', '30', '31', '32', '33', '34', '35', '36']
-const soc = ['06', '07', '09', '11', '12', '13', '14', '16', '17', '18', '20', '21', '25', '56']
 </script>
 
 <style scope>

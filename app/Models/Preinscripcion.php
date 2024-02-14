@@ -22,5 +22,6 @@ class Preinscripcion extends Model
         'codigo_seguridad',
         'id_usuario',
         'observacion',
+        'id_anterior'
     ];
 }
