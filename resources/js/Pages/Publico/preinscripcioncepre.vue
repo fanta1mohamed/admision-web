@@ -957,7 +957,7 @@
                           <a-select v-if="props.procceso_seleccionado.id_modalidad_proceso === 3" ref="select" v-model:value="datos_preinscripcion.modalidad" placeholder="Seleccionar modalidad" class="selector-modalidad">
                             <a-select-option :value="1">TITULADOS Y GRADUADOS</a-select-option>
                             <a-select-option :value="2">TRASLADO INTERNO</a-select-option>
-                            <!-- <a-select-option :value="3">TRASLADO EXTERNO</a-select-option> -->
+                            <a-select-option :value="3">TRASLADO EXTERNO</a-select-option>
                             <a-select-option :value="4">PRIMEROS PUESTOS</a-select-option>
                             <a-select-option :value="5">DEPORTISTAS DESTCADOS</a-select-option>
                             <a-select-option :value="8">PIR - VICTIMAS DEL TERRORISMO</a-select-option>
@@ -1417,7 +1417,7 @@
                 <div><span style="font-size:1rem;">
                   Hemos revisado tu información y cumples con los requisitos 
                   para postular
-                  en el EXAMEN CEPREUNA. 
+                  en el EXAMEN EXTRAORDINARIO 2024. 
                   Para continuar con el proceso de postulación, sigue estos pasos:</span></div>
               </div>
 
