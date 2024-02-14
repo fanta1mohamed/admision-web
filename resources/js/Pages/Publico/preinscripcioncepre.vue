@@ -1007,9 +1007,6 @@
                           </a-col>
                       </a-row>
                   </a-col>
-
-                        
-                        
                     
                     <a-col :span="24" :md="24" :lg="12" :xl="24" :xxl="24">
                       <a-form-item

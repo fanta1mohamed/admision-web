@@ -9,7 +9,7 @@ use App\Models\Preinscripcion;
 use App\Models\Documento;
 use App\Models\Estudiante;
 use App\Models\AvancePostulante;
-use App\Models\carrerasPrevias;
+use App\Models\CarrerasPrevias;
 use App\Models\Paso;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -377,7 +377,7 @@ class IngresoController extends Controller
     }
 
     public function carrerasPrevias($dni){
-        $res = carrerasPrevias::select('*')->where('dni_postulante',$dni)->get();
+        $res = CarrerasPrevias::select('*')->where('dni_postulante',$dni)->get();
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
