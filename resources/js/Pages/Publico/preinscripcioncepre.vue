@@ -1018,7 +1018,7 @@
                       >
                         <div><label>Programa de estudios</label></div>
                         <a-select
-                            v-if="datos_preinscripcion.modalidad == 4"
+                            v-if="datos_preinscripcion.modalidad == 4 || datos_preinscripcion.modalidad == 12"
                             ref="select"
                             v-model:value="datos_preinscripcion.programa"
                             placeholder="Seleccionar programa"
