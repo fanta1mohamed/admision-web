@@ -144,26 +144,25 @@
                         </div>
                         <div style="margin-top: -8px;">
                             <span style="font-weight:bold;">
-                                HORARIOS PARA TODOS (27 de enero ):
-                            </span>
+                                HORARIO DE INGRESO:
+                            </span> 
                             <div style="margin-top: -8px; margin-left:-5px;">
                                 <ul>
-                                    <li>Ingreso: 6:30 a 9:30 horas</li>
+                                    <li>Ingreso: 14:00 a 15:30 horas</li>
                                     {{-- <li>Inicio de examen: 10:00 horas</li> --}}
                                 </ul>
                             </div>
                         </div>
-                        <div style="margin-top: -8px; margin-left:-5px;">
+                        {{-- <div style="margin-top: -8px; margin-left:-5px;">
                             <span style="font-weight:bold;">
                                 HORARIOS SOLO PARA CLASIFICADOS (28 de enero):
                             </span>
                             <div style="margin-top: -8px">
                                 <ul>
                                     <li>Ingreso: 12:30 a 13:30 horas.</li>
-                                    {{-- <li>Inicio de examen: 14:00 horas</li> --}}
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                     </td>
 
                     <td valign="top">

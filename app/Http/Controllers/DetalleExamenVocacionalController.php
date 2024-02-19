@@ -70,7 +70,7 @@ class DetalleExamenVocacionalController extends Controller
             'fecha' => date('Y-m-d')
         ]);    
 
-        $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->where('id_proceso',6)->first();
+        $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->where('id_proceso',7)->first();
         $avancePostulante->avance = 2;
         $avancePostulante->save();
 

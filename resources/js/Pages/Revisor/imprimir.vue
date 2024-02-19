@@ -132,17 +132,17 @@
 
                       <a-col :xs="24" :sm="12" :md="12" :lg="2" :xl="2">
                         <div class="mb-3">
-                          <img :src="baseUrl+'/documentos/6/control_biometrico/huellas/'+ingresante.nro_doc+'.jpg'" height="80"/>
+                          <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+ingresante.nro_doc+'.jpg'" height="80"/>
                           <div class="flex justify-center"> H. Der.</div>
                         </div>
 
                         <div>
-                          <img :src="baseUrl+'/documentos/6/control_biometrico/huellas/'+ingresante.nro_doc+'x.jpg'" height="80" />
+                          <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+ingresante.nro_doc+'x.jpg'" height="80" />
                           <div class="flex justify-center"> H. Izq.</div>
                         </div>
                       </a-col>
                       <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
-                        <img :src="baseUrl+'/documentos/6/control_biometrico/fotos/'+ingresante.nro_doc+'.jpg'" width="250" />
+                        <img :src="baseUrl+'/documentos/7/control_biometrico/fotos/'+ingresante.nro_doc+'.jpg'" width="250" />
 
                       </a-col>
 
@@ -262,7 +262,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/6/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/7/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
                     </div>
                 </div>
                 </div>
@@ -271,7 +271,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/6/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/7/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>
@@ -284,13 +284,13 @@
                     <a-row :gutter="16">
                         <a-col :xs="24" :sm="12" :md="8" :lg="12">
                           <div class="p-6">
-                            <img :src="baseUrl+'/documentos/6/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/7/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> Foto Inscripción.</div>
                           </div>
                         </a-col>                        
                         <a-col :xs="24" :sm="12" :md="8" :lg="12">
                           <div class="p-6">
-                            <img :src="baseUrl+'/documentos/6/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/7/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> Foto Biometrico.</div>
                           </div>
                         </a-col>
@@ -367,7 +367,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/6/inscripciones/dnis/'+codigo+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/7/inscripciones/dnis/'+codigo+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -378,7 +378,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/6/inscripciones/certificados/'+dniseleccionado+codigo+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/7/inscripciones/certificados/'+dniseleccionado+codigo+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -390,7 +390,7 @@
       <div>
           <div style="width:100%; height:400px; position:relative; overflow:hidden">
             <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-              <iframe :src="baseUrl+'/documentos/6/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+              <iframe :src="baseUrl+'/documentos/7/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
             </div>
           </div>
       </div>
@@ -401,7 +401,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/6/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/7/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -415,13 +415,13 @@
             <a-row :gutter="16">
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
-                    <img :src="baseUrl+'/documentos/6/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
+                    <img :src="baseUrl+'/documentos/7/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                     <div class="flex justify-center"> Foto Inscripción.</div>
                   </div>
                 </a-col>                        
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
-                    <img :src="baseUrl+'/documentos/6/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                    <img :src="baseUrl+'/documentos/7/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
                     <div class="flex justify-center"> Foto Biometrico.</div>
                   </div>
                 </a-col>

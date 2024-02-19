@@ -33,18 +33,21 @@ class PagoBancoController extends Controller
     ->where('secuencia', $request['comp']['secuencia'])
     ->first();
 
-    if($comprobante->id_usuario == auth()->id()){
+    if($comprobante->id_usuario == auth()->id() || !$comprobante->id_usuario){
+
       if( $request['comp']['estado'] == 1 ){
-        $comprobante->estado = 2;
+        $comprobante->estado = 0;
         $comprobante->fecha_usado = null;
         $comprobante->id_proceso =  null;
         $comprobante->id_usuario = auth()->id();
+        $comprobante->dni_postulante = null;
       }else{
-        if( $request['comp']['estado'] == 2 ){
+        if( $request['comp']['estado'] == 0 ){
           $comprobante->estado = 1;
           $comprobante->fecha_usado = date('Y-m-d H:s:m');
           $comprobante->id_proceso = auth()->user()->id_proceso;
           $comprobante->id_usuario = auth()->id();
+          $comprobante->dni_postulante = $request['comp']['dni'];
         }
       }
       

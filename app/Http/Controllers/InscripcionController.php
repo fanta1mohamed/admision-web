@@ -48,7 +48,7 @@ class InscripcionController extends Controller
             ->exists();
 
         if( $sancionados ){
-            return $existeRegistro;
+            return "El postulante está observado";
         }
         else {
             $res = DB::select("SELECT 
@@ -56,6 +56,7 @@ class InscripcionController extends Controller
             postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento,
             programa.id AS id_programa, programa.nombre as programa, programa.codigo as cod_programa,
             colegios.id AS id_colegio, concat(colegios.gestion,".'" - "'.", colegios.nombre) AS colegio,
+            colegios.id_gestion as id_gestion,
             modalidad.id AS id_modalidad, modalidad.nombre as modalidad,
             procesos.nombre AS proceso, procesos.id as id_proceso,
             departamento.nombre AS departamento, provincia.nombre AS provincia, distritos.nombre AS distrito
@@ -169,12 +170,12 @@ class InscripcionController extends Controller
      
         $prog = $request['postulante']['cod_programa'];
 
-        $res = $siguiente = Inscripcion::where('codigo', 'like', 'C124'.$prog.'%')
+        $res = $siguiente = Inscripcion::where('codigo', 'like', 'E124'.$prog.'%')
         ->max(\DB::raw('CAST(SUBSTRING(codigo, 8) AS UNSIGNED)')) + 1;
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
         $inscripcion = Inscripcion::create([
-            'codigo' => 'C124' . $prog . $res,
+            'codigo' => 'E124' . $prog . $res,
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> auth()->user()->id_proceso,
             'id_programa' => $request['postulante']['id_programa'],
@@ -211,7 +212,7 @@ class InscripcionController extends Controller
 
 
             $inscripcion = Inscripcion::create([
-                'codigo' => 'C124' . $request->id_programa . $res,
+                'codigo' => 'E124' . $request->id_programa . $res,
                 'id_postulante'=> $request->id_postulante,
                 'id_proceso'=> auth()->user()->id_proceso,
                 'id_programa' => $request->id_programa,

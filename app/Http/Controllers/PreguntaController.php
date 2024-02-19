@@ -147,7 +147,7 @@ class PreguntaController extends Controller
 
     public function getDatosExamen2(Request $request)
     {
-        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 6');
+        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 7');
 
 
         if($examen[0]->vocacional == 0) {
@@ -157,7 +157,7 @@ class PreguntaController extends Controller
             ->join('programa', 'inscripciones.id_programa', '=', 'programa.id')
             ->join('examen_vocacional', 'inscripciones.id_programa', '=', 'examen_vocacional.programa')
             ->where('postulante.nro_doc', $request->dni)
-            ->where('inscripciones.id_proceso', 6)
+            ->where('inscripciones.id_proceso', 7)
             ->where('inscripciones.codigo', $request->codigo)
             ->get();
      
