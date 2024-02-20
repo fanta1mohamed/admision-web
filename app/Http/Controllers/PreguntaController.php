@@ -149,7 +149,6 @@ class PreguntaController extends Controller
     {
         $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 7');
 
-
         if($examen[0]->vocacional == 0) {
 
             $res = Inscripcion::select('examen_vocacional.id as id_vocacional', 'programa.nombre', 'postulante.*')
