@@ -10,7 +10,7 @@ class Cepre
 {
     public function handle($request, Closure $next)
     {
-        $allowedIPs = ['127.0.0.21', '192.168.43.81'];
+        $allowedIPs = ['127.0.0.1', '192.168.43.81'];
 
 
         if (in_array($request->ip(), $allowedIPs)) {
