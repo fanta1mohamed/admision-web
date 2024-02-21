@@ -20,7 +20,7 @@ class Cepre
         }
 
         // https://hoppscotch.io
-        $allowedDomains = ['https://sistemas.cepreuna.edu.pe/','https://inscripciones.admision.unap.edu.pe/'];
+        $allowedDomains = ['https://sistemas.cepreuna.edu.pe/','https://test.cepreuna.edu.pe/'];
 
         if (in_array($request->header('Origin'), $allowedDomains)) {
             return $next($request)
