@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sancionado;
+use DB;
 
 class SancionadoController extends Controller
 {
@@ -38,7 +39,23 @@ class SancionadoController extends Controller
           $this->response['estado'] = false;
           return response()->json($this->response, 201);
       }
+    }
 
-  }
+    public function getSancionadoCepre($dni)
+    {
+        $sancionado = DB::table('observados_cepre')
+                        ->where('dni', $dni)
+                        ->where('estado', 1)
+                        ->first();
+
+        if ($sancionado) {
+            return response()->json(['estado' => true], 200);
+        } else {
+            // Si no se encuentra ningún registro, devuelve la respuesta con estado false
+            return response()->json(['estado' => false], 404);
+        }
+    }
+
+    
   
 }

@@ -36,6 +36,7 @@ use App\Http\Controllers\PonderacionController;
 use App\Http\Controllers\SancionadoController;
 use App\Http\Controllers\CepreController;
 use App\Http\Controllers\PagoBancoController;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 
@@ -516,7 +517,6 @@ Route::post('/get-participantes-externo', [ResultadosController::class, 'getPart
 
 Route::get('/ver-ficha', fn () => Inertia::render('Simulacro/Calificacion/components/ficha'));
 
-
 Route::get('/ponderacion', fn () => Inertia::render('Simulacro/Calificacion/ponderacion'))->name('calificar-ponderacion');
 
 Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacrosSelect']);
@@ -557,7 +557,11 @@ Route::post('/verificar-padres', [PostulanteController::class, 'verificarPadres'
 Route::post('subir-pdf/{dni}/{cod}/{tipo}', [ResultadosController::class, 'cargaArchivoPDF']);
 
 
-
+Route::get('/obtener-origin', function (Request $request) {
+    $respuesta = Http::get('http://admision-web.test/api/v1/observados-cepre/70757838');
+    $contenido = $respuesta->getBody()->getContents();
+    return response()->json($contenido);
+});
 
 
 
