@@ -10,7 +10,7 @@ class Cepre
 {
     public function handle($request, Closure $next)
     {
-        $allowedIPs = ['127.0.0.1'];
+        $allowedIPs = [];
 
         if (in_array($request->ip(), $allowedIPs)) {
             return $next($request)
@@ -19,7 +19,8 @@ class Cepre
                 ->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization');
         }
 
-        $allowedDomains = ['https://sistemas.cepreuna.edu.pe/','https://inscripciones.admision.unap.edu.pe/','https://hoppscotch.io'];
+        // https://hoppscotch.io
+        $allowedDomains = ['https://sistemas.cepreuna.edu.pe/','https://inscripciones.admision.unap.edu.pe/'];
 
         if (in_array($request->header('Origin'), $allowedDomains)) {
             return $next($request)
