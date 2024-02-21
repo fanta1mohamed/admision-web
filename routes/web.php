@@ -558,7 +558,7 @@ Route::post('subir-pdf/{dni}/{cod}/{tipo}', [ResultadosController::class, 'carga
 
 
 Route::get('/obtener-origin', function (Request $request) {
-    $respuesta = Http::get('http://admision-web.test/api/v1/observados-cepre/70757838');
+    $respuesta = Http::get('https://inscripciones.admision.unap.edu.pe/api/v1/observados-cepre/70757838');
     $contenido = $respuesta->getBody()->getContents();
     return response()->json($contenido);
 });
