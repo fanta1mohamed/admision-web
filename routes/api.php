@@ -41,3 +41,13 @@ Route::get('/v1/resultados_simulacro/{dni}', [ResCepreController::class, 'obtene
 
 Route::get('/v1/observados-cepre/{dni}', [SancionadoController::class, 'getSancionadoCepre'])->middleware('cepre');
 
+Route::get('/obtener-origin', function (Request $request) {
+    $respuesta = Http::get('https://inscripciones.admision.unap.edu.pe/api/v1/observados-cepre/70757838');
+    $contenido = $respuesta->getBody()->getContents();
+    return response()->json($contenido);
+});
+
+Route::get('/obtener-origin2', function (Request $request) {    
+    $origin = $request->header('Origin');
+    return response()->json(['origin' => $origin]);
+});
