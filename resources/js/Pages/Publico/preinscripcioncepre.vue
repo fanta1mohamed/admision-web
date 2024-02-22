@@ -1014,8 +1014,9 @@
                       :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
                       >
                         <div><label>Programa de estudios</label></div>
+
                         <a-select
-                            v-if="datos_preinscripcion.modalidad == 4 || datos_preinscripcion.modalidad == 12"
+                            v-if="datos_preinscripcion.modalidad == 4 || datos_preinscripcion.modalidad == 12 || datos_preinscripcion.modalidad == 8 || datos_preinscripcion.modalidad == 9 || datos_preinscripcion.modalidad == 7"
                             ref="select"
                             v-model:value="datos_preinscripcion.programa"
                             placeholder="Seleccionar programa"
