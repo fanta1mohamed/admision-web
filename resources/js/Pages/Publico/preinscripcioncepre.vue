@@ -532,7 +532,7 @@
           <div style="width: 100%; margin-top: 5px; ">
           <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
 
-            {{ datospersonales.tipo_doc }}
+            <!-- {{ datospersonales.tipo_doc }} -->
             <div v-if="datospersonales.tipo_doc == 1">
 
             <a-form
