@@ -1476,7 +1476,7 @@
                 <div><span style="font-size:1rem;">
                   Hemos revisado tu información y cumples con los requisitos 
                   para postular
-                  en el EXAMEN EXTRAORDINARIO 2024. 
+                  en el EXAMEN GENERAL 2024-I. 
                   Para continuar con el proceso de postulación, sigue estos pasos:</span></div>
               </div>
 
