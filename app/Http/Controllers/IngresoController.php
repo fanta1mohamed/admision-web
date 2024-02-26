@@ -73,7 +73,7 @@ class IngresoController extends Controller
       JOIN inscripciones ON postulante.id = inscripciones.id_postulante
       JOIN programa ON programa.id = inscripciones.id_programa
       JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
-      JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = ".auth()->user()->id_proceso . "
+      JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = inscripciones.id_proceso
       WHERE inscripciones.id_proceso = ".auth()->user()->id_proceso."
       AND postulante.nro_doc = $dni ");
 
@@ -84,7 +84,6 @@ class IngresoController extends Controller
 
 
     public function biometrico(Request $request){
-        
 
         $re = DB::select("SELECT
             procesos.anio, procesos.ciclo_oti,
@@ -130,24 +129,27 @@ class IngresoController extends Controller
                     $i_admision = 0;
                     if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
 
-                    // $database2 = 'mysql_secondary';
-                    // $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
+                    $database2 = 'mysql_secondary';
+                    $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
 
-                    $nuevoCodigo = null;
-                    if($re[0]->id_modalidad == 2 ){
-                        $cod = DB::Select("SELECT cp.* FROM pre_inscripcion pre
-                        JOIN carreras_previas cp ON pre.id_anterior = cp.id
-                        JOIN postulante pos ON pos.id = pre.id_postulante
-                        where id_anterior IS NOT NULL
-                        AND pre.id_proceso = 7 
-                        AND pos.nro_doc = " . $re[0]->dni);
-                        $nuevoCodigo = $cod[0]->codigo;
-                    }else{
-                        $nuevoCodigo = $rs[0]->siguiente;
-                    }
+                    // $nuevoCodigo = null;
+                    // if($re[0]->id_modalidad == 2 ){
+                    //     $cod = DB::table('pre_inscripcion')
+                    //     ->select('carreras_previas.*')
+                    //     ->join('carreras_previas', 'pre_inscripcion.id_anterior', '=', 'carreras_previas.id')
+                    //     ->join('postulante', 'postulante.id', '=', 'pre_inscripcion.id_postulante')
+                    //     ->whereNotNull('pre_inscripcion.id_anterior')
+                    //     ->where('pre_inscripcion.id_proceso', 7)
+                    //     ->where('postulante.nro_doc', $request->dni)
+                    //     ->get();
+                    //     $nuevoCodigo = $cod[0]->codigo;
+                    // }else{
+                    //     $nuevoCodigo = $rs[0]->siguiente;
+                    // }
+                    $nuevoCodigo = $rs[0]->siguiente;
  
                     $biometric = ControlBiometrico::create([
-                        'id_proceso' => 6,
+                        'id_proceso' => 7,
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
@@ -186,6 +188,7 @@ class IngresoController extends Controller
                         'puesto_general' => $re[0]->puesto_general,
                         'ano_ing' => $re[0]->anio,
                         'per_ing' => $re[0]->ciclo_oti
+
                     ]);
 
                     $this->pdfbiometrico2($request->dni);
@@ -193,13 +196,17 @@ class IngresoController extends Controller
                 });
             } catch (\Exception $e) {
                 $errorMessage = $e->getMessage();
+                // Registrar el error en un archivo de registro
                 \Log::error('Error en la transacción: ' . $errorMessage);
+                // Devolver una respuesta de error al usuario con el mensaje de error
                 return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
             }
 
         $this->response['estado'] = true;
         $this->response['datos'] = $request->dni;
         return response()->json($this->response, 200);
+        // return response()->download($outputFilePath);
+        // return response()->download($outputFilePath)->deleteFileAfterSend();
     }
 
     public function pdf($datos){
@@ -261,19 +268,19 @@ class IngresoController extends Controller
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0 AND control_biometrico.id_proceso = 6
-            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 6 AND inscripciones.id_proceso = 6"
+            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0 AND control_biometrico.id_proceso = 7
+            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 7 AND inscripciones.id_proceso = 7"
         );
 
         $data = $datos[0];
-        $hinsI = public_path('documentos/6/inscripciones/huellas/').$dni.'x.jpg';
-        $hinsD = public_path('documentos/6/inscripciones/huellas/').$dni.'.jpg';
-        $hexaI = public_path('documentos/6/examen/huellas/').$dni.'.jpg';
-        $hexaD = public_path('documentos/6/examen/huellas/').$dni.'x.jpg';
-        $hbioI = public_path('documentos/6/control_biometrico/huellas/').$dni.'.jpg';
-        $hbioD = public_path('documentos/6/control_biometrico/huellas/').$dni.'x.jpg';
-        $fins = public_path('documentos/6/inscripciones/fotos/').$dni.'.jpg';
-        $fbio = public_path('documentos/6/control_biometrico/fotos/').$dni.'.jpg';
+        $hinsI = public_path('documentos/7/inscripciones/huellas/').$dni.'x.jpg';
+        $hinsD = public_path('documentos/7/inscripciones/huellas/').$dni.'.jpg';
+        $hexaI = public_path('documentos/7/examen/huellas/').$dni.'.jpg';
+        $hexaD = public_path('documentos/7/examen/huellas/').$dni.'x.jpg';
+        $hbioI = public_path('documentos/7/control_biometrico/huellas/').$dni.'.jpg';
+        $hbioD = public_path('documentos/7/control_biometrico/huellas/').$dni.'x.jpg';
+        $fins = public_path('documentos/7/inscripciones/fotos/').$dni.'.jpg';
+        $fbio = public_path('documentos/7/control_biometrico/fotos/').$dni.'.jpg';
         // $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');
@@ -291,7 +298,7 @@ class IngresoController extends Controller
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        file_put_contents(public_path('/documentos/6/control_biometrico/constancias/').$dni.'.pdf', $output);
+        file_put_contents(public_path('/documentos/7/control_biometrico/constancias/').$dni.'.pdf', $output);
         return $pdf->stream();
     }
 
