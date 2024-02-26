@@ -54,7 +54,7 @@ class SeleccionDataController extends Controller
     )
       ->join('ubigeo','distritos.id','ubigeo.id_distrito')
       ->join('departamento','departamento.id','ubigeo.id_departamento')
-      ->join('provincia','provincia.id','ubigeo.id_pr ovincia')
+      ->join('provincia','provincia.id','ubigeo.id_provincia')
       ->where('departamento.codigo','=',$request->departamento)
       ->where('provincia.codigo','=',$request->provincia)
       ->where(function ($query) use ($request) {
