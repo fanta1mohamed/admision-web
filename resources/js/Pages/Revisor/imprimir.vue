@@ -499,7 +499,7 @@ const dni = ref(null);
 const dniseleccionado = ref("")
 const modal = ref(false);
 const codigo = ref("");
-
+const postulante = ref("");
 const postulantes = ref([])
 const anteriores = ref([]);
 const n_carrera = ref(0)

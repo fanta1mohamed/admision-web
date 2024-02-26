@@ -130,8 +130,8 @@ class IngresoController extends Controller
                     $i_admision = 0;
                     if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
 
-                    $database2 = 'mysql_secondary';
-                    $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
+                    // $database2 = 'mysql_secondary';
+                    // $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
 
                     $nuevoCodigo = null;
                     if($re[0]->id_modalidad == 2 ){
@@ -186,7 +186,6 @@ class IngresoController extends Controller
                         'puesto_general' => $re[0]->puesto_general,
                         'ano_ing' => $re[0]->anio,
                         'per_ing' => $re[0]->ciclo_oti
-
                     ]);
 
                     $this->pdfbiometrico2($request->dni);
