@@ -69,10 +69,6 @@
                 </div>   
             </div>
 
-            <!-- <div v-if="ingresante === 1" class="mt-3">
-                <a-button class="w-full" type="primary">Subir archivos</a-button>
-            </div> -->
-
             <div class="p-3 mt-3" v-if="ingresante === 1" style="background: white;">
 
                 <div class="m-3 pt-0">
@@ -92,9 +88,6 @@
                         <a-input v-model:value="dnimadre" type="text" Placeholder="Ingrese DNI de la madre" style="padding-left:20px;"/>
                     </div>
                 </div>
-
-
-
 
                 <div v-if="verificado === true">
                     <div class="ml-3 mt-4">
@@ -155,10 +148,10 @@
 
                         <div class="mt-3 mb-3" >
                             <a-alert
-                                    message="!IMPORTANTE!"
-                                    description="DEBES ANOTAR EL CODIGO SECRETO PARA LA VERIFICACIÓN DE TUS DOCUMENTOS "
-                                    show-icon
-                                    type="warning"
+                                message="!IMPORTANTE!"
+                                description="DEBES ANOTAR EL CODIGO SECRETO PARA LA VERIFICACIÓN DE TUS DOCUMENTOS "
+                                show-icon
+                                type="warning"
                                 >
                             </a-alert>
                         </div>
@@ -173,14 +166,8 @@
 
                     </div>
                 </div>
-
-            
-
-
             </div>
-
-            </div>
-
+        </div>
     </div>  
 </Layout>
 
@@ -195,7 +182,6 @@ const dni = ref("");
 const dnipadre = ref("")
 const dnimadre = ref("")
 const ingresante = ref(0)
-const modalvisible = ref(false);
 const verificado = ref(false);
 const codigo = ref("");
 

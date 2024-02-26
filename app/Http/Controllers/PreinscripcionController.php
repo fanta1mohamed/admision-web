@@ -25,7 +25,7 @@ class PreinscripcionController extends Controller
 
   public function __construct()
   {
-      $this->fondo = public_path('imagenes/extraordinario-agua.jpg');
+      $this->fondo = public_path('imagenes/general-agua.jpg');
   }
   
   public function index()

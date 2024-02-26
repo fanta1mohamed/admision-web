@@ -305,31 +305,31 @@
                     <a-row :gutter="16">
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/6/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>                        
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/6/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
+                            <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="4">
                           <div>
-                            <img :src="baseUrl+'/documentos/6/examen/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/7/examen/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. Examen</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/6/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. Biometrico</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/6/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
+                            <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
                             <div class="flex justify-center"> H. Biometrico</div>
                           </div>
                         </a-col>
@@ -436,31 +436,31 @@
           <a-row :gutter="16">
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/6/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. inscripción</div>
                 </div>
               </a-col>                        
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/6/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
+                  <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
                   <div class="flex justify-center"> H. inscripción</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="4">
                 <div>
-                  <img :src="baseUrl+'/documentos/6/examen/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/7/examen/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. Examen</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/6/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/6/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
+                  <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
@@ -601,8 +601,6 @@ const getPostulantes =  async (term = "", page = 1) => {
   postulantes.value = res.data.datos.data;
 }
 
-//getPostulanteRequisitos()
-
 const getPostulantesByDni = async () => {
   let res = await axios.post("get-postulante-dni",{ dni: dniseleccionado.value });
   postulante.value.id = res.data.datos.id_postulante;
@@ -641,7 +639,7 @@ const abrirVentana = async () => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/6/control_biometrico/constancias/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/7/control_biometrico/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
@@ -681,39 +679,6 @@ const getCarrerasPrevias = async() => {
     console.error('Error:', error);
   }
 };
-
-
-// const getEstadoEstudiante = async() => {
-//   try {
-//     const response = await axios.get('https://service2.unap.edu.pe/DEBTS/?w='+anteriores,
-//     { headers: { 'Content-Type': 'application/json'}  });
-//     anteriores.value = response.data;
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// };
-
-// const getCarrerasPrevias = async ( ) => {
-//   try {
-//     const response = await fetch("https://service2.unap.edu.pe/TieneCarrerasPrevias/", {
-//       method: "POST", // or 'PUT'
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         doc_:ingresante.value.nro_doc,
-//         nom_:ingresante.value.nombres,
-//         app_:ingresante.value.primer_apellido,
-//         apm_:ingresante.value.segundo_apellido
-//       }),
-//     });
-
-//     const result = await response.json();
-//     console.log("Success:", result);
-//   } catch (error) {
-//     console.error("Error:", error);
-//   }
-// }
 
 getRequisitos()
 

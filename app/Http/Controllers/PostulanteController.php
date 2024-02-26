@@ -54,13 +54,13 @@ class PostulanteController extends Controller
   public function getPostulanteXDni2(Request $request)
   {
     $res = Postulante::select(
-      'postulante.id','postulante.primer_apellido', 'postulante.segundo_apellido', 'postulante.nombres',
+      'postulante.id', 'postulante.tipo_doc','postulante.primer_apellido', 'postulante.segundo_apellido', 'postulante.nombres',
       'postulante.email AS correo', 'postulante.celular', 'postulante.fec_nacimiento',
       'postulante.ubigeo_nacimiento as ubigeo', 'postulante.ubigeo_residencia', 'postulante.direccion', 
       'postulante.sexo', 'postulante.estado_civil',
       'departamento.nombre as departamento', 'departamento.codigo as dep', 
       'provincia.nombre as provincia','provincia.codigo as prov', 
-      'distritos.nombre as distrito', 'distritos.codigo as dist' 
+      'distritos.nombre as distrito', 'distritos.codigo as dist', 'postulante.id_pais' 
     )
     ->leftjoin('ubigeo','postulante.ubigeo_residencia','ubigeo.ubigeo')
     ->leftjoin('departamento','ubigeo.id_departamento','departamento.id') 
@@ -166,8 +166,14 @@ class PostulanteController extends Controller
 
       $postulante = Postulante::find($request->id);
       $temp = $postulante;
-      $postulante->ubigeo_residencia = $request->ubigeo_residencia;
-      $postulante->direccion = $request->direccion;
+      if($request->pais){
+        $postulante->id_pais = $request->pais;
+        $postulante->direccion = $request->direccion;
+      }else{
+        $postulante->ubigeo_residencia = $request->ubigeo_residencia;
+        $postulante->direccion = $request->direccion;
+      }
+ 
       $postulante->save();
 
       if( $temp == $postulante ) {

@@ -85,8 +85,8 @@
                         <div style="padding-left:20px; margin-top: 14px;">
                             <div  style="margin-top: 5px;">1.	Comprobante de pago.</div>
                             <div  style="margin-top: 5px;">2.	Documento de identidad (<span style="color:red;">*</span>original y copia).</div>
-                            <div  style="margin-top: 5px;">3.	Certificado de estudios (<span style="color:red;">*</span>original y copia).</div> 
-                            <div  style="margin-top: 5px;">4.	Otros requisitos según lo estipulado en el Art. 28 del reglamento general de admisión 2024-I, punto 28.3, y conforme a la modalidad de postulación..</div> 
+                            <div  style="margin-top: 5px;">3.	Certificado de estudios (<span style="color:red;">*</span>original y copia).</div>
+                            <div  style="margin-top: 5px;">4.	Otros requisitos según lo estipulado en el Art. 16.b del reglamento general de admisión 2024-I, punto 28.3, y conforme a la modalidad de postulación..</div>
                         </div>
                         <div style="margin-top:10px; margin-bottom:-14px;">
                             Nota (<span style="color:red;">*</span> Solo para verificación</span>)

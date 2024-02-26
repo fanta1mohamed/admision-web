@@ -19,14 +19,14 @@
         </div>
 
         <div class="flex justify-center title-proceso-container">
-            <span class="title-proceso">EXAMEN CEPREUNA 2024-I</span>
+            <span class="title-proceso">EXAMEN EXTRAORDINARIO 2024</span>
         </div>    
         <div class="flex justify-center titulo-pre">
             <div>  
                 <!-- <span> Preinscripción </span> -->
                 <div class="flex justify-center">
                     <hr class="line-pre mr-3" style="margin-top:18px;"> 
-                        <span style="font-size:1.4rem; text-transform:capitalize;">Puntaje individual</span> 
+                        <span style="font-size:1.4rem; text-transform:capitalize;"> Puntaje individual</span> 
                     <hr class="line-pre ml-3" style="margin-top:18px;"> 
                 </div>
             </div>
@@ -90,8 +90,6 @@
         margin-top: -30px;
     }
 
-
-
     @media (min-height: 680px), screen and (orientation: portrait) {
         .logoPre img{ width: 36px; }
         .logoPre div{margin-top: -0px;}
@@ -105,5 +103,12 @@
         .title-proceso-container { margin-top: 10px; margin-bottom:0px; }
     }
 
+    @media (max-width: 480px) , screen and (orientation: portrait) {
+        .title-proceso { font-size:1.4rem; color:white; font-weight:bold; }
+    }
+
+    @media (min-width: 1380px) , screen and (orientation: portrait) {
+        .title-proceso { font-size:2.7rem; color:white; font-weight:bold; }
+    }
+
 </style>
-  

@@ -951,7 +951,6 @@ class ResultadosController extends Controller
         foreach ($estudiantesPorPrograma as $estudiante) {
             $programaActual = $estudiante->programa;
     
-            // Inicializa el array de estudiantes para el nuevo programa si es la primera vez
             if (!isset($programaEstudiantes[$programaActual])) {
                 $programaEstudiantes[$programaActual] = [];
             }
@@ -986,7 +985,6 @@ class ResultadosController extends Controller
     }
 
 
-
     public function cargaArchivoPDF(Request $request,$dni,$codigo,$tipo)
     {
         try {
@@ -1000,9 +998,9 @@ class ResultadosController extends Controller
             $nombreArchivo = $archivo->getClientOriginalName();
             
             if( $tipo == print($tipo)){ 
-                $archivo->move(public_path('documentos/6/inscripciones/certificados/'), $dni.$codigo.'.pdf');
+                $archivo->move(public_path('documentos/7/inscripciones/certificados/'), $dni.$codigo.'.pdf');
             } else { 
-                $archivo->move(public_path('documentos/6/inscripciones/dnis/'), $codigo.$dni.'.pdf');
+                $archivo->move(public_path('documentos/7/inscripciones/dnis/'), $codigo.$dni.'.pdf');
             }
             $respuesta = [ 'message' => 'Archivo subido', 'estado'=>true, 'archivo' => [ 'nombre' => $nombreArchivo ],];
 
@@ -1012,7 +1010,6 @@ class ResultadosController extends Controller
         }
 
     }
-
 
 
 }

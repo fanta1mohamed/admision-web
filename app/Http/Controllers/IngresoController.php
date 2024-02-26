@@ -73,7 +73,7 @@ class IngresoController extends Controller
       JOIN inscripciones ON postulante.id = inscripciones.id_postulante
       JOIN programa ON programa.id = inscripciones.id_programa
       JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
-      JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = inscripciones.id_proceso
+      JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = ".auth()->user()->id_proceso . "
       WHERE inscripciones.id_proceso = ".auth()->user()->id_proceso."
       AND postulante.nro_doc = $dni ");
 
@@ -131,11 +131,20 @@ class IngresoController extends Controller
                     if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
 
                     $database2 = 'mysql_secondary';
-//                    $rs = DB::connection($database2)->select("SELECT CONCAT('24', (max(right(e.num_mat,LENGTH(TRIM(e.num_mat))-2)+0) + 1)) AS siguiente FROM unapnet.estudiante e WHERE left(e.num_mat,2) = '24' ;");
                     $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
 
-                    
-                    $nuevoCodigo = $rs[0]->siguiente;
+                    $nuevoCodigo = null;
+                    if($re[0]->id_modalidad == 2 ){
+                        $cod = DB::Select("SELECT cp.* FROM pre_inscripcion pre
+                        JOIN carreras_previas cp ON pre.id_anterior = cp.id
+                        JOIN postulante pos ON pos.id = pre.id_postulante
+                        where id_anterior IS NOT NULL
+                        AND pre.id_proceso = 7 
+                        AND pos.nro_doc = " . $re[0]->dni);
+                        $nuevoCodigo = $cod[0]->codigo;
+                    }else{
+                        $nuevoCodigo = $rs[0]->siguiente;
+                    }
  
                     $biometric = ControlBiometrico::create([
                         'id_proceso' => 6,
@@ -185,17 +194,13 @@ class IngresoController extends Controller
                 });
             } catch (\Exception $e) {
                 $errorMessage = $e->getMessage();
-                // Registrar el error en un archivo de registro
                 \Log::error('Error en la transacción: ' . $errorMessage);
-                // Devolver una respuesta de error al usuario con el mensaje de error
                 return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
             }
 
         $this->response['estado'] = true;
         $this->response['datos'] = $request->dni;
         return response()->json($this->response, 200);
-        // return response()->download($outputFilePath);
-        // return response()->download($outputFilePath)->deleteFileAfterSend();
     }
 
     public function pdf($datos){

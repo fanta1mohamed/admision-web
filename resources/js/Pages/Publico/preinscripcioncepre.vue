@@ -531,7 +531,9 @@
 
           <div style="width: 100%; margin-top: 5px; ">
           <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
-            <div>
+
+            {{ datospersonales.tipo_doc }}
+            <div v-if="datospersonales.tipo_doc == 1">
 
             <a-form
               ref="formDatosResidencia" :model="datosresidencia"
@@ -648,6 +650,59 @@
 
             </a-form>
             </div>
+
+
+            <div v-if="datospersonales.tipo_doc == 2">
+
+                <a-form
+                  ref="formDatosResidenciaExtra" :model="datosresidencia"
+                  name="datosResidenciaExtra"
+                  @finish="onFinish"
+                  @finishFailed="onFinishFailed"
+                  >
+                  <!-- //DATOS DE RESIDENCIA -->
+                  <div style="margin-bottom: 25px; margin-top: 10px; ">
+                    <h1 style="font-size: 1.1rem;"> Datos de residencia</h1>
+                  </div>
+
+                  <a-row :gutter="[16, 0]" class="form-row">
+                    <a-select 
+                      ref="select" 
+                      v-model:value="datosresidencia.pais"
+                      placeholder="Seleccionar pais" class="selector-modalidad"
+                      >
+                      <a-select-option :value="11">ARGENTINA</a-select-option>
+                      <a-select-option :value="23">BOLIVIA</a-select-option>
+                      <a-select-option :value="35">CHILE</a-select-option>
+                      <a-select-option :value="38">COLOMBIA</a-select-option>
+                      <a-select-option :value="47">ECUADOR</a-select-option>
+                      <a-select-option :value="104">MEXICO</a-select-option>
+                      <a-select-option :value="184">VENEZUELA</a-select-option>
+                    </a-select>
+                  </a-row>
+
+                  <a-row :gutter="[16, 0]" class="form-row">
+                    <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                      <a-form-item
+                        name="direccion"
+                        :rules="[{ required: true, message: 'Ingresa tu dirección', trigger: 'blur'},]">
+                        <div><label>Dirección:</label></div>
+                        <a-input v-model:value="datosresidencia.direccion" />
+                      </a-form-item>
+                    </a-col>
+                  </a-row>
+
+                  <a-row :gutter="[16, 0]" class="form-row" style="margin-top: 15px; ">
+                    <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                      <div class="flex" style="justify-content: space-between;">
+                        <a-button v-if="current > 0" @click="prev()" >Anterior</a-button>
+                        <a-button v-if="current < 2 " @click="saveDatosPersonales()" type="primary" >Siguiente</a-button>
+                      </div>
+                    </a-col>
+                  </a-row>
+
+                </a-form>
+                </div>
           </a-card>
         </div>
         </div>
@@ -1265,8 +1320,14 @@
         </div>
 
         <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 2">
-          <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button @click="saveDatosResidencia()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+          <div v-if="datospersonales.tipo_doc == 1" class="flex" style="justify-content: space-between;">
+            <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
+            <a-button @click="saveDatosResidencia()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+          </div>
+          <div v-else class="flex" style="justify-content: space-between;">
+            <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
+            <a-button @click="saveDatosResidenciaExtra()" class="boton-siguiente" type="primary" >Siguientex</a-button>
+          </div>
         </div>
 
         <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 3">
@@ -1500,6 +1561,7 @@ const datospersonales = reactive({
   ubigeo:"",
   ubigeo_residencia:"",
 });
+
 const formDatosResidencia = ref();
 const datosresidencia = reactive({
   dep: null,
@@ -1507,6 +1569,13 @@ const datosresidencia = reactive({
   dist: null,
   direccion:''
 });
+
+const formDatosResidenciaExtra = ref();
+const datosresidenciaExtra = reactive({
+  pais:null,
+  direccion:''
+});
+
 const formDatosColegio = ref();
 const datoscolegio = reactive({
   egreso: null,
@@ -1724,7 +1793,9 @@ const getDatosPersonales = async () => {
         datosresidencia.prov = res.data.datos[0].provincia
         distseleccionado.value = res.data.datos[0].dist;
         datosresidencia.dist = res.data.datos[0].distrito
+        datosresidencia.pais = res.data.datos[0].id_pais
         datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
+        datospersonales.ubigeo = res.data.datos[0].ubigeo
         datosresidencia.direccion = res.data.datos[0].direccion
         pagina_pre.value = 1;
       }
@@ -1740,6 +1811,7 @@ const getDatosPersonales2 = async () => {
   let res = await axios.post( "/get-postulante-datos-personales2", {nro_doc: formState.dni});
     if(res.data.datos.length > 0) {
       datospersonales.id = res.data.datos[0].id
+      datospersonales.tipo_doc = res.data.datos[0].tipo_doc
       datospersonales.primerapellido = res.data.datos[0].primer_apellido
       datospersonales.segundo_apellido = res.data.datos[0].segundo_apellido
       datospersonales.nombres = res.data.datos[0].nombres
@@ -1755,8 +1827,10 @@ const getDatosPersonales2 = async () => {
       provseleccionada.value = res.data.datos[0].prov;
       datosresidencia.prov = res.data.datos[0].provincia
       distseleccionado.value = res.data.datos[0].dist;
+      datosresidencia.pais = res.data.datos[0].id_pais;      
       datosresidencia.dist = res.data.datos[0].distrito
       datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
+      datospersonales.ubigeo = res.data.datos[0].ubigeo
       datosresidencia.direccion = res.data.datos[0].direccion
     }
 
@@ -1851,6 +1925,23 @@ const saveDatosResidencia =  async () => {
     {
       id: datospersonales.id,
       ubigeo_residencia: datospersonales.ubigeo_residencia,
+      direccion: datosresidencia.direccion
+    }
+  );
+  if(res.data.estado === true ){
+    notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
+  }
+  if( avance_current.value < 32){ savePasos("Registro de datos de residencia", 2, 32) } else{ next() }
+}
+
+const saveDatosResidenciaExtra =  async () => {
+  const values = await formDatosResidenciaExtra.value.validateFields();
+
+  let res = await axios.post(
+    "/save-postulante-residencia",
+    {
+      id: datospersonales.id,
+      pais: datosresidencia.pais,
       direccion: datosresidencia.direccion
     }
   );

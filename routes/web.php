@@ -402,7 +402,6 @@ Route::get('/examen-vocacional', fn () => Inertia::render('Publico/exvocacional'
 
 Route::post('/save-respuesta', [DetalleExamenVocacionalController::class, 'saveRespuesta']);
 
-
 Route::post('save-pasos-preinscripcion', [PreinscripcionController::class, 'savePasos']);
 Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
 Route::post('/get-postulante-datos-personales2', [PostulanteController::class, 'getPostulanteXDni2']);
