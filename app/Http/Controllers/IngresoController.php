@@ -122,6 +122,21 @@ class IngresoController extends Controller
             AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ".auth()->user()->id_proceso.
             " AND inscripciones.id_proceso = ".auth()->user()->id_proceso.";" );
 
+            // $nuevoCodigo = null;
+            // if($re[0]->id_modalidad == 2 ){
+            //     $cod = DB::table('pre_inscripcion')
+            //     ->select('carreras_previas.*')
+            //     ->join('carreras_previas', 'pre_inscripcion.id_anterior', '=', 'carreras_previas.id')
+            //     ->join('postulante', 'postulante.id', '=', 'pre_inscripcion.id_postulante')
+            //     ->whereNotNull('pre_inscripcion.id_anterior')
+            //     ->where('pre_inscripcion.id_proceso', 7)
+            //     ->where('postulante.nro_doc', $request->dni)
+            //     ->get();
+            //     $nuevoCodigo = $cod[0]->codigo;
+            // }else{
+            //     $nuevoCodigo = $rs[0]->siguiente;
+            // }
+
             try {
                 DB::transaction(function () use ($request, $re) {
 
@@ -132,20 +147,6 @@ class IngresoController extends Controller
                     $database2 = 'mysql_secondary';
                     $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
 
-                    // $nuevoCodigo = null;
-                    // if($re[0]->id_modalidad == 2 ){
-                    //     $cod = DB::table('pre_inscripcion')
-                    //     ->select('carreras_previas.*')
-                    //     ->join('carreras_previas', 'pre_inscripcion.id_anterior', '=', 'carreras_previas.id')
-                    //     ->join('postulante', 'postulante.id', '=', 'pre_inscripcion.id_postulante')
-                    //     ->whereNotNull('pre_inscripcion.id_anterior')
-                    //     ->where('pre_inscripcion.id_proceso', 7)
-                    //     ->where('postulante.nro_doc', $request->dni)
-                    //     ->get();
-                    //     $nuevoCodigo = $cod[0]->codigo;
-                    // }else{
-                    //     $nuevoCodigo = $rs[0]->siguiente;
-                    // }
                     $nuevoCodigo = $rs[0]->siguiente;
  
                     $biometric = ControlBiometrico::create([
@@ -209,6 +210,133 @@ class IngresoController extends Controller
         // return response()->download($outputFilePath)->deleteFileAfterSend();
     }
 
+
+    // public function biometrico(Request $request){
+
+    //     $re = DB::select("SELECT
+    //         procesos.anio, procesos.ciclo_oti,
+    //         programa.programa_oti,
+    //         postulante.primer_apellido AS paterno,
+    //         postulante.segundo_apellido AS materno, postulante.nombres,
+    //         tipo_documento_identidad.documento_oti AS tipo_doc_oti,
+    //         postulante.nro_doc AS dni,
+    //         users.name, users.paterno as upaterno,
+    //         postulante.fec_nacimiento,
+    //         postulante.sexo,
+    //         postulante.ubigeo_residencia,
+    //         postulante.direccion,
+    //         postulante.estado_civil,
+    //         resultados.fecha,
+    //         postulante.email,
+    //         postulante.celular,
+    //         programa.cod_esp,
+    //         modalidad.modalidad_oti,
+    //         resultados.puntaje,
+    //         resultados.puesto,
+    //         resultados.puesto_general,
+    //         postulante.id AS id_postulante,
+    //         procesos.id AS id_proceso, procesos.nombre AS proceso,
+    //         modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
+    //         programa.nombre AS programa
+    //         FROM resultados
+    //         JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
+    //         JOIN inscripciones ON inscripciones.id_postulante = postulante.id
+    //         JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
+    //         JOIN procesos ON resultados.id_proceso = procesos.id
+    //         LEFT join users on users.id = inscripciones.id_usuario
+    //         JOIN programa ON programa.id = inscripciones.id_programa
+    //         JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
+    //         WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
+    //         AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ".auth()->user()->id_proceso.
+    //         " AND inscripciones.id_proceso = ".auth()->user()->id_proceso.";" );
+
+    //         // $nuevoCodigo = null;
+    //         // if($re[0]->id_modalidad == 2 ){
+    //         //     $cod = DB::table('pre_inscripcion')
+    //         //     ->select('carreras_previas.*')
+    //         //     ->join('carreras_previas', 'pre_inscripcion.id_anterior', '=', 'carreras_previas.id')
+    //         //     ->join('postulante', 'postulante.id', '=', 'pre_inscripcion.id_postulante')
+    //         //     ->whereNotNull('pre_inscripcion.id_anterior')
+    //         //     ->where('pre_inscripcion.id_proceso', 7)
+    //         //     ->where('postulante.nro_doc', $request->dni)
+    //         //     ->get();
+    //         //     $nuevoCodigo = $cod[0]->codigo;
+    //         // }else{
+    //         //     $nuevoCodigo = $rs[0]->siguiente;
+    //         // }
+
+    //         try {
+    //             DB::transaction(function () use ($request, $re) {
+
+    //                 $ingreso = 1;
+    //                 $i_admision = 0;
+    //                 if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
+
+    //                 $database2 = 'mysql_secondary';
+    //                 $rs = DB::connection($database2)->select("SELECT CONCAT('24', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1,1),4,'0')) AS siguiente FROM unapnet.estudiante e WHERE LEFT(e.num_mat, 2) = '24';");
+
+    //                 $nuevoCodigo = $rs[0]->siguiente;
+ 
+    //                 $biometric = ControlBiometrico::create([
+    //                     'id_proceso' => 7,
+    //                     'id_postulante' => $re[0]->id_postulante,
+    //                     'codigo_ingreso' => $nuevoCodigo,
+    //                     'estado' => 1,
+    //                     'segunda_carrera' => $i_admision,
+    //                     'id_usuario' => auth()->id()
+    //                 ]);
+
+    //                 $e_civil = 1;
+    //                 if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
+    //                 if($re[0]->estado_civil == 2 ) { $e_civil = 1;}
+    //                 if($re[0]->estado_civil == 3 ) { $e_civil = 3;}
+    //                 if($re[0]->estado_civil == 4 ) { $e_civil = 6;}
+
+    //                 $estudiante = Estudiante::on('mysql_secondary')->create([
+    //                     'num_mat' => $nuevoCodigo,
+    //                     'cod_car' => $re[0]->programa_oti,
+    //                     'paterno' => $re[0]->paterno,
+    //                     'materno' => $re[0]->materno,
+    //                     'nombres' => $re[0]->nombres,
+    //                     'tip_doc' => $re[0]->tipo_doc_oti,
+    //                     'num_doc' => $re[0]->dni,
+    //                     'num_car' => $ingreso,
+    //                     'fch_nac' => $re[0]->fec_nacimiento,
+    //                     'sexo' => $re[0]->sexo,
+    //                     'ubigeo' => $re[0]->ubigeo_residencia,
+    //                     'mod_ing' => $re[0]->modalidad_oti,
+    //                     'est_civ' => $e_civil,
+    //                     'fch_ing' => $re[0]->fecha,
+    //                     'direc' => $re[0]->direccion,
+    //                     'email' => $re[0]->email,
+    //                     'con_est' => 5,
+    //                     'celular' => $re[0]->celular,
+    //                     'cod_esp' => $re[0]->cod_esp,
+    //                     'puntaje' => $re[0]->puntaje,
+    //                     'puesto_escuela' => $re[0]->puesto,
+    //                     'puesto_general' => $re[0]->puesto_general,
+    //                     'ano_ing' => $re[0]->anio,
+    //                     'per_ing' => $re[0]->ciclo_oti
+
+    //                 ]);
+
+    //                 $this->pdfbiometrico2($request->dni);
+
+    //             });
+    //         } catch (\Exception $e) {
+    //             $errorMessage = $e->getMessage();
+    //             \Log::error('Error en la transacción: ' . $errorMessage);
+
+    //             return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
+    //         }
+
+    //     $this->response['estado'] = true;
+    //     $this->response['datos'] = $request->dni;
+    //     return response()->json($this->response, 200);
+    // }
+
+
+
     public function pdf($datos){
         setlocale(LC_TIME, 'es_ES.utf8');
         $date = Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
@@ -223,6 +351,8 @@ class IngresoController extends Controller
         file_put_contents(public_path('/documentos/cepre2023-II/'.$data->dni.'/').'constancia-ingreso-1.pdf', $output);
         return $pdf->stream();
     }
+
+
 
     public function pdfbiometrico($datos){
 

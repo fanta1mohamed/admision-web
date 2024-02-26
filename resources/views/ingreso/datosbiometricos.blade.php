@@ -197,7 +197,7 @@
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @else
                 Correo institucional: <span style="font-weight: bold"> {{$data->dni}}@est.unap.edu.pe </span><br> 
-                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.cepre.2024 </span><br>
+                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.extra.2024 </span><br>
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @endif
         </p>
