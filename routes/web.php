@@ -292,7 +292,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     });
 
 });
-Route::get('/pdf-datos-biometrico/{dni}', [IngresoController::class, 'pdfbiometrico2']);
+Route::get('/pdf-datos-biometrico/{dni}', [IngresoController::class, 'pdfbiometrico2'])->middleware('auth','revisor');
 
 Route::get('/examen-vocacional2', fn () => Inertia::render('Publico/exvocacional2'))->name('ex-vocacional2');
 Route::post('/get-avance-postulante', [TestController::class, 'getAvancePostulante']);
