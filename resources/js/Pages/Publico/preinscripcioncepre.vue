@@ -1615,8 +1615,8 @@ const datos_preinscripcion = reactive({
 
 const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
 const ubigeoInput = (event) => { formState.ubigeo = event.target.value.replace(/\D/g, ''); };
-const nombresInput = (event) => { datospersonales.nombres = event.target.value.replace(/[^A-Za-z\s]/g, '');};
-const pimerapellidoInput = (event) => { datospersonales.primerapellido = event.target.value.replace(/[^A-Za-z]/g, '');};
+const nombresInput = (event) => { datospersonales.nombres = event.target.value.replace(/[^A-Za-zÑñ\s]/g, '');};
+const pimerapellidoInput = (event) => { datospersonales.primerapellido = event.target.value.replace(/[^A-Za-zÑñ]/g, '');};
 const celularInput = (event) => { datospersonales.celular = event.target.value.replace(/\D/g, ''); };
 
 const departamentos = ref([])
