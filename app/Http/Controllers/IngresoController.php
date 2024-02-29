@@ -247,7 +247,6 @@ class IngresoController extends Controller {
         AND resultados.dni_postulante = $dni AND resultados.id_proceso = 7
         AND inscripciones.id_proceso =  7;");
 
-        return $re[0];
         try {
             DB::transaction(function () use ($re) {
 
