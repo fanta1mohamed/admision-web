@@ -393,7 +393,6 @@ Route::get('/descargar-ingenierias', [ResultadosController::class, 'getExamenIng
 Route::get('/descargar-biomedicas', [ResultadosController::class, 'getExamenBio']);
 Route::get('/descargar-sociales', [ResultadosController::class, 'getExamenSoc']);
 
-
 //PREINSCRIPCION
 Route::get('/preinscripcion-adicional', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
 //Route::get('/preinscripcion', fn () => Inertia::render('Publico/preinscripcion'))->name('preinscripcion');
@@ -435,6 +434,7 @@ Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocaci
 Route::get('/pdf-solicitud/{p}/{dni}', [PreinscripcionController::class, 'pdfsolicitud']);
 
 Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
+Route::post('/control-biometrico-manual/{dni}', [IngresoController::class, 'registrar_biometrico']);
 
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
