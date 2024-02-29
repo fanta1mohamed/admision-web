@@ -434,7 +434,7 @@ Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocaci
 Route::get('/pdf-solicitud/{p}/{dni}', [PreinscripcionController::class, 'pdfsolicitud']);
 
 Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
-Route::post('/control-biometrico-manual/{dni}', [IngresoController::class, 'registrar_biometrico']);
+Route::get('/control-biometrico-manual/{dni}', [IngresoController::class, 'registrar_biometrico']);
 
 Route::get('/documentos-pdfs/{dni}', [PreinscripcionController::class, 'UnirPDF']);
 Route::get('/siguiendo-mi-postulacion', fn () => Inertia::render('Publico/estado'));
