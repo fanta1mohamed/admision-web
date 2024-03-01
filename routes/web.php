@@ -223,6 +223,10 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/eliminar-administrativo', [AdministrativoController::class, 'deleteAdministrativo']);
     Route::post('/actualizar-sexo-administrativo', [AdministrativoController::class, 'actualizarSexo']);
 
+    Route::get('/colegios', fn () => Inertia::render('Admin/Colegios/index'))->name('admin-colegios');
+    Route::post('/get-colegios', [ColegioController::class, 'getColegios']);
+    Route::post('/save', [ColegioController::class, 'save']);
+
 });
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
@@ -303,57 +307,114 @@ Route::post('/get-alternativas2', [PreguntaController::class, 'getAlternativas2'
 
 Route::get('/get-pre', [PreguntaController::class, 'getPreguntasPerfiles2']);
 
-Route::prefix('simulacro')->middleware('auth','simulacro')->group(function () {
-    Route::get('/', fn () => Inertia::render('Simulacro/Admin/index'))->name('simulacro-inicio');
-    Route::get('/get-nro-participantes', [SimulacroController::class, 'postulantesRegistrados']);
-    Route::get('/get-nro-inscritos', [SimulacroController::class, 'postulantesInscritos']);
-    Route::get('/get-nro-pagos', [SimulacroController::class, 'pagosRegistrados']);
+Route::prefix('simulacro')->group(function () {
+    Route::middleware(['auth', 'simulacro'])->group(function () {
+        Route::get('/', fn () => Inertia::render('Simulacro/Admin/index'))->name('simulacro-inicio');
+        Route::get('/get-nro-participantes', [SimulacroController::class, 'postulantesRegistrados']);
+        Route::get('/get-nro-inscritos', [SimulacroController::class, 'postulantesInscritos']);
+        Route::get('/get-nro-pagos', [SimulacroController::class, 'pagosRegistrados']);
 
 
-    //COLEGIOS
-    Route::get('/colegios', fn () => Inertia::render('Simulacro/Colegios/index'))->name('simulacro-colegios');
-    Route::post('/get-colegios', [ColegioController::class, 'getColegios']);
-    Route::post('/save', [ColegioController::class, 'save']);
+        //COLEGIOS
+        Route::get('/colegios', fn () => Inertia::render('Simulacro/Colegios/index'))->name('simulacro-colegios');
+        Route::post('/get-colegios', [ColegioController::class, 'getColegios']);
+        Route::post('/save', [ColegioController::class, 'save']);
 
-    //INSCRITOS
-    Route::get('/inscripciones', fn () => Inertia::render('Simulacro/Admin/Inscripciones/index'))->name('simulacro-inscritos');
-    Route::post('/get-inscritos-simulacro', [SimulacroController::class, 'getInscritosSimulacro']);
+        //INSCRITOS
+        Route::get('/inscripciones', fn () => Inertia::render('Simulacro/Admin/Inscripciones/index'))->name('simulacro-inscritos');
+        Route::post('/get-inscritos-simulacro', [SimulacroController::class, 'getInscritosSimulacro']);
 
-    //PARTICIPANTES
-    Route::get('/participantes', fn () => Inertia::render('Simulacro/Admin/Participantes/index'))->name('simulacro-participantes');
-    Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);
-    Route::post('/save-simulacro-participante', [SimulacroController::class, 'updateParticipante']);
-
-
-    //ENTRADA
-    Route::get('/entrada', fn () => Inertia::render('Simulacro/Entrada/index'));
-    Route::post('/get-participante', [SimulacroController::class, 'getEntrada']);
-    Route::post('/save-entrada', [SimulacroController::class, 'saveEntrada']);
-    Route::post('/get-total-entrada', [SimulacroController::class, 'getTotalEntrada']);
-    Route::post('/get-simulacro-ingreso', [SimulacroController::class, 'getIngresos']);
+        //PARTICIPANTES
+        Route::get('/participantes', fn () => Inertia::render('Simulacro/Admin/Participantes/index'))->name('simulacro-participantes');
+        Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);
+        Route::post('/save-simulacro-participante', [SimulacroController::class, 'updateParticipante']);
 
 
-    //PAGOS
-    Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
-    Route::get('/pagos-consulta', fn () => Inertia::render('Simulacro/Admin/Pagos/consulta'))->name('simulacro-consulta-pagos');
-    Route::post('/get-pagos-simulacro', [PagoController::class, 'getPagosSimulacro']);
-    Route::post('/get-pagos-simulacro-consulta', [PagoController::class, 'getPagosSimulacroConsulta']);
+        //ENTRADA
+        Route::get('/entrada', fn () => Inertia::render('Simulacro/Entrada/index'));
+        Route::post('/get-participante', [SimulacroController::class, 'getEntrada']);
+        Route::post('/save-entrada', [SimulacroController::class, 'saveEntrada']);
+        Route::post('/get-total-entrada', [SimulacroController::class, 'getTotalEntrada']);
+        Route::post('/get-simulacro-ingreso', [SimulacroController::class, 'getIngresos']);
 
-    //REPORTES
-    Route::get('/postulantes-por-programas', [SimulacroController::class, 'postulantexPrograma']);
-    Route::get('get-inscritos-genero-reporte', [SimulacroController::class, 'reporteInscritosGenero']);
-    Route::get('get-inscritos-areas-reporte', [SimulacroController::class, 'reporteInscritosAreas']);
-    
 
-    //Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacros');
-    Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
-    Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
+        //PAGOS
+        Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
+        Route::get('/pagos-consulta', fn () => Inertia::render('Simulacro/Admin/Pagos/consulta'))->name('simulacro-consulta-pagos');
+        Route::post('/get-pagos-simulacro', [PagoController::class, 'getPagosSimulacro']);
+        Route::post('/get-pagos-simulacro-consulta', [PagoController::class, 'getPagosSimulacroConsulta']);
 
-    Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
-    Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacros']);
-    Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
-    Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
-    Route::post('/save-respuestas', [SimulacroController::class, 'saveRespuestas']);
+        //REPORTES
+        Route::get('/postulantes-por-programas', [SimulacroController::class, 'postulantexPrograma']);
+        Route::get('get-inscritos-genero-reporte', [SimulacroController::class, 'reporteInscritosGenero']);
+        Route::get('get-inscritos-areas-reporte', [SimulacroController::class, 'reporteInscritosAreas']);
+        
+
+        //Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacros');
+        Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
+        Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
+
+        Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
+        Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacros']);
+        Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
+        Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
+        Route::post('/save-respuestas', [SimulacroController::class, 'saveRespuestas']);
+
+    });
+
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/', fn () => Inertia::render('Simulacro/Admin/index'))->name('simulacro-inicio');
+        Route::get('/get-nro-participantes', [SimulacroController::class, 'postulantesRegistrados']);
+        Route::get('/get-nro-inscritos', [SimulacroController::class, 'postulantesInscritos']);
+        Route::get('/get-nro-pagos', [SimulacroController::class, 'pagosRegistrados']);
+
+
+        //COLEGIOS
+        Route::get('/colegios', fn () => Inertia::render('Simulacro/Colegios/index'))->name('simulacro-colegios');
+        Route::post('/get-colegios', [ColegioController::class, 'getColegios']);
+        Route::post('/save', [ColegioController::class, 'save']);
+
+        //INSCRITOS
+        Route::get('/inscripciones', fn () => Inertia::render('Simulacro/Admin/Inscripciones/index'))->name('simulacro-inscritos');
+        Route::post('/get-inscritos-simulacro', [SimulacroController::class, 'getInscritosSimulacro']);
+
+        //PARTICIPANTES
+        Route::get('/participantes', fn () => Inertia::render('Simulacro/Admin/Participantes/index'))->name('simulacro-participantes');
+        Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);
+        Route::post('/save-simulacro-participante', [SimulacroController::class, 'updateParticipante']);
+
+
+        //ENTRADA
+        Route::get('/entrada', fn () => Inertia::render('Simulacro/Entrada/index'));
+        Route::post('/get-participante', [SimulacroController::class, 'getEntrada']);
+        Route::post('/save-entrada', [SimulacroController::class, 'saveEntrada']);
+        Route::post('/get-total-entrada', [SimulacroController::class, 'getTotalEntrada']);
+        Route::post('/get-simulacro-ingreso', [SimulacroController::class, 'getIngresos']);
+
+
+        //PAGOS
+        Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
+        Route::get('/pagos-consulta', fn () => Inertia::render('Simulacro/Admin/Pagos/consulta'))->name('simulacro-consulta-pagos');
+        Route::post('/get-pagos-simulacro', [PagoController::class, 'getPagosSimulacro']);
+        Route::post('/get-pagos-simulacro-consulta', [PagoController::class, 'getPagosSimulacroConsulta']);
+
+        //REPORTES
+        Route::get('/postulantes-por-programas', [SimulacroController::class, 'postulantexPrograma']);
+        Route::get('get-inscritos-genero-reporte', [SimulacroController::class, 'reporteInscritosGenero']);
+        Route::get('get-inscritos-areas-reporte', [SimulacroController::class, 'reporteInscritosAreas']);
+        
+
+        //Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacros');
+        Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
+        Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
+
+        Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
+        Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacros']);
+        Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
+        Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
+        Route::post('/save-respuestas', [SimulacroController::class, 'saveRespuestas']);
+
+    });
 
 });
 

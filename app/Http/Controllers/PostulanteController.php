@@ -317,9 +317,10 @@ class PostulanteController extends Controller
     ->where(function ($query) use ($request) {
         return $query
             ->orWhere('nro_doc', 'LIKE', '%' . $request->term . '%')
-            ->orWhere('primer_apellido', 'LIKE', '%' . $request->term . '%')
-            ->orWhere('segundo_apellido', 'LIKE', '%' . $request->term . '%')
-            ->orWhere('nombres', 'LIKE', '%' . $request->term . '%');
+            ->orWhere('email', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('celular', 'LIKE', '%' . $request->term . '%')
+            ->orWhere(DB::raw("CONCAT(nombres, ' ', primer_apellido, ' ', segundo_apellido)"), 'LIKE', '%' . $request->term . '%')
+            ->orWhere(DB::raw("CONCAT(primer_apellido, ' ', segundo_apellido, ' ', nombres)"), 'LIKE', '%' . $request->term . '%');
     })
     ->paginate(20);
 

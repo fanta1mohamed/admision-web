@@ -203,7 +203,7 @@
             </a-menu-item>
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-colegio-index')" :active="route().current('admin-colegio-index')" style="margin: 0px; margin-left: -25px; ">
+              <nav-link :href="route('admin-colegios')" :active="route().current('admin-colegios')" style="margin: 0px; margin-left: -25px; ">
                 <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
                   <span>Colegios</span>
