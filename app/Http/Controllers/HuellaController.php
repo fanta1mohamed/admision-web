@@ -10,21 +10,24 @@ class HuellaController extends Controller
     public function upload(Request $request) {
         try {
             $dni = $request->input('dni');
+            $etapa = $request->input('etapa');
             if ($request->hasFile('imagen')) {
                 $imagen = $request->file('imagen');
 
-                $rutaCarpeta = public_path('documentos/8/inscripciones/huellas/');
+                $rutaCarpeta = "";
+                if($etapa == 'inscripcion'){  $rutaCarpeta = public_path('documentos/8/inscripciones/huellas/'); }
+                if($etapa == 'biometrico'){  $rutaCarpeta = public_path('documentos/8/inscripciones/huellas/'); }
+
                 if (!file_exists($rutaCarpeta)) {
                     if (!mkdir($rutaCarpeta, 0777, true)) {
                         return response()->json(['error' => 'No se pudo crear la carpeta para guardar la imagen'], 500);
                     }
                 }
-    
+
                 $imageName = $dni;
                 $imagen->move($rutaCarpeta, $imageName);
-                $imagePath = asset('documentos/8/inscripciones/huellas/' . $imageName);
     
-                return response()->json(['image_path' => $imagePath]);
+                return response()->json(['image_path' => $dni]);
             } else {
                 return response()->json(['error' => 'No se proporcionó ningún archivo de imagen'], 400);
             }
@@ -32,5 +35,6 @@ class HuellaController extends Controller
             return response()->json(['error' => 'Error al cargar la imagen: ' . $e->getMessage()], 500);
         }
     }
+    
 
 }
