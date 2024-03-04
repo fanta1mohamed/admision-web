@@ -13,7 +13,7 @@ class HuellaController extends Controller
             if ($request->hasFile('imagen')) {
                 $imagen = $request->file('imagen');
 
-                $rutaCarpeta = public_path('documents/8/inscripciones/huellas/');
+                $rutaCarpeta = public_path('documentos/8/inscripciones/huellas/');
                 if (!file_exists($rutaCarpeta)) {
                     if (!mkdir($rutaCarpeta, 0777, true)) {
                         return response()->json(['error' => 'No se pudo crear la carpeta para guardar la imagen'], 500);
@@ -22,7 +22,7 @@ class HuellaController extends Controller
     
                 $imageName = $dni;
                 $imagen->move($rutaCarpeta, $imageName);
-                $imagePath = asset('documents/8/inscripciones/huellas/' . $imageName);
+                $imagePath = asset('documentos/8/inscripciones/huellas/' . $imageName);
     
                 return response()->json(['image_path' => $imagePath]);
             } else {
