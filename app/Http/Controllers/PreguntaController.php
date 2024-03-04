@@ -147,7 +147,7 @@ class PreguntaController extends Controller
 
     public function getDatosExamen2(Request $request)
     {
-        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 7');
+        $examen = DB::select( 'SELECT COUNT(*) AS vocacional FROM avance_postulante WHERE dni_postulante = '.$request->dni.' AND avance = 2 AND id_proceso = 8');
 
         if($examen[0]->vocacional == 0) {
 
