@@ -15,8 +15,10 @@ class HuellaController extends Controller
                 $imagen = $request->file('imagen');
 
                 $rutaCarpeta = "";
-                if($etapa == 'inscripcion'){  $rutaCarpeta = public_path('documentos/8/inscripciones/huellas/'); }
-                if($etapa == 'biometrico'){  $rutaCarpeta = public_path('documentos/8/biometrico/huellas/'); }
+                if($etapa == 'inscripcion'){ 
+                     $rutaCarpeta = public_path('documentos/8/inscripciones/huellas/'); 
+                } else {  $rutaCarpeta = public_path('documentos/8/biometrico/huellas/'); 
+                }
 
                 if (!file_exists($rutaCarpeta)) {
                     if (!mkdir($rutaCarpeta, 0777, true)) {
