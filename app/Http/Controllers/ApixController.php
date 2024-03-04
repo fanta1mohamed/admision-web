@@ -108,7 +108,7 @@ class ApixController extends Controller {
             ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
             ->where('nro_doc','=',$dni)->first();
         }
-        if($proceso == 5){
+        if($proceso == 8){
             $res = Postulante::select(
                 'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
                 'postulante.nombres', 'colegios.id_gestion', 'pre_inscripcion.id_programa',
