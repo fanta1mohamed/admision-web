@@ -7,18 +7,7 @@ use App\Http\Controllers\ApixController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ResCepreController;
 use App\Http\Controllers\SancionadoController;
-
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\HuellaController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-ingresante/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
@@ -52,3 +41,5 @@ Route::get('/obtener-origin2', function (Request $request) {
     $origin = $request->header('Origin');
     return response()->json(['origin' => $origin]);
 });
+
+Route::post('/cargar-imagen', [HuellaController::class, 'upload']);
