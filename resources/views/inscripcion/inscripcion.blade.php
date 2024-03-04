@@ -144,25 +144,25 @@
                         </div>
                         <div style="margin-top: -8px;">
                             <span style="font-weight:bold;">
-                                HORARIO DE INGRESO:
+                                HORARIO DE INGRESO (Sábado 23 de marzo):
                             </span> 
                             <div style="margin-top: -8px; margin-left:-5px;">
                                 <ul>
-                                    <li>Ingreso: 14:00 a 15:30 horas</li>
+                                    <li>Ingreso: 06:30 a 09:30 horas</li>
                                     {{-- <li>Inicio de examen: 10:00 horas</li> --}}
                                 </ul>
                             </div>
                         </div>
-                        {{-- <div style="margin-top: -8px; margin-left:-5px;">
+                        <div style="margin-top: -8px; margin-left:-5px;">
                             <span style="font-weight:bold;">
-                                HORARIOS SOLO PARA CLASIFICADOS (28 de enero):
+                                HORARIOS SOLO PARA CLASIFICADOS (Domingo 24 de marzo):
                             </span>
                             <div style="margin-top: -8px">
                                 <ul>
-                                    <li>Ingreso: 12:30 a 13:30 horas.</li>
+                                    <li>Ingreso: 08:00 a 09:30 horas.</li>
                                 </ul>
                             </div>
-                        </div> --}}
+                        </div>
                     </td>
 
                     <td valign="top">

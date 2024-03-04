@@ -21,6 +21,7 @@
           </div>
         </div>
 
+
         <!-- <div style="padding: 20px; background: white;">
           <a-row :gutter="[16]">
             <a-col :xs="24" :sm="24" :md="24" :lg="6" style="">
@@ -89,7 +90,7 @@
             placeholder="Buscar"
             v-model:value="dni"
           />
-          <template #option="{ value: val, label:lab }" style="background-color: blue;">
+          <template #option="{ value: val, label:lab }">
             <div style="height: 34px;">
               <div><span style="font-weight: 700; color: black; font-size: .7rem;">{{ val }}</span></div>
               <div style="margin-top: -10px;"><span style="font-size: .8rem; text-transform: uppercase;">{{ lab }}</span></div>
@@ -104,7 +105,7 @@
           <a-col flex="1 1">
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
-                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/7/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
+                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/8/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
@@ -242,11 +243,11 @@
             <!-- {{ baseUrl+'/huellas/inscripcion/'+dniseleccionado+'.jpg' }} -->
             <div class="mt-4 container-huellas">
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%; overflow-y: hidden;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/7/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/8/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/7/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/8/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
             </div>
@@ -391,7 +392,7 @@
 
   <a-tab-pane key="7" tab="Constancia">
       <div v-if="dniseleccionado" style="width:100%">            
-        <iframe :src="baseUrl+'/documentos/7/inscripciones/constancias/'+dniseleccionado+'.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
+        <iframe :src="baseUrl+'/documentos/8/inscripciones/constancias/'+dniseleccionado+'.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
       </div>
     </a-tab-pane>
 </a-tabs>
@@ -500,7 +501,6 @@ const getAnteriores =  async () => {
   anteriores.value = res.data.datos;
 }
 
-
 const Inscribir =  async () => {
   let res = await axios.post( "inscribir", { postulante: postulante.value });
   imprimirPDF(dniseleccionado.value)
@@ -555,7 +555,7 @@ watch(tabactive, ( newValue, oldValue ) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/7/inscripciones/constancias/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/8/inscripciones/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();

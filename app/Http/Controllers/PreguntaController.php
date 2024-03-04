@@ -156,7 +156,7 @@ class PreguntaController extends Controller
             ->join('programa', 'inscripciones.id_programa', '=', 'programa.id')
             ->join('examen_vocacional', 'inscripciones.id_programa', '=', 'examen_vocacional.programa')
             ->where('postulante.nro_doc', $request->dni)
-            ->where('inscripciones.id_proceso', 7)
+            ->where('inscripciones.id_proceso', 8)
             ->where('inscripciones.codigo', $request->codigo)
             ->get();
      

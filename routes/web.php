@@ -622,6 +622,38 @@ Route::post('subir-pdf/{dni}/{cod}/{tipo}', [ResultadosController::class, 'carga
 
 
 
+Route::get('/get-pago-caja/{dni}', function ($dni) {
+    try {
+        $response = Http::get('http://tesoreria.unap.edu.pe/services/document/?w=' . $dni . '&d=2024-02-23');
+         if ($response->successful()) {
+            $datosCaja = $response->json(['data']);
+            return response()->json($datosCaja);
+        } else {
+            return response()->json(['error' => 'La solicitud no fue exitosa'], $response->status());
+        }
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Se produjo un error al procesar la solicitud: ' . $e->getMessage()], 500);
+    }
+});
+
+Route::get('/get-pago-BN/{dni}', function ($dni) {
+    try {
+        $response = Http::get('https://service2.unap.edu.pe/PayOnBankADMISION2024/v1/' . $dni . '/');
+         if ($response->successful()) {
+            $datosCaja = $response->json(['data']);
+            return response()->json($datosCaja);
+        } else {
+            return response()->json(['error' => 'La solicitud no fue exitosa'], $response->status());
+        }
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Se produjo un error al procesar la solicitud: ' . $e->getMessage()], 500);
+    }
+});
+
+
+Route::post('/insertar-pago', [PagoController::class, 'insertarPago']);
+Route::get('/eliminar-pago/{dni}/{operacion}', [PagoController::class, 'eliminarPago']);
+Route::get('/get-pagos-dni/{dni}', [PagoController::class, 'getPagosDNI']);
 
 
 

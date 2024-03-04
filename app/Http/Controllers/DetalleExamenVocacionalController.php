@@ -70,7 +70,7 @@ class DetalleExamenVocacionalController extends Controller
             'fecha' => date('Y-m-d')
         ]);    
 
-        $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->where('id_proceso',7)->first();
+        $avancePostulante = AvancePostulante::where('dni_postulante', $request->dni)->where('id_proceso',8)->first();
         $avancePostulante->avance = 2;
         $avancePostulante->save();
 
@@ -123,7 +123,7 @@ class DetalleExamenVocacionalController extends Controller
             'nombre' => 'CONSTANCIA VOCACIONAL',
             'numero' => 1,
             'id_postulante' => $res[0]->idP,
-            'id_tipo_documento' => 7,
+            'id_tipo_documento' => 8,
             'estado' => 1,
             'url' => 'documentos/cepre2023-II/'.$res[0]->nro_doc.'/'.'constancia vocacional-1.pdf',
             'fecha' => date('Y-m-d')

@@ -129,6 +129,7 @@ class InscripcionController extends Controller
     }
 
     public function getPreinscipciones($dni){
+
         $res = DB::select("SELECT 
         pre_inscripcion.estado AS estado,
         programa.nombre AS programa, 
@@ -136,7 +137,7 @@ class InscripcionController extends Controller
         modalidad.nombre AS modalidad
         FROM pre_inscripcion
         JOIN programa ON programa.id = pre_inscripcion.id_programa
-        JOIN procesos ON procesos.id = pre_inscripcion.id_proceso
+        JOIN procesos ON procesos.id = pre_inscripcion.id_proceso AND procesos.id = ".auth()->user()->id_proceso ." 
         JOIN modalidad ON modalidad.id = pre_inscripcion.id_modalidad
         JOIN postulante ON postulante.id = pre_inscripcion.id_postulante    
         WHERE postulante.nro_doc =  $dni AND pre_inscripcion.id_proceso = ". auth()->user()->id_proceso );
@@ -170,12 +171,12 @@ class InscripcionController extends Controller
      
         $prog = $request['postulante']['cod_programa'];
 
-        $res = $siguiente = Inscripcion::where('codigo', 'like', 'E124'.$prog.'%')
+        $res = $siguiente = Inscripcion::where('codigo', 'like', 'G124'.$prog.'%')
         ->max(\DB::raw('CAST(SUBSTRING(codigo, 8) AS UNSIGNED)')) + 1;
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
         $inscripcion = Inscripcion::create([
-            'codigo' => 'E124' . $prog . $res,
+            'codigo' => 'G124' . $prog . $res,
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> auth()->user()->id_proceso,
             'id_programa' => $request['postulante']['id_programa'],
@@ -206,20 +207,19 @@ class InscripcionController extends Controller
             $inscripcion->observaciones = "Cambio de programa a $request->id_programa";
             $inscripcion->save();
 
-            $res = $siguiente = Inscripcion::where('codigo', 'like', 'C124'.$request->id_programa.'%')
+            $res = $siguiente = Inscripcion::where('codigo', 'like', 'G124'.$request->id_programa.'%')
             ->max(\DB::raw('CAST(SUBSTRING(codigo, 8) AS UNSIGNED)')) + 1;
             $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
 
             $inscripcion = Inscripcion::create([
-                'codigo' => 'E124' . $request->id_programa . $res,
+                'codigo' => 'G124' . $request->id_programa . $res,
                 'id_postulante'=> $request->id_postulante,
                 'id_proceso'=> auth()->user()->id_proceso,
                 'id_programa' => $request->id_programa,
                 'id_modalidad' => $request->id_modalidad, 
                 'estado' => 0,
                 'id_usuario' => auth()->id()
-
             ]);
 
         }
