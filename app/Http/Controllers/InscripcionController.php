@@ -45,6 +45,7 @@ class InscripcionController extends Controller
         
         $sancionados = DB::table('sancionados')
             ->where('dni', $dni)
+            ->where('id_proceso', auth()->user()->id_proceso)
             ->exists();
 
         if( $sancionados ){
