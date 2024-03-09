@@ -56,10 +56,20 @@
 <div>
     <a-modal v-model:visible="visible" title="Postulante" style="margin-top: -40px; width:100%;" :footer="false">
         <a-row>
+            {{ form }}
             <a-col :span="24">
-                <a-card title="Formulario de Postulante" :bordered="false">
+                <a-card :bordered="false">
                 <a-form :model="form" :rules="formRules">
                     <a-row :gutter="16">
+                    <a-col :xs="24" :sm="12" :md="8" :lg="6">
+                        <label>Tipo Doc</label>
+                        <a-form-item >
+                            <a-select v-model:value="form.tipo_doc">
+                                <a-select-option :value="1">DNI</a-select-option>
+                                <a-select-option :value="3">Carné Ext.</a-select-option>                    <!-- Opciones del select -->
+                            </a-select>
+                        </a-form-item>
+                    </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>DNI</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese el número de documento' }]">
@@ -203,6 +213,7 @@ const abrirEditar = (item) => {
 
     form.id = item.id;
     form.nro_doc = item.nro_doc;
+    form.tipo_doc = item.tipo_doc;
     form.primer_apellido = item.primer_apellido;
     form.segundo_apellido = item.segundo_apellido;
     form.apellido_casada = item.apellido_casada;
@@ -222,6 +233,7 @@ const abrirEditar = (item) => {
 
 const form = reactive({
     nro_doc: '',
+    tipo_doc:'',
     primer_apellido: '',
     segundo_apellido: '',
     apellido_casada: '',
@@ -248,6 +260,7 @@ const fetchData = () => {
 const saveData = async () => {
     let res = await axios.post("save-postulante-admin",{  
       id: form.id,
+      tipo_doc: form.tipo_doc,
       nro_doc: form.nro_doc,
       primer_apellido: form.primer_apellido, 
       segundo_apellido: form.segundo_apellido,  

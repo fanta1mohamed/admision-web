@@ -309,7 +309,7 @@ class PostulanteController extends Controller
     $query_where = [];
 
     $res = Postulante::select(
-      'id', 'nro_doc', 'primer_apellido', 'segundo_apellido', 'apellido_casada', 'nombres', 'sexo', 'fec_nacimiento',
+      'id', 'tipo_doc', 'nro_doc', 'primer_apellido', 'segundo_apellido', 'apellido_casada', 'nombres', 'sexo', 'fec_nacimiento',
       'ubigeo_nacimiento', 'ubigeo_residencia', 'celular', 'email', 'estado_civil','direccion','anio_egreso', 
       'correo_institucional', 'cod_orcid', 'observaciones', 'id_colegio',
     )
@@ -350,6 +350,7 @@ public function savePostulanteAdmin(Request $request ) {
           'direccion' => $request->direccion,
           'anio_egreso' => $request->egreso,
           'nro_doc' => $request->nro_doc,
+          'tipo_doc'=> $request->tipo_doc, 
           'observaciones' => $request->observaciones,
           'id_colegio' => $request->colegio,
         ]);
@@ -361,7 +362,7 @@ public function savePostulanteAdmin(Request $request ) {
     } else {
         $temp = Postulante::find($request->id);
         $postulante = Postulante::find($request->id);
-
+        $postulante->tipo_doc = $request->tipo_doc; 
         $postulante->primer_apellido = $request->primer_apellido; 
         $postulante->segundo_apellido = $request->segundo_apellido;
         $postulante->apellido_casada = $request->apellido_casada;
