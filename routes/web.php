@@ -36,6 +36,7 @@ use App\Http\Controllers\PonderacionController;
 use App\Http\Controllers\SancionadoController;
 use App\Http\Controllers\CepreController;
 use App\Http\Controllers\PagoBancoController;
+use App\Http\Controllers\VocacionalController;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -169,7 +170,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/guardar-foto-inscripcion', [FotoController::class, 'guardarFotoInscripcion']);
     Route::post('/guardar-foto-biometrico', [FotoController::class, 'guardarFotoBiometrico']);
 
-    Route::get('/reporte', fn () => Inertia::render('Admin/Vocacional/index'))->name('admin-reporte');
+    Route::get('/vocacional', fn () => Inertia::render('Admin/Vocacional/index'))->name('admin-reporte');
     Route::get('/resultados-vocacional', [PreguntaController::class, 'getResultado']);
 
 
@@ -182,6 +183,8 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/save-documento', [DocumentoController::class, 'saveDocumentoAdmin']);
     
     Route::post('/get-postulantes-admin', [PostulanteController::class, 'getPostulantesAdmin']);
+    Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
+    
     Route::post('/save-postulante-admin', [PostulanteController::class, 'savePostulanteAdmin']);
     // Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
     // Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);    
@@ -228,6 +231,8 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/save', [ColegioController::class, 'save']);
 
 });
+
+Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 

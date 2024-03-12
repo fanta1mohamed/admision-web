@@ -17,7 +17,9 @@ class ColegioController extends Controller
             'cod_modular' => $request->cod_modular, 
             'cod_local' => $request->cod_local,
             'nombre' => $request->nombre,
+            'forma' => $request->forma,
             'nivel' => $request->nivel, 
+            'sexo'=>'MIXTO',
             'gestion' => $request->gestion, 
             'ubigeo' => $request->ubigeo,
             'direccion' => $request-> direccion,
@@ -37,6 +39,7 @@ class ColegioController extends Controller
           $colegio->cod_local = $request->cod_local;
           $colegio->nombre = $request->nombre;
           $colegio->nivel = $request->nivel;
+          $colegio->forma = $request->forma;
           $colegio->gestion = $request->gestion;
           $colegio->ubigeo = $request->ubigeo;
           $colegio->direccion = $request->direccion;

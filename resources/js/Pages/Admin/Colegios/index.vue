@@ -96,7 +96,7 @@
 <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.03) 0px 10px 10px -5px;">
     <div>
         <a-table :dataSource="colegios" size="" :columns="columns" :pagination="false">
-            <template #bodyCell="{ column, index, record }">
+            <template #bodyCell="{ column, record }">
                 <template v-if="column.dataIndex === 'acciones'">
                     <a-button type="success" class="mr-1" style="color: #476175;" size="small" disabled>
                         <template #icon><EyeOutlined/></template>
@@ -183,6 +183,20 @@
                                 <a-select-option value="BASICA ALTERNATIVA">BASICA ALTERNATIVA</a-select-option>    
                                 <a-select-option value="BASICA ALTERNATIVA AVANZADO">BASICA ALTERNATIVA AVANZADO</a-select-option>    
                                 <a-select-option value="BÁSICA ALTERNATIVA SECUNDARIA">BÁSICA ALTERNATIVA SECUNDARIA</a-select-option>    
+                            </a-select>
+                        </a-form-item>
+                    </a-col>
+                    <a-col :xs="24" :sm="12" :md="8" :lg="8">
+                        <label>Forma<span style="color:red;">*</span></label>
+                        <a-form-item name="nivel" :rules="[{ required: true, message: 'Seleccione el nivel' }]">
+                            <a-select
+                                v-model:value="form.forma"
+                                style="width: 100%">
+                                <a-select-option value="ESCOLARIZADA">ESCOLARIZADA</a-select-option>
+                                <a-select-option value="NO ESCOLARIZADA">NO ESCOLARIZADA</a-select-option>
+                                <a-select-option value="NO APLICA">NO APLICA</a-select-option>
+                                <a-select-option value="PRESENCIAL">PRESENCIAL</a-select-option>
+                                <a-select-option value="A DISTANCIA">A DISTANCIA</a-select-option>
                             </a-select>
                         </a-form-item>
                     </a-col>
@@ -288,6 +302,7 @@ const form = reactive({
     nombre:'',
     cod_local:'',
     nivel:'', 
+    forma:'',
     gestion: null, 
     ubigeo:'',
     direccion:'',
@@ -400,6 +415,7 @@ const abrirEditar = (item) => {
     form.nombre = item.nombre
     form.cod_local = item.cod_local
     form.gestion = item.gestion
+    form.forma = item.forma
     form.nivel = item.nivel
     form.ubigeo = item.ubigeo
     residencia.value = item.lugar
@@ -420,6 +436,11 @@ const notificacion = (type, titulo, mensaje) => {
     });
 };
 const columns= ref([
+    {
+        title: 'Codigo',
+        dataIndex: 'id',
+        align:'center'
+    },
     {
         title: 'Cod_Mod',
         dataIndex: 'cod_modular',
