@@ -56,6 +56,7 @@
                 <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
                 <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
                 <a-select-option :value='44'>TURISMO</a-select-option>
+                <a-select-option :value='45'>PSICOLOGÍA</a-select-option>
             </a-select>
 
         </div>
@@ -205,6 +206,7 @@
                             <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
                             <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
                             <a-select-option :value='44'>TURISMO</a-select-option>
+                            <a-select-option :value='45'>PSICOLOGÍ<Abbr></Abbr></a-select-option>
                         </a-select>
                     </div>
                 </a-form-item>

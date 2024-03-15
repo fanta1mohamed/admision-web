@@ -56,7 +56,6 @@
 <div>
     <a-modal v-model:visible="visible" title="Postulante" style="margin-top: -40px; width:100%;" :footer="false">
         <a-row>
-            {{ form }}
             <a-col :span="24">
                 <a-card :bordered="false">
                 <a-form :model="form" :rules="formRules">
@@ -279,9 +278,11 @@ const saveData = async () => {
       colegio:  form.id_colegio
     }
   );
+  visible.value = false;
   if(res.data.estado === true ){  
     notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
   }
+  getModalidades();
 };
 
 const deleteData = () => {
