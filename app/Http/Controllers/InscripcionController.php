@@ -209,7 +209,7 @@ class InscripcionController extends Controller
             $inscripcion->save();
 
             $res = $siguiente = Inscripcion::where('codigo', 'like', 'G124'.$request->id_programa.'%')
-            ->max(\DB::raw('CAST(SUBSTRING(codigo, 8) AS UNSIGNED)')) + 1;
+            ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
             $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
 
