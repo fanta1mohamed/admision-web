@@ -208,7 +208,8 @@ class InscripcionController extends Controller
             $inscripcion->observaciones = "Cambio de programa a $request->id_programa";
             $inscripcion->save();
 
-            $res = $siguiente = Inscripcion::where('codigo', 'like', 'G124'.$request->id_programa.'%')
+            $id_programa = str_pad($request->id_programa, 2, '0', STR_PAD_LEFT);
+            $res = $siguiente = Inscripcion::where('codigo', 'like', 'G124'.$id_programa.'%')
             ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
             $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
