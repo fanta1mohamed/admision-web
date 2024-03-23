@@ -2,7 +2,646 @@
 <Head title="Revisión de documentos"/>
 <AuthenticatedLayout>
   <div>
-    <a-card style="background: white;" class="mb-0 p-0" >
+    <div class="fondo-biometrico" style="">
+      <div style="height: 64%; position: relative;">
+        <div class="header-biometrico-letras-top">
+          <div>
+            <span class="header-biometrico-nombre"> Ariel Luque </span> 
+          </div>
+          <div>
+            <span class="header-biometrico-2da" style=""> INGRESANTE A 2DA CARRERA </span> 
+          </div>
+        </div>
+
+      </div>
+      <div style="background: white; height: 36%; position: relative;">
+        <div class="header-biometrico-letras-bot">
+          <div>
+            <span class="header-biometrico-programa"> 
+              INGENIERÍA ESTADISTICA E INFORMÁTICA
+            </span> 
+          </div>
+          <div>
+            <span class="header-modalidad"> 
+              EXAMEN GENERAL
+            </span> 
+          </div>
+
+        </div>
+
+
+
+      </div>
+      <div class="header-biometrico-container-foto">
+        <img src="https://inscripciones.admision.unap.edu.pe/documentos/7/inscripciones/fotos/70757838.jpg" class="biometrico-foto-imagen">
+      </div>
+    </div>
+
+    <!-- DATOS DEL POSTULANTE -->
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="16">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">DATOS PERSONALES</span>
+                </div>
+                <div>
+                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 5px; color:white;">
+                    Editar
+                  </a-button>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+                  <a-col :span="24" :sm="24" :md="24" :lg="16">
+                    <div class="mt-2">
+                      <div><span style="font-weight: bold;">Nombres:</span></div>
+                      <div><span style="letter-spacing: .2rem">JHON ARIEL</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Apellidos:</span></div>
+                      <div><span style="letter-spacing: .2rem">LUQUE CUSACANI</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Fecha de nacimiento:</span></div>
+                      <div><span style="letter-spacing: .2rem">28 enero de 1980</span></div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="24" :sm="24" :md="24" :lg="8">
+                    <div class="mt-2">
+                      <div><span style="font-weight: bold;">Estado Civil:</span></div>
+                      <div><span style="letter-spacing: .2rem">soltero</span></div>
+                    </div>
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Sexo:</span></div>
+                      <div><span style="letter-spacing: .2rem">Masculino</span></div>
+                    </div>
+                  </a-col>
+                </a-row>
+              </div>
+
+            </div>
+          </a-col>
+          <a-col :span="24" :sm="24" :md="24" :lg="8">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">CONTACTO</span>
+                </div>
+                <div>
+                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 5px; color:white;">
+                    Editar
+                  </a-button>
+                </div>
+              </div>
+              
+              <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+                  <a-col :span="24" :sm="24" :md="24" :lg="24">
+                    <div class="mt-2">
+                      <div><span style="font-weight: bold;">Celular:</span></div>
+                      <div><span style="letter-spacing: .2rem">966637192</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Correo:</span></div>
+                      <div><span style="letter-spacing: .2rem">Jhonar_theking@hotmail.com</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Dirección:</span></div>
+                      <div><span style="letter-spacing: .2rem">Av. Circunvalación Sur 845</span></div>
+                    </div>
+                  </a-col>
+                </a-row>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+
+    <!-- OTROS DATOS DEL POSTULANTE -->
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">OTROS DATOS DEL POSTULANTE</span>
+                </div>
+                <div>
+                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 5px; color:white;">
+                    Editar
+                  </a-button>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+                  <a-col :span="24" :sm="24" :md="24" :lg="16">
+                    <div class="mt-2">
+                      <div><span style="font-weight: bold;">Residencia:</span></div>
+                      <div><span style="letter-spacing: .2rem">PUNO - PUNO - PUNO</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Lugar de nacimiento:</span></div>
+                      <div><span style="letter-spacing: .2rem">PUNO - EL COLLAO - ILAVE</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Nacionalidad:</span></div>
+                      <div><span style="letter-spacing: .2rem">PERUANO</span></div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="24" :sm="24" :md="24" :lg="8">
+                    <div class="mt-2">
+                      <div><span style="font-weight: bold;">Discapacidad:</span></div>
+                      <div><span style="letter-spacing: .2rem">NO</span></div>
+                    </div>
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Tipo de discapacidad:</span></div>
+                      <div><span style="letter-spacing: .2rem">Ninguna</span></div>
+                    </div>
+                  </a-col>
+                </a-row>
+              </div>
+
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+
+    <!-- FORMACÓN ACADEMICA -->
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">FORMACIÓN ACADÉMICA</span>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+                  <a-col :span="24" :sm="24" :md="24" :lg="24">
+                    <div class="mt-2">
+                      <div class="flex">
+                        <div class="mr-4">
+                          <img src="../../../assets/imagenes/logo-colegio.png" :width="50">
+                        </div>
+                        <div>
+                          <div><span style="font-weight: bold;">ESTUDIOS SECUNDARIOS</span></div>
+                          <div>Institución Educativa Secundaria Nuestra Señora del Carmen</div>
+                          <div><span style="color: grey;">Año de egreso: </span> <span style="color: black; font-weight: bold;">2023</span> </div>
+                          <div><span style="color: gray;">Lugar: </span> <span style="color: black; font-weight: bold;">Puno, El Collao, Ilave</span></div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="mt-4">
+                      <div class="flex">
+                        <div class="mr-4">
+                          <img src="../../../assets/imagenes/logotiny.png" :width="50">
+                        </div>
+                        <div>
+                          <div><span style="font-weight: bold;">INGENIERÍA DE SISTEMAS</span></div>
+                          <div>Universidad Nacional del Altiplano de Puno</div>
+                          <div><span style="color: grey;">Situación: </span> <span style="color: black; font-weight: bold;">Egresado</span> </div>
+                          <div><span style="color: gray;">Código: </span> <span style="color: black; font-weight: bold;">150570</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </a-col>
+
+                </a-row>
+              </div>
+
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+    <!-- EXPEDIENTE DE INSCRIPCIÓN -->
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">EXPEDIENTE DE INSCRIPCIÓN</span>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3; height: 180px;">
+                      <div class="flex justify-center" style="height: 130px; align-items:center;">
+                        <div>
+                          <img src="../../../assets/imagenes/dni.png" :width="130" :height="90"/>
+                        </div>
+                      </div>
+                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
+                        <div style="width:140px;">
+                          <span style="font-weight: bold;">Documento de Identidad</span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3; height: 180px;">
+                      <div class="flex justify-center" style="height: 130px; align-items:center;">
+                        <div>
+                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
+                        </div>
+                      </div>
+                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
+                        <div style="width:140px;">
+                          <span style="font-weight: bold;">Certificado de Estudios</span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </a-col>
+
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3; height: 180px;">
+                      <div class="flex justify-center" style="height: 130px; align-items:center;">
+                        <div>
+                          <img src="../../../assets/imagenes/solicitud.png" :width="120" :height="90"/>
+                        </div>
+                      </div>
+                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
+                        <div style="width:140px;">
+                          <span style="font-weight: bold;">Solicitud de inscripción</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3; height: 180px;">
+                      <div class="flex justify-center" style="height: 130px; align-items:center;">
+                        <div>
+                          <img src="../../../assets/imagenes/foto-inscripcion.jpg" :width="70" :height="90"/>
+                        </div>
+                      </div>
+                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
+                        <div style="width:140px;">
+                          <span style="font-weight: bold;">Constancia de inscripción</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3; height: 180px;">
+                      <div class="flex justify-center" style="height: 130px; align-items:center;">
+                        <div>
+                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
+                        </div>
+                      </div>
+                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
+                        <div style="width:140px;">
+                          <span style="font-weight: bold;">Constancia de Ex Vocacional</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3; height: 180px;">
+                      <div class="flex justify-center" style="height: 130px; align-items:center;">
+                        <div>
+                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
+                        </div>
+                      </div>
+                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
+                        <div style="width:140px;">
+                          <span style="font-weight: bold;">Constancia de ingreso</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3; height: 180px;">
+                      <div class="flex justify-center" style="height: 130px; align-items:center;">
+                        <div>
+                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
+                        </div>
+                      </div>
+                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
+                        <div style="width:140px;">
+                          <span style="font-weight: bold;">Constancia de ingreso</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a-col>
+
+                </a-row>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+    <!-- FOTOS DEL POSTULANTE -->
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">FOTOS DEL POSTULANTE</span>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3;">
+                        <img src="http://admision-web.test/documentos/8/8/inscripciones/fotos/70757838.jpg" :width="180" :height="90"/>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3;">
+                        <img src="http://admision-web.test/documentos/8/8/control_biometrico/fotos/70757838.jpg" :width="180" :height="90"/>
+                    </div>
+                  </a-col>
+
+                </a-row>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+
+    <!-- HUELLAS DEL POSTULANTE -->
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">HUELLAS DEL POSTULANTE</span>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3;">
+                        <img src="http://admision-web.test/documentos/8/8/inscripciones/huellas/70757838.jpg" :width="180" :height="90"/>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3;">
+                        <img src="http://admision-web.test/documentos/8/8/biometrico/huellas/70757838.jpg" :width="180" :height="90"/>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="12" :sm="24" :md="24" :lg="4">
+                    <div style="background: #f3f3f3;">
+                        <img src="http://admision-web.test/documentos/8/examen/huellas/70757838.jpg" :width="180" :height="90"/>
+                    </div>
+                  </a-col>
+
+                </a-row>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+
+
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">DATOS DE INGRESO</span>
+                </div>
+                <div>
+                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 3px; color:white;">
+                    Editar
+                  </a-button>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
+                  <a-col :span="24" :sm="24" :md="24" :lg="16">
+                    <div class="mt-2">
+                      <div><span style="font-weight: bold;">Programa:</span></div>
+                      <div><span style="letter-spacing: .2rem">INGENIERÍA DE SISTEMAS</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Puesto:</span></div>
+                      <div><span style="letter-spacing: .2rem">1ro</span></div>
+                    </div>
+
+                    <div class="mt-4">
+                      <div><span style="font-weight: bold;">Fecha de ingreso:</span></div>
+                      <div><span style="letter-spacing: .2rem">23 de marzo del 2024</span></div>
+                    </div>
+                  </a-col>
+
+                  <a-col :span="24" :sm="24" :md="24" :lg="8">
+                    <div class="mt-2">
+                      <div><span style="font-weight: bold;">Modalidad:</span></div>
+                      <div><span style="letter-spacing: .2rem">EXAMEN GENERAL</span></div>
+                    </div>
+                  </a-col>
+                </a-row>
+              </div>
+
+
+              <div class="mt-6">
+                <span style="font-weight: bold; color:#8B0000; letter-spacing: .05rem; font-size:1rem;">DATOS DE INGRESO ANTERIOR</span>
+              </div>
+
+              <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+                <a-col :span="24" :sm="24" :md="24" :lg="24">
+                  <div class="p-4" style="background: #f3f3f3; border-radius: 8px;">
+                    <div class="flex">
+                      <div class="mr-3"> 
+                        <img src="../../../assets/imagenes/logotiny.png" width="50"> 
+                      </div>
+                      <div class="flex justify-between" style="width: 100%;"> 
+                        <div>
+                          <div style="margin-top:10px;">
+                            <span style="font-weight:bold; color: green;">TITULADO</span> -
+                            <span style="font-weight:bold;">INGENIERÍA DE SISTEMAS</span>
+                          </div>
+                          <div>Codigo: 150570</div> 
+                        </div>
+                        <div class="mr-2" style="margin-top:12px;">
+                          <a-button style="padding:4px 20px; height:38px; background: #8B0000; border-radius: 4px; color:white;">
+                            Quitar
+                          </a-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a-col>
+
+                <a-col :span="24" :sm="24" :md="24" :lg="24">
+                  <div class="p-4" style="background: #f3f3f3; border-radius: 8px;">
+                    <div class="flex">
+                      <div class="mr-3"> 
+                        <img src="../../../assets/imagenes/logotiny.png" width="50"> 
+                      </div>
+                      <div class="flex justify-between" style="width: 100%;"> 
+                        <div>
+                          <div style="margin-top:10px;">
+                            <span style="font-weight:bold; color: green;">TITULADO</span> -
+                            <span style="font-weight:bold;">INGENIERÍA DE SISTEMAS</span>
+                          </div>
+                          <div>Codigo: 150570</div> 
+                        </div>
+                        <div class="mr-2" style="margin-top:12px;">
+                          <a-button style=" padding:4px 20px; height:38px; background: #8B0000; border-radius: 4px; color:white;">
+                            Quitar
+                          </a-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a-col>
+
+              </a-row>
+
+
+
+              <div>
+
+              </div>
+
+
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="margin-top:10px;">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">PAGOS REALIZADOS</span>
+                </div>
+              </div> 
+
+              <div>
+                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+                  <a-col :span="24" :sm="24" :md="24" :lg="24">
+                    <div style="">
+                        
+                      <a-table :columns="columns" :data-source="dataSource" :pagination="false" :footer="false">
+                      </a-table>
+                      <div class="flex justify-end py-4" style="margin-right:120px;">
+                          <div><span style="font-weight:bold;"> Total </span></div> <div style="font-weight:bold; margin-left:100px;">S/. 450.00</div>
+                      </div>
+                    </div>
+                  </a-col>
+                </a-row>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+
+
+    <div style="background: white;" class="mb-0 p-0">
+      <div>
+        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+          <a-col :span="24" :sm="24" :md="24" :lg="24">
+            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
+              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
+                <div style="">
+                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">RESUMEN</span>
+                </div>
+              </div> 
+
+
+              <div style="">
+                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
+                  <a-col :span="24" :sm="24" :md="24" :lg="24">
+                    <div style="">
+                      <div class="flex justify-end py-4">
+                        <div>
+                            <a-button class="mr-3" style="padding:4px 20px; height:38px; border: 2px solid #0a3d5a; border-radius: 3px; color:#0a3d5a;">
+                              <span style="font-weight:bold;">Imprimir</span>
+                          </a-button>
+                        </div>
+                        <div>
+                          <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 3px; color:white;">
+                            Registrar
+                          </a-button>
+                        </div>
+                      </div>
+                    </div>
+                  </a-col>
+                </a-row>
+              </div>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+    <div class="mt-6">
+
+    </div>
+
+
+    <!-- <a-card style="background: white;" class="mb-0 p-0" >
       <a-row :gutter="16" class="mb-3">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: space-between;">
 
@@ -31,7 +670,7 @@
                   <template #suffix>
                     <credit-card-outlined />
                   </template>
-                  <template #option="{ value: val, label:lab }" style="background-color: blue;">
+                  <template #option="{ value: val, label:lab }">
                     <div style="height: 34px;">
                       <div><span style="font-weight: 700; color: black; font-size: .7rem;">{{ val }}</span></div>
                       <div style="margin-top: -10px;"><span style="font-size: .8rem; text-transform: uppercase;">{{ lab }}</span></div>
@@ -67,7 +706,7 @@
                 <div v-if="ingresante">
                   <a-card >
                   <a-row :gutter="16">
-                      <!-- Columna izquierda -->
+
                       <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                           <label>Primer Apellido</label>
@@ -93,7 +732,7 @@
                         </a-form-item>
                       </a-col>
 
-                      <!-- Columna derecha -->
+
                       <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                           <label>Tipo documento</label>
@@ -160,12 +799,11 @@
 
                   </a-card>
 
-                  <!--
-                  {{ anteriores }} -->
+
                   <div v-if="anteriores[0]" class="flex mb-3 mt-3" :style="anteriores[0] ? 'align-items:center; justify-content: center; width: 100%; height: 40px; background: red; border-radius: 7px;' : 'align-items:center; justify-content: center; width: 100%; height: 40px; background: #cdcdcd4F; border-radius: 7px;'">
                     <span style="font-weight: bold; font-size: 1.2rem;">Datos de ingreso anterior</span>
                   </div>
-                  <!-- {{ anteriores }} -->
+
                   <div v-if="anteriores[0]">
                     <a-card>
                       <div v-for="(ant,index) in anteriores" :key="index" >
@@ -229,7 +867,7 @@
                         <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                           <a-form-item>
                             <div style="text-align:center;">
-                              <!-- <label>INDICAR QUE USE EL CORREO INSTITUCIONAL DE SU ANTERIOR INGRESO</label> -->
+
                             </div>
                           </a-form-item>
                         </a-col>
@@ -251,13 +889,10 @@
                       </a-row>
                     </a-card>
 
-                  <!-- {{ ingresante }} -->
                 </div>
               </a-tab-pane>
 
-              <!-- <a-tab-pane key="2" tab="DNI" class="pl-2 pr-2">
 
-              </a-tab-pane> -->
               <a-tab-pane key="1" tab="Solicitud" class="pl-2 pr-2">
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
@@ -348,7 +983,7 @@
       <div class="mt-4 flex justify-end" style="margin-right: -10px;">
         <a-button type="primary"  @click="abrirVentana()">Imprimir</a-button>
       </div>
-    </a-card>
+    </a-card> -->
 
     <div style="max-width:100%;">
       <div style="max-width:1000px">
@@ -688,6 +1323,60 @@ const notificacion = (type, titulo, mensaje) => {
     description: mensaje,
   });
 };
+
+
+const dataSource = ref([
+  {
+    key: '1',
+    name: 'Derechos de admisión',
+    age: '20-23-2024',
+    address: '150.00',
+  },
+  {
+    key: '2',
+    name: 'Examen médico',
+    age: '20-23-2024',
+    address: '200.00',
+  }
+]);
+
+
+const columns = ref([
+  {
+    title: 'Banco',
+    dataIndex: 'banco',
+    width:'110px',
+  },
+  {
+    title: 'Concepto',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'Fecha',
+    dataIndex: 'age',
+    key: 'age',
+    width:'190px',
+    align:'center'
+  },
+  {
+    title: 'Monto S/',
+    dataIndex: 'address',
+    key: 'address',
+    width:'130px',
+    align:'center'
+
+  },
+  {
+    title: '',
+    dataIndex: 'option',
+    width:'80px',
+
+  }
+])
+
+
+
 </script>
 
 
@@ -710,4 +1399,98 @@ const notificacion = (type, titulo, mensaje) => {
   color:white;
   border-radius:5px;
 }
+.fondo-biometrico{
+  background-image: url("../../../assets/imagenes/fondo-biometrico.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height:320px; width: 100%; position: relative; border:solid #d9d9d9 1px;
+}
+
+.header-biometrico-nombre{
+  font-size: 3rem; 
+  font-family: 'Helvetica'; 
+  color:white; 
+  font-weight: bold;
+}
+.header-biometrico-2da{
+  font-size: 1.2rem; 
+  font-family: 'Helvetica'; 
+  color:white; 
+  letter-spacing: .22rem;
+}
+.header-biometrico-programa{
+  font-size: 1.2rem; 
+  font-family: 'Helvetica'; 
+  color:#0a3d5a ; 
+  font-weight: bold; 
+  letter-spacing: .12rem;
+}
+.header-biometrico-modalidad{
+  font-size: .9rem; 
+  font-family: 'Helvetica'; 
+  color:black; 
+  letter-spacing: .22rem;
+}
+
+.header-biometrico-container-foto{
+  position: absolute; 
+  top:60px; 
+  left: 20px; 
+  border: solid 5px #e7e7e7;
+}
+.biometrico-foto-imagen{
+  width: 180px;
+}
+.header-biometrico-letras-top{
+  position: absolute; bottom:30px; left: 230px;
+}
+
+.header-biometrico-letras-bop{
+  position: absolute; top:10px; left: 230px;
+}
+
+.header-modalidad{
+  color: black;
+}
+
+
+@media screen and (max-width: 600px) {
+  .header-biometrico-nombre{ font-size: 1.5rem; }
+  .header-biometrico-2da{
+    font-size: .7rem; 
+  }
+  .header-biometrico-programa{
+    font-size: .7rem; 
+  }
+  .header-biometrico-modalidad{
+    font-size: .5rem; 
+  }
+  .header-biometrico-container-foto{
+    top:60px; left: 10px;  border: solid 2px #e7e7e7;
+  }
+  .biometrico-foto-imagen{
+    width: 100px;
+  }
+
+  .fondo-biometrico{
+    height:200px; width: 100%; position: relative; border:solid #d9d9d9 1px;
+  }
+  .header-biometrico-letras-top{
+    position: absolute; bottom:10px; left: 125px;
+  }
+  .header-biometrico-letras-bot{
+    position: absolute; top:5px; left: 125px;
+  }
+  .header-modalidad{
+    display: none;
+  }
+
+}
+
+
+
+
+
+
+
 </style>

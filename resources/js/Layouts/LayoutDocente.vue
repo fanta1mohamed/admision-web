@@ -18,7 +18,7 @@
             <h2 class="my-2 text-2xl font-semibold text-gray-700">
               <slot name="header" />
             </h2>
-            <slot />
+            <slot/>
           </div>
         </main>
       </div>
