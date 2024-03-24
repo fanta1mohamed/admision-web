@@ -5,7 +5,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SimulacroController;
-//use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\BlogController;
@@ -256,6 +255,8 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/save-requisito', [SeleccionDataController::class, 'saveReq']);    
         
     Route::post('/get-postulantes', [SeleccionDataController::class, 'getPostulantes']);
+    Route::post('/get-postulantes-biometrico', [PostulanteController::class, 'getPostulantesBiometrico']);
+
     Route::post('/get-postulante-dni', [SeleccionDataController::class, 'getPostulanteByDni']);
 
     Route::post('/get-postulante-requisitos', [SeleccionDataController::class, 'getPostulanteRequisitos']);

@@ -2,6 +2,37 @@
 <Head title="Revisión de documentos"/>
 <AuthenticatedLayout>
   <div>
+
+    <div>
+      <div>
+        <a-input
+          placeholder="Buscar..."
+          v-model:value="buscar"
+        />
+      </div>
+    </div>
+    <div>
+      <a-table :columns="colpostulantes" :data-source="postulantes" :pagination="false" :footer="false" size="small" style="scale: 1">
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.dataIndex === 'nombres'">
+              <div> {{ record.primer_apellido }} {{ record.segundo_apellido }} {{ record.nombres }} </div>
+            </template>    
+            <template v-if="column.dataIndex === 'acciones'">
+                <a-button v-if="record.codigo == null" class="" style="background: #0a3d5a; color:white; height:34px; padding:0px 10px; border-radius:4px;" @click="abrirEditar(record)" size="small">
+                    <template #icon><form-outlined/>  </template> Revisar
+                </a-button>
+                <a-button v-else style="background: purple; color:white; padding:0px 10px; border-radius:4px;" @click="abrirEditar(record)">
+                    imprimir
+                </a-button>
+            </template>    
+            <template v-if="column.dataIndex === 'codigo'">
+                <span style="font-weight: bold;">{{ record.codigo }}</span>
+            </template>    
+          </template>
+      </a-table>
+    </div>
+
+
     <div class="fondo-biometrico" style="">
       <div style="height: 64%; position: relative;">
         <div class="header-biometrico-letras-top">
@@ -33,7 +64,7 @@
 
       </div>
       <div class="header-biometrico-container-foto">
-        <img src="https://inscripciones.admision.unap.edu.pe/documentos/7/inscripciones/fotos/70757838.jpg" class="biometrico-foto-imagen">
+        <img src="http://default.test/documentos/8/inscripciones/fotos/60068027.jpg" class="biometrico-foto-imagen">
       </div>
     </div>
 
@@ -634,8 +665,6 @@
 
 
 
-
-
     <div class="mt-6">
 
     </div>
@@ -1119,7 +1148,7 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { FormOutlined, DeleteOutlined, CreditCardOutlined } from '@ant-design/icons-vue';
+import { FormOutlined, DeleteOutlined, PrinterOutlined, CreditCardOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import Vouchers from './components/voucher.vue'
@@ -1174,6 +1203,7 @@ const save = async () => {
   dniseleccionado.value = null
   checkedList.value = []
 }
+const buscar = ref("");
 
 const ingresante = ref({
   id:null,
@@ -1236,6 +1266,14 @@ const getPostulantes =  async (term = "", page = 1) => {
   postulantes.value = res.data.datos.data;
 }
 
+const getPostulantesBiometrico =  async (term = "", page = 1) => {
+  let res = await axios.post(
+      "get-postulantes-biometrico?page=" + page,
+      { term: buscar.value }
+  );
+  postulantes.value = res.data.datos.data;
+}
+
 const getPostulantesByDni = async () => {
   let res = await axios.post("get-postulante-dni",{ dni: dniseleccionado.value });
   postulante.value.id = res.data.datos.id_postulante;
@@ -1247,6 +1285,14 @@ watch(dni, (newValue, oldValue ) => {
     // getPostulantes();
     getPostulantesByDni()
   } 
+})
+
+let timeoutId;
+watch(buscar, ( newValue, oldValue ) => { 
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+        getPostulantesBiometrico(); 
+    }, 500);    
 })
 
 watch(codigo, (newValue, oldValue ) => {
@@ -1315,7 +1361,7 @@ const getCarrerasPrevias = async() => {
   }
 };
 
-getRequisitos()
+getPostulantesBiometrico()
 
 const notificacion = (type, titulo, mensaje) => {
   notification[type]({
@@ -1371,6 +1417,44 @@ const columns = ref([
     title: '',
     dataIndex: 'option',
     width:'80px',
+
+  }
+])
+
+const colpostulantes = ref([
+  {
+    title: 'DNI',
+    dataIndex: 'dni',
+    width:'110px',
+  },
+  {
+    title: 'Nombres',
+    dataIndex: 'nombres'
+  },
+  {
+    title: 'Programa',
+    dataIndex: 'programa',
+    key: 'name',
+  },
+  {
+    title: 'Modalidad',
+    dataIndex: 'modalidad',
+    align:'center'
+  },
+  {
+    title: 'Area',
+    dataIndex: 'area',
+    align:'center'
+  },
+  {
+    title: 'Codigo',
+    dataIndex: 'codigo',
+    align:'center'
+  },
+  {
+    title: '',
+    dataIndex: 'acciones',
+    width:'120px',
 
   }
 ])
@@ -1445,7 +1529,7 @@ const columns = ref([
   position: absolute; bottom:30px; left: 230px;
 }
 
-.header-biometrico-letras-bop{
+.header-biometrico-letras-bot{
   position: absolute; top:10px; left: 230px;
 }
 
@@ -1486,11 +1570,4 @@ const columns = ref([
   }
 
 }
-
-
-
-
-
-
-
 </style>
