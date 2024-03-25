@@ -7,7 +7,9 @@ use App\Models\ParticipanteSimulacro;
 use App\Models\Ide;
 use App\Models\Resp;
 use App\Models\Simulacro;
+use App\Models\Postulante;
 use App\Models\ArchivoSimulacro;
+use App\Models\Documento;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use DB;
@@ -996,11 +998,40 @@ class ResultadosController extends Controller
 
             $tipoA = $archivo->getClientOriginalExtension();
             $nombreArchivo = $archivo->getClientOriginalName();
+
+            $post = Postulante::where('nro_doc', $dni)->first();
             
             if( $tipo == print($tipo)){ 
-                $archivo->move(public_path('documentos/7/inscripciones/certificados/'), $dni.$codigo.'.pdf');
+                $archivo->move(public_path('documentos/8/inscripciones/certificados/'), $dni.$codigo.'.pdf');
+                $datosDocumento = [
+                    'codigo' => $codigo,
+                    'nombre' => 'Cert. est presentado',
+                    'id_postulante' => $post->id,
+                    'id_tipo_documento' => 1,
+                    'estado' => 1,
+                    'url' => 'documentos/8/inscripciones/certificados/'.$dni.$codigo.'.pdf',
+                    'numero' => '1',
+                    'observacion' => 'certificado-biometrico'
+                ];
+
+                $postulante = Documento::create($datosDocumento);
+
             } else { 
-                $archivo->move(public_path('documentos/7/inscripciones/dnis/'), $codigo.$dni.'.pdf');
+                $archivo->move(public_path('documentos/8/inscripciones/dnis/'), $codigo.$dni.'.pdf');
+
+                $archivo->move(public_path('documentos/8/inscripciones/certificados/'), $dni.$codigo.'.pdf');
+                $datosDocumento = [
+                    'codigo' => $codigo,
+                    'nombre' => 'DNI',
+                    'id_postulante' => $post->id,
+                    'id_tipo_documento' => 2,
+                    'estado' => 1,
+                    'url' => 'documentos/8/inscripciones/certificados/'.$dni.$codigo.'.pdf',
+                    'numero' => 1,
+                    'observacion' => 'certificado-biometrico'
+                ];
+
+                $postulante = Documento::create($datosDocumento);
             }
             $respuesta = [ 'message' => 'Archivo subido', 'estado'=>true, 'archivo' => [ 'nombre' => $nombreArchivo ],];
 

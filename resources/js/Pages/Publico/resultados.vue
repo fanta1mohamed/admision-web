@@ -3,6 +3,7 @@
 <Layout>
     <div  style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 190px);">
         <div class="container">
+            
             <div class="mb-6" style="text-align: center; margin-top: 10px;">
                 <h1 style="color: #000000; font-size: 1.4rem; font-weight: 700;">CONSULTAR PUNTAJE</h1>
             </div>
@@ -22,10 +23,10 @@
                     size="small"
                     > 
                     <template #bodyCell="{ column, index, record }" >
+                        <div>{{index}}</div>
                         <template v-if="column.dataIndex === 'puntaje'">
                             <div>
                                 {{ record.puntaje }}
-                                <!-- {{  record.puntaje.toFixed(3) }} -->
                             </div>
                         </template>
                         <template v-if="column.dataIndex === 'fecha'">
@@ -69,7 +70,7 @@
                 </div>   
             </div>
 
-            <div class="p-3 mt-3" v-if="ingresante === 99" style="background: white;">
+            <div class="p-3 mt-3" v-if="ingresante === 1" style="background: white;">
 
                 <div class="m-3 pt-0">
                     <h3 style="font-size:1.1rem;"> Formulario de registro</h3>
@@ -169,6 +170,7 @@
             </div>
         </div>
     </div>  
+
 </Layout>
 
 </template>
@@ -189,17 +191,13 @@ const getPuntaje = async () => {
     ingresante.value = 0;
     const res = await axios.get(`/get-puntajes/` + dni.value);
     resultados.value = res.data.datos;
-    // dni.value = "";
     const ingreso = resultados.value.some(item => item.condicion === 'SI');
     if (ingreso) {
         ingresante.value = 1;
-        //console.log('Al menos uno tiene la condición SI');
     } else {
         ingresante.value = 0;
-        //console.log('Ninguno tiene la condición SI');
     }
 }
-
 
 const verificarPadres = async () => {
     const res = await axios.post("/verificar-padres",{ 
@@ -247,23 +245,21 @@ function voltear(fecha) {
   return fecha.split('-').reverse().join('-');
 }
 
-
 const handleFileChange = async ({ file }) => {
   if (file.status === 'done') {
-    const responseText = file.response.substring(1); // Eliminar el primer carácter
-    const responseData = JSON.parse(responseText); // Convertir el texto a JSON
-    arc1.value = responseData.estado; // Acceder a la propiedad 'estado'
+    const responseText = file.response.substring(1); 
+    const responseData = JSON.parse(responseText); 
+    arc1.value = responseData.estado; 
   }
 };
 
 const handleFileChange2 = async ({ file }) => {
   if (file.status === 'done') {
-    const responseText = file.response.substring(1); // Eliminar el primer carácter
-    const responseData = JSON.parse(responseText); // Convertir el texto a JSON
-    arc2.value = responseData.estado; // Acceder a la propiedad 'estado'
+    const responseText = file.response.substring(1);
+    const responseData = JSON.parse(responseText); 
+    arc2.value = responseData.estado;
   }
 };
-
 
 
 function finalizar() {
@@ -275,7 +271,17 @@ function finalizar() {
     resultados.value = [];
 }
 
-  
+const pdfURL = ref(null);
+
+const previewPDF = (event) => {
+  const file = event.target.files[0];
+  if (file && file.type === 'application/pdf') {
+    pdfURL.value = URL.createObjectURL(file);
+  } else {
+    pdfURL.value = null;
+  }
+};
+
 </script>
 
 <style scope>
