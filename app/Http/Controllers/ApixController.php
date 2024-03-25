@@ -45,6 +45,8 @@ class ApixController extends Controller {
             ->leftjoin('control_biometrico','control_biometrico.id_postulante','postulante.id')
             ->where('resultados.apto', '=','SI')
             //->where('procesos.id', '=',$proceso)
+            ->where('procesos.anio', '=',$anio)
+            ->where('procesos.ciclo', '=',$ciclo)
             ->where('inscripciones.estado','=',0)
             ->where('postulante.nro_doc','=',$dni)->first();
 
@@ -75,8 +77,8 @@ class ApixController extends Controller {
             ->join('control_biometrico','control_biometrico.id_postulante','postulante.id')
             ->join('procesos','control_biometrico.id_proceso','procesos.id') 
             ->join('inscripciones','inscripciones.id_postulante','postulante.id')
-            ->where('procesos.anio', '=',$anio)
-            ->where('procesos.ciclo', '=',$ciclo)
+            // ->where('procesos.anio', '=',$anio)
+            // ->where('procesos.ciclo', '=',$ciclo)
             ->where('postulante.nro_doc','=',$dni)->first();
 
             if ( $res ){
