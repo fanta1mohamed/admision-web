@@ -537,8 +537,11 @@ class PostulanteController extends Controller
       ->where('pos.nro_doc', $request->dni)
       ->count();
      
-      if($cantidad >= 2){ return response()->json(['estado' => true]); }
-      { return response()->json(['estado' => false]); }
+      if($cantidad >= 1){ 
+        return response()->json(['estado' => true]); 
+      }else { 
+        return response()->json(['estado' => false]); 
+      }
 
       return $cantidad;
 

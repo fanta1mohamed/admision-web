@@ -613,7 +613,7 @@ Route::get('/get-paso-registrado/{p}/{dni}', [PreinscripcionController::class, '
 
 Route::get('/pdf-resultados', [ResultadosController::class, 'generarReportePrograma']);
 
-Route::get('/ver-puntaje-alcanzadoo', fn () => Inertia::render('Publico/resultados'));
+Route::get('/ver-puntaje-alcanzado', fn () => Inertia::render('Publico/resultados'));
 
 Route::get('/carreras-previas/{dni}', [IngresoController::class, 'carrerasPrevias']);
 
