@@ -198,6 +198,7 @@ const getPuntaje = async () => {
         ingresante.value = 0;
         //console.log('Ninguno tiene la condición SI');
     }
+    getCodigoAleatorio();
 }
 
 
@@ -253,7 +254,6 @@ const handleFileChange = async ({ file }) => {
     const responseText = file.response.substring(1); // Eliminar el primer carácter
     const responseData = JSON.parse(responseText); // Convertir el texto a JSON
     arc1.value = responseData.estado; // Acceder a la propiedad 'estado'
-    getCodigoAleatorio();
   }
 };
 
@@ -262,7 +262,6 @@ const handleFileChange2 = async ({ file }) => {
     const responseText = file.response.substring(1); // Eliminar el primer carácter
     const responseData = JSON.parse(responseText); // Convertir el texto a JSON
     arc2.value = responseData.estado; // Acceder a la propiedad 'estado'
-    getCodigoAleatorio()
   }
 };
 
