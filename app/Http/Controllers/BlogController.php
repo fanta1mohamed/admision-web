@@ -70,8 +70,8 @@ class BlogController extends Controller
         JOIN postulante pos ON pos.nro_doc = pun.dni
         JOIN inscripciones ins ON ins.id_postulante = pos.id 
         JOIN programa pro ON pro.id = ins.id_programa
-        WHERE pun.dni = $dni AND pun.id_proceso = 7 
-        AND ins.id_proceso = 7
+        WHERE pun.dni = $dni AND pun.id_proceso = 8
+        AND ins.id_proceso = 8
         ORDER BY pun.fecha DESC;");
 
         $this->response['datos'] = $res;

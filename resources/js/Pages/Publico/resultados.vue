@@ -69,7 +69,7 @@
                 </div>   
             </div>
 
-            <div class="p-3 mt-3" v-if="ingresante === 1" style="background: white;">
+            <div class="p-3 mt-3" v-if="ingresante === 99" style="background: white;">
 
                 <div class="m-3 pt-0">
                     <h3 style="font-size:1.1rem;"> Formulario de registro</h3>
