@@ -71,7 +71,7 @@
 
             <div class="p-3 mt-3" v-if="ingresante === 1" style="background: white;">
 
-                <div class="m-3 pt-0">
+                <!-- <div class="m-3 pt-0">
                     <h3 style="font-size:1.1rem;"> Formulario de registro</h3>
                 </div>
 
@@ -87,9 +87,9 @@
                     <div class="flex">
                         <a-input v-model:value="dnimadre" type="text" Placeholder="Ingrese DNI de la madre" style="padding-left:20px;"/>
                     </div>
-                </div>
+                </div> -->
 
-                <div v-if="verificado === true">
+                <div v-if="ingresante === 1">
                     <div class="ml-3 mt-4">
                         <span style="font-size: 1.1rem;"> Subir Archivos</span>
                     </div>
@@ -201,15 +201,15 @@ const getPuntaje = async () => {
 }
 
 
-const verificarPadres = async () => {
-    const res = await axios.post("/verificar-padres",{ 
-        dni: dni.value, 
-        dnipadre: dnipadre.value, 
-        dnimadre: dnimadre.value 
-    });
+// const verificarPadres = async () => {
+//     const res = await axios.post("/verificar-padres",{ 
+//         dni: dni.value, 
+//         dnipadre: dnipadre.value, 
+//         dnimadre: dnimadre.value 
+//     });
 
-    verificado.value = res.data.estado;
-}
+//     verificado.value = res.data.estado;
+// }
 
 
 watch(dnipadre, ( newValue, oldValue ) => { 
