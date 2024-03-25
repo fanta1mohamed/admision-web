@@ -1018,13 +1018,11 @@ class ResultadosController extends Controller
 
             } else { 
                 $archivo->move(public_path('documentos/8/inscripciones/dnis/'), $codigo.$dni.'.pdf');
-
-                $archivo->move(public_path('documentos/8/inscripciones/certificados/'), $dni.$codigo.'.pdf');
                 $datosDocumento = [
                     'codigo' => $codigo,
                     'nombre' => 'DNI',
                     'id_postulante' => $post->id,
-                    'id_tipo_documento' => 2,
+                    'id_tipo_documento' => 1,
                     'estado' => 1,
                     'url' => 'documentos/8/inscripciones/certificados/'.$dni.$codigo.'.pdf',
                     'numero' => 1,
