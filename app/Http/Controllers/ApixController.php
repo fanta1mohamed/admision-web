@@ -37,7 +37,7 @@ class ApixController extends Controller {
             ->leftjoin('inscripciones','inscripciones.id_postulante','postulante.id')
             ->leftjoin('programa','inscripciones.id_programa','programa.id')
             ->leftjoin('facultad','programa.id_facultad','facultad.id')
-            ->leftjoin('resultados','resultados.dni_postulante','postulante.nro_doc')
+            ->join('resultados','resultados.dni_postulante','postulante.nro_doc')
             ->leftjoin('modalidad','inscripciones.id_modalidad','modalidad.id')
             ->leftjoin('procesos','procesos.id','inscripciones.id_proceso')
             ->leftjoin('filial','filial.id','procesos.id_sede_filial')
@@ -49,7 +49,6 @@ class ApixController extends Controller {
             ->where('procesos.ciclo', '=',$ciclo)
             ->where('inscripciones.estado','=',0)
             ->where('postulante.nro_doc','=',$dni)->first();
-
             if ($res ){
                 return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $res], 200);
             }else {
