@@ -1009,7 +1009,7 @@ class ResultadosController extends Controller
                     'id_postulante' => $post->id,
                     'id_tipo_documento' => 1,
                     'estado' => 1,
-                    'url' => 'documentos/8/inscripciones/dnis/'.$dni.$codigo.'.pdf',
+                    'url' => 'documentos/8/inscripciones/certificados/'.$dni.$codigo.'.pdf',
                     'numero' => '1',
                     'observacion' => 'certificado-biometrico'
                 ];
