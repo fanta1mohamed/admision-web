@@ -367,7 +367,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/8/inscripciones/dnis/'+codigo+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/8/inscripciones/dnis/'+dniseleccionado+codigo+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
