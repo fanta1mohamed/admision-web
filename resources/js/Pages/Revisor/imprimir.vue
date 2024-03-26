@@ -2,683 +2,19 @@
 <Head title="Revisión de documentos"/>
 <AuthenticatedLayout>
   <div>
-
-    <div>
-      <div>
-        <a-input
-          placeholder="Buscar..."
-          v-model:value="buscar"
-        />
-      </div>
-    </div>
-    <div>
-      <a-table :columns="colpostulantes" :data-source="postulantes" :pagination="false" :footer="false" size="small" style="scale: 1">
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex === 'nombres'">
-              <div> {{ record.primer_apellido }} {{ record.segundo_apellido }} {{ record.nombres }} </div>
-            </template>    
-            <template v-if="column.dataIndex === 'acciones'">
-                <a-button v-if="record.codigo == null" class="" style="background: #0a3d5a; color:white; height:34px; padding:0px 10px; border-radius:4px;" @click="abrirEditar(record)" size="small">
-                    <template #icon><form-outlined/>  </template> Revisar
-                </a-button>
-                <a-button v-else style="background: purple; color:white; padding:0px 10px; border-radius:4px;" @click="abrirEditar(record)">
-                    imprimir
-                </a-button>
-            </template>    
-            <template v-if="column.dataIndex === 'codigo'">
-                <span style="font-weight: bold;">{{ record.codigo }}</span>
-            </template>    
-          </template>
-      </a-table>
-    </div>
-
-
-    <div class="fondo-biometrico" style="">
-      <div style="height: 64%; position: relative;">
-        <div class="header-biometrico-letras-top">
-          <div>
-            <span class="header-biometrico-nombre"> Ariel Luque </span> 
-          </div>
-          <div>
-            <span class="header-biometrico-2da" style=""> INGRESANTE A 2DA CARRERA </span> 
-          </div>
-        </div>
-
-      </div>
-      <div style="background: white; height: 36%; position: relative;">
-        <div class="header-biometrico-letras-bot">
-          <div>
-            <span class="header-biometrico-programa"> 
-              INGENIERÍA ESTADISTICA E INFORMÁTICA
-            </span> 
-          </div>
-          <div>
-            <span class="header-modalidad"> 
-              EXAMEN GENERAL
-            </span> 
-          </div>
-
-        </div>
-
-
-
-      </div>
-      <div class="header-biometrico-container-foto">
-        <img src="http://default.test/documentos/8/inscripciones/fotos/60068027.jpg" class="biometrico-foto-imagen">
-      </div>
-    </div>
-
-    <!-- DATOS DEL POSTULANTE -->
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="16">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">DATOS PERSONALES</span>
-                </div>
-                <div>
-                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 5px; color:white;">
-                    Editar
-                  </a-button>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-                  <a-col :span="24" :sm="24" :md="24" :lg="16">
-                    <div class="mt-2">
-                      <div><span style="font-weight: bold;">Nombres:</span></div>
-                      <div><span style="letter-spacing: .2rem">JHON ARIEL</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Apellidos:</span></div>
-                      <div><span style="letter-spacing: .2rem">LUQUE CUSACANI</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Fecha de nacimiento:</span></div>
-                      <div><span style="letter-spacing: .2rem">28 enero de 1980</span></div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="24" :sm="24" :md="24" :lg="8">
-                    <div class="mt-2">
-                      <div><span style="font-weight: bold;">Estado Civil:</span></div>
-                      <div><span style="letter-spacing: .2rem">soltero</span></div>
-                    </div>
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Sexo:</span></div>
-                      <div><span style="letter-spacing: .2rem">Masculino</span></div>
-                    </div>
-                  </a-col>
-                </a-row>
-              </div>
-
-            </div>
-          </a-col>
-          <a-col :span="24" :sm="24" :md="24" :lg="8">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">CONTACTO</span>
-                </div>
-                <div>
-                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 5px; color:white;">
-                    Editar
-                  </a-button>
-                </div>
-              </div>
-              
-              <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-                  <a-col :span="24" :sm="24" :md="24" :lg="24">
-                    <div class="mt-2">
-                      <div><span style="font-weight: bold;">Celular:</span></div>
-                      <div><span style="letter-spacing: .2rem">966637192</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Correo:</span></div>
-                      <div><span style="letter-spacing: .2rem">Jhonar_theking@hotmail.com</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Dirección:</span></div>
-                      <div><span style="letter-spacing: .2rem">Av. Circunvalación Sur 845</span></div>
-                    </div>
-                  </a-col>
-                </a-row>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-
-    <!-- OTROS DATOS DEL POSTULANTE -->
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">OTROS DATOS DEL POSTULANTE</span>
-                </div>
-                <div>
-                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 5px; color:white;">
-                    Editar
-                  </a-button>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-                  <a-col :span="24" :sm="24" :md="24" :lg="16">
-                    <div class="mt-2">
-                      <div><span style="font-weight: bold;">Residencia:</span></div>
-                      <div><span style="letter-spacing: .2rem">PUNO - PUNO - PUNO</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Lugar de nacimiento:</span></div>
-                      <div><span style="letter-spacing: .2rem">PUNO - EL COLLAO - ILAVE</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Nacionalidad:</span></div>
-                      <div><span style="letter-spacing: .2rem">PERUANO</span></div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="24" :sm="24" :md="24" :lg="8">
-                    <div class="mt-2">
-                      <div><span style="font-weight: bold;">Discapacidad:</span></div>
-                      <div><span style="letter-spacing: .2rem">NO</span></div>
-                    </div>
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Tipo de discapacidad:</span></div>
-                      <div><span style="letter-spacing: .2rem">Ninguna</span></div>
-                    </div>
-                  </a-col>
-                </a-row>
-              </div>
-
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-
-    <!-- FORMACÓN ACADEMICA -->
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">FORMACIÓN ACADÉMICA</span>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-                  <a-col :span="24" :sm="24" :md="24" :lg="24">
-                    <div class="mt-2">
-                      <div class="flex">
-                        <div class="mr-4">
-                          <img src="../../../assets/imagenes/logo-colegio.png" :width="50">
-                        </div>
-                        <div>
-                          <div><span style="font-weight: bold;">ESTUDIOS SECUNDARIOS</span></div>
-                          <div>Institución Educativa Secundaria Nuestra Señora del Carmen</div>
-                          <div><span style="color: grey;">Año de egreso: </span> <span style="color: black; font-weight: bold;">2023</span> </div>
-                          <div><span style="color: gray;">Lugar: </span> <span style="color: black; font-weight: bold;">Puno, El Collao, Ilave</span></div>
-                        </div>
-                      </div>
-                    </div>
-
-
-                    <div class="mt-4">
-                      <div class="flex">
-                        <div class="mr-4">
-                          <img src="../../../assets/imagenes/logotiny.png" :width="50">
-                        </div>
-                        <div>
-                          <div><span style="font-weight: bold;">INGENIERÍA DE SISTEMAS</span></div>
-                          <div>Universidad Nacional del Altiplano de Puno</div>
-                          <div><span style="color: grey;">Situación: </span> <span style="color: black; font-weight: bold;">Egresado</span> </div>
-                          <div><span style="color: gray;">Código: </span> <span style="color: black; font-weight: bold;">150570</span></div>
-                        </div>
-                      </div>
-                    </div>
-                  </a-col>
-
-                </a-row>
-              </div>
-
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-    <!-- EXPEDIENTE DE INSCRIPCIÓN -->
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">EXPEDIENTE DE INSCRIPCIÓN</span>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3; height: 180px;">
-                      <div class="flex justify-center" style="height: 130px; align-items:center;">
-                        <div>
-                          <img src="../../../assets/imagenes/dni.png" :width="130" :height="90"/>
-                        </div>
-                      </div>
-                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
-                        <div style="width:140px;">
-                          <span style="font-weight: bold;">Documento de Identidad</span>
-                        </div>
-
-                      </div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3; height: 180px;">
-                      <div class="flex justify-center" style="height: 130px; align-items:center;">
-                        <div>
-                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
-                        </div>
-                      </div>
-                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
-                        <div style="width:140px;">
-                          <span style="font-weight: bold;">Certificado de Estudios</span>
-                        </div>
-
-                      </div>
-                    </div>
-                  </a-col>
-
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3; height: 180px;">
-                      <div class="flex justify-center" style="height: 130px; align-items:center;">
-                        <div>
-                          <img src="../../../assets/imagenes/solicitud.png" :width="120" :height="90"/>
-                        </div>
-                      </div>
-                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
-                        <div style="width:140px;">
-                          <span style="font-weight: bold;">Solicitud de inscripción</span>
-                        </div>
-                      </div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3; height: 180px;">
-                      <div class="flex justify-center" style="height: 130px; align-items:center;">
-                        <div>
-                          <img src="../../../assets/imagenes/foto-inscripcion.jpg" :width="70" :height="90"/>
-                        </div>
-                      </div>
-                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
-                        <div style="width:140px;">
-                          <span style="font-weight: bold;">Constancia de inscripción</span>
-                        </div>
-                      </div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3; height: 180px;">
-                      <div class="flex justify-center" style="height: 130px; align-items:center;">
-                        <div>
-                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
-                        </div>
-                      </div>
-                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
-                        <div style="width:140px;">
-                          <span style="font-weight: bold;">Constancia de Ex Vocacional</span>
-                        </div>
-                      </div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3; height: 180px;">
-                      <div class="flex justify-center" style="height: 130px; align-items:center;">
-                        <div>
-                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
-                        </div>
-                      </div>
-                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
-                        <div style="width:140px;">
-                          <span style="font-weight: bold;">Constancia de ingreso</span>
-                        </div>
-                      </div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3; height: 180px;">
-                      <div class="flex justify-center" style="height: 130px; align-items:center;">
-                        <div>
-                          <img src="../../../assets/imagenes/certificado.png" :width="120" :height="90"/>
-                        </div>
-                      </div>
-                      <div class="flex justify-center" style="text-align: center; width: 100%; ">
-                        <div style="width:140px;">
-                          <span style="font-weight: bold;">Constancia de ingreso</span>
-                        </div>
-                      </div>
-                    </div>
-                  </a-col>
-
-                </a-row>
-              </div>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-    <!-- FOTOS DEL POSTULANTE -->
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">FOTOS DEL POSTULANTE</span>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3;">
-                        <img src="http://admision-web.test/documentos/8/8/inscripciones/fotos/70757838.jpg" :width="180" :height="90"/>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3;">
-                        <img src="http://admision-web.test/documentos/8/8/control_biometrico/fotos/70757838.jpg" :width="180" :height="90"/>
-                    </div>
-                  </a-col>
-
-                </a-row>
-              </div>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-
-    <!-- HUELLAS DEL POSTULANTE -->
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">HUELLAS DEL POSTULANTE</span>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3;">
-                        <img src="http://admision-web.test/documentos/8/8/inscripciones/huellas/70757838.jpg" :width="180" :height="90"/>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3;">
-                        <img src="http://admision-web.test/documentos/8/8/biometrico/huellas/70757838.jpg" :width="180" :height="90"/>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="12" :sm="24" :md="24" :lg="4">
-                    <div style="background: #f3f3f3;">
-                        <img src="http://admision-web.test/documentos/8/examen/huellas/70757838.jpg" :width="180" :height="90"/>
-                    </div>
-                  </a-col>
-
-                </a-row>
-              </div>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-
-
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">DATOS DE INGRESO</span>
-                </div>
-                <div>
-                  <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 3px; color:white;">
-                    Editar
-                  </a-button>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="16" class="mb-3 mt-4 mx-4">
-                  <a-col :span="24" :sm="24" :md="24" :lg="16">
-                    <div class="mt-2">
-                      <div><span style="font-weight: bold;">Programa:</span></div>
-                      <div><span style="letter-spacing: .2rem">INGENIERÍA DE SISTEMAS</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Puesto:</span></div>
-                      <div><span style="letter-spacing: .2rem">1ro</span></div>
-                    </div>
-
-                    <div class="mt-4">
-                      <div><span style="font-weight: bold;">Fecha de ingreso:</span></div>
-                      <div><span style="letter-spacing: .2rem">23 de marzo del 2024</span></div>
-                    </div>
-                  </a-col>
-
-                  <a-col :span="24" :sm="24" :md="24" :lg="8">
-                    <div class="mt-2">
-                      <div><span style="font-weight: bold;">Modalidad:</span></div>
-                      <div><span style="letter-spacing: .2rem">EXAMEN GENERAL</span></div>
-                    </div>
-                  </a-col>
-                </a-row>
-              </div>
-
-
-              <div class="mt-6">
-                <span style="font-weight: bold; color:#8B0000; letter-spacing: .05rem; font-size:1rem;">DATOS DE INGRESO ANTERIOR</span>
-              </div>
-
-              <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-                <a-col :span="24" :sm="24" :md="24" :lg="24">
-                  <div class="p-4" style="background: #f3f3f3; border-radius: 8px;">
-                    <div class="flex">
-                      <div class="mr-3"> 
-                        <img src="../../../assets/imagenes/logotiny.png" width="50"> 
-                      </div>
-                      <div class="flex justify-between" style="width: 100%;"> 
-                        <div>
-                          <div style="margin-top:10px;">
-                            <span style="font-weight:bold; color: green;">TITULADO</span> -
-                            <span style="font-weight:bold;">INGENIERÍA DE SISTEMAS</span>
-                          </div>
-                          <div>Codigo: 150570</div> 
-                        </div>
-                        <div class="mr-2" style="margin-top:12px;">
-                          <a-button style="padding:4px 20px; height:38px; background: #8B0000; border-radius: 4px; color:white;">
-                            Quitar
-                          </a-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </a-col>
-
-                <a-col :span="24" :sm="24" :md="24" :lg="24">
-                  <div class="p-4" style="background: #f3f3f3; border-radius: 8px;">
-                    <div class="flex">
-                      <div class="mr-3"> 
-                        <img src="../../../assets/imagenes/logotiny.png" width="50"> 
-                      </div>
-                      <div class="flex justify-between" style="width: 100%;"> 
-                        <div>
-                          <div style="margin-top:10px;">
-                            <span style="font-weight:bold; color: green;">TITULADO</span> -
-                            <span style="font-weight:bold;">INGENIERÍA DE SISTEMAS</span>
-                          </div>
-                          <div>Codigo: 150570</div> 
-                        </div>
-                        <div class="mr-2" style="margin-top:12px;">
-                          <a-button style=" padding:4px 20px; height:38px; background: #8B0000; border-radius: 4px; color:white;">
-                            Quitar
-                          </a-button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </a-col>
-
-              </a-row>
-
-
-
-              <div>
-
-              </div>
-
-
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="margin-top:10px;">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">PAGOS REALIZADOS</span>
-                </div>
-              </div> 
-
-              <div>
-                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-                  <a-col :span="24" :sm="24" :md="24" :lg="24">
-                    <div style="">
-                        
-                      <a-table :columns="columns" :data-source="dataSource" :pagination="false" :footer="false">
-                      </a-table>
-                      <div class="flex justify-end py-4" style="margin-right:120px;">
-                          <div><span style="font-weight:bold;"> Total </span></div> <div style="font-weight:bold; margin-left:100px;">S/. 450.00</div>
-                      </div>
-                    </div>
-                  </a-col>
-                </a-row>
-              </div>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-
-
-    <div style="background: white;" class="mb-0 p-0">
-      <div>
-        <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-          <a-col :span="24" :sm="24" :md="24" :lg="24">
-            <div class="p-4" style="background: white; border: 1px solid #d9d9d9;">
-              <div class="flex justify-between pb-2" style="border-bottom: 2px #0a3d5a solid;">
-                <div style="">
-                  <span style="font-weight: bold; color:#0a3d5a; letter-spacing: .22rem; font-size:1.2rem;">RESUMEN</span>
-                </div>
-              </div> 
-
-
-              <div style="">
-                <a-row :gutter="[16,16]" class="mb-3 mt-4 mx-4">
-                  <a-col :span="24" :sm="24" :md="24" :lg="24">
-                    <div style="">
-                      <div class="flex justify-end py-4">
-                        <div>
-                            <a-button class="mr-3" style="padding:4px 20px; height:38px; border: 2px solid #0a3d5a; border-radius: 3px; color:#0a3d5a;">
-                              <span style="font-weight:bold;">Imprimir</span>
-                          </a-button>
-                        </div>
-                        <div>
-                          <a-button style="padding:4px 20px; height:38px; background: #0a3d5a; border-radius: 3px; color:white;">
-                            Registrar
-                          </a-button>
-                        </div>
-                      </div>
-                    </div>
-                  </a-col>
-                </a-row>
-              </div>
-            </div>
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-
-    
-
-
-
-
-
-    <div class="mt-6">
-
-    </div>
-
-
-    <!-- <a-card style="background: white;" class="mb-0 p-0" >
+    <a-card style="background: white;" class="mb-0 p-0" >
       <a-row :gutter="16" class="mb-3">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: space-between;">
 
             <div>
-                <a-input
-                  placeholder="Ingrese el código secreto"
-                  v-model:value="codigo"
-                />
+              <a-select
+                v-model:value="codigo"
+                mode="single"
+                style="width: 280px"
+                placeholder="Selecciona los códigos"
+                :options="codigos"
+                @change="handleChange"
+              ></a-select>
             </div>
 
             <div>
@@ -718,7 +54,7 @@
               <a-checkbox v-for="(option, index) in requisitos" :key="option.value" :value="option.value" :class="{ 'first-item': index === 0 }" class="checkbox-item">
                <span style="font-weight: bold;">{{ option.label }}</span>
               </a-checkbox>
-            </a-checkbox-group>
+            </a-checkbox-group> 
           </div>
         </a-col>
       </a-row>
@@ -800,17 +136,17 @@
 
                       <a-col :xs="24" :sm="12" :md="12" :lg="2" :xl="2">
                         <div class="mb-3">
-                          <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+ingresante.nro_doc+'.jpg'" height="80"/>
+                          <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+ingresante.nro_doc+'.jpg'" height="80"/>
                           <div class="flex justify-center"> H. Der.</div>
                         </div>
 
                         <div>
-                          <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+ingresante.nro_doc+'x.jpg'" height="80" />
+                          <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+ingresante.nro_doc+'x.jpg'" height="80" />
                           <div class="flex justify-center"> H. Izq.</div>
                         </div>
                       </a-col>
                       <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
-                        <img :src="baseUrl+'/documentos/7/control_biometrico/fotos/'+ingresante.nro_doc+'.jpg'" width="250" />
+                        <img :src="baseUrl+'/documentos/8/control_biometrico/fotos/'+ingresante.nro_doc+'.jpg'" width="250" />
 
                       </a-col>
 
@@ -926,7 +262,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/7/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/8/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
                     </div>
                 </div>
                 </div>
@@ -935,7 +271,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/7/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/8/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>
@@ -948,13 +284,13 @@
                     <a-row :gutter="16">
                         <a-col :xs="24" :sm="12" :md="8" :lg="12">
                           <div class="p-6">
-                            <img :src="baseUrl+'/documentos/7/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/8/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> Foto Inscripción.</div>
                           </div>
                         </a-col>                        
                         <a-col :xs="24" :sm="12" :md="8" :lg="12">
                           <div class="p-6">
-                            <img :src="baseUrl+'/documentos/7/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/8/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> Foto Biometrico.</div>
                           </div>
                         </a-col>
@@ -969,31 +305,31 @@
                     <a-row :gutter="16">
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>                        
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
+                            <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="4">
                           <div>
-                            <img :src="baseUrl+'/documentos/7/examen/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/8/examen/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. Examen</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. Biometrico</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
+                            <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
                             <div class="flex justify-center"> H. Biometrico</div>
                           </div>
                         </a-col>
@@ -1010,7 +346,7 @@
         </a-col>
       </a-row>
       <div class="mt-4 flex justify-end" style="margin-right: -10px;">
-        <a-button type="primary"  @click="abrirVentana()">Imprimir</a-button>
+        <a-button type="primary"  @click="abrirVentana()">Registrar</a-button>
       </div>
     </a-card> -->
 
@@ -1031,7 +367,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/7/inscripciones/dnis/'+codigo+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/8/inscripciones/dnis/'+codigo+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -1042,7 +378,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/7/inscripciones/certificados/'+dniseleccionado+codigo+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/8/inscripciones/certificados/'+dniseleccionado+codigo+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -1054,7 +390,7 @@
       <div>
           <div style="width:100%; height:400px; position:relative; overflow:hidden">
             <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-              <iframe :src="baseUrl+'/documentos/7/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+              <iframe :src="baseUrl+'/documentos/8/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
             </div>
           </div>
       </div>
@@ -1065,7 +401,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/7/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/8/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -1079,13 +415,13 @@
             <a-row :gutter="16">
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
-                    <img :src="baseUrl+'/documentos/7/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
+                    <img :src="baseUrl+'/documentos/8/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                     <div class="flex justify-center"> Foto Inscripción.</div>
                   </div>
                 </a-col>                        
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
-                    <img :src="baseUrl+'/documentos/7/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                    <img :src="baseUrl+'/documentos/8/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
                     <div class="flex justify-center"> Foto Biometrico.</div>
                   </div>
                 </a-col>
@@ -1100,31 +436,31 @@
           <a-row :gutter="16">
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. inscripción</div>
                 </div>
               </a-col>                        
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/7/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
+                  <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
                   <div class="flex justify-center"> H. inscripción</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="4">
                 <div>
-                  <img :src="baseUrl+'/documentos/7/examen/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/8/examen/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. Examen</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/7/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
+                  <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
@@ -1284,6 +620,7 @@ watch(dni, (newValue, oldValue ) => {
   if(newValue.length >= 0){
     // getPostulantes();
     getPostulantesByDni()
+  
   } 
 })
 
@@ -1296,9 +633,9 @@ watch(buscar, ( newValue, oldValue ) => {
 })
 
 watch(codigo, (newValue, oldValue ) => {
-  if(newValue.length == 6 &&  dniseleccionado.value.length == 8 ){
+  if(dniseleccionado.value.length == 8 ){
     modal.value = true;
-  } 
+  }   
 })
 
 watch(dniseleccionado, (newValue, oldValue ) => {
@@ -1307,6 +644,7 @@ watch(dniseleccionado, (newValue, oldValue ) => {
         modal.value = true;
       }
       getIngresante();
+      getCodigos();
     }
 })
 
@@ -1320,7 +658,7 @@ const abrirVentana = async () => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/7/control_biometrico/constancias/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/8/control_biometrico/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
@@ -1361,7 +699,23 @@ const getCarrerasPrevias = async() => {
   }
 };
 
+
+const value = ref([]);
+const codigos =ref([]);
+
+const handleChange = (newValue) => {
+  console.log('Valor seleccionado:', newValue);
+};
+
+const getCodigos = async () => {
+  let res = await axios.get("get-codigos-postulante/"+dniseleccionado.value);
+  codigos.value = res.data.datos;
+  
+}
 getPostulantesBiometrico()
+
+
+//
 
 const notificacion = (type, titulo, mensaje) => {
   notification[type]({
@@ -1458,6 +812,7 @@ const colpostulantes = ref([
 
   }
 ])
+
 
 
 

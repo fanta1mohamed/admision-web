@@ -122,5 +122,27 @@ class DocumentoController extends Controller {
     ]);
   }
 
+  public function getCodigoDNI($dni){
+
+    $fechas = ['2024-03-25', '2024-03-26', '2024-03-27', '2024-03-28'];
+
+    $res = Documento::select('documento.codigo as label', 'documento.codigo as value')
+        ->join('postulante', 'postulante.id', '=', 'documento.id_postulante')
+        ->whereIn(DB::raw('DATE(documento.created_at)'), $fechas) // Usar whereIn para verificar si la fecha está en el array
+        ->where('postulante.nro_doc', $dni)
+        ->distinct()
+        ->get();
+      
+    if(count($res) == 0 ){
+      $this->response['estado'] = false;
+    }else{
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+    }
+    
+    return response()->json($this->response, 200);
+
+  }
+
 
 }

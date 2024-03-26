@@ -291,6 +291,8 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::get('/get-codigo/{dni}', [IngresoController::class, 'getCodigo']);
 
+    Route::get('/get-codigos-postulante/{dni}', [DocumentoController::class, 'getCodigoDNI']);
+
 
     Route::get('/api-pagos/{parametro}', function ($parametro) {
         try {

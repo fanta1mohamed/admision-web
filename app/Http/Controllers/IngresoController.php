@@ -146,7 +146,7 @@ class IngresoController extends Controller {
                     $nuevoCodigo = $rs[0]->siguiente;
  
                     $biometric = ControlBiometrico::create([
-                        'id_proceso' => 7,
+                        'id_proceso' => 8,
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
@@ -242,10 +242,10 @@ class IngresoController extends Controller {
         LEFT join users on users.id = inscripciones.id_usuario
         JOIN programa ON programa.id = inscripciones.id_programa
         JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-        JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id AND control_biometrico.id_proceso = 7
+        JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id AND control_biometrico.id_proceso = 8
         WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
-        AND resultados.dni_postulante = $dni AND resultados.id_proceso = 7
-        AND inscripciones.id_proceso =  7;");
+        AND resultados.dni_postulante = $dni AND resultados.id_proceso = 8
+        AND inscripciones.id_proceso =  8;");
 
         try {
             DB::transaction(function () use ($re) {
@@ -360,19 +360,19 @@ class IngresoController extends Controller {
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0 AND control_biometrico.id_proceso = 7
-            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 7 AND inscripciones.id_proceso = 7"
+            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0 AND control_biometrico.id_proceso = 8
+            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 8 AND inscripciones.id_proceso = 8"
         );
 
         $data = $datos[0];
-        $hinsI = public_path('documentos/7/inscripciones/huellas/').$dni.'x.jpg';
-        $hinsD = public_path('documentos/7/inscripciones/huellas/').$dni.'.jpg';
-        $hexaI = public_path('documentos/7/examen/huellas/').$dni.'.jpg';
-        $hexaD = public_path('documentos/7/examen/huellas/').$dni.'x.jpg';
-        $hbioI = public_path('documentos/7/control_biometrico/huellas/').$dni.'.jpg';
-        $hbioD = public_path('documentos/7/control_biometrico/huellas/').$dni.'x.jpg';
-        $fins = public_path('documentos/7/inscripciones/fotos/').$dni.'.jpg';
-        $fbio = public_path('documentos/7/control_biometrico/fotos/').$dni.'.jpg';
+        $hinsI = public_path('documentos/8/inscripciones/huellas/').$dni.'x.jpg';
+        $hinsD = public_path('documentos/8/inscripciones/huellas/').$dni.'.jpg';
+        $hexaI = public_path('documentos/8/examen/huellas/').$dni.'.jpg';
+        $hexaD = public_path('documentos/8/examen/huellas/').$dni.'x.jpg';
+        $hbioI = public_path('documentos/8/control_biometrico/huellas/').$dni.'.jpg';
+        $hbioD = public_path('documentos/8/control_biometrico/huellas/').$dni.'x.jpg';
+        $fins = public_path('documentos/8/inscripciones/fotos/').$dni.'.jpg';
+        $fbio = public_path('documentos/8/control_biometrico/fotos/').$dni.'.jpg';
         // $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');
@@ -390,7 +390,7 @@ class IngresoController extends Controller {
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        file_put_contents(public_path('/documentos/7/control_biometrico/constancias/').$dni.'.pdf', $output);
+        file_put_contents(public_path('/documentos/8/control_biometrico/constancias/').$dni.'.pdf', $output);
         return $pdf->stream();
     }
 
