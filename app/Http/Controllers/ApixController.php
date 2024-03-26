@@ -30,7 +30,7 @@ class ApixController extends Controller {
                 'control_biometrico.codigo_ingreso',
                 'filial.codigo as codigo_sede_filial', 'tipo_proceso.id AS tipo_proceso',
                 DB::raw("CONCAT( procesos.anio,'-',procesos.ciclo) as proceso_admision"),
-                'facultad.codigo AS codigo_facultad', 
+                'facultad.codigo AS codigo_facultad',
                 'programa.codigo_sunedu AS codigo_programa',
             )
             ->leftjoin('paises','paises.id','postulante.id_pais')
@@ -42,7 +42,7 @@ class ApixController extends Controller {
             ->leftjoin('procesos','procesos.id','inscripciones.id_proceso')
             ->leftjoin('filial','filial.id','procesos.id_sede_filial')
             ->leftjoin('tipo_proceso','tipo_proceso.id','procesos.id_tipo_proceso')
-            ->leftjoin('control_biometrico','control_biometrico.id_postulante','postulante.id')
+            ->join('control_biometrico','control_biometrico.id_postulante','postulante.id')
             ->where('resultados.apto', '=','SI')
             //->where('procesos.id', '=',$proceso)
             ->where('procesos.anio', '=',$anio)
