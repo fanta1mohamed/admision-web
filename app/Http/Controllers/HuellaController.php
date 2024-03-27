@@ -17,7 +17,7 @@ class HuellaController extends Controller
                 $rutaCarpeta = "";
                 if($etapa == 'inscripcion'){ 
                      $rutaCarpeta = public_path('documentos/8/inscripciones/huellas/'); 
-                } else {  $rutaCarpeta = public_path('documentos/8/biometrico/huellas/'); 
+                } else {  $rutaCarpeta = public_path('documentos/8/control_biometrico/huellas/'); 
                 }
 
                 if (!file_exists($rutaCarpeta)) {
