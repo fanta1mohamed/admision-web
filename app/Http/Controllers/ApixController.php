@@ -34,11 +34,11 @@ class ApixController extends Controller {
                 'programa.codigo_sunedu AS codigo_programa',
             )
             ->leftjoin('paises','paises.id','postulante.id_pais')
-            ->leftjoin('inscripciones','inscripciones.id_postulante','postulante.id')
-            ->leftjoin('programa','inscripciones.id_programa','programa.id')
+            ->join('inscripciones','inscripciones.id_postulante','postulante.id')
+            ->join('programa','inscripciones.id_programa','programa.id')
             ->leftjoin('facultad','programa.id_facultad','facultad.id')
             ->join('resultados','resultados.dni_postulante','postulante.nro_doc')
-            ->leftjoin('modalidad','inscripciones.id_modalidad','modalidad.id')
+            ->join('modalidad','inscripciones.id_modalidad','modalidad.id')
             ->leftjoin('procesos','procesos.id','inscripciones.id_proceso')
             ->leftjoin('filial','filial.id','procesos.id_sede_filial')
             ->leftjoin('tipo_proceso','tipo_proceso.id','procesos.id_tipo_proceso')
@@ -48,7 +48,9 @@ class ApixController extends Controller {
             ->where('procesos.anio', '=',$anio)
             ->where('procesos.ciclo', '=',$ciclo)
             ->where('inscripciones.estado','=',0)
-            ->where('postulante.nro_doc','=',$dni)->first();
+            ->where('postulante.nro_doc','=',$dni)
+            ->orderby('inscripciones.id', 'desc')
+            ->first();
             if ($res ){
                 return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $res], 200);
             }else {

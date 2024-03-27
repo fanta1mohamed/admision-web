@@ -14,6 +14,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-postulante-pago/{dni}/{proceso}', [ApixController::class, 'getPostulantePago']);
 });
 
+Route::get('/get-ingresantes/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
+
 Route::get('/get-ingresante-pago/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresantePago']);
 Route::get('/get-postulante-biometrico/{codigo}', [ApixController::class, 'getBiometrico']); 
 

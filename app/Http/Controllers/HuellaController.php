@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 class HuellaController extends Controller
-{
-    
+{    
     public function upload(Request $request) {
         try {
             $dni = $request->input('dni');
