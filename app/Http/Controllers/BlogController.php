@@ -63,15 +63,16 @@ class BlogController extends Controller
     }
 
     public function getPuntajes($dni){
+        
         $res = DB::select("SELECT 
             pun.fecha, pun.dni, pos.nombres, pos.primer_apellido, pos.segundo_apellido,
             modalidad, pun.puntaje, pun.apto as condicion, pun.programa, pro.nombre AS programa
         FROM puntajes pun
         JOIN postulante pos ON pos.nro_doc = pun.dni
-        JOIN inscripciones ins ON ins.id_postulante = pos.id 
+        JOIN inscripciones ins ON ins.id_postulante = pos.id and ins.estado = 0
         JOIN programa pro ON pro.id = ins.id_programa
-        WHERE pun.dni = $dni AND pun.id_proceso = 8
-        AND ins.id_proceso = 8
+        WHERE pun.dni = $dni AND pun.id_proceso = ins.id_proceso
+        AND YEAR(pun.fecha) = '2024'
         ORDER BY pun.fecha DESC;");
 
         $this->response['datos'] = $res;

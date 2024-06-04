@@ -20,7 +20,7 @@
     :pagination="false"
     style="scale: .7rem;"
     > 
-    <template #bodyCell="{ column, index, record }">
+    <template #bodyCell="{ column, record }">
 
         <template v-if="column.dataIndex === 'codigo'">
             <div class="flex" style="justify-content: center;">
@@ -192,7 +192,7 @@ watch(buscar, ( newValue, oldValue ) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
         getFiliales(); 
-    }, 500);    
+    }, 500);  
 })
 watch(pagina, ( newValue, oldValue ) => { getFiliales(); })
 watch(paginasize, ( newValue, oldValue ) => { getFiliales(); })

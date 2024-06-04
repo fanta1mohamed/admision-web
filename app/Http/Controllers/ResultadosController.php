@@ -17,7 +17,6 @@ use DB;
 class ResultadosController extends Controller
 {
 
-
     public function SubirResultado(Request $request){
         $data = $request->data; // No es necesario usar all()
         DB::table('resultados_simulacro')->insert($data);
@@ -941,7 +940,6 @@ class ResultadosController extends Controller
     {
         $rutaFuente = storage_path('app/fonts/Arialnl.ttf');
 
-        // Obtén los estudiantes agrupados por programa
         $estudiantesPorPrograma = DB::select("SELECT dni, paterno, materno, nombres, puntaje, programa, apto AS ingreso 
         FROM puntajes
         WHERE programa IS NOT NULL

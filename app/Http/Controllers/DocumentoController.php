@@ -14,7 +14,7 @@ class DocumentoController extends Controller {
   public function getCertificadosRevision(Request $request)
   {
     $query_where = [];
-
+    
     $res = Documento::select(
       'documento.id as id', 'documento.codigo as cod', 'tipo_documento.nombre as tipo_certificado',
       'documento.verificado', 'documento.url',

@@ -293,7 +293,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::get('/get-codigos-postulante/{dni}', [DocumentoController::class, 'getCodigoDNI']);
 
-
+    
     Route::get('/api-pagos/{parametro}', function ($parametro) {
         try {
             $response = Http::get('http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w=' . $parametro);
@@ -623,11 +623,6 @@ Route::get('/subir-archivos-pdf', fn () => Inertia::render('Publico/subir-archiv
 Route::post('/verificar-padres', [PostulanteController::class, 'verificarPadres']);
 
 Route::post('subir-pdf/{dni}/{cod}/{tipo}', [ResultadosController::class, 'cargaArchivoPDF']);
-
-
-
-
-
 
 
 Route::get('/get-pago-caja/{dni}', function ($dni) {
