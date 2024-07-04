@@ -18,4 +18,5 @@ class Cambio extends Model
         'id_usuario',
         'id_registro'
     ];
+    
 }

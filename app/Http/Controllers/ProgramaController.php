@@ -27,11 +27,12 @@ class ProgramaController extends Controller
       $res = Programa::select(
         'programa.id',
         'programa.codigo',
+        'programa.codigo_sunedu',
+        'programa.programa_oti',
         'programa.nombre',
+        'programa.nombre_corto',
         'programa.estado AS estado',
         'programa.area AS area',
-        'programa.tipo_autorizacion',
-        'programa.nivel_academico',
         'facultad.id AS id_fac',
         'facultad.facultad AS facultad'
       )
@@ -44,7 +45,7 @@ class ProgramaController extends Controller
                 ->orWhere('facultad.facultad', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('programa.area', 'LIKE', '%' . $request->term . '%');
         })->orderBy('programa.id', 'DESC')
-        ->paginate(10);
+        ->paginate(50);
   
       $this->response['estado'] = true;
       $this->response['datos'] = $res;
@@ -59,9 +60,6 @@ class ProgramaController extends Controller
             $programa = Programa::create([
                 'nombre' => $request->nombre,
                 'codigo' => $request->codigo,
-                'nivel_academico' => $request->nivel_academico,
-                'tipo_autorizacion' => $request->tipo_autorizacion,
-                'efi' => 'NO',
                 'estado' => $request->estado,
                 'id_facultad' => $request->id_facultad,
                 'area' => $request->area,
@@ -77,9 +75,6 @@ class ProgramaController extends Controller
             Dataversion::create([ 'registro_id' => $programa->id, 'tabla' => $programa->getTable(),  'usuario_id' => auth()->id(), 'fecha' => now(), 'datos' => $programa->toJson() ]);
             $programa->nombre = $request->nombre;
             $programa->codigo = $request->codigo;
-            $programa->nivel_academico = $request->nivel_academico;
-            $programa->tipo_autorizacion = $request->tipo_autorizacion;
-            $programa->efi = "NO";
             $programa->estado = $request->estado;
             $programa->id_facultad = $request->id_facultad;
             $programa->area = $request->area;

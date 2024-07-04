@@ -229,6 +229,11 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-colegios', [ColegioController::class, 'getColegios']);
     Route::post('/save', [ColegioController::class, 'save']);
 
+
+
+    //Configuracion programa
+    Route::get('/proceso-configuracion-programa', fn () => Inertia::render('Procesos/Configuracion/programas'));
+
 });
 
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
@@ -657,77 +662,6 @@ Route::get('/get-pago-BN/{dni}', function ($dni) {
 Route::post('/insertar-pago', [PagoController::class, 'insertarPago']);
 Route::get('/eliminar-pago/{dni}/{operacion}', [PagoController::class, 'eliminarPago']);
 Route::get('/get-pagos-dni/{dni}', [PagoController::class, 'getPagosDNI']);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Route::get('/get-biometricos-extraordinarios', function () {
-//         $response = Http::post('https://service2.unap.edu.pe/TieneCarrerasPrevias/' . $documento, $requestBody);
-//         $responseData = $response->json();
-//     }
-//     return 'Solicitudes POST enviadas y respuestas guardadas en la base de datos ficticia.';
-// });
-
-
-
-
-
-
 
 require __DIR__.'/auth.php';
 

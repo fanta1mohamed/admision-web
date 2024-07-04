@@ -58,7 +58,7 @@
                               d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                 </template>
-                Users
+                Users asdfsd
             </nav-link>
 
             <nav-link :href="route('about')" :active="route().current('about')" style="margin-top: 0;">
@@ -147,5 +147,51 @@ export default {
 </script>
 
 <style scoped>
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* Estilo para un scroll específico */
+.scroll-container {
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Firefox */
+}
+
+/* Estilo para el scroll específico en Webkit (Chrome, Safari) */
+.scroll-container::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 
 </style>

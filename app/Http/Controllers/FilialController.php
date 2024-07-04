@@ -28,10 +28,10 @@ class FilialController extends Controller
         'filial.direccion',
         DB::raw("CONCAT(departamento.nombre,'/',provincia.nombre,'/',distritos.nombre) AS lugar")
       )
-        ->join('ubigeo','ubigeo.ubigeo','filial.ubigeo')
-        ->join('departamento','departamento.id','ubigeo.id_departamento')
-        ->join('provincia','provincia.id','ubigeo.id_provincia')
-        ->join('distritos','distritos.id','ubigeo.id_distrito')
+        ->leftjoin('ubigeo','ubigeo.ubigeo','filial.ubigeo')
+        ->leftjoin('departamento','departamento.id','ubigeo.id_departamento')
+        ->leftjoin('provincia','provincia.id','ubigeo.id_provincia')
+        ->leftjoin('distritos','distritos.id','ubigeo.id_distrito')
         ->where(function ($query) use ($request) {
             return $query
                 ->orWhere('filial.codigo', 'LIKE', '%' . $request->term . '%')

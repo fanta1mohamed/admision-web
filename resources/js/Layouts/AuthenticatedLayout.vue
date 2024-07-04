@@ -442,7 +442,6 @@ export default defineComponent({
       if(this.submenu == 2){ this.openKeys = ['sub2']; }
       if(this.submenu == 3){ this.openKeys = ['sub3']; }
       if(this.submenu == 4){ this.openKeys = ['sub4']; }
-      // console.log('openKeys', val);
     }
   } 
 });
@@ -451,7 +450,7 @@ export default defineComponent({
 .custom-scrollbar {
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: thin;
+  scrollbar-width: 20px;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

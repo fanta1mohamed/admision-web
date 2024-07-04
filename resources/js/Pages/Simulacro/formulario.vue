@@ -2,7 +2,7 @@
 <Head title="Formulario de inscripción"/>
 <AuthenticatedLayout>
 <div class="flex justify-center" style="">
-<div v-if="inscrito === true" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;  background:white;">
+<div v-if="inscrito === true" style="width: 100%; background: #cdcdcd; max-width: 1000px; margin-top:20px;  background:white;">
     <div class="flex justify-center;" style="align-items:center; min-height: calc(100vh - 290px);">
         <div style="width:100%">
             <div class="flex pb-4" style="justify-content:center; ">
@@ -42,7 +42,7 @@
    
 </div>
 
-<div v-if="inscrito === false" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px; background:white; border:solid 1px #d9d9d99d;">
+<div v-if="inscrito === false" style="width: 100%; background: #cdcdcdcd; max-width: 1000px; margin-top:20px; background:white; border:solid 1px #d9d9d99d;">
 
     <a-tabs v-model:activeKey="activeKey"  type="card" size="small">
         <a-tab-pane key="1" class="pl-6 pb-6 pr-6" tab="Validación de pago" force-render :disabled="!confirmacion">

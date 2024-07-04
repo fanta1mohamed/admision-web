@@ -15,13 +15,19 @@ class Proceso extends Model
 
     protected $fillable = [
         'nombre',
+        'slug',
         'id_sede_filial',
         'id_tipo_proceso',
+        'ciclo',
         'id_modalidad_proceso',
         'anio',
         'estado',
+        'fecha_examen',
+        'fec_inicio',
+        'fec_fin',
         'nro_convocatoria',
         'id_usuario',
-        'observaciones'
+        'observaciones',
+        'url',
     ];
 }

@@ -1404,7 +1404,7 @@
           </div>
       </div>
 
-      <div v-if="anteriores.length > 0" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;"> 
+      <div v-if="anteriores.length > 0" style="width: 100%; background: #cdcdcdcd; max-width: 1000px; margin-top:20px;"> 
           <div class="mb-4">
             <div class="flex justify-center"><span>Se ha detectado Que Ud. Tiene ingresos previos</span></div>
             <div class="mt-3 flex justify-left"><span>Seleccine los programas para continuar</span></div>
@@ -1464,7 +1464,7 @@
       </div> 
 
 
-      <div v-if="anteriores.length === 0 && confirmacion === false" style="width: 100%; background: #cdcdcdc; max-width: 1000px; margin-top:20px;">    
+      <div v-if="anteriores.length === 0 && confirmacion === false" style="width: 100%; background: #cdcdcdcd; max-width: 1000px; margin-top:20px;">    
           <div class="flex justify-center">
             <div>
               <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
