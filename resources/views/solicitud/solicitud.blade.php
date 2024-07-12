@@ -63,28 +63,26 @@
             <table>
                 <tr style="">
                     <td style="width: 100%">
-                        <div style="margin-bottom: 5px;"><span style="font-weight:bold; text-transform:uppercase;">Dr. Juan Carlos Benavides Huanca</span></div>
-                        <div> <span style="font-weight:bold; font-size:10pt; text-transform:uppercase;">Director de la Dirección de Admisión de la Universidad Nacional del Altiplano – Puno</span></div>
+                        <div  style="font-weight:bold; text-align:justify;">Sr. <span style="font-weight:bold; font-size:11pt; text-transform:uppercase;">Director de la Dirección de Admisión de la Universidad Nacional del Altiplano – Puno</span></div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <div style="margin-top: 12px;">
+        <div style="margin-top: 0px;">
             <table style="width:100%;">
                 <tr style="">
                     <td style="width: 50%"></td>
                     <td style="width: 50%">
-                        <p style="text-align: justify; line-height:1.5rem;">
+                        <p style="text-align: justify; line-height:1.8rem;">
                             Yo, <span style="text-transform: uppercase;">{{$data->nombres}} {{$data->primer_apellido}} {{ $data->segundo_apellido }}</span>, 
                             identificado(a) con {{$data->tipo_doc}} N° {{ $data->dni}}, 
                             con domicilio en {{$data->direccion }} 
                             @if ($data->distrito == null )
-                                de {{ $data->pais }}
+                                de {{$data->pais}},
                             @else
-                                del distrito de {{ $data->distrito }}    
-                            @endif
-                            {{ $data->distrito }}, ante usted 
+                                del distrito de {{ $data->distrito }},
+                            @endif ante usted 
                             me presento y expongo:
                         </span>
                     </td>
@@ -112,10 +110,13 @@
                             Adjunto a esta solicitud los siguientes documentos:
                         </div>
                         <div style="padding-left:20px; margin-top: 14px;">
-                            <div  style="margin-top: 5px;">1.	Comprobante de pago.</div>
-                            <div  style="margin-top: 5px;">2.	Documento de identidad (<span style="color:red;">*</span>original y copia).</div>
-                            <div  style="margin-top: 5px;">3.	Certificado de estudios (<span style="color:red;">*</span>original y copia).</div>
-                            <div  style="margin-top: 5px;">4.	Otros requisitos según lo estipulado en el Art. 16 del Reglamento General de admisión 2024-II conforme a la modalidad de postulación.</div>
+                            <table>
+                                <tr><td style="height: 23px;">1.</td><td>Comprobante de pago.</td></tr>
+                                <tr><td style="height: 23px;">2.</td><td>Documento de identidad (<span style="color:red;">*</span>original y copia).</td></tr>
+                                <tr><td style="height: 23px;">3.</td><td>Certificado de estudios (<span style="color:red;">*</span>original y copia).</td></tr>
+                                <tr><td v-align="top"><div style="margin-top:-20px;">4.</div></td><td style="height: 23px;">Otros requisitos según lo estipulado en el Art. 16 del Reglamento General de admisión 2024-II conforme a la modalidad de postulación.</td></tr>
+                                
+                            </table>
                         </div>
                         <div style="margin-top:10px; margin-bottom:-14px;">
                             Nota (<span style="color:red;">*</span> Solo para verificación</span>)
@@ -202,7 +203,7 @@
                         <div style="text-align: center;">
 
                             <div style="margin-bottom: 5px;">_______________________________</div>
-                            <div style="margin-bottom: 5px;"><span style="text-transform:uppercase">Nombre: ___________________</span></div>
+                            <div style="margin-bottom: 5px;"><span style="text-transform:uppercase">Nombre: ______________________________</span></div>
                             {{-- <div><span style="text-transform:uppercase">{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }}</span></div> --}}
                             <span> {{$data->tipo_doc}} N.° {{ $data->dni}}</span>
                         </div>

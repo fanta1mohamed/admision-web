@@ -2181,16 +2181,19 @@ const consultaInscripcion = async () => {
         loading.value = false; 
         pagina_pre.value = 7;
       } else {
-      if(props.procceso_seleccionado.id_modalidad_proceso == 2){
-        getParticipanteCepre();
-        getDatosPersonales2()
+        if(props.procceso_seleccionado.id_modalidad_proceso == 2){
+          //getParticipanteCepre();
+          //getDatosPersonales2()
+          getDataPrisma();
+          getDatosPersonales2()
+          participa.value = 1;
+        }
+        else{
+          getDataPrisma();
+          getDatosPersonales2()
+          participa.value = 1;
+        }
       }
-      else{
-        getDataPrisma();
-        getDatosPersonales2()
-        participa.value = 1;
-      }
-    }
   } catch (error) {
     console.error("Error al obtener datos del participante", error);
   } 
