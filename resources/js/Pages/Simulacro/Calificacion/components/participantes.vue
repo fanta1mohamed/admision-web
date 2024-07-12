@@ -164,20 +164,12 @@ const columns = ref([
         dataIndex: 'materno'
     },
     {
-        title: 'Mombres',
+        title: 'Nombres',
         dataIndex: 'nombres'
     },
     {
-        title: 'Colegio',
-        dataIndex: 'colegio'
-    },
-    {
-        title: 'distito',
-        dataIndex: 'distrito'
-    },    
-    {
-        title: 'Area',
-        dataIndex: 'area'
+        title: 'Programa',
+        dataIndex: 'programa'
     },    
 ]);
 
@@ -200,24 +192,12 @@ const columnsParticipante = ref([
         dataIndex: 'materno'
     },
     {
-        title: 'Mombres',
+        title: 'Nombres',
         dataIndex: 'nombres'
     },
     {
-        title: 'Colegio',
-        dataIndex: 'colegio'
-    },
-    {
-        title: 'distito',
-        dataIndex: 'distrito'
-    },    
-    {
-        title: 'Area',
-        dataIndex: 'area'
-    },
-    {
-        title: 'Observaciones',
-        dataIndex: 'id_ide',
+        title: 'Programa',
+        dataIndex: 'programa',
         align:'center'
     },    
 ]);

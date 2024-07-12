@@ -64,10 +64,7 @@
           </div>
           <div class="datos-column">
         </div>
-
         </div>
-        <!-- {{ formState }}
-        {{ datospersonales }} -->
       </div>
 
       <div>
@@ -97,7 +94,6 @@
 
         </div>
 
-        <!-- {{ datosresidencia }} -->
       </div>
 
       <div>
@@ -317,16 +313,25 @@
 
     </a-modal>
 
-    <a-modal v-model:visible="ejemplo" :footer="false" @ok="handleOk">
+
+    <a-modal v-model:visible="ejemplo" :footer="false">
+      <span class="font-bold text-xl">{{ datos_preinscripcion.tipo_certificado }}</span>
+      
       <a-tabs v-model:activeKey="activeKey" :size="size">
         <a-tab-pane key="1" tab="CERT. AMARILLO">
-          <div style="max-height:400px; overflow-y:scroll;"> <img src="../../../assets/imagenes/certificados/amarillo.jpg"> </div>
+          <div style="max-height: 450px; overflow-y: scroll;">
+            <img src="../../../assets/imagenes/certificados/amarillo.jpg">
+          </div>
         </a-tab-pane>
         <a-tab-pane key="2" tab="CERT. BLANCO">
-          <div> <img src="../../../assets/imagenes/certificados/blanco.jpg"> </div>
+          <div>
+            <img src="../../../assets/imagenes/certificados/blanco.jpg">
+          </div>
         </a-tab-pane>
         <a-tab-pane key="3" tab="CONST. DE LOGROS">
-          <div> <img src="../../../assets/imagenes/certificados/constancia.jpg"> </div>
+          <div>
+            <img src="../../../assets/imagenes/certificados/constancia.jpg">
+          </div>
         </a-tab-pane>
       </a-tabs>
 
@@ -444,7 +449,7 @@
 
                 <a-row :gutter="[16, 0]" class="form-row mb-0" >
                   <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
-                      <div><label>Primer apellido:</label></div>
+                      <div><label>Primer apellido (<span style="color:red;">*</span>) </label></div>
                       <a-form-item
                         name="primerapellido"
                         :rules="[{ required: true, message: 'Ingresa tu Primer Apellido', trigger: 'change'},]"
@@ -454,13 +459,13 @@
                   </a-col>
                   <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                     <a-form-item>
-                      <div><label>Segundo apellido:</label></div>
+                      <div><label>Segundo apellido</label></div>
                       <a-input v-model:value="datospersonales.segundo_apellido" />
                     </a-form-item>
                   </a-col>
                   <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                     <a-form-item>
-                      <div><label>Pre Nombres:</label></div>
+                      <div><label>Pre Nombres (<span style="color:red;">*</span>)</label></div>
                       <a-form-item
                         name="nombres"
                         :rules="[{ required: true, message: 'Ingresa tus Pre Nombres', trigger: 'change'}]"
@@ -477,21 +482,23 @@
                         name="correo"
                         :rules="[
                           { required: true, message: 'Ingresa un correo valido', trigger: 'change'},
-                          { type: 'email', message: 'Ingresa un correo valido'}
+                          { type: 'email', message: 'Ingresa un correo valido'},
+                          { validator: validateCorreo, trigger:'blur'}
                         ]">
-                      <div><label>Correo:</label></div>
+                      <div><label>Correo (<span style="color:red;">*</span>)</label></div>
                       <a-input type="email" @input="correoInput"  v-model:value="datospersonales.correo" />
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="24" :md="24" :lg="8" :xl="8" :xxl="8">
-                    <a-form-item
-                        name="ubigeo"
-                        :rules="[
-                          { required: true, message: 'Ingresa ubigeo de nacimiento', trigger: 'change'},
-                        ]">
+                  <a-col :span="24" :md="24" :lg="8" :xl="8" :xxl="8">                    
+                    <a-form-item v-if="datospersonales.tipo_doc === 1" name="ubigeo"
+                        :rules="[ { required: true, message: 'Ingresa ubigeo de nacimiento', trigger: 'change'},]">
+                      <div><label>Ubigeo de nacimiento (<span style="color:red;">*</span>)</label></div>
+                      <a-input type="text" @input="correoInput"  v-model:value="datospersonales.ubigeo" />
+                    </a-form-item>
+                    <a-form-item v-else name="ubigeo">
                       <div><label>Ubigeo de nacimiento:</label></div>
-                      <a-input type="email" @input="correoInput"  v-model:value="datospersonales.ubigeo" />
+                      <a-input type="text" @input="correoInput"  v-model:value="datospersonales.ubigeo" />
                     </a-form-item>
                   </a-col>
                 </a-row>
@@ -502,10 +509,11 @@
                         name="celular"
                         :rules="[
                           { required: true, message: 'Ingresa tu celular', trigger: 'change'},
-                          { min: 9, message: 'El Celular debe tener 9 digitos', trigger: 'blur',}
+                          { min: 9, message: 'El Celular debe tener 9 digitos', trigger: 'blur',},
+                          { validator: validateCelular, trigger:'blur'}
                         ]"
                       >
-                      <div><label>Numero de celular:</label></div>
+                      <div><label>Numero de celular (<span style="color:red;">*</span>)</label></div>
                       <a-input @input="celularInput" :maxlength="9" v-model:value="datospersonales.celular" />
                     </a-form-item>
                   </a-col>
@@ -515,7 +523,7 @@
                         :rules="[ { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},
                          { validator: validateFechaNacimiento, trigger: 'change' }]"
                       >
-                      <div><label>Fec. Nacimiento: "DD/MM/AAAA"</label></div>
+                      <div><label>Fec. Nacimiento (<span style="color:red;">*</span>) "dd/mm/aaaa" </label></div>
                         <a-date-picker placeholder="Selecciona tu fecha de nacimiento" style="width: 100%" v-model:value="datospersonales.fec_nacimiento" format='DD/MM/YYYY' />
                     </a-form-item>
                   </a-col>
@@ -530,10 +538,9 @@
         <div v-if="pagina_pre === 2">
 
           <div style="width: 100%; margin-top: 5px; ">
-          <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
+          <a-card class="card-datos-colegio" style="padding-top: -5px; padding-bottom:0px; min-width:360px;">
 
-            <!-- {{ datospersonales.tipo_doc }} -->
-            <div v-if="datospersonales.tipo_doc == 1">
+            <div>
 
             <a-form
               ref="formDatosResidencia" :model="datosresidencia"
@@ -542,15 +549,42 @@
               @finishFailed="onFinishFailed"
               >
               <!-- //DATOS DE RESIDENCIA -->
-              <div style="margin-bottom: 25px; margin-top: 10px; ">
+              <div  class="card-datos-colegio" style="margin-bottom: 25px; margin-top: 10px;">
                 <h1 style="font-size: 1.1rem;"> Datos de residencia</h1>
               </div>
 
               <div style="display: none;">{{ getDepartamentos() }}</div>
 
               <a-row :gutter="[16, 0]" class="form-row">
+                <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                  <a-form-item
+                    name="pais"
+                    :rules="[{ required: true, message: 'Seleccione el pais', trigger: 'change' }]"
+                  >
+                    <div><label>Pais:</label></div>
+                      <a-select
+                          ref="select"
+                          v-model:value="datoscolegio.pais"
+                          style="width: 100%" >
+                          <a-select-option :value="125">PERÚ</a-select-option>
+                          <a-select-option :value="23">BOLIVIA</a-select-option>
+                          <a-select-option :value="11">ARGENTINA</a-select-option>
+                          <a-select-option :value="184">VENEZUELA</a-select-option>
+                          <a-select-option :value="38">COLOMBIA</a-select-option>
+                          <a-select-option :value="35">CHILE</a-select-option>
+                          <a-select-option :value="47">ECUADOR</a-select-option>
+                          <a-select-option :value="26">BRASIL</a-select-option>
+                          <a-select-option :value="104">MÉXICO</a-select-option>
+                          <a-select-option :value="182">URUGUAY</a-select-option>
+                          <a-select-option :value="124">PARAGUAY</a-select-option>
+                          <a-select-option :value="128">PUERTO RICO</a-select-option>
+                          <a-select-option :value="149">REPUBLICA DOMINICANA</a-select-option>
+                      </a-select>  
+                  </a-form-item>
+                </a-col>
                 <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item
+                    v-if="datospersonales.tipo_doc === 1"
                     name="dep"
                     :rules="[{ required: true, message: 'Selecciona tu departamento', trigger: 'blur'},]"
                     >
@@ -576,6 +610,7 @@
                 </a-col>
                 <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item
+                    v-if="datospersonales.tipo_doc === 1"
                     name="prov"
                     :rules="[{ required: true, message: 'Selecciona tu provincia', trigger: 'blur'},]"
                     >
@@ -601,6 +636,7 @@
                 </a-col>
                 <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item
+                    v-if="datospersonales.tipo_doc === 1"
                     name="dist" :rules="[{ required: true, message: 'Selecciona tu distrito', trigger: 'blur'},]" >
                     <div><label>Distrito:</label></div>
 
@@ -651,66 +687,14 @@
             </a-form>
             </div>
 
-
-            <div v-if="datospersonales.tipo_doc == 2">
-
-                <a-form
-                  ref="formDatosResidenciaExtra" :model="datosresidencia"
-                  name="datosResidenciaExtra"
-                  @finish="onFinish"
-                  @finishFailed="onFinishFailed"
-                  >
-                  <!-- //DATOS DE RESIDENCIA -->
-                  <div style="margin-bottom: 25px; margin-top: 10px; ">
-                    <h1 style="font-size: 1.1rem;"> Datos de residencia</h1>
-                  </div>
-
-                  <a-row :gutter="[16, 0]" class="form-row">
-                    <a-select 
-                      ref="select" 
-                      v-model:value="datosresidencia.pais"
-                      placeholder="Seleccionar pais" class="selector-modalidad"
-                      >
-                      <a-select-option :value="11">ARGENTINA</a-select-option>
-                      <a-select-option :value="23">BOLIVIA</a-select-option>
-                      <a-select-option :value="35">CHILE</a-select-option>
-                      <a-select-option :value="38">COLOMBIA</a-select-option>
-                      <a-select-option :value="47">ECUADOR</a-select-option>
-                      <a-select-option :value="104">MEXICO</a-select-option>
-                      <a-select-option :value="184">VENEZUELA</a-select-option>
-                    </a-select>
-                  </a-row>
-
-                  <a-row :gutter="[16, 0]" class="form-row">
-                    <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                      <a-form-item
-                        name="direccion"
-                        :rules="[{ required: true, message: 'Ingresa tu dirección', trigger: 'blur'},]">
-                        <div><label>Dirección:</label></div>
-                        <a-input v-model:value="datosresidencia.direccion" />
-                      </a-form-item>
-                    </a-col>
-                  </a-row>
-
-                  <a-row :gutter="[16, 0]" class="form-row" style="margin-top: 15px; ">
-                    <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
-                      <div class="flex" style="justify-content: space-between;">
-                        <a-button v-if="current > 0" @click="prev()" >Anterior</a-button>
-                        <a-button v-if="current < 2 " @click="saveDatosPersonales()" type="primary" >Siguiente</a-button>
-                      </div>
-                    </a-col>
-                  </a-row>
-
-                </a-form>
-                </div>
           </a-card>
         </div>
         </div>
 
         <div v-if="pagina_pre === 3">
           <div>
-            <div style="width: 100%; margin-top: 5px; ">
-                <a-card style="padding-top: -5px; padding-bottom:0px;" class="cardInicio">
+            <div style="width: 100%; margin-top: 5px;">
+                <a-card class="card-datos-colegio" style="min-width: 360px;">
                   <a-form
                       ref="formDatosColegio" :model="datoscolegio"
                       name="form-colegio"
@@ -721,7 +705,7 @@
                           </div>
 
                           <a-row :gutter="[16, 0]" class="form-row">
-                            <a-col :span="24" :md="24" :lg="12" :xl="16" :xxl="8">
+                            <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
                               <a-form-item
                               name="egreso"
                               :rules="[{ required: true, message: 'Ingrese año de egreso', trigger: 'change' },
@@ -731,7 +715,7 @@
                                 <a-input v-model:value="datoscolegio.egreso" :maxlength="4" placeholder="Año egreso" />
                               </a-form-item>
                             </a-col>
-                            <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="16">
+                            <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
                               <a-form-item
                                 name="pais"
                                 :rules="[{ required: true, message: 'Seleccione el pain', trigger: 'change' }]"
@@ -742,6 +726,18 @@
                                       v-model:value="datoscolegio.pais"
                                       style="width: 100%" >
                                       <a-select-option :value="125">PERÚ</a-select-option>
+                                      <a-select-option :value="23">BOLIVIA</a-select-option>
+                                      <a-select-option :value="11">ARGENTINA</a-select-option>
+                                      <a-select-option :value="184">VENEZUELA</a-select-option>
+                                      <a-select-option :value="38">COLOMBIA</a-select-option>
+                                      <a-select-option :value="35">CHILE</a-select-option>
+                                      <a-select-option :value="47">ECUADOR</a-select-option>
+                                      <a-select-option :value="26">BRASIL</a-select-option>
+                                      <a-select-option :value="104">MÉXICO</a-select-option>
+                                      <a-select-option :value="182">URUGUAY</a-select-option>
+                                      <a-select-option :value="124">PARAGUAY</a-select-option>
+                                      <a-select-option :value="128">PUERTO RICO</a-select-option>
+                                      <a-select-option :value="149">REPUBLICA DOMINICANA</a-select-option>
                                   </a-select>
                               </a-form-item>
                             </a-col>
@@ -749,7 +745,7 @@
 
                           <a-row :gutter="[16, 0]" class="form-row">
                             <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
-                              <a-form-item>
+                              <a-form-item v-if="datoscolegio.pais === 125">
                                 <div><label>Departamento: </label></div>
 
                                 <a-auto-complete
@@ -773,7 +769,7 @@
                               </a-form-item>
                             </a-col>
                             <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
-                              <a-form-item>
+                              <a-form-item v-if="datoscolegio.pais === 125">
                                 <div><label>Provincia:</label></div>
                                 <a-auto-complete
                                     v-model:value="datoscolegio.prov"
@@ -795,7 +791,7 @@
                               </a-form-item>
                             </a-col>
                             <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
-                              <a-form-item>
+                              <a-form-item v-if="datoscolegio.pais === 125">
                                 <div><label>Distrito:</label></div>
 
                                 <a-auto-complete
@@ -823,6 +819,7 @@
                             <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
                               <a-form-item
                               name="colegio"
+                              v-if="datoscolegio.pais === 125"
                               :rules="[{ required: true, message: 'Seleccione el colegio', trigger: 'change' }]"
                               >
                                 <div><label>Nombre de colegio:</label></div>
@@ -832,6 +829,18 @@
                                     :options="colegios"
                                     @change="handleChangeCole"
                                   ></a-select>
+
+                              </a-form-item>
+
+                              <a-form-item v-else name="colegio"
+                              :rules="[{ required: true, message: 'Seleccione el colegio', trigger: 'change' }]">
+                                <div><label>Nombre de colegio:</label></div>
+                                <a-select
+                                    ref="select"
+                                    v-model:value="datoscolegio.colegio"
+                                    style="width: 100%" >
+                                    <a-select-option :value="200001">COLEGIO EXTRANJERO</a-select-option>
+                                </a-select>
 
                               </a-form-item>
                             </a-col>
@@ -867,18 +876,15 @@
 
                       <a-row :gutter="[16, 0]" class="form-row">
                           <a-col :span="24" :md="26" :lg="12" :xl="12" :xxl="8">
-                            <a-form-item
-                              name="dni"
+                            <a-form-item name="dni"
                               :rules="[{ required: true, message: 'Ingresa el DNI', trigger: 'change' },
-                              { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]"
-                              >
+                              { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]">
                               <div><label>N° Documento</label></div>
                               <a-input ref="myDni" v-model:value="datospadre.dni" :maxlength="12" placeholder="" />
                           </a-form-item>
                           </a-col>
                           <a-col :span="24" :md="24" :lg="12" :xl="12" :xxl="16">
-                            <a-form-item
-                              name="nombres"
+                            <a-form-item name="nombres"
                               :rules="[{ required: true, message: 'Ingresa los nombres', trigger: 'blur' }]"
                               >
                               <div><label>Pre nombres:</label></div>
@@ -998,25 +1004,18 @@
                       </div>
                       <div class="mb-3">
                         <a-form-item
-                        name="modalidad"
-                        :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
-                        >
-                        <div><label>Modalidad</label></div>
-                          <a-select v-if="props.procceso_seleccionado.id_modalidad_proceso === 1" ref="select" v-model:value="datos_preinscripcion.modalidad" placeholder="Seleccionar modalidad" class="selector-modalidad">
-                            <a-select-option :value="8">EXAMEN GENERAL</a-select-option>
-                            <a-select-option :value="7">CONADIS</a-select-option>
-                          </a-select>
-                          <a-select v-if="props.procceso_seleccionado.id_modalidad_proceso == 2" ref="select" v-model:value="datos_preinscripcion.modalidad" placeholder="Seleccionar modalidad" class="selector-modalidad">
-                            <a-select-option :value="9" selected>CEPREUNA</a-select-option>
-                          </a-select>
-                          <a-select v-if="props.procceso_seleccionado.id_modalidad_proceso === 3" ref="select" v-model:value="datos_preinscripcion.modalidad" placeholder="Seleccionar modalidad" class="selector-modalidad">
-                            <a-select-option :value="1">TITULADOS Y GRADUADOS</a-select-option>
-                            <a-select-option :value="2">TRASLADO INTERNO</a-select-option>
-                            <a-select-option :value="3">TRASLADO EXTERNO</a-select-option>
-                            <a-select-option :value="4">PRIMEROS PUESTOS</a-select-option>
-                            <a-select-option :value="5">DEPORTISTAS DESTCADOS</a-select-option>
-                            <a-select-option :value="12">PIR - VICTIMAS DEL TERRORISMO</a-select-option>
-                          </a-select>
+                          name="modalidad"
+                          :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
+                          >
+                          <div><label>Modalidad</label></div>
+                          <a-select
+                            ref="select"
+                            v-model:value="datos_preinscripcion.modalidad"
+                            style="width: 100%"
+                            :options="modalidades"
+                            @focus="focus"
+                            @change="handleChange"
+                          ></a-select>
                         </a-form-item>
                       </div>
                     </div>
@@ -1069,180 +1068,14 @@
                       :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
                       >
                         <div><label>Programa de estudios</label></div>
-
                         <a-select
-                            v-if="datos_preinscripcion.modalidad == 4 || datos_preinscripcion.modalidad == 12 || datos_preinscripcion.modalidad == 8 || datos_preinscripcion.modalidad == 9 || datos_preinscripcion.modalidad == 7"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                            <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
-                            <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
-                            <a-select-option :value='3'>ARQUITECTURA Y URBANISMO</a-select-option>
-                            <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
-                            <a-select-option :value='5'>ARTE: DANZA</a-select-option>
-                            <a-select-option :value='6'>ARTE: MÚSICA</a-select-option>
-                            <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
-                            <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
-                            <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
-                            <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                            <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
-                            <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
-                            <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
-                            <a-select-option :value='15'>DERECHO</a-select-option>
-                            <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                            <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                            <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                            <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
-                            <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
-                            <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
-                            <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                            <a-select-option :value='24'>INGENIERÍA AGRÍCOLA</a-select-option>
-                            <a-select-option :value='25'>INGENIERÍA AGROINDUSTRIAL</a-select-option>
-                            <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
-                            <a-select-option :value='27'>INGENIERÍA CIVIL</a-select-option>
-                            <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
-                            <a-select-option :value='29'>INGENIERÍA DE SISTEMAS</a-select-option>
-                            <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
-                            <a-select-option :value='31'>INGENIERÍA ELECTRÓNICA</a-select-option>
-                            <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
-                            <a-select-option :value='34'>INGENIERÍA MECÁNICA ELÉCTRICA</a-select-option>
-                            <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
-                            <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
-                            <a-select-option :value='37'>INGENIERÍA TOPOGRÁFICA Y AGRIMENSURA</a-select-option>
-                            <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
-                            <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                            <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                            <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                            <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                            <a-select-option :value='44'>TURISMO</a-select-option>
-                            <a-select-option :value='45'>PSICOLOGÍA</a-select-option>
-                          </a-select>
-
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 1"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                            <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                            <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                        </a-select>
-
-                        <div v-if="bio.includes(carrera_anterior.cod_car)">
-                          <a-select
-                              ref="select"
-                              v-model:value="datos_preinscripcion.programa"
-                              placeholder="Seleccionar programa"
-                              class="selector-modalidad"
-                              style="min-width:360px;"
-                            >
-                              <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
-                              <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
-                              <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
-                              <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                              <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
-                              <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                              <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                              <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                          </a-select>
-                        </div>
-                        <div v-if="ing.includes(carrera_anterior.cod_car)">
-                          <a-select
-                              ref="select"
-                              v-model:value="datos_preinscripcion.programa"
-                              placeholder="Seleccionar programa"
-                              class="selector-modalidad"
-                              style="min-width:360px;"
-                            >
-                            <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
-                            <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
-                            <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
-                          </a-select>
-                        </div>
-                        <div v-if="soc.includes(carrera_anterior.cod_car)">
-                          <a-select
-                              ref="select"
-                              v-model:value="datos_preinscripcion.programa"
-                              placeholder="Seleccionar programa"
-                              class="selector-modalidad"
-                              style="min-width:360px;"
-                            >
-                            <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                            <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                            <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                            <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                            <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
-                            <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
-                            <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
-                            <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                          </a-select>
-                        </div>
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 2 && id_anterior == null"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                        </a-select>
-
-                        
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 3"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                          <a-select-option :value="27">INGENIERÍA CIVIL</a-select-option>
-                        </a-select>
-
-
-                        <a-select
-                            v-if="datos_preinscripcion.modalidad == 5"
-                            ref="select"
-                            v-model:value="datos_preinscripcion.programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="min-width:360px;"
-                          >
-                            <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
-                            <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
-                            <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
-                            <a-select-option :value='5'>ARTE: DANZA</a-select-option>
-                            <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                            <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
-                            <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
-                            <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
-                            <a-select-option :value='15'>DERECHO</a-select-option>
-                            <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                            <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                            <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                            <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                            <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
-                            <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
-                            <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
-                            <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                            <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                            <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                            <a-select-option :value='44'>TURISMO</a-select-option>
-                          </a-select>
-
+                          ref="select"
+                          v-model:value="datos_preinscripcion.programa"
+                          style="width: 100%"
+                          :options="programas"
+                          @focus="focus"
+                          @change="handleChange"
+                        ></a-select>
                       </a-form-item>
                     </a-col>
 
@@ -1310,53 +1143,42 @@
 
       </div>
       <a-affix v-if="pagina_pre !== 0" :offset-bottom="bottom" style="margin-top: 0px;">
-        <div v-if="pagina_pre !== 8">
-          <a-progress :percent="avance"/>
+        <div v-if="pagina_pre !== 8" style="background: none;">
+          <a-progress :percent="avance" width="90%" :format="percent => avance+'%'" stroke-color="purple"/>
         </div>
 
-        <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 1">
+        <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 1">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button @click="saveDatosPersonales()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+          <a-button @click="saveDatosPersonales()" class="boton-siguiente" style="color:white;" >Siguiente</a-button>
         </div>
 
-        <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 2">
-          <div v-if="datospersonales.tipo_doc == 1" class="flex" style="justify-content: space-between;">
+        <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 2">
             <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-            <a-button @click="saveDatosResidencia()" class="boton-siguiente" type="primary" >Siguiente</a-button>
-          </div>
-          <div v-else class="flex" style="justify-content: space-between;">
-            <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-            <a-button @click="saveDatosResidenciaExtra()" class="boton-siguiente" type="primary" >Siguientex</a-button>
-          </div>
+            <a-button @click="saveDatosResidencia()" class="boton-siguiente" style="color:white;">Siguiente</a-button>
         </div>
 
-        <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 3">
+        <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 3">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button @click="savecolegio()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+          <a-button @click="savecolegio()" class="boton-siguiente" style="color:white;">Siguiente</a-button>
         </div>
 
-        <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 4">
+        <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 4">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button @click="saveApoderado()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+          <a-button @click="saveApoderado()" class="boton-siguiente" style="color:white;">Siguiente</a-button>
         </div>
-        <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 5">
+        <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 5">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button @click="saveApoderadoM()" class="boton-siguiente" type="primary" >Siguiente</a-button>
+          <a-button @click="saveApoderadoM()" class="boton-siguiente" style="color:white;">Siguiente</a-button>
         </div>
-        <div class="flex" style="justify-content: space-between;" v-if="pagina_pre === 6">
+        <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 6">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <div v-if="datos_preinscripcion.modalidad == 2">
-            <div v-if="id_anterior == null">
-              <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary" disabled>VERIFICAR DATOS</a-button>
-            </div>
-            <div v-else>
-              <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary">VERIFICAR DATOS</a-button>
-            </div>
-          </div>
-          <div v-else>
-            <a-button @click="abrirModalDatos()" class="boton-siguiente" type="primary">VERIFICAR DATOS</a-button>
-          </div>
-          <!-- <a-button html-type="submit" @click="submit" type="primary" class="boton-siguiente">Finalizar</a-button>     -->
+          <a-button v-if="datos_preinscripcion.modalidad == 2" @click="abrirModalDatos()" :disabled="id_anterior === null" class="boton-siguiente">
+            Verificar Datos
+          </a-button>
+          <a-button v-else @click="abrirModalDatos()" class="boton-siguiente" style="color:white;">
+            Verificar Datos
+          </a-button>
+
         </div>
       </a-affix>
 
@@ -1404,7 +1226,7 @@
           </div>
       </div>
 
-      <div v-if="anteriores.length > 0" style="width: 100%; background: #cdcdcdcd; max-width: 1000px; margin-top:20px;"> 
+      <div v-if="anteriores.length > 0" style="width: 100%; max-width: 1000px; margin-top:20px;"> 
           <div class="mb-4">
             <div class="flex justify-center"><span>Se ha detectado Que Ud. Tiene ingresos previos</span></div>
             <div class="mt-3 flex justify-left"><span>Seleccine los programas para continuar</span></div>
@@ -1464,7 +1286,7 @@
       </div> 
 
 
-      <div v-if="anteriores.length === 0 && confirmacion === false" style="width: 100%; background: #cdcdcdcd; max-width: 1000px; margin-top:20px;">    
+      <div v-if="anteriores.length === 0 && confirmacion === false" style="width: 100%; max-width: 1000px; margin-top:20px;">    
           <div class="flex justify-center">
             <div>
               <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
@@ -1498,9 +1320,6 @@
       
   </div>
   </a-modal>
-
-
-
 </Layout>
 
 </template>
@@ -1570,16 +1389,10 @@ const datosresidencia = reactive({
   direccion:''
 });
 
-const formDatosResidenciaExtra = ref();
-const datosresidenciaExtra = reactive({
-  pais:null,
-  direccion:''
-});
-
 const formDatosColegio = ref();
 const datoscolegio = reactive({
   egreso: null,
-  pais: 125,
+  pais: null,
   dep: null,
   prov: null,
   dist: null,
@@ -1588,6 +1401,7 @@ const datoscolegio = reactive({
 
 const formDatosPadre = ref();
 const datospadre = reactive({
+  id:null,
   tipo_apoderado: 1,
   dni: null,
   nombres: null,
@@ -1621,7 +1435,6 @@ const celularInput = (event) => { datospersonales.celular = event.target.value.r
 
 const departamentos = ref([])
 const departamentoscolegio = ref([])
-// const dep = ref(null);
 const buscarDep = ref("")
 const buscarDepC = ref("")
 const depseleccionado = ref('')
@@ -1632,8 +1445,6 @@ const onSelectDepartamentos = (value, option) => {
     depseleccionado.value = option.key;
     getProvincias();
 };
-
-const codigo_secreto = ref(null);
 
 const onSelectDepartamentosC = (value, option) => {
     depseleccionadoC.value = option.key;
@@ -1717,11 +1528,24 @@ const getMadreApi = () => {
 };
 
 watch(() => datospadre.dni, (newValue, oldValue) => {
-  if(newValue.length == 8){ getPadreApi() }
+  if(newValue.length == 8){ 
+    getApoderadoDNI(1); 
+  }
 });
 watch(() => datosmadre.dni, (newValue, oldValue) => {
-  if(newValue.length == 8){ getMadreApi() }
+  if(newValue.length == 8){ 
+    getApoderadoDNI(2); 
+  }
 });
+
+watch(() => datos_preinscripcion.tipo_certificado, (newValue, oldValue) => {
+  if(newValue === 'CERTIFICADO BLANCO'){ activeKey.value = "1";  }
+  if(newValue === 'CERTIFICADO AMARILLO'){ activeKey.value = "2"; }
+  if(newValue === 'CONSTANCIA DE ESTUDIOS'){ activeKey.value = "3"; }
+  ejemplo.value = true; 
+});
+
+
 
 watch(() => formState.dni, (newValue, oldValue) => {
   if(newValue){
@@ -1735,16 +1559,23 @@ watch(() => formState.dni, (newValue, oldValue) => {
 
 });
 const traslado_interno = ref(false);
+const modalidades = ref([]);
+
+const getModalidades =  async () => {
+  let res = await axios.get( "/get-select-modalidad-proceso/"+ props.procceso_seleccionado.id);
+  modalidades.value = res.data.datos;
+}
+
 
 watch(() => datos_preinscripcion.modalidad, (newValue, oldValue) => {
-  if(newValue == 2 ){
-    traslado_interno.value = true;
-    getCarrerasPreviasPostulacion();
-  }else{
-    traslado_interno.value = false;
-    carreras_previas.value = [];
-  }
+  getProgramas();
 });
+
+const programas = ref([]);
+const getProgramas =  async () => {
+  let res = await axios.post( "/get-select-programas-proceso",{ "id_modalidad": datos_preinscripcion.modalidad, "id_proceso": props.procceso_seleccionado.id });
+  programas.value = res.data.datos;
+}
 
 const participa = ref(0);
 const getDatosApi = () => {
@@ -1842,11 +1673,11 @@ const getPasoRegistrado = async () => {
   let res = await axios.get( "/get-paso-registrado/"+props.procceso_seleccionado.id+"/"+formState.dni);
   if(res.data.estado == true){
     ultimopaso.value = res.data.datos
-    getDatosPersonales2()
+    await getDatosPersonales2()
     if(res.data.datos.nro == 6){
-        consultaInscripcion2()
+      consultaInscripcion2()
     }else{
-        pagina_pre.value = res.data.datos.nro;
+      pagina_pre.value = res.data.datos.nro;
     }
 
   }
@@ -1875,8 +1706,7 @@ const savePasos =  async (namex, num, avan ) => {
 
 const saveDNI =  async () => {
   
-  let res = await axios.post( "/save-postulante-dni",
-  {
+  let res = await axios.post( "/save-postulante-dni", {
     tipo_doc: datospersonales.tipo_doc,
     nro_doc: formState.dni,
     ubigeo_nacimiento: formState.ubigeo,
@@ -1934,22 +1764,6 @@ const saveDatosResidencia =  async () => {
   if( avance_current.value < 32){ savePasos("Registro de datos de residencia", 2, 32) } else{ next() }
 }
 
-const saveDatosResidenciaExtra =  async () => {
-  const values = await formDatosResidenciaExtra.value.validateFields();
-
-  let res = await axios.post(
-    "/save-postulante-residencia",
-    {
-      id: datospersonales.id,
-      pais: datosresidencia.pais,
-      direccion: datosresidencia.direccion
-    }
-  );
-  if(res.data.estado === true ){
-    notificacion(res.data.tipo, res.data.titulo, res.data.mensaje)
-  }
-  if( avance_current.value < 32){ savePasos("Registro de datos de residencia", 2, 32) } else{ next() }
-}
 
 watch(pagina_pre, ( newValue, oldValue ) => {
 
@@ -1963,9 +1777,15 @@ watch(pagina_pre, ( newValue, oldValue ) => {
   }
   if(newValue === 4 ){
     getApoderado();
+
   }
   if(newValue === 5 ){
-    getApoderadoM();
+    if( datospersonales.id ){
+      getApoderadoM();
+    }
+  }
+  if(newValue === 6){
+    getModalidades();
   }
 })
 
@@ -1998,6 +1818,33 @@ const getDistritosColegio = async (depp) => {
 const getColegios = async () => {
   const res = await axios.post("/get-colegio-distrito", {  ubigeo_cole: depseleccionadoC.value + provseleccionadaC.value + distseleccionadoC.value });
   colegios.value = res.data.datos;
+}
+
+const getApoderadoDNI = async (tipo) => {
+
+  if(tipo == 1){
+    let res = await axios.post( "/get-apoderado-dni", {dni: datospadre.dni });
+    if (res.data.estado === true ){  
+      console.log("datos:: ", res.data.datos);
+      datospadre.dni = res.data.datos.dni
+      datospadre.nombres = res.data.datos.nombres
+      datospadre.paterno = res.data.datos.paterno
+      datospadre.materno = res.data.datos.materno
+    } else{
+      getpadreApi()
+    }
+  }else{
+    let res = await axios.post( "/get-apoderado-dni", {dni: datosmadre.dni });
+    if (res.data.estado === true ){  
+      console.log("datos:: ", res.data.datos);
+      datosmadre.dni = res.data.datos.dni
+      datosmadre.nombres = res.data.datos.nombres
+      datosmadre.paterno = res.data.datos.paterno
+      datosmadre.materno = res.data.datos.materno
+    } else{
+      getmadreApi()
+    }
+  }
 }
 
 const getUbigeo = async () => {
@@ -2046,6 +1893,48 @@ function validateFechaNacimiento(rule, value) {
       } else {
         resolve();
       }
+    }
+  });
+}
+
+function validateCelular(rule, value) {
+  return new Promise((resolve, reject) => {
+    if (!value) {
+      reject(new Error('Por favor, ingresa tu número de celular.'));
+    } else {
+      axios.post('/existe-celular',{ celular: value, dni:formState.dni})
+        .then(response => {
+          if (response.data == true) {
+            reject(new Error('Este número de celular ya está registrado.'));
+          } else {
+            resolve();
+          }
+        })
+        .catch(error => {
+          console.error('Error al verificar el número de celular:', error);
+          reject(new Error('Error al verificar el número de celular.'));
+        });
+    }
+  });
+}
+
+function validateCorreo(rule, value) {
+  return new Promise((resolve, reject) => {
+    if (!value) {
+      reject(new Error('Por favor, ingresa tu correo.'));
+    } else {
+      axios.post('/existe-correo',{ email: value, dni:formState.dni})
+        .then(response => {
+          if (response.data == true) {
+            reject(new Error('Este correo ya está registrado.'));
+          } else {
+            resolve();
+          }
+        })
+        .catch(error => {
+          console.error('Error al verificar el correo:', error);
+          reject(new Error('Error al verificar correo.'));
+        });
     }
   });
 }
@@ -2168,10 +2057,6 @@ const notificacion = (type, titulo, mensaje) => {
 };
 
 const emits = defineEmits(['ejecutarFuncionHijo']);
-
-const funcionHijoEjecutada = () => {
-  console.log('Función del componente hijo ejecutada en el componente padre');
-};
 
 
 const imagen = ref(null);
@@ -2425,7 +2310,6 @@ const cancelarInscripcion = () => {
     location.reload(true);
 }
 
-
 const getCarrerasPreviasPostulacion = async () => {
   const response = await axios.get('/carreras-previas/'+formState.dni);
   carreras_previas.value = response.data.datos;
@@ -2457,46 +2341,48 @@ input[type=file]::file-selector-button:hover {
   width: 7px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f100;
 }
 
-/* Handle */
+
 ::-webkit-scrollbar-thumb {
   background: #bbbbbb;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #aaaaaa;
-}
+::-webkit-scrollbar-thumb:hover { background: #aaaaaa; }
 
-.btn-vocacional{
-  background: #13136b;
-  color: white;
-}
+.btn-vocacional{ background: #13136b; color: white; }
+.btn-vocacional:hover { background: #af1f75; }
 
-/* Handle on hover */
-.btn-vocacional:hover {
-  background: #1f1faf;
-
-}
-
-
-.boton-anterior { width: 175px; height: 38px; }
-.boton-siguiente { width: 175px; height: 38px; border-radius: 5px; background: #020b61 }
+.boton-anterior { width: 175px; height: 40px; color:#350261; border: #564267 solid 2px; font-weight: bold; }
+.boton-siguiente { width: 175px; height: 40px; background: #350261; border:none; }
+.boton-siguiente:hover {  border-radius: 5px; background: #6414ab; color:white; }
 .datos-postulacion { display: flex}
 .selector-modalidad { width: 250px }
 .vocacional {height:calc(100vh - 227px); overflow-y:scroll;}
+.card-datos-colegio { padding-top: -5px;  min-width: 700px; }
+@media screen and (max-width: 1200px) {
+  .datos-column { width: calc(50% - 10px); }
+  .card-datos-colegio { padding-top: -5px; padding-bottom:0px; min-width: 600px; }
+}
+
+@media screen and (max-width: 768px) {
+  .card-datos-colegio { min-width: 300px; }
+  .datos-column {
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px), screen and (orientation: portrait) {
   .cardInicio { margin-top: -10px; border:none; }
-  .boton-anterior { width: 50%; }
-  .boton-siguiente { width: 50%; }
+  .boton-anterior { width: 50%; border-radius: 0%; border: none; background: #5f506c42; }
+  .boton-siguiente { width: 50%; border-radius: 0%; border: none; }
   .datos-postulacion { display: block;}
-  .selector-modalidad { width: 100%; margin-bottom: 10px }
+  .selector-modalidad { width: 100%; margin-bottom: 10px; }
   .vocacional {height:calc(100vh - 200px); overflow-y:scroll;}
   .btn-vocacional { width:100%;}
+  .card-datos-colegio { width: 200px; }
 }
 
 .datos-container {
@@ -2538,19 +2424,6 @@ input[type=file]::file-selector-button:hover {
     border-radius: 5px;
   }
 
-
-@media screen and (max-width: 1200px) {
-  .datos-column {
-    width: calc(50% - 10px);
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .datos-column {
-    width: 100%;
-  }
-}
-
 .selected { background-color: #e0e0e06d; }
 .deshabilitado { opacity: 0.5;  pointer-events: none; cursor: not-allowed;}
 @keyframes rotate {
@@ -2562,16 +2435,7 @@ input[type=file]::file-selector-button:hover {
   }
 }
 
-.rotating-svg {
-  animation: rotate 2s linear infinite; /* Ajusta la duración y el tipo de animación según tus preferencias */
-}
-
-.aparecer-div {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-  }
-
-.aparecer-div-mostrar {
-  opacity: 1;
-}
+.rotating-svg { animation: rotate 2s linear infinite; }
+.aparecer-div { opacity: 0; transition: opacity 0.5s ease-in-out; }
+.aparecer-div-mostrar { opacity: 1; }
 </style>

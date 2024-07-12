@@ -96,7 +96,7 @@
     <div style="width: 100%; text-align:center; margin-top:0px; font-size:10pt;">
         <div>
             <div><span style="font-weight:bold; text-transform:uppercase">{{ $proceso->nombre }} - {{ date('d/m/Y')}} </span></div>
-            INFORME DE OBSERVACIONES
+                INFORME DE OBSERVACIONES
             <div>(Fichas de identificación)</div>
         </div>
     </div>

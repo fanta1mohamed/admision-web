@@ -19,10 +19,6 @@
         </div>
     
     
-    
-        
-    
-    
         <div v-if="tabPosition === 'archivos'" class="mt-3 mb-3" style="margin-left: -5px;">
         <a-table 
             :columns="columnsArchivos"

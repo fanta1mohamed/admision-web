@@ -5,8 +5,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Proceso;
-use App\Models\TipoProceso;
-use App\Models\Preinscripcion;
 use App\Models\CarrerasPrevias;
 use App\Models\Ingresante;
 use App\Models\Postulante;

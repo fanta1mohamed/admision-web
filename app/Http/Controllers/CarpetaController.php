@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class CarpetaController extends Controller
 {
- 
-
     public function crearCarpeta(Request $request)
     {
         // Validar los datos del formulario, si es necesario

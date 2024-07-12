@@ -104,7 +104,26 @@ class ProgramaController extends Controller
     return response()->json($this->response, 200);
   }
 
-    
+  public function getSelectProgramas(Request $request)
+  {
+    $res = Programa::select(
+      'id as value',
+      'nombre_corto as label'
+    )
+    ->where('estado','=',1)
+    ->where(function ($query) use ($request) {
+        return $query
+            ->orWhere('codigo', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('nombre_corto', 'LIKE', '%' . $request->term . '%');
+    })->orderBy('nombre', 'ASC')
+    ->get(50);
 
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+
+  
 
 }

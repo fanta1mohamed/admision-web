@@ -12,7 +12,6 @@ class ApoderadoController extends Controller {
 
   public function getApoderado(Request $request )
   {
-    $v = [];
     $res = Apoderado::select( 'id','tipo_doc', 'nro_documento', 'paterno', 'materno', 'nombres', 'tipo_apoderado' )
     ->where('apoderado.id_postulante','=', $request->id_postulante)
     ->where('apoderado.tipo_apoderado','=', $request->tipo)
@@ -31,6 +30,8 @@ class ApoderadoController extends Controller {
       return response()->json($this->response, 200);
     }
   }
+
+
 
   public function getApoderadoAdmin(Request $request){
     $query_where = [];
@@ -226,7 +227,23 @@ class ApoderadoController extends Controller {
         }
 
         return response()->json($this->response, 200);
+    }
+
+    public function getApoderadobyDni(Request $request) {
+
+      $apoderado = Apoderado::select('id', 'nro_documento as dni', 'paterno', 'materno', 'nombres')
+      ->where('nro_documento','=',$request->dni)
+      ->first();
+      if($apoderado){
+        $this->response['estado'] = true;
+        $this->response['datos'] = $apoderado;
+      }else{
+        $this->response['estado'] = false;
       }
+
+
+      return response()->json($this->response, 200);
+    }
 
 
 

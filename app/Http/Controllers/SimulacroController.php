@@ -194,7 +194,7 @@ class SimulacroController extends Controller
   // }
 
 
-  public function saveSimulacro(Request $request ) {
+  public function saveSimulacro(Request $request ) {    
 
     $simulacro = null;
     if (!$request->id) {
@@ -222,8 +222,7 @@ class SimulacroController extends Controller
 
         if( $temp == $postulante ) {
           $this->response['estado'] = false;
-        }else 
-        {
+        }else {
           $this->response['tipo'] = 'info';
           $this->response['titulo'] = '!REGISTRO MODIFICADO!';
           $this->response['mensaje'] = 'Datos del '.$postulante->nombres.' actualizados';

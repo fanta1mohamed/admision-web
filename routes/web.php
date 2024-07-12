@@ -32,8 +32,10 @@ use App\Http\Controllers\PruebasController;
 use App\Http\Controllers\ResultadosController;
 use App\Http\Controllers\CarpetaController;
 use App\Http\Controllers\PonderacionController;
+use App\Http\Controllers\ProgramaProcesoController;
 use App\Http\Controllers\SancionadoController;
 use App\Http\Controllers\CepreController;
+use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\PagoBancoController;
 use App\Http\Controllers\VocacionalController;
 use Illuminate\Http\Request;
@@ -58,7 +60,12 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    
+    Route::post('/select-programas', [ProgramaController::class, 'getSelectProgramas']);
+    Route::post('/select-modalidades', [ModalidadController::class, 'getSelectModalidades']);
 });
+
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 Route::prefix('admin')->middleware('auth','admin')->group(function () {
@@ -73,7 +80,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::resource('roles',RolController::class);
     Route::get('roles', fn () => Inertia::render('Roles/index'))->name('roles-index');
     Route::resource('usuarios',UsuarioController::class);
-    Route::get('usuarios', fn () => Inertia::render('Usuarios/index'))->name('usuarios-index');
+    Route::get('usuarios', fn () => Inertia::render('Usuarios/index'))->name('usuarios-index'); 
 
     Route::get('/get-permission', [RolController::class, 'getPermission'])->name('get');
     Route::get('/get-roles', [RolController::class, 'getRoles']);
@@ -101,7 +108,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-preinscripciones-admin', [PreinscripcionController::class, 'getPreinscripcionesAdmin']);
     Route::post('/actualizar-sexo-postulante', [PreinscripcionController::class, 'actualizarSexo']);
     Route::post('/actualizar-preinscripcion', [PreinscripcionController::class, 'Actualizar']);    
-
 
     Route::get('/procesos', [ProcesoController::class, 'index'])->name('proceso-index');
     Route::get('/eliminar-proceso/{id}', [ProcesoController::class, 'deleteProceso']);
@@ -172,7 +178,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/vocacional', fn () => Inertia::render('Admin/Vocacional/index'))->name('admin-reporte');
     Route::get('/resultados-vocacional', [PreguntaController::class, 'getResultado']);
 
-
     Route::get('/apoderados', fn () => Inertia::render('Admin/Apoderados/index'))->name('admin-apoderado-index');
     Route::get('/postulante', fn () => Inertia::render('Admin/Postulante/index'))->name('admin-postulante-index');
     Route::get('/colegio', fn () => Inertia::render('Admin/Colegio/index'))->name('admin-colegio-index');
@@ -188,7 +193,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     // Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
     // Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);    
 
-
     Route::get('/component', fn () => Inertia::render('Admin/Dashboard/components/reportes'));
 
     //REPORTES VARIOS 
@@ -203,12 +207,10 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('get-inscritos-procedencia-colegio-reporte', [DashboardController::class, 'reporteInscritosProcedenciaColegio']);
     Route::get('get-inscritos-tipo-colegio-reporte', [DashboardController::class, 'reporteInscritosTipoColegio']);
 
-
     //POSTULANTE
     Route::get('/perfil-postulante', fn () => Inertia::render('Admin/Postulante/Perfil'));
     Route::get('postulante-perfil/{dni}', [DashboardController::class, 'showPostulante']);
     Route::post('get-procesos', [DashboardController::class, 'getInsPostulante']);
-
     
     //PARTICIPANTES
     Route::get('/participante-docente', fn () => Inertia::render('Admin/Participante/Docente'))->name('admin-participante-docente');
@@ -229,12 +231,12 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-colegios', [ColegioController::class, 'getColegios']);
     Route::post('/save', [ColegioController::class, 'save']);
 
-
-
     //Configuracion programa
     Route::get('/proceso-configuracion-programa', fn () => Inertia::render('Procesos/Configuracion/programas'));
+    Route::get('/get-programas-proceso',[ProgramaProcesoController::class, 'getProgramaProceso']);
 
 });
+
 
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
 
@@ -321,6 +323,9 @@ Route::post('/get-alternativas2', [PreguntaController::class, 'getAlternativas2'
 Route::get('/get-pre', [PreguntaController::class, 'getPreguntasPerfiles2']);
 
 Route::prefix('simulacro')->group(function () {
+
+    Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
+
     Route::middleware(['auth', 'simulacro'])->group(function () {
         Route::get('/', fn () => Inertia::render('Simulacro/Admin/index'))->name('simulacro-inicio');
         Route::get('/get-nro-participantes', [SimulacroController::class, 'postulantesRegistrados']);
@@ -367,7 +372,7 @@ Route::prefix('simulacro')->group(function () {
         Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
         Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
 
-        Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
+        //Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
         Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacros']);
         Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
         Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
@@ -375,59 +380,7 @@ Route::prefix('simulacro')->group(function () {
 
     });
 
-    Route::middleware(['auth', 'admin'])->group(function () {
-        Route::get('/', fn () => Inertia::render('Simulacro/Admin/index'))->name('simulacro-inicio');
-        Route::get('/get-nro-participantes', [SimulacroController::class, 'postulantesRegistrados']);
-        Route::get('/get-nro-inscritos', [SimulacroController::class, 'postulantesInscritos']);
-        Route::get('/get-nro-pagos', [SimulacroController::class, 'pagosRegistrados']);
-
-
-        //COLEGIOS
-        Route::get('/colegios', fn () => Inertia::render('Simulacro/Colegios/index'))->name('simulacro-colegios');
-        Route::post('/get-colegios', [ColegioController::class, 'getColegios']);
-        Route::post('/save', [ColegioController::class, 'save']);
-
-        //INSCRITOS
-        Route::get('/inscripciones', fn () => Inertia::render('Simulacro/Admin/Inscripciones/index'))->name('simulacro-inscritos');
-        Route::post('/get-inscritos-simulacro', [SimulacroController::class, 'getInscritosSimulacro']);
-
-        //PARTICIPANTES
-        Route::get('/participantes', fn () => Inertia::render('Simulacro/Admin/Participantes/index'))->name('simulacro-participantes');
-        Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);
-        Route::post('/save-simulacro-participante', [SimulacroController::class, 'updateParticipante']);
-
-
-        //ENTRADA
-        Route::get('/entrada', fn () => Inertia::render('Simulacro/Entrada/index'));
-        Route::post('/get-participante', [SimulacroController::class, 'getEntrada']);
-        Route::post('/save-entrada', [SimulacroController::class, 'saveEntrada']);
-        Route::post('/get-total-entrada', [SimulacroController::class, 'getTotalEntrada']);
-        Route::post('/get-simulacro-ingreso', [SimulacroController::class, 'getIngresos']);
-
-
-        //PAGOS
-        Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
-        Route::get('/pagos-consulta', fn () => Inertia::render('Simulacro/Admin/Pagos/consulta'))->name('simulacro-consulta-pagos');
-        Route::post('/get-pagos-simulacro', [PagoController::class, 'getPagosSimulacro']);
-        Route::post('/get-pagos-simulacro-consulta', [PagoController::class, 'getPagosSimulacroConsulta']);
-
-        //REPORTES
-        Route::get('/postulantes-por-programas', [SimulacroController::class, 'postulantexPrograma']);
-        Route::get('get-inscritos-genero-reporte', [SimulacroController::class, 'reporteInscritosGenero']);
-        Route::get('get-inscritos-areas-reporte', [SimulacroController::class, 'reporteInscritosAreas']);
-        
-
-        //Route::get('/', fn () => Inertia::render('Simulacro/index'))->name('simulacros');
-        Route::get('/simulacros', fn () => Inertia::render('Simulacro/Simulacros'))->name('simulacro-simulacros');
-        Route::get('/calificacion', fn () => Inertia::render('Simulacro/Ficha'))->name('simulacro-calificacion');
-
-        Route::post('/save-simulacro', [SimulacroController::class, 'saveSimulacro']);
-        Route::post('/get-simulacros', [SimulacroController::class, 'getSimulacros']);
-        Route::post('/get-participantes', [SeleccionDataController::class, 'getParticipantes']);    
-        Route::post('/get-participantes-simulacro', [SimulacroController::class, 'getParticipantesSimulacro']);    
-        Route::post('/save-respuestas', [SimulacroController::class, 'saveRespuestas']);
-
-    });
+ 
 
 });
 
@@ -506,6 +459,7 @@ Route::post('/save-vocacional', [DetalleExamenVocacionalController::class, 'save
 
 Route::get('/pdf-vocacional/{dni}', [PreinscripcionController::class, 'pdfvocacional']);
 Route::get('/pdf-solicitud/{p}/{dni}', [PreinscripcionController::class, 'pdfsolicitud']);
+Route::get('/pdf-solicitud-extranjeros/{p}/{dni}', [PreinscripcionController::class, 'pdfsolicitudExtranjeros']);
 
 Route::post('/control-biometrico', [IngresoController::class, 'biometrico']);
 Route::get('/control-biometrico-manual/{dni}', [IngresoController::class, 'registrar_biometrico']);
@@ -556,6 +510,13 @@ Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
     }
 });
 
+
+//MODALIDADES y PROGRAMAS
+Route::get('/get-select-modalidad-proceso/{id}',[ProgramaProcesoController::class, 'getSelectModalidadesProceso']);
+Route::post('/get-select-programas-proceso',[ProgramaProcesoController::class, 'getSelectProgramasProceso']);
+
+
+
 Route::get('/distribucion', [TestController::class, 'Distribucion']);
 Route::get('/pdf-lista', [TestController::class, 'pdfLista']);
 
@@ -602,6 +563,11 @@ Route::post('/get-ponderaciones-select', [PonderacionController::class, 'getPond
 
 Route::get('/calific/{a}', [ResultadosController::class, 'Calificar']);
 Route::get('/pdf-errores/{D}', [ResultadosController::class, 'PdfErroresCalifacion']);
+
+Route::post('/calificar-examen', [ResultadosController::class, 'CalificarExamen']);
+Route::post('/get-puntajes-examen', [ResultadosController::class, 'getPuntajes']);
+Route::get('/get-pdf-resultados/{sim}', [ResultadosController::class, 'getResultadosPDF']);
+
 
 //PREINSCRIPCIONES CEPREUNA
 Route::get('{p}/preinscripcion', [ProcesoController::class, 'getFormulario']);
@@ -663,7 +629,19 @@ Route::post('/insertar-pago', [PagoController::class, 'insertarPago']);
 Route::get('/eliminar-pago/{dni}/{operacion}', [PagoController::class, 'eliminarPago']);
 Route::get('/get-pagos-dni/{dni}', [PagoController::class, 'getPagosDNI']);
 
+
+//VALIDACIONES
+Route::post('/existe-celular', [ValidacionController::class, 'existeCelular']);
+Route::post('/existe-correo', [ValidacionController::class, 'existeCorreo']);
+Route::post('/get-apoderado-dni', [ApoderadoController::class, 'getApoderadobyDni']);
+
+
+Route::get('/pdftest', [TestController::class, 'pdfTest']);
+
+
 require __DIR__.'/auth.php';
+
+
 
 
 

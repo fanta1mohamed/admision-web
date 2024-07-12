@@ -24,6 +24,7 @@ class ResultadosController extends Controller
     }
 
     public function SubirParticipantes(Request $request){
+        
         $data = $request->data;
         $idSimulacro = $request->proceso;
 
@@ -774,22 +775,23 @@ class ResultadosController extends Controller
     }
 
 
-
     public function Calificar($area)
     {
         $ponderaciones = DB::select("SELECT * FROM ponderacion WHERE id_ponderacion_simulacro = $area");
 
+        $id_sim = 3;
+
         $patrones = DB::select("SELECT i.*, asim.categoria AS ide_tipe FROM res i
         JOIN archivos_simulacro asim ON asim.id = i.id_archivo
         JOIN simulacro sim ON sim.id = asim.id_simulacro
-        WHERE sim.id = 5 AND asim.area = $area
+        WHERE sim.id = $id_sim AND asim.area = $area
         AND asim.categoria = 'patron'");
 
         $respuestas = DB::select("SELECT i.*, r.tipo AS ide_tipe FROM res i
         JOIN archivos_simulacro asim ON asim.id = i.id_archivo
         JOIN simulacro sim ON sim.id = asim.id_simulacro
         LEFT JOIN ides r ON r.litho = i.litho
-        WHERE sim.id = 5 AND asim.area = $area
+        WHERE sim.id = $id_sim AND asim.area = $area
         AND asim.categoria = 'respuesta'");
 
         $comparaciones = [];
@@ -813,11 +815,15 @@ class ResultadosController extends Controller
                     $caracterPatron = $correctas[$i];
                     $puntuacion = 0;
 
+                    if($i == 39 ){
+
+                    }
+
                     if($caracterResp === " "){
-                        $puntuacion = ($ponderaciones[$i]->ponderacion * 2);
+                        $puntuacion = ($ponderaciones[$i]->ponderacion * 0);
                     }else {
                         if($caracterResp === $correctas[$i]){
-                            $puntuacion = ($ponderaciones[$i]->ponderacion * 10);
+                            $puntuacion = ($ponderaciones[$i]->ponderacion * 2);
                         }
                         else{ $puntuacion = 0; }
                     }
@@ -847,6 +853,85 @@ class ResultadosController extends Controller
 
     }
 
+
+
+    public function CalificarExamen(Request $request)
+    {
+        $id_sim = $request->id_simulacro;
+        $area = $request->id_area;
+        $pond = $request->id_ponderacion;
+        $ponderaciones = DB::select("SELECT * FROM ponderacion WHERE id_ponderacion_simulacro = $pond");
+
+        $patrones = DB::select("SELECT i.*, asim.categoria AS ide_tipe FROM res i
+        JOIN archivos_simulacro asim ON asim.id = i.id_archivo
+        JOIN simulacro sim ON sim.id = asim.id_simulacro
+        WHERE sim.id = $id_sim AND asim.area = $area
+        AND asim.categoria = 'patron'");
+
+        $respuestas = DB::select("SELECT i.*, r.tipo AS ide_tipe FROM res i
+        JOIN archivos_simulacro asim ON asim.id = i.id_archivo
+        JOIN simulacro sim ON sim.id = asim.id_simulacro
+        LEFT JOIN ides r ON r.litho = i.litho
+        WHERE sim.id = $id_sim AND asim.area = $area
+        AND asim.categoria = 'respuesta'");
+
+        $comparaciones = [];
+
+        foreach ($respuestas as $line ){
+
+            $comparacionActual = "";
+            $puntaje = 0;
+
+            $correctas = "";
+
+            if($line->tipo == 'P'){ $correctas = $patrones[0]->respuestas; }
+            if($line->tipo == 'Q'){ $correctas = $patrones[1]->respuestas; }
+            if($line->tipo == 'R'){ $correctas = $patrones[2]->respuestas; }
+            if($line->tipo == 'S'){ $correctas = $patrones[3]->respuestas; }
+            if($line->tipo == 'T'){ $correctas = $patrones[4]->respuestas; }
+            
+            for ($i = 0; $i < 60; $i++) {
+                if (strlen($line->respuestas) == 60 && strlen($correctas) == 60) {
+                    $caracterResp = $line->respuestas[$i];
+                    $caracterPatron = $correctas[$i];
+                    $puntuacion = 0;
+            
+                    // if ($i == 23) { 
+                    //     $puntuacion = 0.333333333;
+                    // } else {
+                        if ($caracterResp === " ") {
+                            $puntuacion = ($ponderaciones[$i]->ponderacion * 0);
+                        } else {
+                            if ($caracterResp === $caracterPatron) {
+                                $puntuacion = ($ponderaciones[$i]->ponderacion * 0.333333333);
+                            } else {
+                                $puntuacion = 0;
+                            }
+                        }
+                    // }
+            
+                    $comparacionActual = $comparacionActual . $caracterResp;
+                    $puntaje = $puntaje + $puntuacion;
+                }
+            }
+
+            $resp = Resp::find($line->id);
+            $resp->puntaje = round($puntaje,3);
+            $resp->save();
+
+            $comparaciones[] = [
+                'id'=> $line->id,
+                'respuestas' => $comparacionActual,
+                'puntaje' => round($puntaje,3)
+            ];
+
+        }
+
+        //DB::table('puntajes_simulacro')->insert($comparaciones);
+
+        return response()->json(['comparaciones' => $comparaciones]);
+
+    }
 
     public function PdfErroresCalifacion($sim) {
 
@@ -1038,5 +1123,82 @@ class ResultadosController extends Controller
 
     }
 
+    public function getPuntajes(Request $request){
+        $res = DB::select("SELECT  participantes.*, 
+#        IF(res.puntaje < 11 OR res.puntaje IS NULL, 11, res.puntaje) AS puntaje 
+        IF(res.puntaje < 11 OR res.puntaje IS NULL, res.puntaje, res.puntaje) AS puntaje 
+        FROM ( SELECT par.dni, par.paterno, par.materno, par.nombres, par.programa, ide.litho, ide.id 
+        AS id_ide 
+                FROM participantes_simulacro_externo par
+                LEFT JOIN ides ide 
+                ON ide.dni = par.dni
+                WHERE par.id_simulacro = $request->id_simulacro ) AS participantes
+        LEFT JOIN res ON res.litho = participantes.litho;" );
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+
+    }
+
+
+
+    public function getResultadosPDF($sim)
+    {
+        $estudiantesPorPrograma = DB::select("SELECT  participantes.*, 
+#        IF(res.puntaje < 11 OR res.puntaje IS NULL, 11, res.puntaje) AS puntaje 
+        IF(res.puntaje < 11 OR res.puntaje IS NULL, res.puntaje, res.puntaje) AS puntaje 
+            FROM ( 
+                SELECT par.dni, par.paterno, par.materno, par.nombres, par.programa, ide.litho, ide.id AS id_ide 
+                FROM participantes_simulacro_externo par
+                LEFT JOIN ides ide ON ide.dni = par.dni
+                WHERE par.id_simulacro = ?
+            ) AS participantes
+            LEFT JOIN res ON res.litho = participantes.litho;
+        ", [$sim]);
+    
+        $programaEstudiantes = [];
+        
+        foreach ($estudiantesPorPrograma as $estudiante) {
+            $programaActual = $estudiante->programa;
+            if (!isset($programaEstudiantes[$programaActual])) {
+                $programaEstudiantes[$programaActual] = [];
+            }
+        
+            $programaEstudiantes[$programaActual][] = [
+                'dni' => $estudiante->dni,
+                'paterno' => $estudiante->paterno,
+                'materno' => $estudiante->materno,
+                'nombres' => $estudiante->nombres,
+                'puntaje' => number_format(($estudiante->puntaje),2),
+            ];
+        }
+        
+        $archivosGenerados = [];
+    
+        foreach ($programaEstudiantes as $programa => $estudiantes) {
+            // Cargar la vista 'Calificacion.puntajesSuficiencia' con los datos de los estudiantes
+            $pdf = PDF::loadView('Calificacion.puntajesSuficiencia', compact('estudiantes', 'programa'));
+            $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+            $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+            $pdf->setPaper('A4', 'portrait');
+            
+            $rutaCarpeta = public_path("simulacro/");
+            if (!file_exists($rutaCarpeta)) {
+                mkdir($rutaCarpeta, 0777, true);
+            }
+            $nombreArchivo = "{$programa}.pdf";
+            $rutaCompleta = $rutaCarpeta . $nombreArchivo;
+            
+            $pdf->save($rutaCompleta);
+            $archivosGenerados[] = asset("pdfs/" . $nombreArchivo);
+        }
+    
+        // Devolver los archivos generados como respuesta para descargar
+        return response()->json([
+            'message' => 'Archivos generados correctamente',
+            'archivos' => $archivosGenerados
+        ]);
+    }
 
 }

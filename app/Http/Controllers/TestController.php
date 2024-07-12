@@ -155,6 +155,24 @@ class TestController extends Controller
   
     }
 
+
+    public function pdfTest(){
+        $pdf = PDF::loadView('solicitud.solicitud');
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->setPaper('A4', 'portrait');
+
+        // Renderiza el PDF
+
+        //$pdf = Pdf::loadView('solicitud.solicitud');        
+        //   $pdf->setPaper('A4', 'portrait');
+        //   $output = $pdf->output();
+  
+        //   file_put_contents(public_path('/documentos/simulacro2023/').$dni.'.pdf', $output);
+        return $pdf->stream();
+    
+    }
+
     
 
 

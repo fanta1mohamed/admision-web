@@ -79,5 +79,27 @@ class ModalidadController extends Controller
     return response()->json($this->response, 200);
   }
 
+
+  public function getSelectModalidades(Request $request) 
+  {
+    $res = Modalidad::select('id as dataIndex', 'nombre as title')
+        ->where('estado', '=', 1)
+        ->where(function ($query) use ($request) {
+            return $query->orWhere('nombre', 'LIKE', '%' . $request->term . '%');
+        })
+        ->orderBy('nombre', 'ASC')
+        ->paginate(20);
+    $data = $res->toArray();
+
+    array_unshift($data['data'], ['dataIndex' => 0, 'title' => 'Programa', 'width' => '300px']);
+
+    $res->setCollection(collect($data['data']));
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+
+    return response()->json($this->response, 200);
+
+  }
     
 }

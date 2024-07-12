@@ -146,7 +146,7 @@
                         </div>
 
                         <div class="mt-2" style="width: 100%;">
-                            <label>Ubicación<span style="color:red;">*</span> {{ form.ubigeo }}</label>
+                            <label>Ubicación<span style="color:red;">*</span></label>
                             <a-form-item 
                                 name="ubigeo"
                                 :rules="[ { required: true, message: 'Seleccione la ubicación', trigger: ['change', 'blur']},]"
@@ -198,7 +198,7 @@
                             <a-button  style="border: 1px solid #476175; color:#476175; width:100px; height: 36px; border-radius:4px;"> Cancelar </a-button>
                         </div>
                         <div>
-                            <a-button @click="save()" style="background: #476175; border:none; color:white; width:100px; height: 36px; border-radius:4px;"> Guardar </a-button>
+                            <a-button @click="guardar()" style="background: #476175; border:none; color:white; width:100px; height: 36px; border-radius:4px;"> _Guardar </a-button>
                         </div>
                     </div>
                 </div>
@@ -258,9 +258,6 @@ const carpetas = ref([]);
 const carpetaId = ref(1);
 const modalNuevo = ref(false);
 const nombre = ref("");
-
-
-
 
 const procesoseleccionado = ref(null)
 
@@ -337,19 +334,16 @@ const getSimulacros = async () => {
 getSimulacros()
 
 
-
-
-const save = async () => {
+const guardar = async () => {
     const values = await formDatos.value.validateFields();
-    console.log("guardar");
+    const response = await axios.post("/simulacro/save-simulacro",{
+        nombre: form.nombre,
+        estado: 1,
+        ubigeo: form.ubigeo,
+        anio:'2024',
+        fecha: form.fecha
+    });
 }
-
-
-
-
-
-
-
 
 const getCarpetas = async ( ) => {
     try {

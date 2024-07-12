@@ -86,7 +86,7 @@
     <div style="width: 100%; text-align:center; margin-top:0px; font-size:10pt;">
         <div>
             <div style="width: 100%; text-align:center;">
-                <span style="font-size: 2.3rem; font-family:'Times New Roman', Times, serif;"> Administración </span>
+                <span style="font-size: 1.7rem; font-family:'Times New Roman', Times, serif;"> Administración </span>
             </div>
             <div><span style="font-weight:bold; text-transform:uppercase">{{ "Puntajes" }} - {{ date('d/m/Y')}} </span></div>
             INFORME DE OBSERVACIONES
