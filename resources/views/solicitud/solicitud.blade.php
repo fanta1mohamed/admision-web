@@ -39,7 +39,7 @@
 <body>
 <div class="marca-agua">
     @for ($in = 0; $in < 900; $in++)
-    <span style="text-transform: capitalize;"> Examen {{ strtolower($data->proceso) }} </span>
+    <span style="text-transform:uppercase;"> Examen {{ strtolower($data->proceso) }} </span>
     @endfor
 </div>
 <div class="content">
@@ -63,8 +63,8 @@
             <table>
                 <tr style="">
                     <td style="width: 100%">
-                        <div style="margin-bottom: 5px;"><span style="font-weight:bold">Dr. Juan Carlos Benavides Huanca</span></div>
-                        <div> <span style="font-weight:bold; font-size:10pt;">Director de la Dirección de Admisión de la Universidad Nacional del Altiplano – Puno</span></div>
+                        <div style="margin-bottom: 5px;"><span style="font-weight:bold; text-transform:uppercase;">Dr. Juan Carlos Benavides Huanca</span></div>
+                        <div> <span style="font-weight:bold; font-size:10pt; text-transform:uppercase;">Director de la Dirección de Admisión de la Universidad Nacional del Altiplano – Puno</span></div>
                     </td>
                 </tr>
             </table>
@@ -99,7 +99,7 @@
                         <div style="text-align: justify;">
                             <div style="line-height:1.5rem; text-align:justify;">
                                 Que, al cumplir con todos los requisitos establecidos
-                                por la dirección de admisión de la UNA Puno,
+                                por la Dirección de Admisión de la UNA Puno,
                                 <strong>SOLICITO la inscripción para postular en el EXAMEN
                                 {{ $data->proceso }}</strong>
                                 que se llevará a cabo el {{ $data->fecha_examen }}
@@ -115,7 +115,7 @@
                             <div  style="margin-top: 5px;">1.	Comprobante de pago.</div>
                             <div  style="margin-top: 5px;">2.	Documento de identidad (<span style="color:red;">*</span>original y copia).</div>
                             <div  style="margin-top: 5px;">3.	Certificado de estudios (<span style="color:red;">*</span>original y copia).</div>
-                            <div  style="margin-top: 5px; color:red;">4.	Otros requisitos según lo estipulado en el Art. 16.b del reglamento general de admisión 2024-II conforme a la modalidad de postulación.</div>
+                            <div  style="margin-top: 5px;">4.	Otros requisitos según lo estipulado en el Art. 16 del Reglamento General de admisión 2024-II conforme a la modalidad de postulación.</div>
                         </div>
                         <div style="margin-top:10px; margin-bottom:-14px;">
                             Nota (<span style="color:red;">*</span> Solo para verificación</span>)
