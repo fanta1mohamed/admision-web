@@ -548,14 +548,11 @@ class PostulanteController extends Controller
 
   public function getCarrerasPrevias(Request $request)
   {
-      $participante = $request->input('participante');
-      $formState = $request->input('formState');
-      
-      if ($participante !== null && isset($participante['dni'], $participante['nombre'], $participante['paterno'], $participante['materno'])) {
-          $dni = $participante['dni'];
-      } elseif ($formState !== null && isset($formState['dni'])) {
-          $dni = $formState['dni'];
-      } else {
+      $participante = $request->input('participante', null);
+      $formState = $request->formState;
+      $dni = $participante ? $participante['dni'] : ($formState ? $formState : null);
+  
+      if (!$dni) {
           return response()->json([
               'anteriores' => [],
               'loading' => false,
@@ -564,8 +561,10 @@ class PostulanteController extends Controller
               'message' => 'No se proporcionaron datos válidos'
           ], 400);
       }
+  
 
       $existingRecords = DB::table('carreras_previas')->where('dni_postulante', $dni)->exists();
+  
 
       if ($existingRecords) {
           return response()->json([
@@ -576,7 +575,7 @@ class PostulanteController extends Controller
               'message' => 'No tiene carreras previas'
           ]);
       }
-
+  
       try {
           if ($participante !== null) {
               $payload = [
@@ -587,28 +586,30 @@ class PostulanteController extends Controller
               ];
           } else {
               $payload = [
-                  'doc_' => $formState['dni'],
+                  'doc_' => $formState,
                   'nom_' => 'DIRECCIÓN',
                   'app_' => 'ADMISIÓN',
                   'apm_' => 'UNAP'
               ];
           }
-
+  
           $response = Http::withHeaders([
               'Content-Type' => 'application/json'
           ])->post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', $payload);
-
+  
           $data = $response->json();
+  
+          $isCountable = is_array($data) || $data instanceof Countable;
+  
 
-          // Manejar respuesta del API
           $responseArray = [
               'anteriores' => $data,
               'loading' => false,
               'modalSancionado' => false,
               'confirmacion' => false,
-              'message' => count($data) > 0 ? 'Tiene carreras previas' : 'No tiene carreras previas'
+              'message' => $isCountable && count($data) > 0 ? 'Tiene carreras previas' : 'No tiene carreras previas'
           ];
-
+  
           return response()->json($responseArray);
       } catch (\Exception $e) {
           return response()->json([
@@ -619,7 +620,6 @@ class PostulanteController extends Controller
               'message' => 'Error en la solicitud: ' . $e->getMessage()
           ], 500);
       }
-
 
   }
   

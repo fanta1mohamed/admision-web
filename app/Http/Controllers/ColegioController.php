@@ -59,8 +59,7 @@ class ColegioController extends Controller
 
     public function getUbigeoColegio(Request $request)
     {
-      $res = Colegio::select(
-        'colegios.id as value', 'colegios.nombre as label', 'colegios.direccion', 
+      $res = Colegio::select('colegios.id as value', 'colegios.nombre as label', 'colegios.direccion', 
         'postulante.anio_egreso as egreso',
         'departamento.nombre as departamento', 'departamento.codigo as dep',
         'provincia.nombre as provincia', 'provincia.codigo as prov', 

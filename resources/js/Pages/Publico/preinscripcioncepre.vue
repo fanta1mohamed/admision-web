@@ -99,6 +99,7 @@
 
       <div>
         <h1 style="font-weight:bold; font-size:1.2rem;">Datos del colegio</h1>
+        {{ datoscolegio }}
         <hr>
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
@@ -121,6 +122,7 @@
           </div>
 
           <div class="datos-column">
+
             <label for="name">Colegio: <span></span>  </label>
             <input v-if="datospersonales.tipo_doc === 1" type="text" disabled :value="datoscolegio.colegio"/>
             <input v-else type="text" disabled value="COLEGIOS EXTRANJEROS"/>
@@ -822,7 +824,7 @@
                               >
                                 <div><label>Nombre de colegio:</label></div>
                                   <a-select
-                                    v-model:value="datoscolegio.colegio"
+                                    v-model:value="datoscolegio.id_colegio"
                                     style="min-width: 300px"
                                     :options="colegios"
                                     @change="handleChangeCole"
@@ -1390,6 +1392,7 @@ const datosresidencia = reactive({
 
 const formDatosColegio = ref();
 const datoscolegio = reactive({
+  id_colegio:null,
   egreso: null,
   pais: 125,
   dep: null,
@@ -1848,7 +1851,7 @@ const getUbigeo = async () => {
   const res = await axios.post("/get-ubigeo-colegio", { id_postulante: datospersonales.id });
   if(res.data.datos.length !== 0){
     datoscolegio.egreso = res.data.datos[0].egreso;
-    datoscolegio.id = res.data.datos[0].value;
+    datoscolegio.id_colegio = res.data.datos[0].value;
     datoscolegio.colegio = res.data.datos[0].label;
     datoscolegio.dep = res.data.datos[0].departamento;
     depseleccionadoC.value = res.data.datos[0].dep;
@@ -1867,7 +1870,7 @@ const savecolegio = async () => {
     const response = await axios.post('/save-postulante-colegio', {
       id:  datospersonales.id,
       anio_egreso: datoscolegio.egreso,
-      colegio: datoscolegio.id,
+      colegio: datoscolegio.id_colegio,
       actualizar: ac,
       proceso: props.procceso_seleccionado.id
     },);
@@ -2109,7 +2112,7 @@ const cambiarFormato = () => {
 const college = ref(null)
 
 const getColegioSeleccionado = () => {
-  college.value = colegios.value.find(item => item.value === datoscolegio.colegio);
+  college.value = colegios.value.find(item => item.value === datoscolegio.id_colegio);
 }
 
 const props = defineProps(['procceso_seleccionado']);
@@ -2223,9 +2226,9 @@ const getDataPrisma = async () => {
     participante.value = null;
     const response = await axios.get('/get-data-prisma/'+formState.dni);
     if(response.data.estado === true){
-
         participante.value = response.data.datos;
     }
+
     getCarrerasPrevias();
 }
 
@@ -2234,7 +2237,7 @@ const getCarrerasPrevias = async ( ) => {
     try {
         const response = await axios.post('/get-carreras-previas', {
             participante: participante.value,
-            formState: formState.value
+            formState: formState.dni
         });
         const data = response.data;
 
