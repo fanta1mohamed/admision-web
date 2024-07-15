@@ -122,6 +122,8 @@ class DocumentoController extends Controller {
     ]);
   }
 
+  
+
   public function getCodigoDNI($dni){
 
     $fechas = ['2024-03-25', '2024-03-26', '2024-03-27', '2024-03-28','2024-04-01','2024-04-02'];
@@ -143,6 +145,11 @@ class DocumentoController extends Controller {
     return response()->json($this->response, 200);
 
   }
+
+  public function descargarReglamento(){
+    $archivo = public_path('/reglamento_2024_II.pdf');
+    return response()->download($archivo);
+  } 
 
 
 }

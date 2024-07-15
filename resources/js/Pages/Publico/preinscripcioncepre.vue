@@ -1127,10 +1127,32 @@
                     <div>FINALIZASTE CON EXITO EL REGISTRO DE TUS DATOS</div>
                   </div>
                 </div>
-                <div class="flex justify-center mt-4 mb-4">
-                  <a-button @click="getDocs()" style="background: #020b61;" type="primary"> DESCARGAR SOLICITUD </a-button>
-                  
+
+
+                <div class="justify-center mt-4 mb-4">
+                  <div class="flex justify-center mt-4 mb-4 mr-2">
+                    <a-button @click="getDocs()" class="custom-button2" shape="round">
+                        <template #icon>
+                          <div class="flex custom-icon2">
+                            <div class="mr-2"><img src="../../../assets/imagenes/iconos/icono-descargar.png" alt="icono descarga" class="icono-img"></div>
+                            <div class="icono-text2">DESCARGAR SOLICITUD</div>
+                          </div>
+                        </template>
+                      </a-button>
+                  </div>
+
+                  <div class="flex justify-center mt-4 mb-4 mr-2">
+                    <a-button @click="descargaReglamento()" class="custom-button" shape="round">
+                        <template #icon>
+                          <div class="flex custom-icon2">
+                            <img src="../../../assets/imagenes/iconos/icono-descargar.png" alt="icono descarga" class="icono-img">
+                            <div class="icono-text2">DESCARGAR REGLAMENTO</div>
+                          </div>
+                        </template>
+                      </a-button>
+                  </div>
                 </div>
+                
               </div>
             </a-card>
             </div>
@@ -2314,6 +2336,22 @@ const getCarrerasPreviasPostulacion = async () => {
 }
 
 
+const descargaReglamento = async () => {
+  try {
+        const response = await axios.get('/descargar-reglamento', {
+          responseType: 'blob',
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'reglamento.pdf'); // Nombre del archivo que se descargará
+        document.body.appendChild(link);
+        link.click();
+      } catch (error) {
+        console.error('Error al descargar el PDF', error);
+      }
+
+}
 
 const bio = ["04","08","15", "27", "28","29"];
 const ing = ["01", "02", "03", "05", "10", "22", "23", "24", "26", "30", "31", "32", "33", "34", "35", "36"]
@@ -2436,4 +2474,14 @@ input[type=file]::file-selector-button:hover {
 .rotating-svg { animation: rotate 2s linear infinite; }
 .aparecer-div { opacity: 0; transition: opacity 0.5s ease-in-out; }
 .aparecer-div-mostrar { opacity: 1; }
+
+.custom-button { background: none; border: #02445e 1px solid; padding: 0px 10px; }
+.custom-button:hover { background: #02445e; color:white; padding: 0px 10px; }
+.custom-icon { display: flex; align-items: center; }
+.icono-img { margin-top: 0px; width: 30px; }
+
+.custom-button2 { background: white; padding: 0px 20px; }
+.custom-button2:hover { background: #02445e; color:white; padding: 0px 20px; }
+.custom-icon2 { display: flex; align-items: center; }
+.icono-img2 { margin-top: 0px; width: 30px; }
 </style>

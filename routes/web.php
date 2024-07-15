@@ -636,6 +636,9 @@ Route::get('/pdftest', [TestController::class, 'pdfTest']);
 
 Route::post('/get-carreras-previas', [PostulanteController::class, 'getCarrerasPrevias']);
 
+
+Route::get('/descargar-reglamento', [DocumentoController::class, 'descargarReglamento']);
+
 require __DIR__.'/auth.php';
 
 
