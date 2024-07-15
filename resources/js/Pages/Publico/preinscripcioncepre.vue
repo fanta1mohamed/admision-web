@@ -1247,8 +1247,7 @@
           </div>
       </div>
 
-
-      <div v-if="anteriores.length > 0" style="width: 100%; max-width: 1000px; margin-top:20px;"> 
+      <div v-if="anteriores.length >= 1" style="width: 100%; max-width: 1000px; margin-top:20px;"> 
           <div class="mb-4">
             <div class="flex justify-center"><span>Se ha detectado Que Ud. Tiene ingresos previos</span></div>
             <div class="mt-3 flex justify-left"><span>Seleccine los programas para continuar</span></div>
@@ -1307,8 +1306,8 @@
           </div>
       </div> 
 
-
-      <div v-if="anteriores.length === 0 && confirmacion === false && datacepre.length !== 0 " style="width: 100%; max-width: 1000px; margin-top:20px;">    
+      <div v-else>
+        <div v-if="props.procceso_seleccionado.id_modalidad_proceso !== 2 && anteriores.length === 0 " style="width: 100%; max-width: 1000px; margin-top:20px;">    
           <div class="flex justify-center">
             <div>
               <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
@@ -1337,8 +1336,42 @@
               </div>
             </div>
           </div>
-      </div>       
-      
+          </div>
+
+          <div v-if="props.procceso_seleccionado.id_modalidad_proceso === 2 && datacepre.nro_documento" style="width: 100%; max-width: 1000px; margin-top:20px;">    
+            
+            <div class="flex justify-center">
+              <div>
+                <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
+                  <div><span style="font-size:1.4rem;">
+                    VERIFICACIÓN FINALIZADA  
+                  </span></div>
+                </div>
+                <div class="mt-3 mb-3 flex justify-center" style="text-align:justify;">
+                  <div><span style="font-size:1rem;">
+                    Hemos revisado tu información y cumples con los requisitos 
+                    para postular.
+                    Para continuar con el proceso de postulación, sigue estos pasos:</span></div>
+                </div>
+
+                <div>
+                  <div> 1. Presiona en "CONTINUAR". </div>
+                  <div> 2. Ingresa el código secreto proporcionado. </div>
+                  <div> 3. Presiona en "Iniciar Postulación". </div>
+                </div>
+
+                <div class="mt-4 mb-4">
+                  <a-alert message="!Importante! los datos registrados anteriormente se cargarán automáticamente" type="info" show-icon />
+                </div>
+                <div class="flex justify-center mt-4">
+                    <a-button type="primary" style="color:white; width:120px; height:42px;" @click="modalcarrerasprevias = false">Continuar</a-button>
+                </div>
+              </div>
+            </div>
+        </div>       
+
+      </div>
+
   </div>
   </a-modal>
 </Layout>
@@ -1710,7 +1743,6 @@ const getPasoRegistrado = async () => {
     }else{
       pagina_pre.value = res.data.datos.nro;
     }
-
   }
   else{
     modalcarrerasprevias.value = true;
@@ -2257,7 +2289,6 @@ const getDataPrisma = async () => {
     if(response.data.estado === true){
         participante.value = response.data.datos;
     }
-
     getCarrerasPrevias();
 }
 
@@ -2268,14 +2299,19 @@ const getCarrerasPrevias = async ( ) => {
             participante: participante.value,
             formState: formState.dni
         });
-        const data = response.data;
+        if(response.data.mensaje === "No tiene carreras previas"){
+          const data = response.data.anteriores;
+          anteriores.value = [];
+          loading.value = data.loading;
+          modalSancionado.value = data.modalSancionado;
+          confirmacion.value = data.confirmacion;
+        } else{
+          loading.value = false;
+          anteriores.value = response.data.anteriores;
+          modalSancionado.value = false;
+          confirmacion.value = false;
 
-        anteriores.value = data.anteriores;
-        loading.value = data.loading;
-        modalSancionado.value = data.modalSancionado;
-        confirmacion.value = data.confirmacion;
-
-        console.log(data.message);
+        }
     } catch (error) {
         console.error("Error fetching data: ", error);
     }

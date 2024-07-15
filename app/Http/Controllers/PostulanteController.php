@@ -549,7 +549,7 @@ class PostulanteController extends Controller
   public function getCarrerasPrevias(Request $request)
   {
       $participante = $request->input('participante', null);
-      $formState = $request->formState;
+      $formState = $request->input('formState', null);
       $dni = $participante ? $participante['dni'] : ($formState ? $formState : null);
   
       if (!$dni) {
@@ -562,10 +562,8 @@ class PostulanteController extends Controller
           ], 400);
       }
   
-
       $existingRecords = DB::table('carreras_previas')->where('dni_postulante', $dni)->exists();
   
-
       if ($existingRecords) {
           return response()->json([
               'anteriores' => [],
@@ -576,7 +574,7 @@ class PostulanteController extends Controller
           ]);
       }
   
-      try {
+
           if ($participante !== null) {
               $payload = [
                   'doc_' => $participante['dni'],
@@ -599,28 +597,28 @@ class PostulanteController extends Controller
   
           $data = $response->json();
   
+          // Verificar si la respuesta es countable
           $isCountable = is_array($data) || $data instanceof Countable;
   
-
-          $responseArray = [
-              'anteriores' => $data,
-              'loading' => false,
-              'modalSancionado' => false,
-              'confirmacion' => false,
-              'message' => $isCountable && count($data) > 0 ? 'Tiene carreras previas' : 'No tiene carreras previas'
-          ];
+          if ($isCountable && count($data) > 0) {
+              $responseArray = [
+                  'anteriores' => $data,
+                  'loading' => false,
+                  'modalSancionado' => false,
+                  'confirmacion' => false,
+                  'message' => 'Tiene carreras previas'
+              ];
+          } else {
+              return response()->json([
+                'anteriores' => [],
+                'loading' => false,
+                'modalSancionado' => false,
+                'confirmacion' => false,
+                'message' => 'No tiene carreras previas'
+            ]);
+          }
   
           return response()->json($responseArray);
-      } catch (\Exception $e) {
-          return response()->json([
-              'anteriores' => [],
-              'loading' => false,
-              'modalSancionado' => false,
-              'confirmacion' => false,
-              'message' => 'Error en la solicitud: ' . $e->getMessage()
-          ], 500);
-      }
-
   }
   
 
