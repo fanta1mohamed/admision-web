@@ -107,17 +107,17 @@
           </div>
           <div class="datos-column"  v-if="datospersonales.tipo_doc === 1">
             <label for="name">Departamento: <span></span>  </label>
-            <input v-if="datospersonales.nro_doc === 1" type="text" disabled :value="datoscolegio.dep"  />
+            <input type="text" disabled :value="datoscolegio.dep"/>
           </div>
 
           <div class="datos-column"  v-if="datospersonales.tipo_doc === 1">
             <label for="name">Provincia: <span></span>  </label>
-            <input type="text" disabled :value="datoscolegio.prov"  />
+            <input type="text" disabled :value="datoscolegio.prov"/>
           </div>
 
           <div class="datos-column" v-if="datospersonales.tipo_doc === 1">
             <label for="name">Distrito: <span></span>  </label>
-            <input type="text" disabled :value="datoscolegio.dist"  />
+            <input type="text" disabled :value="datoscolegio.dist"/>
           </div>
 
           <div class="datos-column">
