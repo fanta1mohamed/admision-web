@@ -2184,9 +2184,7 @@ const consultaInscripcion = async () => {
         pagina_pre.value = 7;
       } else {
         if(props.procceso_seleccionado.id_modalidad_proceso == 2){
-          getParticipanteCepre();
-          getDatosPersonales2()
-          getDataPrisma();
+          await getParticipanteCepre();
           getDatosPersonales2()
           participa.value = 1;
         }
