@@ -1286,7 +1286,7 @@
       </div> 
 
 
-      <div v-if="anteriores.length === 0 && confirmacion === false && modalSancionado != true" style="width: 100%; max-width: 1000px; margin-top:20px;">    
+      <div v-if="anteriores.length === 0 && confirmacion === false && datacepre.length !== 0 " style="width: 100%; max-width: 1000px; margin-top:20px;">    
           <div class="flex justify-center">
             <div>
               <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
@@ -2149,7 +2149,7 @@ const getSancionado =  async () => {
 
 const datacepre = ref(null)
 const getParticipanteCepre =  async () => {
-  datacepre.value = null;
+  datacepre.value = [];
   try {
     let res = await axios.get("/get-participante-cepre/" + formState.dni);
       if (res.data.estado === true ) {
