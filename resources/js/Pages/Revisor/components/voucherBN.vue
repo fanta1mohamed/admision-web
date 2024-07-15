@@ -166,11 +166,15 @@ const getPagosGeneral = async (comp) => {
 };
 
 
-watch(() => {
-  getComprobantes();
-  getCaja();
-  getBN();
-  getPagosGeneral();
+
+
+watch(() => props.dni, async (newDni) => {
+  if (props.dni.length === 8 && /^[0-9]+$/.test(props.dni)) {
+    await getComprobantes();
+    await getCaja();
+    await getBN();
+    await getPagosGeneral();    
+  }
 });
 
 const colcomprobantes =  [

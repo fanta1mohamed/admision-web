@@ -320,7 +320,7 @@ class SeleccionDataController extends Controller
       $query_where = [];
       $res = Postulante::select( 
           'postulante.nro_doc as value', 
-          DB::raw("CONCAT( postulante.nombres,' ',postulante.primer_apellido,' ', postulante.segundo_apellido) as label")
+          DB::raw("CONCAT(postulante.nombres, ' ', postulante.primer_apellido, ' ', IF(postulante.segundo_apellido IS NOT NULL, postulante.segundo_apellido, '')) as label")
       )
       ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
       ->where('pre_inscripcion.id_proceso','=',auth()->user()->id_proceso)
@@ -346,7 +346,7 @@ class SeleccionDataController extends Controller
     postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento
     FROM postulante
     JOIN pre_inscripcion ON postulante.id = pre_inscripcion.id_postulante
-    WHERE postulante.nro_doc = '.$request->dni.' AND pre_inscripcion.id_proceso = 5');
+    WHERE postulante.nro_doc = '.$request->dni.' AND pre_inscripcion.id_proceso = '.auth()->user()->id_proceso);
     
     if(count($res) > 0 ){
         $this->response['estado'] = true;

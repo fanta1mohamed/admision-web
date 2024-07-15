@@ -59,8 +59,6 @@ const verificar = async (id, estado) => {
   getComprobantes()
 }
 
-getComprobantes()
-
 </script>
 
 <style scoped>

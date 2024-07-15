@@ -49,7 +49,9 @@ class InscripcionController extends Controller
             ->exists();
 
         if( $sancionados ){
-            return "El postulante está observado";
+            $this->response['estado'] = true;
+            $this->response['mensaje'] = "El postulante está observado";
+            return response()->json($this->response, 200);
         }
         else {
             $res = DB::select("SELECT 
@@ -80,14 +82,10 @@ class InscripcionController extends Controller
             }
             else{
                 $this->response['estado'] = true;
-                $this->response['datos'] = null;
                 return response()->json($this->response, 200);
             }
 
         }
-
-
-
 
     }
 

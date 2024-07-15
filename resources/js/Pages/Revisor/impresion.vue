@@ -1,80 +1,29 @@
 <template>
 <Head title="Inscripciones-impresión"/>
-<AuthenticatedLayout>
-<div style="">
-
+<AuthenticatedLayout title="Revision documentos">
+<div style="height: calc(100vh - 120px); overflow-y: scroll; margin-right: -10px;">
 <div>  
   <div style=" width:100%; margin: 20px 0px; margin-top: 0px;">
-        <div class="flex mb-4" style="position:relative; height: 100px; background: white; align-items: center; justify-content: center;">
+      <div class="flex mb-4 elemento" style="position:relative; height: 130px; border-radius: 10px 10px 10px 10px; align-items: center; justify-content: center;">
           <div>
             <div style="text-align:center;">
-              <div v-if="postulante.programa"><span><strong style="font-size:2.2rem;">{{ postulante.programa }}</strong></span></div>
-              <div v-else><span><strong style="font-size:2.2rem;">PROGRAMA DE ESTUDIOS</strong></span></div>
+              <div v-if="postulante.programa"><span><strong style="font-size:1.7rem;">{{ postulante.programa }}</strong></span></div>
+              <div v-else><span><strong style="font-size:1.7rem;">PROGRAMA DE ESTUDIOS</strong></span></div>
               <div v-if="postulante.modalidad" style="text-align:center; margin-top:-10px;"><span style="font-size:1rem;">( {{ postulante.modalidad }} )</span></div>
               <div v-else style="text-align:center; margin-top:-10px;"><span style="font-size:1rem;">( MODALIDAD )</span></div>
             </div>
+  
             <div v-if="anteriores" style="text-align:center; margin-top:10px;">
-              <div v-if="anteriores.length > 0" style="text-align:center; margin-top:10px;">
-                <span style="font-size:1rem; letter-spacing:0.3rem;">POSTULANTE A SEGUNDO PROGRAMA</span>
+              <div v-if="anteriores.length > 0" class="px-2 py-1" style="text-align:center; margin-top:10px; background: #f3f3f3;">
+                <span style="color:crimson; font-size:1rem; letter-spacing:0.3rem;">POSTULANTE A SEGUNDO PROGRAMA</span>
               </div>
             </div>
           </div>
         </div>
-
-
-        <!-- <div style="padding: 20px; background: white;">
-          <a-row :gutter="[16]">
-            <a-col :xs="24" :sm="24" :md="24" :lg="6" style="">
-              <div style="background: yellow; position: relative;">
-                  <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/7/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
-                  <img v-else style="width:80%;" :src="baseUrl+'/fotos/postulantex.jpg'"/>
-                  <div style=" display:flex; align-items:center; justify-content:center; position:absolute; bottom:0px; width:100%; background: #00000082; text-align:center; height: 34px;">
-                      <span style="color:white; font-size:1.3rem; letter-spacing:.3rem;">70757838</span>
-                  </div>
-              </div>
-            </a-col>
-            <a-col :xs="24" :sm="24" :md="24" :lg="3">
-              <div class="flex" style="">
-                <div>
-                  <div class="" style="border: solid 1px #F4f4f4; overflow-y: hidden;">
-                    <div style="">
-                      <img style="width: 98%;" v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/7/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
-                      <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
-                    </div>
-                  </div>
-                  <div class="mr" style="border: solid 1px #F4f4f4;">
-                    <img style="width: 98%;" v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/7/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
-                    <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
-                  </div>
-                </div>
-              </div>
-            </a-col>
-
-            <a-col :xs="24" :sm="24" :md="24" :lg="15">
-              <a-row :gutter="16">
-                <a-col :xs="24" :sm="24" :md="24" :lg="24">
-                  <div class="mb-2">
-                    <div>
-                      <div><strong style="font-size:2.3rem;">Jhon Ariel Luque</strong></div>
-                    </div>
-                    <div>
-                      <div> FECHA DE NACIMIENTO: <strong> 15-07-2023 </strong></div>
-                      <div> SEXO: <strong> MASCULINO </strong> </div>
-
-                    </div>
-                  </div>
-                </a-col>
-              </a-row>
-            </a-col>
-
-        </a-row>
-        </div>
-      </div> -->
       </div>
 </div>
 
-<a-tabs v-model:activeKey="tabactive" type="card">
-  <a-tab-pane key="1" tab="Inscripcion" >
+
     <div style="padding: 0px 15px; background: white; border-radius: 10px; margin-top:-10px;">
       <div class="flex justify-end pt-6" style="background:white;">
         <div>
@@ -105,7 +54,7 @@
           <a-col flex="1 1">
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
-                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/8/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
+                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/9/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
@@ -243,11 +192,11 @@
             <!-- {{ baseUrl+'/huellas/inscripcion/'+dniseleccionado+'.jpg' }} -->
             <div class="mt-4 container-huellas">
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%; overflow-y: hidden;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/8/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/9/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/8/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/9/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
             </div>
@@ -343,62 +292,30 @@
           </a-table>
         </div>
       </div>
-
-    
-      <div class="mb-6 pb-6" style="display: flex; justify-content: flex-end; margin-top:-10px;">
-        <div v-if="inscripciones" class="flex">  
-          <div style="margin-right: 5px;"> 
-            <a-button type="" @click="actualizarPostulante">Actualizar Datos</a-button>          
-          </div>
-          <div v-if="inscripciones.length == 0">
-              <a-popconfirm title="¿Seguro de inscribir?" @confirm="confirm" cancelText="NO" placement="topRight" okText="SI" @cancel="cancel">
-                <a-button type="primary">Inscribir</a-button>
-              </a-popconfirm>
-            <!-- <a-button type="primary" @click="Inscribir">Inscribir</a-button> -->
-          </div>
-          <div v-else>
-            <a-button type="primary" disabled>Ya Inscrito</a-button>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </a-tab-pane>
-    <!-- <a-tab-pane key="2" tab="Apoderados">
-      <a-table :dataSource="apoderados" :columns="colApoderados">
-        <template #bodyCell="{ column, index, record }">
-          <template v-if="column.dataIndex === 'parentesco'">
-            <div v-if="record.parentesco == 'Padre'">
-              <a-tag color="blue">Padre</a-tag>            
-            </div>
-            <div v-if="record.parentesco == 'Madre'">
-              <a-tag color="pink">Madre</a-tag>            
-            </div>
-          </template>
-          <template v-if="column.dataIndex === 'acciones'">
-            <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
-            <template #icon><form-outlined/></template>
-            </a-button>
-            <a-divider type="vertical" />
-            <a-button type="danger" disabled @click="eliminar(filiales[index])" shape="" size="small">
-            <template #icon><delete-outlined/></template>
-            </a-button>
-          </template>
+</div>
 
-        </template>    
-      
-      </a-table>
-    </a-tab-pane> -->
-
-  <a-tab-pane key="7" tab="Constancia">
-      <div v-if="dniseleccionado" style="width:100%">            
-        <iframe :src="baseUrl+'/documentos/8/inscripciones/constancias/'+dniseleccionado+'.pdf'" width="100%" style="height:calc(100vh - 140px)"   scrolling="yes" frameborder="1" ></iframe>
-      </div>
-    </a-tab-pane>
-</a-tabs>
-
+<div class="flex justify-end" style="margin-left: -15px; background: white; border-top: 1px solid #cdcdcd83; height: 42px; align-items: center; margin-right: -11px;">
+  <div v-if="inscripciones" class="flex">  
+    <div style="margin-right: 5px;"> 
+      <a-button style="border: #0e4165 solid 1px; color: #0e4165;" @click="actualizarPostulante">Actualizar Datos</a-button>          
+    </div>
+    <div style="margin-right: 5px;"> 
+      <a-button style="border: #0e4165 solid 1px; color: #0e4165;" @click="actualizarPostulante">Imprimir constancia</a-button>          
+    </div>
+    <div v-if="inscripciones.length == 0">
+        <a-popconfirm title="¿Seguro de inscribir?" @confirm="confirm" cancelText="NO" placement="topRight" okText="SI" @cancel="cancel">
+          <a-button style="background: #0e4165; color:white">Inscribir</a-button>
+        </a-popconfirm>
+    </div>
+    <div v-else>
+      <a-button type="primary" disabled>Ya Inscrito</a-button>
+    </div>
+  </div>
 
 </div>
+
+
 </AuthenticatedLayout>
 
 </template>
@@ -443,10 +360,8 @@ const postulante = ref({
   dni_temp:""
 })
 
-const apoderados = ref([])
 const documentos = ref ([])
-
-// const onSelect = () => { dniseleccionado; };
+const anteriores = ref([]);
 
 const getPostulantes =  async (term = "", page = 1) => {
   let res = await axios.post( "get-postulantes?page=" + page, { term: dni.value });
@@ -475,30 +390,33 @@ const getPostulantesByDni =  async () => {
       postulante.value.dni_temp = res.data.datos.dni;
     }
 }
-const anteriores = ref([]);
-const getApoderados =  async () => {
-  let res = await axios.get( "get-apoderados-postulante/" + dniseleccionado.value);
-  apoderados.value = res.data.datos;
-}
 
 const getDocumentos =  async () => {
-  let res = await axios.get( "get-documentos-postulante/" + dniseleccionado.value);
-  documentos.value = res.data.datos;
+  if (dniseleccionado.value === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
+    let res = await axios.get( "get-documentos-postulante/" + dniseleccionado.value);
+    documentos.value = res.data.datos;
+  }
 }
 
 const getPreinscripciones =  async () => {
-  let res = await axios.get("get-preinscripciones-postulante/" + dniseleccionado.value);
-  preinscripciones.value = res.data.datos;
+  if (dniseleccionado.value === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
+    let res = await axios.get("get-preinscripciones-postulante/" + dniseleccionado.value);
+    preinscripciones.value = res.data.datos;
+  }
 }
 
 const getInscripciones =  async () => {
-  let res = await axios.get("get-inscripciones-postulante/" + dniseleccionado.value);
-  inscripciones.value = res.data.datos;
+  if (dniseleccionado.value === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
+    let res = await axios.get("get-inscripciones-postulante/" + dniseleccionado.value);
+    inscripciones.value = res.data.datos;
+  }
 }
 
 const getAnteriores =  async () => {
-  let res = await axios.get("/carreras-previas/" + dniseleccionado.value);
-  anteriores.value = res.data.datos;
+  if (dniseleccionado.value === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
+    let res = await axios.get("/carreras-previas/" + dniseleccionado.value);
+    anteriores.value = res.data.datos;
+  }
 }
 
 const Inscribir =  async () => {
@@ -531,12 +449,17 @@ const Inscribir =  async () => {
 let timeout2;
 watch(dni, ( newValue, oldValue ) => {
   clearTimeout(timeout2);
-  timeout2 = setTimeout(() => { getPostulantes(); }, 500);
+  timeout2 = setTimeout(() => { 
+    if(dni.value.length == 8){
+      getPostulantes();
+    }
+ }, 500
+  );
 })
 
 let timeout;
 watch(dniseleccionado, ( newValue, oldValue ) => {
-  clearTimeout(timeout);
+  clearTimeout(timeout);  
     timeout = setTimeout(() => {
       getPreinscripciones()
       getInscripciones()
@@ -546,16 +469,10 @@ watch(dniseleccionado, ( newValue, oldValue ) => {
     }, 500);
 })
 
-watch(tabactive, ( newValue, oldValue ) => {
-  if (tabactive.value == 2){
-    getApoderados()
-  }
-})
-
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/8/inscripciones/constancias/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/9/inscripciones/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
@@ -604,6 +521,7 @@ const colPreinscripciones =  [
 
 const confirm = e => { Inscribir(); };
 const cancel = e => { message.error('Click on No'); };
+
 getPostulantes()
 </script>
 
@@ -649,6 +567,17 @@ getPostulantes()
   font-weight:bold;
 }
 
+.elemento {
+    position: relative; 
+    background: white;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+    overflow: hidden;
+    opacity: 1;
+    color: #0e4165bd;
+}
+
 
 @media (max-width: 380px){
   .container-imagen{
@@ -690,5 +619,51 @@ getPostulantes()
     width: 100%;
     transform: scale(0.7);
   }
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* Estilo para un scroll específico */
+.scroll-container {
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Firefox */
+}
+
+/* Estilo para el scroll específico en Webkit (Chrome, Safari) */
+.scroll-container::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 </style>

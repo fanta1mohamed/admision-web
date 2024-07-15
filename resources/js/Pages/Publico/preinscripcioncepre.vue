@@ -74,7 +74,7 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Departamento: <span></span>  </label>
-            <input type="text" disabled :value="datosresidencia.dep"  />
+            <input type="text" disabled :value="datosresidencia.dep" />
           </div>
 
           <div class="datos-column">
@@ -564,27 +564,27 @@
                     <div><label>Pais:</label></div>
                       <a-select
                           ref="select"
-                          v-model:value="datoscolegio.pais"
+                          v-model:value="datosresidencia.pais"
                           style="width: 100%" >
-                          <a-select-option :value="125">PERÚ</a-select-option>
-                          <a-select-option :value="23">BOLIVIA</a-select-option>
-                          <a-select-option :value="11">ARGENTINA</a-select-option>
-                          <a-select-option :value="184">VENEZUELA</a-select-option>
-                          <a-select-option :value="38">COLOMBIA</a-select-option>
-                          <a-select-option :value="35">CHILE</a-select-option>
-                          <a-select-option :value="47">ECUADOR</a-select-option>
-                          <a-select-option :value="26">BRASIL</a-select-option>
-                          <a-select-option :value="104">MÉXICO</a-select-option>
-                          <a-select-option :value="182">URUGUAY</a-select-option>
-                          <a-select-option :value="124">PARAGUAY</a-select-option>
-                          <a-select-option :value="128">PUERTO RICO</a-select-option>
-                          <a-select-option :value="149">REPUBLICA DOMINICANA</a-select-option>
+                          <a-select-option :value="125" v-if="datospersonales.tipo_doc === 1">PERÚ</a-select-option>
+                          <a-select-option :value="23" v-if="datospersonales.tipo_doc !== 1">BOLIVIA</a-select-option>
+                          <a-select-option :value="11" v-if="datospersonales.tipo_doc !== 1">ARGENTINA</a-select-option>
+                          <a-select-option :value="184" v-if="datospersonales.tipo_doc !== 1">VENEZUELA</a-select-option>
+                          <a-select-option :value="38"  v-if="datospersonales.tipo_doc !== 1">COLOMBIA</a-select-option>
+                          <a-select-option :value="35" v-if="datospersonales.tipo_doc !== 1">CHILE</a-select-option>
+                          <a-select-option :value="47" v-if="datospersonales.tipo_doc !== 1">ECUADOR</a-select-option>
+                          <a-select-option :value="26" v-if="datospersonales.tipo_doc !== 1">BRASIL</a-select-option>
+                          <a-select-option :value="104" v-if="datospersonales.tipo_doc !== 1">MÉXICO</a-select-option>
+                          <a-select-option :value="182" v-if="datospersonales.tipo_doc !== 1">URUGUAY</a-select-option>
+                          <a-select-option :value="124" v-if="datospersonales.tipo_doc !== 1">PARAGUAY</a-select-option>
+                          <a-select-option :value="128" v-if="datospersonales.tipo_doc !== 1">PUERTO RICO</a-select-option>
+                          <a-select-option :value="149" v-if="datospersonales.tipo_doc !== 1">REPUBLICA DOMINICANA</a-select-option>
                       </a-select>  
                   </a-form-item>
                 </a-col>
                 <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item
-                    v-if="datospersonales.tipo_doc === 1"
+                    v-if="datospersonales.tipo_doc === 1 && datosresidencia.pais !== 125"
                     name="dep"
                     :rules="[{ required: true, message: 'Selecciona tu departamento', trigger: 'blur'},]"
                     >
@@ -1539,8 +1539,8 @@ watch(() => datosmadre.dni, (newValue, oldValue) => {
 });
 
 watch(() => datos_preinscripcion.tipo_certificado, (newValue, oldValue) => {
-  if(newValue === 'CERTIFICADO BLANCO'){ activeKey.value = "1";  }
-  if(newValue === 'CERTIFICADO AMARILLO'){ activeKey.value = "2"; }
+  if(newValue === 'CERTIFICADO AMARILLO'){ activeKey.value = "1"; }
+  if(newValue === 'CERTIFICADO BLANCO'){ activeKey.value = "2";  }
   if(newValue === 'CONSTANCIA DE ESTUDIOS'){ activeKey.value = "3"; }
   ejemplo.value = true; 
 });
