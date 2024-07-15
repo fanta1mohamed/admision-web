@@ -1219,11 +1219,12 @@
           </div>
 
           <div class="flex justify-center">
-            <a-button @click="desactivar()" style="background:#454554; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
+            <a-button @click="cancelarInscripcion()" style="background:#454554; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
               Aceptar
             </a-button>
           </div>
       </div>
+
 
       <div v-if="anteriores.length > 0" style="width: 100%; max-width: 1000px; margin-top:20px;"> 
           <div class="mb-4">
@@ -1285,7 +1286,7 @@
       </div> 
 
 
-      <div v-if="anteriores.length === 0 && confirmacion === false" style="width: 100%; max-width: 1000px; margin-top:20px;">    
+      <div v-if="anteriores.length === 0 && confirmacion === false && modalSancionado != true" style="width: 100%; max-width: 1000px; margin-top:20px;">    
           <div class="flex justify-center">
             <div>
               <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
@@ -1528,6 +1529,7 @@ const getMadreApi = () => {
 };
 
 const desactivar = () => {
+
   modalcarrerasprevias.value = false;
   window.location.reload();
 }
@@ -1875,7 +1877,7 @@ const savecolegio = async () => {
     const response = await axios.post('/save-postulante-colegio', {
       id:  datospersonales.id,
       anio_egreso: datoscolegio.egreso,
-      colegio: datoscolegio.id_colegio,
+      colegio: datoscolegio.id_colegio, 
       actualizar: ac,
       proceso: props.procceso_seleccionado.id
     },);
