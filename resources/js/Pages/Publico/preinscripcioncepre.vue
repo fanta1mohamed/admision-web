@@ -99,7 +99,6 @@
 
       <div>
         <h1 style="font-weight:bold; font-size:1.2rem;">Datos del colegio</h1>
-        {{ datoscolegio }}
         <hr>
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
@@ -818,7 +817,7 @@
                           <a-row :gutter="[16, 0]" class="form-row">
                             <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
                               <a-form-item
-                              name="colegio"
+                              name="id_colegio"
                               v-if="datoscolegio.pais === 125"
                               :rules="[{ required: true, message: 'Seleccione el colegio', trigger: 'change' }]"
                               >
