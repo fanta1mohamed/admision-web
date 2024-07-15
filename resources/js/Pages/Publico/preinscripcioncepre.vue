@@ -2163,6 +2163,7 @@ const getParticipanteCepre =  async () => {
         datoscolegio.egreso = datacepre.value.anio_egreso;
         participa.value = 1;
         getDataPrisma()
+        getDatosPersonales2()
       } else {
         loading.value = false;
         modalSancionado.value = true;
@@ -2195,7 +2196,6 @@ const consultaInscripcion = async () => {
       } else {
         if(props.procceso_seleccionado.id_modalidad_proceso == 2){
           await getParticipanteCepre();
-          getDatosPersonales2()
           participa.value = 1;
         }
         else{
