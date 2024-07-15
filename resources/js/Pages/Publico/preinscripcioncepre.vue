@@ -584,7 +584,7 @@
                 </a-col>
                 <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item
-                    v-if="datospersonales.tipo_doc === 1 && datosresidencia.pais !== 125"
+                    v-if="datospersonales.tipo_doc === 1 && datosresidencia.pais === 125"
                     name="dep"
                     :rules="[{ required: true, message: 'Selecciona tu departamento', trigger: 'blur'},]"
                     >
