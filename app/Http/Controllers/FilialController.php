@@ -16,16 +16,9 @@ class FilialController extends Controller
         return Inertia::render('Filial/filial'); 
     }  
 
-    public function getFiliales(Request $request)
-    {
-      $res = Filial::select(
-        'filial.id',
-        'filial.codigo',
-        'filial.nombre',
-        'filial.ubigeo',
-        'filial.estado AS estado',
-        'filial.efi',
-        'filial.direccion',
+    public function getFiliales(Request $request) {
+      $res = Filial::select( 'filial.id', 'filial.codigo','filial.nombre', 'filial.ubigeo', 
+        'filial.estado AS estado','filial.efi', 'filial.direccion',
         DB::raw("CONCAT(departamento.nombre,'/',provincia.nombre,'/',distritos.nombre) AS lugar")
       )
         ->leftjoin('ubigeo','ubigeo.ubigeo','filial.ubigeo')
@@ -113,9 +106,6 @@ class FilialController extends Controller
     $this->response['datos'] = $p;
     return response()->json($this->response, 200);
   }
-
-
-    
-
+  
 
 }

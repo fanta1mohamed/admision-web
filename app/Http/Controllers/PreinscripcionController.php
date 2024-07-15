@@ -382,7 +382,8 @@ class PreinscripcionController extends Controller
             }
 
             file_put_contents(public_path('/documentos/'.$pro.'/preinscripcion/solicitudes/').$res[0]->dni.'.pdf', $output);
-            return $pdf->stream('solicitud-postulante.pdf');
+            return $pdf->download('solicitud-postulante.pdf');
+
         }
         
   }
@@ -468,6 +469,7 @@ class PreinscripcionController extends Controller
         $this->response['mensaje'] = '';
         $this->response['estado'] = true;
         return response()->json($this->response, 200);
+        
     }
 
 
@@ -585,7 +587,7 @@ class PreinscripcionController extends Controller
             }
 
             file_put_contents(public_path('/documentos/'.$pro.'/preinscripcion/solicitudes/').$res[0]->dni.'.pdf', $output);
-            return $pdf->stream('solicitud-postulante.pdf');
+            return $pdf->download('solicitud-postulante.pdf');
         }
         
     }

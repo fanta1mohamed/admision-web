@@ -67,7 +67,7 @@ class InscripcionController extends Controller
             JOIN postulante ON pre_inscripcion.id_postulante = postulante.id
             JOIN colegios ON postulante.id_colegio = colegios.id
             JOIN programa ON programa.id = pre_inscripcion.id_programa
-            JOIN modalidad ON modalidad.id = pre_inscripcion.id_modalidad
+            JOIN modalidad ON modalidad.id = pre_inscripcion.id_modalidad   
             JOIN procesos ON procesos.id = pre_inscripcion.id_proceso
             JOIN ubigeo ON postulante.ubigeo_residencia = ubigeo.ubigeo
             JOIN departamento ON ubigeo.id_departamento = departamento.id

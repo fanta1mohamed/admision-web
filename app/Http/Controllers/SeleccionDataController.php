@@ -309,8 +309,7 @@ class SeleccionDataController extends Controller
       $this->response['datos'] = $requisito;
       return response()->json($this->response, 200);
     }
-
-
+    
   }
  
 
@@ -341,9 +340,8 @@ class SeleccionDataController extends Controller
 
   public function getPostulanteByDni( Request $request){
         
-    $res = DB::select('SELECT 
-    postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
-    postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento
+    $res = DB::select('SELECT postulante.id as id_postulante, postulante.nro_doc AS dni, 
+    postulante.nombres, postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento
     FROM postulante
     JOIN pre_inscripcion ON postulante.id = pre_inscripcion.id_postulante
     WHERE postulante.nro_doc = '.$request->dni.' AND pre_inscripcion.id_proceso = '.auth()->user()->id_proceso);

@@ -60,7 +60,6 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     
     Route::post('/select-programas', [ProgramaController::class, 'getSelectProgramas']);
     Route::post('/select-modalidades', [ModalidadController::class, 'getSelectModalidades']);
@@ -487,7 +486,6 @@ Route::get('/pago-banco-nacion',[PagoController::class,'getPagosBancoNacion']);
 Route::get('/get-pagos',[PagoController::class,'getPagos']);
 Route::get('/get-pagos-caja',[PagoController::class,'getPagosCaja']);
 
-
 //SIMULACROS
 Route::post('/get-ubigeo', [SeleccionDataController::class, 'getUbigeos']);
 Route::post('/get-colegios-ubigeo',[SeleccionDataController::class,'getColegiosUbigeo']);
@@ -629,12 +627,10 @@ Route::post('/insertar-pago', [PagoController::class, 'insertarPago']);
 Route::get('/eliminar-pago/{dni}/{operacion}', [PagoController::class, 'eliminarPago']);
 Route::get('/get-pagos-dni/{dni}', [PagoController::class, 'getPagosDNI']);
 
-
 //VALIDACIONES
 Route::post('/existe-celular', [ValidacionController::class, 'existeCelular']);
 Route::post('/existe-correo', [ValidacionController::class, 'existeCorreo']);
 Route::post('/get-apoderado-dni', [ApoderadoController::class, 'getApoderadobyDni']);
-
 
 Route::get('/pdftest', [TestController::class, 'pdfTest']);
 

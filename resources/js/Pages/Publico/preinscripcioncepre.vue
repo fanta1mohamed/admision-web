@@ -10,7 +10,8 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Tipo doc: <span></span>  </label>
-            <input type="text" disabled :value="tipo_docs[datospersonales.tipo_doc]"/>
+            <input v-if="tipo_docs[datospersonales.tipo_doc] === 'DNI'"  type="text" disabled :value="tipo_docs[datospersonales.tipo_doc]"/>
+            <input v-else type="text" disabled value="CARNÉ EXTRANJERIA"/>
           </div>
 
           <div class="datos-column">
@@ -72,17 +73,17 @@
         <hr>
 
         <div class="datos-container" style="margin-bottom: 10px;">
-          <div class="datos-column">
+          <div v-if="datospersonales.ubigeo_residencia" class="datos-column">
             <label for="name">Departamento: <span></span>  </label>
             <input type="text" disabled :value="datosresidencia.dep" />
           </div>
 
-          <div class="datos-column">
+          <div v-if="datospersonales.ubigeo_residencia" class="datos-column">
             <label for="name">Provincia: <span></span>  </label>
             <input type="text" disabled :value="datosresidencia.prov"  />
           </div>
 
-          <div class="datos-column">
+          <div v-if="datospersonales.ubigeo_residencia" class="datos-column">
             <label for="name">Distrito: <span></span>  </label>
             <input type="text" disabled :value="datosresidencia.dist"/>
           </div>
@@ -102,41 +103,38 @@
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Año de egreso: <span></span>  </label>
-            <input type="text" disabled :value="datoscolegio.egreso"  />
+            <input type="text" disabled :value="datoscolegio.egreso"/>
           </div>
-          <div class="datos-column">
+          <div class="datos-column"  v-if="datospersonales.nro_doc === 1">
             <label for="name">Departamento: <span></span>  </label>
-            <input type="text" disabled :value="datoscolegio.dep"  />
+            <input v-if="datospersonales.nro_doc === 1" type="text" disabled :value="datoscolegio.dep"  />
           </div>
 
-          <div class="datos-column">
+          <div class="datos-column"  v-if="datospersonales.nro_doc === 1">
             <label for="name">Provincia: <span></span>  </label>
             <input type="text" disabled :value="datoscolegio.prov"  />
           </div>
 
-          <div class="datos-column">
+          <div class="datos-column" v-if="datospersonales.nro_doc === 1">
             <label for="name">Distrito: <span></span>  </label>
             <input type="text" disabled :value="datoscolegio.dist"  />
           </div>
 
           <div class="datos-column">
             <label for="name">Colegio: <span></span>  </label>
-            <input type="text" disabled :value="nombrecolegiox"  />
+            <input v-if="datospersonales.nro_doc === 1" type="text" disabled :value="datoscolegio.colegio"/>
+            <input v-else type="text" disabled value="COLEGIOS EXTRANJEROS"/>
           </div>
 
           <div class="datos-column">
           </div>
 
         </div>
-        <div v-for="colegio in colegios" :key="colegio.value" style="display:none;">
-          <p v-if="colegio.value === datoscolegio.colegio">{{ nombrecolegiox = colegio.label }}</p>
-        </div>
-        <!-- {{ colegios }}
-        {{ datoscolegio }} -->
+        <!-- <!-- {{ colegios }} -->
       </div>
 
       <div>
-        <h1 style="font-weight:bold; font-size:1.2rem;">Datos del padre o tutor</h1>
+        <h1 style="font-weight:bold; font-size:1.2rem;">Datos del padre</h1>
 
         <hr>
         <div class="datos-container" style="margin-bottom: 10px;">
@@ -869,10 +867,9 @@
                           <h1 style="font-size: 1.1rem;"> Datos del padre</h1>
                       </div>
 
-                      <a-radio-group v-model:value="datospadre.tipo_apoderado" class="flex justify-end" style="display: flex; width: yellow;" name="radioGroup">
+                      <!-- <a-radio-group v-model:value="datospadre.tipo_apoderado" class="flex justify-end" style="display: flex; width: yellow;" name="radioGroup">
                           <a-radio :value="1">Padre</a-radio>
-                          <a-radio :value="3">Tutor</a-radio>
-                      </a-radio-group>
+                      </a-radio-group> -->
 
                       <a-row :gutter="[16, 0]" class="form-row">
                           <a-col :span="24" :md="26" :lg="12" :xl="12" :xxl="8">
@@ -1011,7 +1008,7 @@
                           <a-select
                             ref="select"
                             v-model:value="datos_preinscripcion.modalidad"
-                            style="width: 100%"
+                            style="width: 230px"
                             :options="modalidades"
                             @focus="focus"
                             @change="handleChange"
@@ -1131,6 +1128,7 @@
                 </div>
                 <div class="flex justify-center mt-4 mb-4">
                   <a-button @click="getDocs()" style="background: #020b61;" type="primary"> DESCARGAR SOLICITUD </a-button>
+                  
                 </div>
               </div>
             </a-card>
@@ -1383,6 +1381,7 @@ const datospersonales = reactive({
 
 const formDatosResidencia = ref();
 const datosresidencia = reactive({
+  pais:"",
   dep: null,
   prov: null,
   dist: null,
@@ -1392,7 +1391,7 @@ const datosresidencia = reactive({
 const formDatosColegio = ref();
 const datoscolegio = reactive({
   egreso: null,
-  pais: null,
+  pais: 125,
   dep: null,
   prov: null,
   dist: null,
@@ -1766,7 +1765,7 @@ const saveDatosResidencia =  async () => {
 
 
 watch(pagina_pre, ( newValue, oldValue ) => {
-
+  
   if(pagina_pre === 2 ){
     getDatosPersonales();
     getDepartamentos();
@@ -1825,7 +1824,6 @@ const getApoderadoDNI = async (tipo) => {
   if(tipo == 1){
     let res = await axios.post( "/get-apoderado-dni", {dni: datospadre.dni });
     if (res.data.estado === true ){  
-      console.log("datos:: ", res.data.datos);
       datospadre.dni = res.data.datos.dni
       datospadre.nombres = res.data.datos.nombres
       datospadre.paterno = res.data.datos.paterno
@@ -1836,7 +1834,6 @@ const getApoderadoDNI = async (tipo) => {
   }else{
     let res = await axios.post( "/get-apoderado-dni", {dni: datosmadre.dni });
     if (res.data.estado === true ){  
-      console.log("datos:: ", res.data.datos);
       datosmadre.dni = res.data.datos.dni
       datosmadre.nombres = res.data.datos.nombres
       datosmadre.paterno = res.data.datos.paterno
@@ -1851,7 +1848,8 @@ const getUbigeo = async () => {
   const res = await axios.post("/get-ubigeo-colegio", { id_postulante: datospersonales.id });
   if(res.data.datos.length !== 0){
     datoscolegio.egreso = res.data.datos[0].egreso;
-    datoscolegio.colegio = res.data.datos[0].id;
+    datoscolegio.id = res.data.datos[0].value;
+    datoscolegio.colegio = res.data.datos[0].label;
     datoscolegio.dep = res.data.datos[0].departamento;
     depseleccionadoC.value = res.data.datos[0].dep;
     datoscolegio.prov = res.data.datos[0].provincia;
@@ -1869,7 +1867,7 @@ const savecolegio = async () => {
     const response = await axios.post('/save-postulante-colegio', {
       id:  datospersonales.id,
       anio_egreso: datoscolegio.egreso,
-      colegio: datoscolegio.colegio,
+      colegio: datoscolegio.id,
       actualizar: ac,
       proceso: props.procceso_seleccionado.id
     },);
@@ -2079,16 +2077,21 @@ const submit = async () => {
         next() 
       }
       showToast("success","2",res.data.menssje);
-    console.log(res)
   }).catch(err=>console.log(err))
   open.value = false
 }
 
-
 const presionado = ref(0);
 
 const getDocs = async () => {
-  window.open("/pdf-solicitud/"+props.procceso_seleccionado.id+"/"+formState.dni, '_blank');
+  if(datospersonales.tipo_doc === 1 ){
+    window.open("/pdf-solicitud/"+props.procceso_seleccionado.id+"/"+formState.dni, '_blank');
+  }else{
+    window.open("/pdf-solicitud-extranjeros/"+props.procceso_seleccionado.id+"/"+formState.dni, '_blank');
+  }
+  
+
+
 }
 
 const tipo_docs = { 1: 'DNI', 2: 'PASAPORTE' }
@@ -2107,7 +2110,6 @@ const college = ref(null)
 
 const getColegioSeleccionado = () => {
   college.value = colegios.value.find(item => item.value === datoscolegio.colegio);
-  console.log(college.value.label)
 }
 
 const props = defineProps(['procceso_seleccionado']);
@@ -2239,7 +2241,6 @@ const getCarrerasPrevias = async () => {
         app_: participante.value.paterno,
         apm_: participante.value.materno
         }, { headers: { 'Content-Type': 'application/json'}  });
-        console.log(response.data);
         anteriores.value = response.data;
         loading.value = false;
         modalSancionado.value = false;
@@ -2257,8 +2258,6 @@ const getCarrerasPrevias = async () => {
         modalSancionado.value = false;
         confirmacion.value = false;
     }
-
-    console.log(":: ",anteriores.value);
     if(anteriores.value.length > 0 ){
       console.log("Tiene carreras previas");
     }else{
