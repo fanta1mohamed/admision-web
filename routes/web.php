@@ -634,6 +634,7 @@ Route::post('/get-apoderado-dni', [ApoderadoController::class, 'getApoderadobyDn
 
 Route::get('/pdftest', [TestController::class, 'pdfTest']);
 
+Route::post('/get-carreras-previas', [PostulanteController::class, 'getCarrerasPrevias']);
 
 require __DIR__.'/auth.php';
 

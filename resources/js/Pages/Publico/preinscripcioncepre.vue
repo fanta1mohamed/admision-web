@@ -105,24 +105,24 @@
             <label for="name">Año de egreso: <span></span>  </label>
             <input type="text" disabled :value="datoscolegio.egreso"/>
           </div>
-          <div class="datos-column"  v-if="datospersonales.nro_doc === 1">
+          <div class="datos-column"  v-if="datospersonales.tipo_doc === 1">
             <label for="name">Departamento: <span></span>  </label>
             <input v-if="datospersonales.nro_doc === 1" type="text" disabled :value="datoscolegio.dep"  />
           </div>
 
-          <div class="datos-column"  v-if="datospersonales.nro_doc === 1">
+          <div class="datos-column"  v-if="datospersonales.tipo_doc === 1">
             <label for="name">Provincia: <span></span>  </label>
             <input type="text" disabled :value="datoscolegio.prov"  />
           </div>
 
-          <div class="datos-column" v-if="datospersonales.nro_doc === 1">
+          <div class="datos-column" v-if="datospersonales.tipo_doc === 1">
             <label for="name">Distrito: <span></span>  </label>
             <input type="text" disabled :value="datoscolegio.dist"  />
           </div>
 
           <div class="datos-column">
             <label for="name">Colegio: <span></span>  </label>
-            <input v-if="datospersonales.nro_doc === 1" type="text" disabled :value="datoscolegio.colegio"/>
+            <input v-if="datospersonales.tipo_doc === 1" type="text" disabled :value="datoscolegio.colegio"/>
             <input v-else type="text" disabled value="COLEGIOS EXTRANJEROS"/>
           </div>
 
@@ -582,7 +582,7 @@
                 </a-col>
                 <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
                   <a-form-item
-                    v-if="datospersonales.tipo_doc === 1 && datosresidencia.pais === 125"
+                    v-if="datospersonales.tipo_doc === 1"
                     name="dep"
                     :rules="[{ required: true, message: 'Selecciona tu departamento', trigger: 'blur'},]"
                     >
@@ -2184,8 +2184,8 @@ const consultaInscripcion = async () => {
         pagina_pre.value = 7;
       } else {
         if(props.procceso_seleccionado.id_modalidad_proceso == 2){
-          //getParticipanteCepre();
-          //getDatosPersonales2()
+          getParticipanteCepre();
+          getDatosPersonales2()
           getDataPrisma();
           getDatosPersonales2()
           participa.value = 1;
@@ -2232,39 +2232,27 @@ const getDataPrisma = async () => {
 }
 
 
+const getCarrerasPrevias = async ( ) => {
+    try {
+        const response = await axios.post('/get-carreras-previas', {
+            participante: participante.value,
+            formState: formState.value
+        });
+        const data = response.data;
 
-const getCarrerasPrevias = async () => {
-    if(participante.value != null){
-        const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', {
-        doc_: participante.value.dni,
-        nom_: participante.value.nombre,
-        app_: participante.value.paterno,
-        apm_: participante.value.materno
-        }, { headers: { 'Content-Type': 'application/json'}  });
-        anteriores.value = response.data;
-        loading.value = false;
-        modalSancionado.value = false;
-        confirmacion.value = false;
+        anteriores.value = data.anteriores;
+        loading.value = data.loading;
+        modalSancionado.value = data.modalSancionado;
+        confirmacion.value = data.confirmacion;
 
-    } else {
-        const response = await axios.post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', {
-        doc_: formState.dni,
-        nom_: 'DIRECCIÓN',
-        app_: 'ADMISIÓN',
-        apm_: 'UNAP'
-        }, { headers: { 'Content-Type': 'application/json'}  });
-        anteriores.value = response.data;
-        loading.value = false;
-        modalSancionado.value = false;
-        confirmacion.value = false;
+        console.log(data.message);
+    } catch (error) {
+        console.error("Error fetching data: ", error);
     }
-    if(anteriores.value.length > 0 ){
-      console.log("Tiene carreras previas");
-    }else{
-      console.log("No tiene carreras previas");
-    }
+};
 
-}
+
+
 
 const confirmacion = ref(null);
 

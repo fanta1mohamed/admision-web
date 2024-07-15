@@ -542,7 +542,87 @@ class PostulanteController extends Controller
       // }
 
       return true;
+  
+  }
+
+
+  public function getCarrerasPrevias(Request $request)
+  {
+      $participante = $request->input('participante');
+      $formState = $request->input('formState');
+      
+      if ($participante !== null && isset($participante['dni'], $participante['nombre'], $participante['paterno'], $participante['materno'])) {
+          $dni = $participante['dni'];
+      } elseif ($formState !== null && isset($formState['dni'])) {
+          $dni = $formState['dni'];
+      } else {
+          return response()->json([
+              'anteriores' => [],
+              'loading' => false,
+              'modalSancionado' => false,
+              'confirmacion' => false,
+              'message' => 'No se proporcionaron datos válidos'
+          ], 400);
+      }
+
+      $existingRecords = DB::table('carreras_previas')->where('dni_postulante', $dni)->exists();
+
+      if ($existingRecords) {
+          return response()->json([
+              'anteriores' => [],
+              'loading' => false,
+              'modalSancionado' => false,
+              'confirmacion' => false,
+              'message' => 'No tiene carreras previas'
+          ]);
+      }
+
+      try {
+          if ($participante !== null) {
+              $payload = [
+                  'doc_' => $participante['dni'],
+                  'nom_' => $participante['nombre'],
+                  'app_' => $participante['paterno'],
+                  'apm_' => $participante['materno']
+              ];
+          } else {
+              $payload = [
+                  'doc_' => $formState['dni'],
+                  'nom_' => 'DIRECCIÓN',
+                  'app_' => 'ADMISIÓN',
+                  'apm_' => 'UNAP'
+              ];
+          }
+
+          $response = Http::withHeaders([
+              'Content-Type' => 'application/json'
+          ])->post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', $payload);
+
+          $data = $response->json();
+
+          // Manejar respuesta del API
+          $responseArray = [
+              'anteriores' => $data,
+              'loading' => false,
+              'modalSancionado' => false,
+              'confirmacion' => false,
+              'message' => count($data) > 0 ? 'Tiene carreras previas' : 'No tiene carreras previas'
+          ];
+
+          return response()->json($responseArray);
+      } catch (\Exception $e) {
+          return response()->json([
+              'anteriores' => [],
+              'loading' => false,
+              'modalSancionado' => false,
+              'confirmacion' => false,
+              'message' => 'Error en la solicitud: ' . $e->getMessage()
+          ], 500);
+      }
+
 
   }
+  
+
 
 }
