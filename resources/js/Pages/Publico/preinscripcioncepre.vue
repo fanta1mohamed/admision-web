@@ -1528,7 +1528,7 @@ const getMadreApi = () => {
 };
 
 const desactivar = () => {
-  modalcarrerasprevias = false;
+  modalcarrerasprevias.value = false;
   window.location.reload();
 }
 
