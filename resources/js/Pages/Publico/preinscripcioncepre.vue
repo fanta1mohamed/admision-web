@@ -1219,7 +1219,7 @@
           </div>
 
           <div class="flex justify-center">
-            <a-button @click="modalcarrerasprevias = false;" style="background:#454554; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
+            <a-button @click="desactivar()" style="background:#454554; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
               Aceptar
             </a-button>
           </div>
@@ -1526,6 +1526,13 @@ const getMadreApi = () => {
     console.error(error);
   });
 };
+
+const desactivar = () => {
+  modalcarrerasprevias = false;
+  window.location.reload();
+}
+
+
 
 watch(() => datospadre.dni, (newValue, oldValue) => {
   if(newValue.length == 8){ 
