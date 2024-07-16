@@ -175,7 +175,7 @@ class InscripcionController extends Controller
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
         $inscripcion = Inscripcion::create([
-            'codigo' => 'G124' . $prog . $res,
+            'codigo' => 'G224' . $prog . $res,
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> auth()->user()->id_proceso,
             'id_programa' => $request['postulante']['id_programa'],
