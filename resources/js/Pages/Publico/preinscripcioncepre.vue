@@ -100,7 +100,7 @@
       <div>
         <h1 style="font-weight:bold; font-size:1.2rem;">Datos del colegio</h1>
         <hr>
-¿
+
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Año de egreso: <span></span>  </label>
@@ -1138,7 +1138,7 @@
                         </template>
                       </a-button>
                   </div>
-
+                  
                   <div v-if="props.procceso_seleccionado.id_modalidad === 1" class="flex justify-center mt-4 mb-4 mr-2">
                     <a-button @click="descargaReglamento()" class="custom-button" shape="round">
                         <template #icon>
