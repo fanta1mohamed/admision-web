@@ -11,16 +11,23 @@ class SyncController extends Controller
     public function syncTables()
     {
         $perPage = 1000;
-        $existingSequences = Pagos::pluck('secuencia')->toArray();
-        $totalRecords = PagosUnap::whereNotIn('secuencia', $existingSequences)->count();
+        $chunkSize = 1000; 
+        $dateThreshold = '2024-05-30';
 
-        return $totalRecords;
+        $existingSequences = [];
+        Pagos::where('fch_pag', '>', $dateThreshold)
+            ->chunk($chunkSize, function ($pagos) use (&$existingSequences) {
+                $existingSequences = array_merge($existingSequences, $pagos->pluck('secuencia')->toArray());
+            });
 
+        $totalRecords = PagosUnap::where('fch_pag', '>', $dateThreshold)
+            ->whereNotIn('secuencia', $existingSequences)
+            ->count();
         $totalPages = ceil($totalRecords / $perPage);
 
-
         for ($page = 1; $page <= $totalPages; $page++) {
-            $sourceData = PagosUnap::whereNotIn('secuencia', $existingSequences)
+            $sourceData = PagosUnap::where('fch_pag', '>', $dateThreshold)
+                                    ->whereNotIn('secuencia', $existingSequences)
                                     ->skip(($page - 1) * $perPage)
                                     ->take($perPage)
                                     ->get();
@@ -64,9 +71,14 @@ class SyncController extends Controller
                 }
             });
 
-            // Actualizar la lista de secuencias ya registradas
             $existingSequences = array_merge($existingSequences, $sourceData->pluck('secuencia')->toArray());
+
+            if (count($existingSequences) > $chunkSize * 2) {
+                $existingSequences = array_slice($existingSequences, -$chunkSize);
+            }
         }
+
+        return response()->json(['message' => 'Synchronization completed!']);
     }
 
     private function validateDate($date)
