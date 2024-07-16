@@ -100,6 +100,7 @@
       <div>
         <h1 style="font-weight:bold; font-size:1.2rem;">Datos del colegio</h1>
         <hr>
+¿
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Año de egreso: <span></span>  </label>
@@ -121,9 +122,8 @@
           </div>
 
           <div class="datos-column">
-
             <label for="name">Colegio: <span></span>  </label>
-            <input v-if="datospersonales.tipo_doc === 1" type="text" disabled :value="datoscolegio.colegio"/>
+            <input v-if="datospersonales.tipo_doc === 1" type="text" disabled :value="nombrecolegiox"/>
             <input v-else type="text" disabled value="COLEGIOS EXTRANJEROS"/>
           </div>
 
@@ -1112,7 +1112,6 @@
                   </a-row>
 
                 </div>
-
               </a-form>
             </a-card>
             </div>
@@ -1909,19 +1908,19 @@ const getApoderadoDNI = async (tipo) => {
     }
   }
 }
-
 const getUbigeo = async () => {
   const res = await axios.post("/get-ubigeo-colegio", { id_postulante: datospersonales.id });
-  if(res.data.datos.length !== 0){
-    datoscolegio.egreso = res.data.datos[0].egreso;
-    datoscolegio.id_colegio = res.data.datos[0].value;
-    datoscolegio.colegio = res.data.datos[0].label;
-    datoscolegio.dep = res.data.datos[0].departamento;
-    depseleccionadoC.value = res.data.datos[0].dep;
-    datoscolegio.prov = res.data.datos[0].provincia;
-    provseleccionadaC.value = res.data.datos[0].prov;
-    datoscolegio.dist = res.data.datos[0].distrito;
-    distseleccionadoC.value = res.data.datos[0].dist;
+  console.log(":::", res.data);
+  if(res.data){
+    datoscolegio.egreso = res.data[0].egreso;
+    datoscolegio.id_colegio = res.data[0].value;
+    nombrecolegiox.value = res.data[0].label;
+    datoscolegio.dep = res.data[0].departamento;
+    depseleccionadoC.value = res.data[0].dep;
+    datoscolegio.prov = res.data[0].provincia;
+    provseleccionadaC.value = res.data[0].prov;
+    datoscolegio.dist = res.data[0].distrito;
+    distseleccionadoC.value = res.data[0].dist;
   }
 }
 
