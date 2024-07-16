@@ -1246,8 +1246,8 @@
             </a-button>
           </div>
       </div>
-
-      <div v-if="anteriores.length >= 1" style="width: 100%; max-width: 1000px; margin-top:20px;"> 
+      <div v-else>
+        <div v-if="anteriores.length >= 1" style="width: 100%; max-width: 1000px; margin-top:20px;"> 
           <div class="mb-4">
             <div class="flex justify-center"><span>Se ha detectado Que Ud. Tiene ingresos previos</span></div>
             <div class="mt-3 flex justify-left"><span>Seleccine los programas para continuar</span></div>
@@ -1369,8 +1369,11 @@
               </div>
             </div>
         </div>       
+      </div>
 
       </div>
+
+
 
   </div>
   </a-modal>
