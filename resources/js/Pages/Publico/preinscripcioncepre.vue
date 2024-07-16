@@ -2189,9 +2189,10 @@ const getSancionado =  async () => {
     let res = await axios.get("/get-sancionado/" + formState.dni + "/" + props.procceso_seleccionado.id);
     sancionado.value = res.data.datos;
     if(sancionado.value != null){
+      datacepre.value = [];
       loading.value = false;
       modalSancionado.value = true;
-      datacepre.value = null;
+      anteriores.value = []
       return;
     }else{
       consultaInscripcion()
