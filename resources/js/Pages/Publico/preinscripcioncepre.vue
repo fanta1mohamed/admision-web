@@ -1128,7 +1128,6 @@
                   </div>
                 </div>
 
-
                 <div class="justify-center mt-4 mb-4">
                   <div class="flex justify-center mt-4 mb-4 mr-2">
                     <a-button @click="getDocs()" class="custom-button2" shape="round">
@@ -1141,7 +1140,7 @@
                       </a-button>
                   </div>
 
-                  <div class="flex justify-center mt-4 mb-4 mr-2">
+                  <div v-if="props.procceso_seleccionado.id_modalidad === 1" class="flex justify-center mt-4 mb-4 mr-2">
                     <a-button @click="descargaReglamento()" class="custom-button" shape="round">
                         <template #icon>
                           <div class="flex custom-icon2">

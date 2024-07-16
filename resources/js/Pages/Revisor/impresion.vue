@@ -12,6 +12,7 @@
               <div v-if="postulante.modalidad" style="text-align:center; margin-top:-10px;"><span style="font-size:1rem;">( {{ postulante.modalidad }} )</span></div>
               <div v-else style="text-align:center; margin-top:-10px;"><span style="font-size:1rem;">( MODALIDAD )</span></div>
             </div>
+
   
             <div v-if="anteriores" style="text-align:center; margin-top:10px;">
               <div v-if="anteriores.length > 0" class="px-2 py-1" style="text-align:center; margin-top:10px; background: #f3f3f3;">
@@ -301,7 +302,7 @@
       <a-button style="border: #0e4165 solid 1px; color: #0e4165;" @click="actualizarPostulante">Actualizar Datos</a-button>          
     </div>
     <div style="margin-right: 5px;"> 
-      <a-button style="border: #0e4165 solid 1px; color: #0e4165;" @click="actualizarPostulante">Imprimir constancia</a-button>          
+      <a-button style="border: #0e4165 solid 1px; color: #0e4165;" @click="imprimirPDF(dniseleccionado)">Imprimir constancia</a-button>          
     </div>
     <div v-if="inscripciones.length == 0">
         <a-popconfirm title="¿Seguro de inscribir?" @confirm="confirm" cancelText="NO" placement="topRight" okText="SI" @cancel="cancel">
@@ -392,21 +393,21 @@ const getPostulantesByDni =  async () => {
 }
 
 const getDocumentos =  async () => {
-  if (dniseleccionado.value === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
+  if (dniseleccionado.value.length === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
     let res = await axios.get( "get-documentos-postulante/" + dniseleccionado.value);
     documentos.value = res.data.datos;
   }
 }
 
 const getPreinscripciones =  async () => {
-  if (dniseleccionado.value === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
+  if (dniseleccionado.value.length === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
     let res = await axios.get("get-preinscripciones-postulante/" + dniseleccionado.value);
     preinscripciones.value = res.data.datos;
   }
 }
 
 const getInscripciones =  async () => {
-  if (dniseleccionado.value === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
+  if (dniseleccionado.value.length === 8 && /^[0-9]+$/.test(dniseleccionado.value)) {
     let res = await axios.get("get-inscripciones-postulante/" + dniseleccionado.value);
     inscripciones.value = res.data.datos;
   }
@@ -468,6 +469,16 @@ watch(dniseleccionado, ( newValue, oldValue ) => {
       getAnteriores()
     }, 500);
 })
+
+///revisor/nuevo-pdf-inscripcion/73903851
+// const GenerarNuevoPDF =  (dnni) => {
+//     var iframe = document.createElement('iframe');
+//     iframe.style.display = "none";
+//     iframe.src = baseUrl+'/documentos/9/inscripciones/constancias/'+dnni+'.pdf';
+//     document.body.appendChild(iframe);
+//     iframe.contentWindow.focus();
+//     iframe.contentWindow.print();
+// }
 
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');

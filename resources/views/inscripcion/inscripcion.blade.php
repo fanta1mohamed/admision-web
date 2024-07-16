@@ -111,7 +111,7 @@
                                 El que suscribe declara bajo juramento que la información proporcionada 
                                 durante el proceso de inscripción es veraz y de mi entera responsabilidad. 
                                 Reconozco y acepto los términos establecidos en el 
-                                Reglamento General de Admisión de 2024 - I,
+                                Reglamento General de Admisión de 2024 - II,
                                 así como permitir una rigurosa revisión física exhaustiva
                                 para acceder a la Ciudad Universitaria y realizar el examen de admisión. 
                                 En caso de obtener una vacante, me comprometo a cumplir con lo estipulado en el reglamento. 
@@ -136,15 +136,14 @@
                             <div style="margin-top: -8px; margin-left:-5px;">
                                 <ul>
                                     <li>Presentar Constancia de Inscripción DNI (original)</li>
-                                    <li>Portar lápiz 2B, borrador y tajador</li>
                                     <li>Vestir sin capucha ni metales</li>
-                                    <li>Tener cabello recogido (mujeres), cabello corto (varones), el cuello y orejas deben estar visibles</li>
+                                    <li>Tener cabello recogido o corto, el cuello y orejas deben estar visibles</li>
                                 </ul>
                             </div>
                         </div>
                         <div style="margin-top: -8px;">
                             <span style="font-weight:bold;">
-                                HORARIO DE INGRESO (Sábado 23 de marzo):
+                                HORARIO DE INGRESO (Sábado 10 de agosto):
                             </span> 
                             <div style="margin-top: -8px; margin-left:-5px;">
                                 <ul>
@@ -155,7 +154,7 @@
                         </div>
                         <div style="margin-top: -8px; margin-left:-5px;">
                             <span style="font-weight:bold;">
-                                HORARIOS SOLO PARA CLASIFICADOS (Domingo 24 de marzo):
+                                HORARIOS SOLO PARA CLASIFICADOS (Domingo 11 de agosto):
                             </span>
                             <div style="margin-top: -8px">
                                 <ul>

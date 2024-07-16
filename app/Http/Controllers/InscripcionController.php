@@ -170,7 +170,7 @@ class InscripcionController extends Controller
      
         $prog = $request['postulante']['cod_programa'];
 
-        $res = $siguiente = Inscripcion::where('codigo', 'like', 'G124'.$prog.'%')
+        $res = $siguiente = Inscripcion::where('codigo', 'like', 'G224'.$prog.'%')
         ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 

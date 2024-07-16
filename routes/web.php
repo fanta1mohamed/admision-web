@@ -24,7 +24,7 @@ use App\Http\Controllers\DetalleExamenVocacionalController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\FotoController;
-use App\Http\Controllers\PagoController;
+use App\Http\Controllers\PagoSimulacroController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\AdministrativoController;
 use App\Http\Controllers\DashboardController;
@@ -37,7 +37,8 @@ use App\Http\Controllers\SancionadoController;
 use App\Http\Controllers\CepreController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\PagoBancoController;
-use App\Http\Controllers\VocacionalController;
+//use App\Http\Controllers\VocacionalController;
+use App\Http\Controllers\SyncController;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -299,6 +300,9 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::get('/get-codigos-postulante/{dni}', [DocumentoController::class, 'getCodigoDNI']);
 
+
+    Route::get('/nuevo-pdf-inscripcion/{dni}', [InscripcionController::class, 'pdfInscripcion']);
+
     
     Route::get('/api-pagos/{parametro}', function ($parametro) {
         try {
@@ -358,8 +362,8 @@ Route::prefix('simulacro')->group(function () {
         //PAGOS
         Route::get('/pagos', fn () => Inertia::render('Simulacro/Admin/Pagos/index'))->name('simulacro-pagos');
         Route::get('/pagos-consulta', fn () => Inertia::render('Simulacro/Admin/Pagos/consulta'))->name('simulacro-consulta-pagos');
-        Route::post('/get-pagos-simulacro', [PagoController::class, 'getPagosSimulacro']);
-        Route::post('/get-pagos-simulacro-consulta', [PagoController::class, 'getPagosSimulacroConsulta']);
+        Route::post('/get-pagos-simulacro', [PagoSimulacroController::class, 'getPagosSimulacro']);
+        Route::post('/get-pagos-simulacro-consulta', [PagoSimulacroController::class, 'getPagosSimulacroConsulta']);
 
         //REPORTES
         Route::get('/postulantes-por-programas', [SimulacroController::class, 'postulantexPrograma']);
@@ -482,9 +486,9 @@ Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
 Route::get('/constancias-ingreso', [IngresoController::class, 'constanciasIngreso']);
 
 
-Route::get('/pago-banco-nacion',[PagoController::class,'getPagosBancoNacion']);
-Route::get('/get-pagos',[PagoController::class,'getPagos']);
-Route::get('/get-pagos-caja',[PagoController::class,'getPagosCaja']);
+Route::get('/pago-banco-nacion',[PagoSimulacroController::class,'getPagosBancoNacion']);
+Route::get('/get-pagos',[PagoSimulacroController::class,'getPagos']);
+Route::get('/get-pagos-caja',[PagoSimulacroController::class,'getPagosCaja']);
 
 //SIMULACROS
 Route::post('/get-ubigeo', [SeleccionDataController::class, 'getUbigeos']);
@@ -493,8 +497,8 @@ Route::post('/save-simulacro-participante', [SimulacroController::class, 'savePa
 Route::get('/pdf-simulacro-inscripcion/{dni}', [SimulacroController::class, 'pdfInscripcion']);
 Route::get('/get-inscrito-simulacro/{dni}', [SimulacroController::class, 'Inscrito']);
 
-Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
-Route::get('/get-pago-simulacro/{dni}', [PagoController::class, 'pagoSimulacro']);
+Route::post('/subir-pagos', [PagoSimulacroController::class, 'pagosSimulacro']);
+Route::get('/get-pago-simulacro/{dni}', [PagoSimulacroController::class, 'pagoSimulacro']);
 
 
 Route::get('/get-e-oti', [IngresoController::class, 'getEstudianteOTI']);
@@ -578,7 +582,7 @@ Route::get('/participa-proceso/{pro}/{post}', [PreinscripcionController::class, 
 Route::get('/carreras-previas', fn () => Inertia::render('Publico/components/carrerasPrevias'));
 Route::get('/get-data-prisma/{dni}', [PostulanteController::class, 'getDataPrisma']);
 
-//Route::post('/subir-pagos', [PagoController::class, 'pagosSimulacro']);
+//Route::post('/subir-pagos', [PagoSimulacroController::class, 'pagosSimulacro']);
 Route::post('/registrar-carreras-previas', [PostulanteController::class, 'registrarCarreras']);
 Route::get('/get-paso-registrado/{p}/{dni}', [PreinscripcionController::class, 'pasoRegistrado']);
 
@@ -623,9 +627,9 @@ Route::get('/get-pago-BN/{dni}', function ($dni) {
 });
 
 
-Route::post('/insertar-pago', [PagoController::class, 'insertarPago']);
-Route::get('/eliminar-pago/{dni}/{operacion}', [PagoController::class, 'eliminarPago']);
-Route::get('/get-pagos-dni/{dni}', [PagoController::class, 'getPagosDNI']);
+Route::post('/insertar-pago', [PagoSimulacroController::class, 'insertarPago']);
+Route::get('/eliminar-pago/{dni}/{operacion}', [PagoSimulacroController::class, 'eliminarPago']);
+Route::get('/get-pagos-dni/{dni}', [PagoSimulacroController::class, 'getPagosDNI']);
 
 //VALIDACIONES
 Route::post('/existe-celular', [ValidacionController::class, 'existeCelular']);
@@ -638,6 +642,9 @@ Route::post('/get-carreras-previas', [PostulanteController::class, 'getCarrerasP
 
 
 Route::get('/descargar-reglamento', [DocumentoController::class, 'descargarReglamento']);
+
+
+Route::get('/sync-tables', [SyncController::class, 'syncTables']);
 
 require __DIR__.'/auth.php';
 
