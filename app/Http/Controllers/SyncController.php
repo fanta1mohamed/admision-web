@@ -8,11 +8,11 @@ use DB;
 
 class SyncController extends Controller
 {
-    public function syncTables()
+    public function syncTables($inicio)
     {
         $perPage = 1000;
         $chunkSize = 1000; 
-        $dateThreshold = '2024-05-30';
+        $dateThreshold = $inicio;
 
         $existingSequences = [];
         Pagos::where('fch_pag', '>', $dateThreshold)
@@ -27,10 +27,10 @@ class SyncController extends Controller
 
         for ($page = 1; $page <= $totalPages; $page++) {
             $sourceData = PagosUnap::where('fch_pag', '>', $dateThreshold)
-                                    ->whereNotIn('secuencia', $existingSequences)
-                                    ->skip(($page - 1) * $perPage)
-                                    ->take($perPage)
-                                    ->get();
+                        ->whereNotIn('secuencia', $existingSequences)
+                        ->skip(($page - 1) * $perPage)
+                        ->take($perPage)
+                        ->get();
 
             if ($sourceData->isEmpty()) {
                 continue;

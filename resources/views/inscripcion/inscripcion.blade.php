@@ -26,7 +26,7 @@
                         <div style="text-align: center"><span style="font-weight:bold; letter-spacing:.11rem; "> CONSTANCIA DE INSCRIPCIÓN AL EXAMEN {{$data->proceso}}</span></div>
                         <div style="display: none;"> {{ $nro_carreras = count($carreras_previas) }}  </div>
                         @if ($nro_carreras == 1 )
-                            <div style="text-transform:uppercase; font-family:'Roboto Condensed';  font-size:10pt; letter-spacing:.06rem">(Postulante a segunda carrera)</div>                            
+                            <div style=" font-weight:bold; text-transform:uppercase; font-family:'helvetica';  font-size:10pt; letter-spacing:.16rem">(Postulante a segunda carrera)</div>                            
                         @elseif ($nro_carreras == 2 )
                             <div style="text-transform:uppercase; font-family:'Roboto Condensed';  font-size:10pt; letter-spacing:.06rem">(Postulante a tercera carrera)</div>                            
                         @elseif ($nro_carreras == 3 )
@@ -135,9 +135,10 @@
     
                             <div style="margin-top: -8px; margin-left:-5px;">
                                 <ul>
-                                    <li>Presentar Constancia de Inscripción DNI (original)</li>
-                                    <li>Vestir sin capucha ni metales</li>
-                                    <li>Tener cabello recogido o corto, el cuello y orejas deben estar visibles</li>
+                                    <li>Presentar Constancia de Inscripción y DNI (original).</li>
+                                    <li>No portar dispositivos electrónicos, ni objetos metálicos.</li>                                    
+                                    <li>Presentarse con cabello recogido o corto.</li>
+                                    <li>El cuello y las orejas deben estar visibles</li>
                                 </ul>
                             </div>
                         </div>
