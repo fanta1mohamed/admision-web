@@ -138,7 +138,7 @@
                                     <li>Presentar Constancia de Inscripción y DNI (original).</li>
                                     <li>No portar dispositivos electrónicos, ni objetos metálicos.</li>                                    
                                     <li>Presentarse con cabello recogido o corto.</li>
-                                    <li>El cuello y las orejas deben estar visibles</li>
+                                    <li>El cuello y las orejas deben estar visibles.</li>
                                 </ul>
                             </div>
                         </div>

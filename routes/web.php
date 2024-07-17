@@ -644,7 +644,7 @@ Route::post('/get-carreras-previas', [PostulanteController::class, 'getCarrerasP
 Route::get('/descargar-reglamento', [DocumentoController::class, 'descargarReglamento']);
 
 
-Route::get('/sync-tables/{fec}', [SyncController::class, 'syncTables']);
+Route::get('/sync-tables', [SyncController::class, 'syncTables']);
 
 require __DIR__.'/auth.php';
 
