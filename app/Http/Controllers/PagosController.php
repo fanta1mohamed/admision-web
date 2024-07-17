@@ -27,7 +27,7 @@ class PagosController extends Controller
             FROM banco_pagos
             WHERE fch_pag >= '2024-07-01'
             and concepto IN ('00000026', '00000039', '00000028', '00000027')
-            AND 60201772 = substr(num_doc, 8,8)");
+            AND $dni = substr(num_doc, 8,8)");
   
       return $res;
     }
