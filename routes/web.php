@@ -600,7 +600,7 @@ Route::post('subir-pdf/{dni}/{cod}/{tipo}', [ResultadosController::class, 'carga
 
 Route::get('/get-pago-caja/{dni}', function ($dni) {
     try {
-        $response = Http::get('http://tesoreria.unap.edu.pe/services/document/?w=' . $dni . '&d=2024-02-23');
+        $response = Http::get('http://tesoreria.unap.edu.pe/services/document/?w=' . $dni . '&d=2024-07-01');
          if ($response->successful()) {
             $datosCaja = $response->json(['data']);
             return response()->json($datosCaja);
@@ -615,9 +615,15 @@ Route::get('/get-pago-caja/{dni}', function ($dni) {
 Route::get('/get-pago-BN/{dni}', function ($dni) {
     try {
         $response = Http::get('https://service2.unap.edu.pe/PayOnBankADMISION2024/v1/' . $dni . '/');
-         if ($response->successful()) {
+        
+        if ($response->successful()) {
             $datosCaja = $response->json(['data']);
-            return response()->json($datosCaja);
+            
+            $filteredData = collect($datosCaja)->filter(function ($item) {
+                return isset($item['fch_pag']) && $item['fch_pag'] > '2024-07-01';
+            })->values();
+            
+            return response()->json($filteredData);
         } else {
             return response()->json(['error' => 'La solicitud no fue exitosa'], $response->status());
         }
