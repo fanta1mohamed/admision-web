@@ -5,20 +5,22 @@
   <!-- <pre>{{ permisos}}</pre> -->
   <a-button class="mb-3"  type="primary" @click="showModalRol">Nuevo</a-button>
 
-  <a-table bordered :data-source="users" :columns="columns" size="small">
+  <a-table bordered  :data-source="users" :columns="columns" size="small" :pagination="paginationConfig">
 
-    <template #bodyCell="{ column, index }">
+    <template #bodyCell="{ column, index, record }">
     
       <template v-if="column.dataIndex === 'role_name'">
         <a-button primary size="small">{{users[index].role_name }}</a-button>
        </template>
-
+      
       <template v-if="column.dataIndex === 'operation'">
-        <a-button type="primary" shape="" size="small">
+        <a-button class="mr-1" type="primary" @click="editar(record)" style="border-radius: 4px; background: none; border: 1px solid gray;  color:gray;" size="small">
+          <template #icon><LockOutlined/></template>
+        </a-button>
+        <a-button class="mr-1" type="primary" @click="editar(record)" style="border-radius: 4px; background: none; color:blue;" size="small">
           <template #icon><form-outlined/></template>
         </a-button>
-        <a-divider type="vertical" />
-        <a-button type="danger" shape="" size="small">
+        <a-button type="danger" style="border-radius: 4px; background: none; color:red;" size="small">
           <template #icon><delete-outlined /></template>
         </a-button>
       </template>
@@ -28,7 +30,7 @@
   </div>
   
   </AuthenticatedLayout>
-  
+
   <div>
     <a-modal v-model:visible="visible" title="Nuevo Usuario" style="margin-top: -50px;" @ok="handleOk">
       <div>
@@ -67,8 +69,8 @@
             <a-input v-model:value="formState.checkPass" type="password" autocomplete="off" />
           </a-form-item>
           <a-form-item has-feedback label="Rol">
-            <!-- <pre>{{ rol }}</pre> -->
-            <a-auto-complete
+            <a-input value="Revisor" disabled/>
+            <!-- <a-auto-complete
               v-model:value="rols"
               :options="roles"
               style="width: 100%;"
@@ -86,7 +88,7 @@
                   </span>
                 </div>
               </template>
-            </a-auto-complete>
+            </a-auto-complete> -->
           </a-form-item>
         </a-form>
   
@@ -107,8 +109,9 @@
   import { Head } from '@inertiajs/vue3';
   import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
   import { computed, ref, reactive } from 'vue';
-  import { FormOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+  import { FormOutlined, LockOutlined, DeleteOutlined, UnlockOutlined } from '@ant-design/icons-vue';
   import { notification } from 'ant-design-vue';
+import Procesos from '../Procesos/procesos.vue';
 
   const props = defineProps(['usuarios'])
   
@@ -127,24 +130,23 @@
       visible.value = false
   };
 
-  const columns = [{
-      title: 'Nombre',
-      dataIndex: 'name',
-      width: '30%',
-    }, {
-      title: 'Correo',
-      dataIndex: 'email',
-    }, {
-      title: 'Rol',
-      dataIndex: 'role_name',
-    }, {
-      title: 'operation',
-      dataIndex: 'operation',
-    }];
+  const editar = (item) => {
+    formState.id = item.id;
+    formState.name = item.name;
+    formState.paterno = item.paterno;
+    formState.materno = item.materno;
+    formState.email = item.email;
+    formState.rol = item.id_rol;
+    formState.id_proceso = item.id_proceso;
+    formState.proceso = item.proceso;
+    rol.value = item.id_rol;
+    visible.value = true;
+  }
 
 
     const formRef = ref();
     const formState = reactive({
+      id:null,
       name:'',
       paterno:'',
       materno:'',
@@ -152,6 +154,8 @@
       pass: '',
       checkPass: '',
       rol: ref(null),
+      id_proceso:null,
+      proceso: 9
     });
 
     let validateCorreo = async (_rule, value) => {
@@ -215,6 +219,17 @@
 
     };
 
+    const columns = [
+      { title: 'Nombre', dataIndex: 'name',width: '30%',}, 
+      { title: 'Correo', dataIndex: 'email',}, 
+      { title: 'Rol', dataIndex: 'role_name', }, 
+      { title: 'Proceso', dataIndex: 'proceso', }, 
+      { title: 'operation', dataIndex: 'operation', }];
+
+
+    const paginationConfig = { // Configuración de paginación
+        pageSize: 20,
+    }
     const layout = {
       labelCol: {
         span: 8,
@@ -246,13 +261,10 @@
     
     const value =  ref('')
 
-    const options =  ref([{
-      value: 'Burns Bay Road',
-    }, {
-      value: 'Downing Street',
-    }, {
-      value: 'Wall Street',
-    }]);
+    const options =  ref([
+      { value: 'Burns Bay Road',}, 
+      { value: 'Downing Street', }, 
+      { value: 'Wall Street', }]);
 
     const filterOption = (input, option) => {
       return option.value.toUpperCase().indexOf(input.toUpperCase()) >= 0;
@@ -284,19 +296,35 @@
 
     const guardar = () => {
       let post = {
+          id: formState.id,
           name:formState.name,
           paterno: formState.paterno,
           materno: formState.materno,
           email:formState.email,
           password:formState.pass,
-          rol:rol.value
+          rol:2,
+          id_proceso: 9
+
       };
       axios.post("save-user", post).then((result) => {
         console.log(result.data.user);
         visible.value = false;
+        formState.id = null;
+        formState.name = '';
+        formState.paterno = '';
+        formState.materno = '';
+        formState.email = '';
+        formState.pass =  '';
+        formState.checkPass =  '';
+        formState.rol =  ref(null);
+        formState.id_proceso = null;
+        formState.proceso =  9
         getUsuarios();
         notificacion('success','Nuevo Usuario Agregado', result.data.user.name );
+
       });
+
+
     }
 
     const notificacion = (type, titulo, mensaje) => {

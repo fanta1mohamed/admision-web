@@ -35,6 +35,7 @@ use App\Http\Controllers\PonderacionController;
 use App\Http\Controllers\ProgramaProcesoController;
 use App\Http\Controllers\SancionadoController;
 use App\Http\Controllers\CepreController;
+use App\Http\Controllers\PagosController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\PagoBancoController;
 //use App\Http\Controllers\VocacionalController;
@@ -612,26 +613,39 @@ Route::get('/get-pago-caja/{dni}', function ($dni) {
     }
 });
 
-Route::get('/get-pago-BN/{dni}', function ($dni) {
-    try {
-        $response = Http::get('https://service2.unap.edu.pe/PayOnBankADMISION2024/v1/' . $dni . '/');
-        
-        if ($response->successful()) {
-            $datosCaja = $response->json(['data']);
-            
-            $filteredData = collect($datosCaja)->filter(function ($item) {
-                return isset($item['fch_pag']) && $item['fch_pag'] > '2024-07-01';
-            })->values();
-            
-            return response()->json($filteredData);
-        } else {
-            return response()->json(['error' => 'La solicitud no fue exitosa'], $response->status());
-        }
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Se produjo un error al procesar la solicitud: ' . $e->getMessage()], 500);
-    }
-});
 
+Route::get('/get-pago-BN/{dni}', [PagosController::class, 'getPagosBN_OTI']);
+
+
+// Route::get('/get-pago-BN/{dni}', function ($dni) {
+//     try {
+//         $response = Http::get('https://service2.unap.edu.pe/PayOnBankADMISION2024/v1/' . $dni . '/');        
+//         if ($response->successful()) {
+//             $datos = $response->json();
+
+//             if (isset($datos['data']) && is_array($datos['data'])) {
+//                 // Filtrar los elementos por fecha
+//                 $filteredData = array_filter($datos['data'], function ($item) {
+//                     if (isset($item['date'])) {
+//                         $fecha = $item['date'];
+//                         $fechaObj = new DateTime($fecha);
+//                         $fechaLimite = new DateTime('2024-07-01');
+//                         return $fechaObj > $fechaLimite;
+//                     }
+//                     return false;
+//                 });
+
+//                 return response()->json(array_values($filteredData));
+//             } else {
+//                 return response()->json(['error' => 'No se encontró el campo "data" en la respuesta o no es un arreglo'], 500);
+//             }
+//         } else {
+//             return response()->json(['error' => 'La solicitud no fue exitosa'], $response->status());
+//         }
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => 'Se produjo un error al procesar la solicitud: ' . $e->getMessage()], 500);
+//     }
+// });
 
 Route::post('/insertar-pago', [PagoSimulacroController::class, 'insertarPago']);
 Route::get('/eliminar-pago/{dni}/{operacion}', [PagoSimulacroController::class, 'eliminarPago']);

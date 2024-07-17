@@ -15,7 +15,7 @@ class UsuarioController extends Controller
 
     public function index()
     {
-        $usuarios = User::paginate(5);
+        $usuarios = User::paginate(10);
         return Inertia::render('Usuarios/index', ['usuarios' => $usuarios]);
     }
 
@@ -27,18 +27,31 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name'=>'required',
-            'email'=>'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required'
-        ]);
+        if(!$request->id){
+            $this->validate($request,[
+                'name'=>'required',
+                'email'=>'required|email|unique:users,email',
+                'password' => 'required|same:confirm-password',
+                'roles' => 'required'
+            ]);
+    
+            $input = $request->all();
+            $input['password'] = Hash::make($input['password']);
 
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
+            $user = User::create($input);
+            $user->assignRole($request->roles);
 
-        $user = User::create($input);
-        $user->assignRole($request->roles);
+        }else{
+            $usuario = User::find($request->id);
+            $usuario->name = $request->name;
+            $usuario->id_proceso = $request->id_proceso;
+            if(isset($request->password)){
+                $usuario->password = Hash::make($request->password);
+            }
+            $usuario->materno = $request->materno;
+            $usuario->paterno = $request->paterno; 
+            $usuario->save();
+        }
 
         return redirect()->route('usuarios.index');
 
@@ -103,9 +116,12 @@ class UsuarioController extends Controller
     }
 
     public function getUsuarios(){
-        $res = DB::select('SELECT users.id, users.name, users.email, roles.name AS role_name, roles.id AS rol_id  FROM users
-        JOIN roles ON users.id_rol = roles.id;
-        ');
+        $res = DB::select('SELECT users.id, users.name, users.paterno, users.materno, 
+            users.email, roles.name AS role_name, users.id_rol, id_proceso, procesos.nombre AS proceso
+        FROM users
+        JOIN roles ON users.id_rol = roles.id
+        JOIN procesos ON procesos.id = users.id_proceso
+        WHERE roles.id = 2');
         
         $this->response['usuarios'] = $res;
         return response()->json($this->response, 200); 
@@ -113,23 +129,40 @@ class UsuarioController extends Controller
 
 
     public function saveUsuario(Request $request) {
-        $user = new User();
-     
-        $user['name'] = $request->name;
-        $user['paterno'] = $request->paterno;
-        $user['materno'] = $request->materno;
-        $user['email'] = $request->email;
-        $user['password'] = Hash::make($request->password);
-        $user['id_rol'] = $request->rol;
-        $user['id_usuario'] = auth()->id();
-        $user->save();
-        
-        $this->response['user'] = $user;
-        return response()->json($this->response, 200); 
+
+        if (!$request->id) {
+            $user = new User();
+            $user->name = $request->name;
+            $user->paterno = $request->paterno;
+            $user->materno = $request->materno;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password); // Hash de la contraseña
+            $user->id_rol = $request->rol;
+            $user->id_usuario = auth()->id();
+            $user->save();
+        } else {
+
+            $usuario = User::find($request->id);
+            if (!$usuario) {
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+            $usuario->name = $request->name;
+            $usuario->paterno = $request->paterno;
+            $usuario->materno = $request->materno;
+            $usuario->email = $request->email;
+            $usuario->id_rol = $request->rol;
+            if ($request->has('password')) {
+                $usuario->password = Hash::make($request->password);
+            }
+            $usuario->save();
+        }     
+
+        return response()->json(['message' => 'Usuario guardado correctamente'], 200);
     }
 
     public function getPermisos(){
-        $res = DB::select('SELECT permissions.id, permissions.name FROM users
+        $res = DB::select('SELECT permissions.id, permissions.name, pa
+        FROM users
         JOIN roles ON users.id_rol = roles.id
         JOIN role_has_permissions ON role_has_permissions.role_id = roles.id
         JOIN permissions ON role_has_permissions.permission_id = permissions.id 
