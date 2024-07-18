@@ -88,6 +88,8 @@ class DashboardController extends Controller
     ->limit(5)
     ->get();
 
+    $mins = $mins->reverse();
+    
     $this->response['inscriptores'] = $mins;
     $this->response['estado'] = true;
     return response()->json($this->response, 200);
