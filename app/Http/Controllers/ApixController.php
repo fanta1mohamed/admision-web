@@ -106,7 +106,7 @@ class ApixController extends Controller {
                 'postulante.nombres', 
                 DB::raw('"" as id_gestion'), 
                 DB::raw('"" as id_programa'),
-                DB::raw('[] as pagos')        
+                DB::raw('null as pagos')        
             )
             ->where('nro_doc', '=', $dni)
             ->first();
