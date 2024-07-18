@@ -86,10 +86,12 @@ class DashboardController extends Controller
     ->groupBy(DB::raw('users.id'))
     ->orderBy('cant','asc')
     ->limit(5)
-    ->get();
+    ->get()
+    ->reverse()
+    ->values();
 
     $mins = $mins->reverse();
-    
+
     $this->response['inscriptores'] = $mins;
     $this->response['estado'] = true;
     return response()->json($this->response, 200);
