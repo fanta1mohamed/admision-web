@@ -172,7 +172,7 @@
             </div>
             <div>
               <div class="mb-3">  
-                <h1 style="font-weight: bold;">Mejores Revisores del día</h1>
+                <h1 style="font-weight: bold;">Ultimos Cinco (5)</h1>
               </div>
 
               <div v-if="minscriptoresD != null"  >

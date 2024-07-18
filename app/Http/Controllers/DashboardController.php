@@ -85,7 +85,7 @@ class DashboardController extends Controller
     ->where(DB::raw('date(inscripciones.created_at)'),'=',$request->fecha)
     ->where('inscripciones.id_proceso','=',auth()->user()->id_proceso)
     ->groupBy(DB::raw('users.id'))
-    ->orderByDesc(DB::raw('cant'))
+    ->orderByAsc(DB::raw('cant'))
     ->limit(6)
     ->get();
 
