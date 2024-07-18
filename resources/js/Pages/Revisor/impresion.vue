@@ -19,6 +19,11 @@
                 <span style="color:crimson; font-size:1rem; letter-spacing:0.3rem;">POSTULANTE A SEGUNDO PROGRAMA</span>
               </div>
             </div>
+
+            <div v-if="observados.includes(dniseleccionado) == true" class="px-2 py-1" style="text-align:center; margin-top:10px; background: #f3f3f3;">
+              <span style="color:crimson; font-size:1rem; letter-spacing:0.3rem;">NO PASO CONTROL BIOMÉTRICO - REQUIERE PAGO ADICIONAL</span>
+            </div>
+
           </div>
         </div>
       </div>
@@ -445,6 +450,33 @@ const Inscribir =  async () => {
     dni_temp:""
   }
 }
+
+const observados = [
+'71478256',
+'73539668',
+'61514136',
+'60509538',
+'60983672',
+'60908934',
+'60850613',
+'75855507',
+'75197157',
+'73950287',
+'75950305',
+'75864795',
+'60173861',
+'70244520',
+'60909658',
+'60181061',
+'71445229',
+'77086486',
+'73959508',
+'71738875',
+'75606038',
+'75088446',
+'76988648',
+'77686000'
+];
 
 
 let timeout2;
