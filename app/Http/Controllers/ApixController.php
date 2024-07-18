@@ -99,12 +99,17 @@ class ApixController extends Controller {
 
             $res = null;
 
-            $res = Postulante::select('postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
-                    'postulante.nombres', 'vacio as id_gestion', 'vacio as id_programa',
-                    '[] as pagos'
-                )
-                ->where('nro_doc','=',$dni)->first(); 
-
+            $res = Postulante::select(
+                'postulante.nro_doc', 
+                'postulante.primer_apellido', 
+                'postulante.segundo_apellido',
+                'postulante.nombres', 
+                DB::raw('"" as id_gestion'), 
+                DB::raw('"" as id_programa'),
+                DB::raw('[] as pagos')        
+            )
+            ->where('nro_doc', '=', $dni)
+            ->first();
             return $res;
       
     }
