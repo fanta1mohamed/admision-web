@@ -82,12 +82,16 @@ class DashboardController extends Controller
     $minscriptoresD = Inscripcion::selectRaw('COUNT(*) as cant, users.name, users.paterno, users.materno')
     ->join('users','inscripciones.id_usuario','users.id')
     ->where('inscripciones.estado','=',0)
-    ->where(DB::raw('date(inscripciones.created_at)'),'=',$request->fecha)
     ->where('inscripciones.id_proceso','=',auth()->user()->id_proceso)
     ->groupBy(DB::raw('users.id'))
     ->orderByAsc(DB::raw('cant'))
-    ->limit(6)
+    ->limit(5)
     ->get();
+
+    $this->response['inscriptores'] = $minscriptoresD;
+    $this->response['estado'] = true;
+    return response()->json($this->response, 200);
+
 
     $this->response['inscriptores'] = $minscriptoresD;
     $this->response['estado'] = true;
