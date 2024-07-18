@@ -96,89 +96,17 @@ class ApixController extends Controller {
 
 
     public function getPostulantePago($dni, $proceso){
-        try {
+
             $res = null;
-        if($proceso == 6 ){
+
             $res = Postulante::select(
-                'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
-                'postulante.nombres', 'colegios.id_gestion', 'pre_inscripcion.id_programa',
-                DB::raw("CASE WHEN colegios.id_gestion IN (1, 2, 3, 4) THEN 20 ELSE 0 END AS Monto"),
-                DB::raw("CASE WHEN pre_inscripcion.id_programa IN (38, 16) THEN 30 ELSE 0 END AS ex_med") 
-            )
-            ->leftJoin('colegios','colegios.id','postulante.id_colegio')
-            ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
-            ->where('nro_doc','=',$dni)->first();
-        }
-        if($proceso == 9 || $proceso == 10 ){
-            $res = Postulante::select(
-                'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
-                'postulante.nombres', 'colegios.id_gestion', 'pre_inscripcion.id_programa',
-                DB::raw("IF(colegios.id_gestion = 1, 200, IF((colegios.id_gestion = 2 OR colegios.id_gestion = 3), 350, IF(colegios.id_gestion = 4, 450, 0))) AS Monto"),
-                DB::raw("CASE WHEN pre_inscripcion.id_programa IN (38, 16) THEN 30 ELSE 0 END AS ex_med")   
-            )
-            ->leftJoin('colegios','colegios.id','postulante.id_colegio')
-            ->join('pre_inscripcion','pre_inscripcion.id_postulante','postulante.id')
-            ->where('nro_doc','=',$dni)->first();
-        }
+                    'postulante.nro_doc', 'postulante.primer_apellido', 'postulante.segundo_apellido',
+                    'postulante.nombres', '"vacio" as id_gestion', '"vacio as "id_programa',
+                    '[] as pagos'
+                )
+                ->where('nro_doc','=',$dni)->first(); 
 
-
-        if(!$res){
-            return response()->json(['status' => false, 'mensaje'=>'Datos no encontrados', 'data' => null], 200);
-        }
-     
-
-        $originalObjeto = $res;
-
-    
-        if($res->ex_med > 0) {
-
-            $nuevoObjeto = [
-                "nro_doc" => $originalObjeto["nro_doc"],
-                "primer_apellido" => $originalObjeto["primer_apellido"],
-                "segundo_apellido" => $originalObjeto["segundo_apellido"],
-                "nombres" => $originalObjeto["nombres"],
-                "id_gestion" => $originalObjeto["id_gestion"],
-                "id_programa" => $originalObjeto["id_programa"],
-                "pagos" => [
-                    [
-                        "cod" => 26,
-                        "total" => $originalObjeto["Monto"]
-                    ],
-                    [
-                        "cod" => 39,
-                        "total" => $originalObjeto["ex_med"]
-                    ]
-                ]
-            ];       
-
-        }else{
-
-            $nuevoObjeto = [
-                "nro_doc" => $originalObjeto["nro_doc"],
-                "primer_apellido" => $originalObjeto["primer_apellido"],
-                "segundo_apellido" => $originalObjeto["segundo_apellido"],
-                "nombres" => $originalObjeto["nombres"],
-                "id_gestion" => $originalObjeto["id_gestion"],
-                "id_programa" => $originalObjeto["id_programa"],
-                "pagos" => [
-                    [
-                        "cod" => 26,
-                        "total" => $originalObjeto["Monto"]
-                    ],
-                ]
-            ];       
-
-        }
-
-        if($res->id_gestion == null){
-            return response()->json(['status' => true, 'mensaje'=> 'No tiene colegio', 'data' => $nuevoObjeto], 200);
-        }
-
-            return response()->json(['status' => true, 'mensaje'=>'-', 'data' => $nuevoObjeto], 200);
-
-        }  catch (\Throwable $th) {
-            return response()->json(['status' => false, 'mensaje'=>$th->getMessage(), 'data' => null], 500);
-        }
+            return $res;
       
     }
 
