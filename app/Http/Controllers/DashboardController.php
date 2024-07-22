@@ -107,7 +107,7 @@ class DashboardController extends Controller
     $resultados = Inscripcion::join('postulante', 'postulante.id', '=', 'inscripciones.id_postulante')
     ->selectRaw('COUNT(*) AS cant, postulante.sexo')
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('postulante.sexo')
     ->orderByDesc('cant')
     ->get();
@@ -126,7 +126,7 @@ class DashboardController extends Controller
         DB::raw('TIMESTAMPDIFF(YEAR, postulante.fec_nacimiento, CURDATE()) AS edad')
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('edad')
     ->orderByDesc('cantidad','edad')
     ->limit(7)
@@ -152,7 +152,7 @@ class DashboardController extends Controller
         'distritos.nombre AS dist'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('dep', 'prov', 'dist')
     #->orderByDesc('cant')
     ->orderByDesc('cant')
@@ -179,7 +179,7 @@ class DashboardController extends Controller
         'distritos.nombre AS dist'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('dep', 'prov', 'dist')
     ->orderByDesc('cant')
     ->limit(8)
@@ -198,7 +198,7 @@ class DashboardController extends Controller
         'postulante.anio_egreso AS egreso'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('egreso')
     ->orderByDesc('cant')
     ->limit(7)
@@ -217,7 +217,7 @@ class DashboardController extends Controller
         'postulante.discapacidad AS discapacidad'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('discapacidad')
     ->orderByDesc('cant')
     ->get();
@@ -236,7 +236,7 @@ class DashboardController extends Controller
         'tipo_documento_identidad.nombre AS tipo_doc'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('tipo_documento_identidad.nombre')
     ->orderByDesc('cant')
     ->get();
@@ -256,7 +256,7 @@ class DashboardController extends Controller
         'colegios.cod_modular'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('colegios.cod_modular', 'colegios.nombre')
     ->orderByDesc('cant')
     ->Limit(7)
@@ -282,7 +282,7 @@ class DashboardController extends Controller
         'distritos.nombre AS dist'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('dep', 'prov', 'dist')
     ->orderByDesc('cant')
     ->Limit(7)
@@ -302,7 +302,7 @@ class DashboardController extends Controller
         'colegios.gestion AS tipo_colegio'
     )
     ->where('inscripciones.estado', '=', 0)
-    ->where('inscripciones.id_proceso', '=', 5)
+    ->where('inscripciones.id_proceso', '=', auth()->user()->id_proceso)
     ->groupBy('colegios.gestion')
     ->orderByDesc('cant')
     ->get();
