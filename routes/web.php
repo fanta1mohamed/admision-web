@@ -665,9 +665,11 @@ Route::get('/descargar-reglamento', [DocumentoController::class, 'descargarRegla
 
 
 Route::get('/sync-tables', [SyncController::class, 'syncTables']);
+Route::get('/ver-pago/{concepto}', [PagoBancoController::class, 'getComprobanteConcepto']);
+
+
 
 require __DIR__.'/auth.php';
-
 
 
 

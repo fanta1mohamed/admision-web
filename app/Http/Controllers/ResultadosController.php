@@ -238,7 +238,7 @@ class ResultadosController extends Controller
 
         $comparaciones = [];
 
-        $tipoPruebaMap = [ 'P' => 0, 'Q' => 1, 'R' => 2, 'S' => 3, 'T' => 4,];
+        $tipoPruebaMap = [ 'U' => 0, 'Q' => 1, 'R' => 2, 'S' => 3, 'T' => 4,];
 
         foreach ($respFile as $lineaResp) {
 
@@ -256,10 +256,10 @@ class ResultadosController extends Controller
 
                         $puntuacion = 0;
                         if($caracterResp === " "){
-                            $puntuacion = ($ponderaciones[$i]->ponderacion * 2);
+                            $puntuacion = ($ponderaciones[$i]->ponderacion * 0);
                         }else {
                             if($caracterResp === $caracterPatron){
-                                $puntuacion = ($ponderaciones[$i]->ponderacion * 10);
+                                $puntuacion = ($ponderaciones[$i]->ponderacion * .33333333);
                             }
                             else{
                                 $puntuacion = 0;
@@ -580,8 +580,8 @@ class ResultadosController extends Controller
                 ->orWhere('nombres', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('paterno', 'LIKE', '%' . $request->term . '%');
         })
-        ->orderBy('paterno', 'DESC')
-        ->paginate(200);
+        ->orderBy('paterno', 'ASC')
+        ->paginate(10000);
       
           $this->response['estado'] = true;
           $this->response['datos'] = $res;
@@ -803,7 +803,7 @@ class ResultadosController extends Controller
 
             $correctas = "";
 
-            if($line->tipo == 'P'){ $correctas = $patrones[0]->respuestas; }
+            if($line->tipo == 'U'){ $correctas = $patrones[0]->respuestas; }
             if($line->tipo == 'Q'){ $correctas = $patrones[1]->respuestas; }
             if($line->tipo == 'R'){ $correctas = $patrones[2]->respuestas; }
             if($line->tipo == 'S'){ $correctas = $patrones[3]->respuestas; }
@@ -815,15 +815,12 @@ class ResultadosController extends Controller
                     $caracterPatron = $correctas[$i];
                     $puntuacion = 0;
 
-                    if($i == 39 ){
-
-                    }
 
                     if($caracterResp === " "){
                         $puntuacion = ($ponderaciones[$i]->ponderacion * 0);
                     }else {
                         if($caracterResp === $correctas[$i]){
-                            $puntuacion = ($ponderaciones[$i]->ponderacion * 2);
+                            $puntuacion = ($ponderaciones[$i]->ponderacion * 0.3333333);
                         }
                         else{ $puntuacion = 0; }
                     }
@@ -845,8 +842,6 @@ class ResultadosController extends Controller
 
         }
 
-
-
         //DB::table('puntajes_simulacro')->insert($comparaciones);
 
         return response()->json(['comparaciones' => $comparaciones]);
@@ -857,10 +852,12 @@ class ResultadosController extends Controller
 
     public function CalificarExamen(Request $request)
     {
+
         $id_sim = $request->id_simulacro;
         $area = $request->id_area;
         $pond = $request->id_ponderacion;
         $ponderaciones = DB::select("SELECT * FROM ponderacion WHERE id_ponderacion_simulacro = $pond");
+
 
         $patrones = DB::select("SELECT i.*, asim.categoria AS ide_tipe FROM res i
         JOIN archivos_simulacro asim ON asim.id = i.id_archivo
@@ -900,12 +897,12 @@ class ResultadosController extends Controller
                     //     $puntuacion = 0.333333333;
                     // } else {
                         if ($caracterResp === " ") {
-                            $puntuacion = ($ponderaciones[$i]->ponderacion * 0);
+                            $puntuacion = ($ponderaciones[$i]->ponderacion * $request->blanco);
                         } else {
                             if ($caracterResp === $caracterPatron) {
-                                $puntuacion = ($ponderaciones[$i]->ponderacion * 0.333333333);
+                                $puntuacion = ($ponderaciones[$i]->ponderacion * $request->correctas);
                             } else {
-                                $puntuacion = 0;
+                                $puntuacion = $request->incorrectas;
                             }
                         }
                     // }
@@ -926,8 +923,6 @@ class ResultadosController extends Controller
             ];
 
         }
-
-        //DB::table('puntajes_simulacro')->insert($comparaciones);
 
         return response()->json(['comparaciones' => $comparaciones]);
 
@@ -1154,51 +1149,52 @@ class ResultadosController extends Controller
                 LEFT JOIN ides ide ON ide.dni = par.dni
                 WHERE par.id_simulacro = ?
             ) AS participantes
-            LEFT JOIN res ON res.litho = participantes.litho;
+            LEFT JOIN res ON res.litho = participantes.litho
+            order by res.puntaje desc
+            ;
         ", [$sim]);
     
-        $programaEstudiantes = [];
-        
-        foreach ($estudiantesPorPrograma as $estudiante) {
-            $programaActual = $estudiante->programa;
-            if (!isset($programaEstudiantes[$programaActual])) {
-                $programaEstudiantes[$programaActual] = [];
-            }
-        
-            $programaEstudiantes[$programaActual][] = [
-                'dni' => $estudiante->dni,
-                'paterno' => $estudiante->paterno,
-                'materno' => $estudiante->materno,
-                'nombres' => $estudiante->nombres,
-                'puntaje' => number_format(($estudiante->puntaje),2),
-            ];
+    $programaEstudiantes = [];
+
+    foreach ($estudiantesPorPrograma as $estudiante) {
+        $programaActual = $estudiante->programa;
+        if (!isset($programaEstudiantes[$programaActual])) {
+            $programaEstudiantes[$programaActual] = [];
         }
-        
-        $archivosGenerados = [];
-    
-        foreach ($programaEstudiantes as $programa => $estudiantes) {
-            // Cargar la vista 'Calificacion.puntajesSuficiencia' con los datos de los estudiantes
-            $pdf = PDF::loadView('Calificacion.puntajesSuficiencia', compact('estudiantes', 'programa'));
-            $pdf->getDomPDF()->set_option("isPhpEnabled", true);
-            $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
-            $pdf->setPaper('A4', 'portrait');
-            
-            $rutaCarpeta = public_path("simulacro/");
-            if (!file_exists($rutaCarpeta)) {
-                mkdir($rutaCarpeta, 0777, true);
-            }
-            $nombreArchivo = "{$programa}.pdf";
-            $rutaCompleta = $rutaCarpeta . $nombreArchivo;
-            
-            $pdf->save($rutaCompleta);
-            $archivosGenerados[] = asset("pdfs/" . $nombreArchivo);
-        }
-    
-        // Devolver los archivos generados como respuesta para descargar
-        return response()->json([
-            'message' => 'Archivos generados correctamente',
-            'archivos' => $archivosGenerados
-        ]);
+
+        $programaEstudiantes[$programaActual][] = [
+            'dni' => $estudiante->dni,
+            'paterno' => $estudiante->paterno,
+            'materno' => $estudiante->materno,
+            'nombres' => $estudiante->nombres,
+            'puntaje' => number_format($estudiante->puntaje, 2),
+        ];
     }
 
+    $archivosGenerados = [];
+
+    foreach ($programaEstudiantes as $programa => $estudiantes) {
+        $pdf = PDF::loadView('Calificacion.puntajesSuficiencia', compact('estudiantes', 'programa'));
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->setPaper('A4', 'portrait');
+
+        $rutaCarpeta = public_path("simulacro/".$sim.'/');
+        if (!file_exists($rutaCarpeta)) {
+            mkdir($rutaCarpeta, 0777, true);
+        }
+
+        $nombreArchivo = preg_replace('/[^A-Za-z0-9_\-]/', '_', $programa) . ".pdf";
+        $rutaCompleta = $rutaCarpeta . $nombreArchivo;
+
+        $pdf->save($rutaCompleta);
+        $archivosGenerados[] = asset("simulacro/$sim/" . $nombreArchivo);
+    }
+
+    return response()->json([
+        'message' => 'Archivos generados correctamente',
+        'archivos' => $archivosGenerados
+    ]);
+    
+    }
 }

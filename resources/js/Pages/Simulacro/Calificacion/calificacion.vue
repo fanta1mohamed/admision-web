@@ -176,8 +176,7 @@
                             <label>Fecha<span style="color:red;">*</span></label>
                             <a-form-item
                                     name="fecha"
-                                    :rules="[ { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},
-                                    ]"
+                                    :rules="[ { required: true, message: 'Ingresa tu fecha de nacimiento', trigger: 'change'},]"
                                 >
                                 <a-date-picker style="width:100%; border-radius: 4px; height: 36px;" placeholder="Seleccionar fec. nacimiento" v-model:value="form.fecha" format="DD/MM/YYYY">
                                     <template #prefix>
@@ -341,8 +340,10 @@ const guardar = async () => {
         estado: 1,
         ubigeo: form.ubigeo,
         anio:'2024',
-        fecha: form.fecha
+        fecha: form.fecha,
     });
+    modalNuevo.value = false;
+    await getSimulacros();
 }
 
 const getCarpetas = async ( ) => {

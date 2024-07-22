@@ -85,7 +85,7 @@ class DashboardController extends Controller
     ->where('inscripciones.id_proceso','=',auth()->user()->id_proceso)
     ->groupBy(DB::raw('users.id'))
     ->orderBy('cant','asc')
-    ->having('cant','>',1)
+    ->having('cant','>',5)
     ->limit(5)
     ->get()
     ->reverse()

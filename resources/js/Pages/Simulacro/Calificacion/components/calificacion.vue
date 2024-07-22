@@ -13,7 +13,6 @@
                 </div>  
             </div>  
         </div>   
-
         
 
         <a-table :dataSource="resultados" :columns="columns" size="small" :pagination="false">
@@ -42,6 +41,25 @@
                     <a-select-option :value="3">SOCIALES</a-select-option>
                 </a-select>
             </div>
+
+
+            <a-row gutter=[16,16]>
+                <a-col :span="8" xs={24} sm={12} md={8}>
+                    <label>Correctas</label>
+                    <a-input ref="select" v-model:value="correctas" style="width: 100%">
+                    </a-input>
+                </a-col>
+                <a-col :span="8" xs={24} sm={12} md={8}>
+                    <label>Incorrectas</label>
+                    <a-input ref="select" v-model:value="incorrectas" style="width: 100%">
+                    </a-input>
+                </a-col>
+                <a-col :span="8" xs={24} sm={12} md={8}>
+                    <label>En Blanco</label>
+                    <a-input ref="select" v-model:value="blanco" style="width: 100%">
+                    </a-input>
+                </a-col>
+            </a-row>
 
             <div class="mt-3">
                 <label>Ponderacion</label>
@@ -72,7 +90,7 @@
                     <a-button style="margin-left: 6px; border-radius: 4px;">Cancelar s</a-button>
                 </div>
                 <div>
-                    <a-button type="primary" @click="califar()" style="background: #476175; border:none; border-radius: 4px;">Calificddar</a-button>
+                    <a-button type="primary" @click="califar()" style="background: #476175; border:none; border-radius: 4px;">Calificar</a-button>
                 </div>
             </div>
         </a-modal>
@@ -102,6 +120,9 @@ const totalRegistros = ref(0);
 const pagina = ref(1);
 const paginasize = ref(10);
 const buscar = ref("");
+const correctas = ref(10);
+const incorrectas = ref(0);
+const blanco = ref(2);
 
 
 const getPonderaciones =  async () => {
@@ -111,7 +132,15 @@ const getPonderaciones =  async () => {
 }
 
 const califar =  async () => {
-    let res = await axios.post("/calificar-examen", { id_area: area.value, id_simulacro: props.proceso, id_ponderacion: ponderacion.value.key  } );
+    let res = await axios.post("/calificar-examen", 
+    { 
+        id_area: area.value, 
+        id_simulacro: props.proceso, 
+        id_ponderacion: ponderacion.value.key,
+        correctas: correctas.value,
+        incorrectas: incorrectas.value,
+        blanco: blanco.value
+    } );
     visible.value = false;
     getPuntajes();
 }

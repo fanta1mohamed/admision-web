@@ -57,8 +57,8 @@
                         </div>
                     </td>
                     <td v-align="top" align="right" style="text-align:right; border:none;">
-                        <div style="margin-top: 5px">
-                            <img src="{{ public_path('imagenes/logoDAD.jpg')}}"  width="75">
+                        <div style="margin-top: 5px;">
+                            <img src="{{ public_path('imagenes/logo_cepreuna.png')}}"  width="75">
                         </div>
                     </td>
                 </tr>
@@ -75,7 +75,7 @@
     <div style="width: 100%; text-align:center; margin-top:0px; font-size:10pt;">
         <div>
             <div style="width: 100%; text-align:center; margin-top:-10px;">
-                <span style=" padding: 4px 50px; font-size: 1.5rem; font-family:'Times New Roman', Times, serif;"> ESCUELA PROFESIONAL DE INGENIERÍA AGROINDUSTRIAL </span>
+                <span style=" padding: 4px 50px; font-size: 1.5rem; font-family:'Times New Roman', Times, serif;"> {{ $programa }} </span>
             </div>
             <div> EXAMEN DE SUFICIENCIA PROFESIONAL </div>
             <div><span style="font-weight:bold; text-transform:uppercase">{{ "FECHA " }} - {{ date('d/m/Y H:m:s')}} </span></div>
@@ -96,7 +96,7 @@
                 <td style="width: 50px;"><div style="text-align: center;"> {{ $estudiante['dni'] }} </div></td>
                 {{-- <td style="width: 430px;"></td> --}}
                 <td> {{ $estudiante['paterno'] }} {{ $estudiante['materno'] }} {{ $estudiante['nombres'] }} </td>
-                <td align="center"><div style="text-align:center;">  {{ number_format($estudiante['puntaje'], 2) }} </div></td>
+                <td align="center"><div style="text-align:center;"> {{ number_format(($estudiante['puntaje'] + 750), 3); }} </div></td>
             </tr>
             @endforeach
         </tbody>

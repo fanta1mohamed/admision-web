@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\PagoBanco;
+use App\Models\PagosUnap;
 use Illuminate\Http\Request;
 use DB;
 
@@ -71,6 +72,27 @@ class PagoBancoController extends Controller
 
     return response()->json($this->response, 200);
   }
+
+
+
+
+  public function getComprobanteConcepto($secuencia)
+  {
+      $database2 = 'mysql_secondary';
+  
+      // Usar bindings para evitar inyección SQL
+      $res = DB::connection($database2)->select("SELECT * FROM banco_pagos_admision WHERE secuencia = ?", [$secuencia]);
+  
+      // Preparar la respuesta
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+  
+      // Devolver la respuesta en formato JSON
+      return response()->json($this->response, 200);
+  }
+
+
+  
 
 
 }
