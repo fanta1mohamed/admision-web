@@ -120,9 +120,9 @@ const totalRegistros = ref(0);
 const pagina = ref(1);
 const paginasize = ref(10);
 const buscar = ref("");
-const correctas = ref(10);
+const correctas = ref(1);
 const incorrectas = ref(0);
-const blanco = ref(2);
+const blanco = ref(0);
 
 
 const getPonderaciones =  async () => {
@@ -167,6 +167,7 @@ const columns = ref([
     { title: 'Ap. Materno', dataIndex: 'materno'},
     { title: 'Nombres', dataIndex: 'nombres' },
     { title: 'Puntaje', dataIndex: 'puntaje', align:'center'},    
+    { title: 'Condicion', dataIndex: 'condicion', align:'center'},    
 ]);
 
 

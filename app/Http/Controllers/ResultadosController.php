@@ -856,8 +856,8 @@ class ResultadosController extends Controller
         $id_sim = $request->id_simulacro;
         $area = $request->id_area;
         $pond = $request->id_ponderacion;
-        $ponderaciones = DB::select("SELECT * FROM ponderacion WHERE id_ponderacion_simulacro = $pond");
 
+        $ponderaciones = DB::select("SELECT * FROM ponderacion WHERE id_ponderacion_simulacro = $pond");
 
         $patrones = DB::select("SELECT i.*, asim.categoria AS ide_tipe FROM res i
         JOIN archivos_simulacro asim ON asim.id = i.id_archivo
@@ -881,14 +881,19 @@ class ResultadosController extends Controller
 
             $correctas = "";
 
-            if($line->tipo == 'P'){ $correctas = $patrones[0]->respuestas; }
-            if($line->tipo == 'Q'){ $correctas = $patrones[1]->respuestas; }
-            if($line->tipo == 'R'){ $correctas = $patrones[2]->respuestas; }
-            if($line->tipo == 'S'){ $correctas = $patrones[3]->respuestas; }
-            if($line->tipo == 'T'){ $correctas = $patrones[4]->respuestas; }
+            // if($line->tipo == 'P'){ $correctas = $patrones[0]->respuestas; }
+            // if($line->tipo == 'Q'){ $correctas = $patrones[1]->respuestas; }
+            // if($line->tipo == 'R'){ $correctas = $patrones[2]->respuestas; }
+            // if($line->tipo == 'S'){ $correctas = $patrones[3]->respuestas; }
+            // if($line->tipo == 'T'){ $correctas = $patrones[4]->respuestas; }
+
+            $correctas = $patrones[0]->respuestas;  
             
-            for ($i = 0; $i < 60; $i++) {
-                if (strlen($line->respuestas) == 60 && strlen($correctas) == 60) {
+            for ($i = 0; $i < 30; $i++) {
+
+            
+                if (strlen($line->respuestas) > 0 && strlen($correctas) == 60) {
+                
                     $caracterResp = $line->respuestas[$i];
                     $caracterPatron = $correctas[$i];
                     $puntuacion = 0;
@@ -927,6 +932,7 @@ class ResultadosController extends Controller
         return response()->json(['comparaciones' => $comparaciones]);
 
     }
+
 
     public function PdfErroresCalifacion($sim) {
 
@@ -1119,16 +1125,20 @@ class ResultadosController extends Controller
     }
 
     public function getPuntajes(Request $request){
+
         $res = DB::select("SELECT  participantes.*, 
-#        IF(res.puntaje < 11 OR res.puntaje IS NULL, 11, res.puntaje) AS puntaje 
-        IF(res.puntaje < 11 OR res.puntaje IS NULL, res.puntaje, res.puntaje) AS puntaje 
-        FROM ( SELECT par.dni, par.paterno, par.materno, par.nombres, par.programa, ide.litho, ide.id 
-        AS id_ide 
+        IF(res.puntaje < 1 OR res.puntaje IS NULL, 0, res.puntaje) AS puntaje,
+        IF(res.puntaje > 15, 'APTO', 'NO APTO') AS condicion   
+            FROM ( 
+                SELECT par.dni, par.paterno, par.materno, par.nombres, par.programa, ide.litho, ide.id AS id_ide 
                 FROM participantes_simulacro_externo par
-                LEFT JOIN ides ide 
-                ON ide.dni = par.dni
-                WHERE par.id_simulacro = $request->id_simulacro ) AS participantes
-        LEFT JOIN res ON res.litho = participantes.litho;" );
+                LEFT JOIN ides ide ON ide.dni = par.dni
+                WHERE par.id_simulacro = ?
+            ) AS participantes
+            LEFT JOIN res ON res.litho = participantes.litho
+            order by res.puntaje desc
+            ;
+        ", [ $request->id_simulacro]);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
@@ -1141,8 +1151,8 @@ class ResultadosController extends Controller
     public function getResultadosPDF($sim)
     {
         $estudiantesPorPrograma = DB::select("SELECT  participantes.*, 
-#        IF(res.puntaje < 11 OR res.puntaje IS NULL, 11, res.puntaje) AS puntaje 
-        IF(res.puntaje < 11 OR res.puntaje IS NULL, res.puntaje, res.puntaje) AS puntaje 
+        IF(res.puntaje < 1 OR res.puntaje IS NULL, 0, res.puntaje) AS puntaje,
+        IF(res.puntaje > 15, 'APTO', 'NO APTO') AS condicion   
             FROM ( 
                 SELECT par.dni, par.paterno, par.materno, par.nombres, par.programa, ide.litho, ide.id AS id_ide 
                 FROM participantes_simulacro_externo par
@@ -1150,6 +1160,7 @@ class ResultadosController extends Controller
                 WHERE par.id_simulacro = ?
             ) AS participantes
             LEFT JOIN res ON res.litho = participantes.litho
+            WHERE res.puntaje > 15
             order by res.puntaje desc
             ;
         ", [$sim]);
@@ -1168,6 +1179,7 @@ class ResultadosController extends Controller
             'materno' => $estudiante->materno,
             'nombres' => $estudiante->nombres,
             'puntaje' => number_format($estudiante->puntaje, 2),
+            'condicion' => $estudiante->condicion,
         ];
     }
 
@@ -1197,4 +1209,5 @@ class ResultadosController extends Controller
     ]);
     
     }
+
 }

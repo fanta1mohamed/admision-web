@@ -53,12 +53,12 @@
                             {{-- <div style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-style:italic; ">UNIVERSIDAD NACIONAL DEL ALTIPLANO</div> --}}
                             <div style="font-size:2rem; font-family: Times, 'Times New Roman'; font-style:italic;">Universidad Nacional del Altiplano</div>
                             <div style="font-size:1rem; space-letter:.7rem;">VICERRECTORADO ACADÉMICO</div>
-                            <div>DIRECCIÓN DE ADMISIÓN </div>
+                            <div>COMISIÓN DE CONCURSO PÚBLICO DE CATEDRA 2024-II</div>
                         </div>
                     </td>
                     <td v-align="top" align="right" style="text-align:right; border:none;">
                         <div style="margin-top: 5px;">
-                            <img src="{{ public_path('imagenes/logo_cepreuna.png')}}"  width="75">
+                            <img src="{{ public_path('imagenes/logo_concurso.jpg')}}"  width="75">
                         </div>
                     </td>
                 </tr>
@@ -75,9 +75,9 @@
     <div style="width: 100%; text-align:center; margin-top:0px; font-size:10pt;">
         <div>
             <div style="width: 100%; text-align:center; margin-top:-10px;">
-                <span style=" padding: 4px 50px; font-size: 1.5rem; font-family:'Times New Roman', Times, serif;"> {{ $programa }} </span>
+                <span style=" padding: 4px 50px; font-size: 1.5rem; font-family:'Times New Roman', Times, serif;"> ESCUELA PROFESIONAL DE  {{ $programa }} </span>
             </div>
-            <div> EXAMEN DE SUFICIENCIA PROFESIONAL </div>
+            <div> RESULTADOS DE LA PRUEBA ESCRITA DE CONOCIMIENTOS </div>
             <div><span style="font-weight:bold; text-transform:uppercase">{{ "FECHA " }} - {{ date('d/m/Y H:m:s')}} </span></div>
         </div>
     </div>
@@ -88,6 +88,7 @@
             <th align="center"><div style="text-align:center;">DNI</div></th>
             <th>APELLIDOS Y NOMBRES</th>
             <th><div style="text-align:center;">PUNTAJE</div></th>
+            <th><div style="text-align:center;">CONDICION</div></th>
         </thead>
         <tbody style="padding: top:20px;">
             @foreach ($estudiantes as $key=>$estudiante)
@@ -96,7 +97,9 @@
                 <td style="width: 50px;"><div style="text-align: center;"> {{ $estudiante['dni'] }} </div></td>
                 {{-- <td style="width: 430px;"></td> --}}
                 <td> {{ $estudiante['paterno'] }} {{ $estudiante['materno'] }} {{ $estudiante['nombres'] }} </td>
-                <td align="center"><div style="text-align:center;"> {{ number_format(($estudiante['puntaje'] + 750), 3); }} </div></td>
+                <td align="center"><div style="text-align:center;"> {{ ($estudiante['puntaje']); }} </div></td>
+                <td align="center"><div style="text-align:center;"> {{ ($estudiante['condicion']); }} </div></td>
+                
             </tr>
             @endforeach
         </tbody>

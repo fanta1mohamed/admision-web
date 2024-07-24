@@ -121,7 +121,7 @@ class SimulacroController extends Controller
           return $query
               ->orWhere('simulacro.nombre', 'LIKE', '%' . $request->term . '%');
       })->orderBy('simulacro.id', 'DESC')
-      ->paginate(10);
+      ->paginate(100);
 
     $this->response['estado'] = true;
     $this->response['datos'] = $res;

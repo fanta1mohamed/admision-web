@@ -170,12 +170,12 @@ class InscripcionController extends Controller
      
         $prog = $request['postulante']['cod_programa'];
 
-        $res = $siguiente = Inscripcion::where('codigo', 'like', 'G224'.$prog.'%')
+        $res = $siguiente = Inscripcion::where('codigo', 'like', 'C224'.$prog.'%')
         ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
         $inscripcion = Inscripcion::create([
-            'codigo' => 'G224' . $prog . $res,
+            'codigo' => 'C224' . $prog . $res,
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> auth()->user()->id_proceso,
             'id_programa' => $request['postulante']['id_programa'],
@@ -208,13 +208,13 @@ class InscripcionController extends Controller
 
             
             $id_programa = str_pad($request->id_programa, 2, '0', STR_PAD_LEFT);
-            $res = $siguiente = Inscripcion::where('codigo', 'like', 'G224'.$id_programa.'%')
+            $res = $siguiente = Inscripcion::where('codigo', 'like', 'C224'.$id_programa.'%')
             ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
             $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
 
             $inscripcion = Inscripcion::create([
-                'codigo' => 'G224' . $id_programa . $res,
+                'codigo' => 'C224' . $id_programa . $res,
                 'id_postulante'=> $request->id_postulante,
                 'id_proceso'=> auth()->user()->id_proceso,
                 'id_programa' => $request->id_programa,
