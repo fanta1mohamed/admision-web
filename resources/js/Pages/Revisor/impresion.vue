@@ -60,7 +60,7 @@
           <a-col flex="1 1">
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
-                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/9/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
+                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/10/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
@@ -198,11 +198,11 @@
             <!-- {{ baseUrl+'/huellas/inscripcion/'+dniseleccionado+'.jpg' }} -->
             <div class="mt-4 container-huellas">
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%; overflow-y: hidden;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/9/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/10/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/9/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/10/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
             </div>
@@ -506,7 +506,7 @@ watch(dniseleccionado, ( newValue, oldValue ) => {
 // const GenerarNuevoPDF =  (dnni) => {
 //     var iframe = document.createElement('iframe');
 //     iframe.style.display = "none";
-//     iframe.src = baseUrl+'/documentos/9/inscripciones/constancias/'+dnni+'.pdf';
+//     iframe.src = baseUrl+'/documentos/10/inscripciones/constancias/'+dnni+'.pdf';
 //     document.body.appendChild(iframe);
 //     iframe.contentWindow.focus();
 //     iframe.contentWindow.print();
@@ -515,7 +515,7 @@ watch(dniseleccionado, ( newValue, oldValue ) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/9/inscripciones/constancias/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/10/inscripciones/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
