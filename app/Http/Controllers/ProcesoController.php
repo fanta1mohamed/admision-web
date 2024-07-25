@@ -134,14 +134,23 @@ class ProcesoController extends Controller
   
   public function getFormulario($nombreProceso)
   {
-
     $proceso = Proceso::where('slug', $nombreProceso)->where('estado',1)->first();
     if($proceso){ 
       return Inertia::render('Publico/preinscripcioncepre', ['procceso_seleccionado' => $proceso]); 
     } else {
       abort(404);
     }
+  }
 
+
+  public function getSelectProceso( ) {
+    $res = Proceso::where('estado', 1)
+    ->select('id as value', 'nombre as label')
+    ->get();
+    
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
   }
 
 

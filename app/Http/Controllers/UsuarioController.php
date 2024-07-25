@@ -115,13 +115,20 @@ class UsuarioController extends Controller
     
     }
 
-    public function getUsuarios(){
-        $res = DB::select('SELECT users.id, users.name, users.paterno, users.materno, 
-            users.email, roles.name AS role_name, users.id_rol, id_proceso, procesos.nombre AS proceso
-        FROM users
-        JOIN roles ON users.id_rol = roles.id
-        JOIN procesos ON procesos.id = users.id_proceso
-        WHERE roles.id = 2');
+    public function getUsuarios(Request $request){
+
+        $res = User::select( 'users.id', 'users.name', 'users.paterno', 'users.materno', 
+        'users.email', 'roles.name AS role_name', 'users.id_rol', 'id_proceso', 'procesos.nombre AS proceso')
+        ->join('roles','roles.id','users.id_rol')
+        ->join('procesos','procesos.id','users.id_proceso')
+        ->where('roles.id','=',2)
+        ->where(function ($query) use ($request) {
+            return $query
+                ->orWhere('users.name', 'LIKE', '%' . $request->term . '%')
+                ->orWhere(DB::raw("CONCAT(users.name,' ',users.paterno,' ',users.materno)"),'LIKE', '%' . $request->term . '%')
+                ->orWhere('users.email', 'LIKE', '%' . $request->term . '%');
+        })->orderBy('users.id', 'DESC')
+        ->get();
         
         $this->response['usuarios'] = $res;
         return response()->json($this->response, 200); 
@@ -136,8 +143,9 @@ class UsuarioController extends Controller
             $user->paterno = $request->paterno;
             $user->materno = $request->materno;
             $user->email = $request->email;
-            $user->password = Hash::make($request->password); // Hash de la contraseña
+            $user->password = Hash::make($request->password);
             $user->id_rol = $request->rol;
+            $user->id_proceso = $request->id_proceso;
             $user->id_usuario = auth()->id();
             $user->save();
         } else {
@@ -151,7 +159,8 @@ class UsuarioController extends Controller
             $usuario->materno = $request->materno;
             $usuario->email = $request->email;
             $usuario->id_rol = $request->rol;
-            if ($request->has('password')) {
+            $usuario->id_proceso = $request->id_proceso;
+            if ($request->has('password') ) {
                 $usuario->password = Hash::make($request->password);
             }
             $usuario->save();

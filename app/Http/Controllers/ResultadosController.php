@@ -1161,7 +1161,7 @@ class ResultadosController extends Controller
             ) AS participantes
             LEFT JOIN res ON res.litho = participantes.litho
             WHERE res.puntaje > 15
-            order by res.puntaje desc
+            order by participantes.paterno desc
             ;
         ", [$sim]);
     

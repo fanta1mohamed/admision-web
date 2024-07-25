@@ -87,7 +87,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/get-roles', [RolController::class, 'getRoles']);
     Route::post('/save-rol', [RolController::class, 'saveRol']);
 
-    Route::get('/get-usuarios', [UsuarioController::class, 'getUsuarios']);
+    Route::post('/get-usuarios', [UsuarioController::class, 'getUsuarios']);
     Route::get('/get-roles-u', [UsuarioController::class, 'getRoles']);
     Route::post('/save-user',[UsuarioController::class, 'saveUsuario']);
 
@@ -116,7 +116,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/procesos/get-modalidades', [ProcesoController::class, 'getModalidades']);
     Route::post('/procesos/get-procesos', [ProcesoController::class, 'getProcesos']);
     Route::post('/save-proceso', [ProcesoController::class, 'saveProceso']);
-    //Route::get('/get-has-permission/{rol}', [BlogController::class, 'getPermission']);
+    Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProceso']);
 
     //PREINSCRIPCION
     Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
