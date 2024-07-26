@@ -591,6 +591,19 @@ class PreinscripcionController extends Controller
         }
         
     }
+
+
+
+    public function Eliminar(Request $request){
+     
+        $preinscripcion = Preinscripcion::find($request->id);
+        $preinscripcion->delete();
+
+        $this->response['titulo'] = '!REGISTRO ELIMINADO!';
+        $this->response['mensaje'] = '';
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+    }
         
 
     

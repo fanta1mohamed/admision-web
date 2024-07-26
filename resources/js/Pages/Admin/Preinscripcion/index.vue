@@ -108,25 +108,15 @@
             </template>
 
             <template v-if="column.dataIndex === 'acciones'">
-                <a-button type="success" style="color: #476175;" @click="cambiarSexo(record.id_postulante, record.sexo )" size="small">
+                <a-button class="mr-1" type="success" style="color: #476175;" @click="cambiarSexo(record.id_postulante, record.sexo )" size="small">
                     <template #icon><SaveOutlined/></template>
                 </a-button>
-                <a-divider type="vertical" />
-                <a-button @click="abrirEditar(record)" style="color: blue;" size="small">
+                <a-button class="mr-1" @click="abrirEditar(record)" style="color: blue;" size="small">
                     <template #icon><form-outlined/></template>
                 </a-button>
-                <a-divider type="vertical" />
-                <a-popconfirm
-                    v-if="inscripciones.length"
-                    title="¿Estas seguro de eliminar?"
-                    disabled
-                    @confirm="eliminar(record)"
-                    >
-                    <a-button shape="" size="small" style="color: crimson;">
-                        <template #icon><delete-outlined/></template>
-                    </a-button>
-                </a-popconfirm>
-  
+                <a-button @click="eliminar(record)" size="small" style="color: crimson;">
+                    <template #icon><delete-outlined/></template>
+                </a-button>  
             </template>
         </template>
   
@@ -342,7 +332,8 @@ const cambiarSexo = (postulante, sexo) => {
 }
 
 const eliminar = (item) => {
-    axios.get("eliminar-modalidad/"+item.id).then((result) => {
+    console.log("eliminar");
+    axios.post("eliminar-preinscripcion/",{id: item.id}).then((result) => {
     getInscripciones();
     notificacion('warning', result.data.titulo, result.data.mensaje );
     });

@@ -109,6 +109,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-preinscripciones-admin', [PreinscripcionController::class, 'getPreinscripcionesAdmin']);
     Route::post('/actualizar-sexo-postulante', [PreinscripcionController::class, 'actualizarSexo']);
     Route::post('/actualizar-preinscripcion', [PreinscripcionController::class, 'Actualizar']);    
+    Route::post('/eliminar-preinscripcion', [PreinscripcionController::class, 'Eliminar']);    
 
     Route::get('/procesos', [ProcesoController::class, 'index'])->name('proceso-index');
     Route::get('/eliminar-proceso/{id}', [ProcesoController::class, 'deleteProceso']);
