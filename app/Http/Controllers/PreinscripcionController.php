@@ -86,7 +86,7 @@ class PreinscripcionController extends Controller
 
 
             $doc = [];
-            $dooc = Documento::where('id_postulante', $request->id_postulante)->first();
+            //$dooc = Documento::where('id_postulante', $request->id_postulante)->first();
 
             if ($dooc == []) {
                 $doc = Documento::create([
