@@ -60,7 +60,7 @@
           <a-col flex="1 1">
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
-                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/10/inscripciones/fotos/'+postulante.dni_temp+'.jpg'"/> 
+                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/'+foto_postulante"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
@@ -198,11 +198,11 @@
             <!-- {{ baseUrl+'/huellas/inscripcion/'+dniseleccionado+'.jpg' }} -->
             <div class="mt-4 container-huellas">
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%; overflow-y: hidden;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/10/inscripciones/huellas/'+postulante.dni_temp+'.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/'+huellaI_postulante"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
               <div class="mr-1" style="border: solid 1px #F4f4f4; width: 100%; height: 100%;">
-                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/documentos/10/inscripciones/huellas/'+postulante.dni_temp+'x.jpg'"/>
+                <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/'+huellaD_postulante"/>
                 <img v-else :src="baseUrl+'/huellas/huella.jpg'"/>
               </div>
             </div>
@@ -336,11 +336,13 @@ import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
 import Vouchers from './components/voucherBN.vue'
 const baseUrl = window.location.origin;
+const foto_postulante = ref(null);
+const huellaD_postulante = ref(null);
+const huellaI_postulante = ref(null);
  
 const props = defineProps({  baseUrl: String });
 
 const dni = ref("")
-const tabactive = ref('1')
 
 const dniseleccionado = ref(null)
 const preinscripciones = ref(null)
@@ -394,6 +396,9 @@ const getPostulantesByDni =  async () => {
       postulante.value.id_proceso = res.data.datos.id_proceso;
       postulante.value.id_modalidad = res.data.datos.id_modalidad;
       postulante.value.dni_temp = res.data.datos.dni;
+      foto_postulante.value = res.data.foto;
+      huellaD_postulante.value = res.data.huellaD;
+      huellaI_postulante.value = res.data.huellaI;
     }
 }
 

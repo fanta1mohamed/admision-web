@@ -54,8 +54,7 @@ class InscripcionController extends Controller
             return response()->json($this->response, 200);
         }
         else {
-            $res = DB::select("SELECT 
-            postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
+            $res = DB::select("SELECT postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
             postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento,
             programa.id AS id_programa, programa.nombre as programa, programa.codigo as cod_programa,
             colegios.id AS id_colegio, concat(colegios.gestion,".'" - "'.", colegios.nombre) AS colegio,
@@ -77,6 +76,9 @@ class InscripcionController extends Controller
             AND pre_inscripcion.id_proceso = ". auth()->user()->id_proceso);
             if(count($res) > 0 ){
                 $this->response['estado'] = true;
+                $this->response['foto'] = 'documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/'.$dni.'.jpg';
+                $this->response['huellaD'] = 'documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/'.$dni.'.jpg';
+                $this->response['huellaI'] = 'documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/'.$dni.'x.jpg';
                 $this->response['datos'] = $res[0];
                 return response()->json($this->response, 200);
             }

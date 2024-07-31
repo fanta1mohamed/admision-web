@@ -12,9 +12,6 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(): Response
     {
         return Inertia::render('Auth/Login', [
@@ -23,26 +20,33 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $credentials = $request->only('email', 'password');
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors([
+                'email' => 'Credenciales incorrectas.',
+            ]);
+        }
+
+        $user = Auth::user();
+        if ($user->estado !== 1) {
+            Auth::logout();
+            return redirect('/login')->withErrors([
+                'password' => 'Su cuenta no está activa',
+            ]);
+        }
 
         $request->session()->regenerate();
 
-        if( auth()->user()->id_rol == 7 ) { return redirect('/calificacion/subir-resultado'); }
-        if( auth()->user()->id_rol == 6 ) { return redirect('/simulacro'); }
-        if( auth()->user()->id_rol == 1 ) { return redirect('/admin/dashboard'); } 
-        if( auth()->user()->id_rol == 2 ) { return redirect('/revisor'); }        
+        if ($user->id_rol == 7) { return redirect('/calificacion'); }
+        if ($user->id_rol == 6) { return redirect('/simulacro'); }
+        if ($user->id_rol == 1) { return redirect('/admin/dashboard'); } 
+        if ($user->id_rol == 2) { return redirect('/revisor'); }        
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

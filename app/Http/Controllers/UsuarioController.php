@@ -117,8 +117,8 @@ class UsuarioController extends Controller
 
     public function getUsuarios(Request $request){
 
-        $res = User::select( 'users.id', 'users.name', 'users.paterno', 'users.materno', 
-        'users.email', 'roles.name AS role_name', 'users.id_rol', 'id_proceso', 'procesos.nombre AS proceso')
+        $res = User::select( 'users.id', 'users.name', 'users.paterno', 'users.materno', 'users.email', 
+        'roles.name AS role_name', 'users.id_rol', 'id_proceso', 'procesos.nombre AS proceso', 'users.estado')
         ->join('roles','roles.id','users.id_rol')
         ->join('procesos','procesos.id','users.id_proceso')
         ->where('roles.id','=',2)
@@ -145,6 +145,7 @@ class UsuarioController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->id_rol = $request->rol;
+            $user->estado = $request->estado;
             $user->id_proceso = $request->id_proceso;
             $user->id_usuario = auth()->id();
             $user->save();
@@ -158,6 +159,7 @@ class UsuarioController extends Controller
             $usuario->paterno = $request->paterno;
             $usuario->materno = $request->materno;
             $usuario->email = $request->email;
+            $usuario->estado = $request->estado;
             $usuario->id_rol = $request->rol;
             $usuario->id_proceso = $request->id_proceso;
             if ($request->has('password') ) {

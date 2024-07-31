@@ -68,6 +68,11 @@
                 </template> 
             </a-table> 
           </div>
+          <template #footer>
+            <div>
+              <a-button style="background: #133466; color:white; border: none;" @click="modalPagos = false">Aceptar</a-button>
+            </div>
+          </template>
         </a-modal>
 
 
@@ -81,7 +86,6 @@ import { notification } from 'ant-design-vue';
 import axios from 'axios';
 
 const modalPagos = ref(false);
-
 const comprobantes = ref([]);
 const props = defineProps(['dni', 'proceso']);
 
@@ -159,14 +163,10 @@ const verificarBN = async (comp) => {
 
 };
 
-
 const getPagosGeneral = async (comp) => {
   let res = await axios.get('/get-pagos-dni/'+props.dni);
   pagos.value = res.data.data;
 };
-
-
-
 
 watch(() => props.dni, async (newDni) => {
   if (props.dni.length === 8 && /^[0-9]+$/.test(props.dni)) {
@@ -204,20 +204,19 @@ const colVoucherCaja =  [
 
 
 const temp = ref([
-    {
-      "paymentId": "2177229",
-      "document": "000000070080972",
-      "code": "000000000000000",
-      "client": "TICONA PONGO TANIA ROSARIO DEL",
-      "universityId": "000000000000000",
-      "description": "00000028",
-      "amount": "21.00",
-      "date": "2024-02-27 14:20",
-      "status": "0"
-    }]);
+  {
+    "paymentId": "2177229",
+    "document": "000000070080972",
+    "code": "000000000000000",
+    "client": "TICONA PONGO TANIA ROSARIO DEL",
+    "universityId": "000000000000000",
+    "description": "00000028",
+    "amount": "21.00",
+    "date": "2024-02-27 14:20",
+    "status": "0"
+  }]);
 
 const notificacion = (type, titulo, mensaje) => { notification[type]({ message: titulo, description: mensaje, }); };
-
 </script>
 
 
