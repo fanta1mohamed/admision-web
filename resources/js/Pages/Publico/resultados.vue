@@ -240,6 +240,7 @@ const columnsResultados = [
     { title: 'Nombre', dataIndex: 'nombres'},    
     { title: 'Programa', dataIndex:'programa', responsive: ['sm'], },
     { title: 'Puntaje', dataIndex:'puntaje', align:'center'},
+    { title: 'Vocacional', dataIndex:'puntaje_vocacional', align:'center'},
     { title: 'Fecha', dataIndex: 'fecha', align:'center'},
     { title: 'Condición', dataIndex: 'condicion', align:'center'},
 ];

@@ -19,7 +19,7 @@
         </div>
 
         <div class="flex justify-center title-proceso-container">
-            <span class="title-proceso">RESULTADO HISTORICO 2024-I</span>
+            <span class="title-proceso">RESULTADO HISTORICO</span>
         </div>    
         <div class="flex justify-center titulo-pre">
             <div>  

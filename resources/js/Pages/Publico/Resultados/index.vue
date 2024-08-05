@@ -16,7 +16,7 @@
 </Layout>
 
 </template>
-<script setup>
+<script setup> 
 import Layout from '@/Layouts/LayoutPuntaje.vue'
 import { defineProps, watch, reactive, ref, computed } from 'vue';
 import { Head } from '@inertiajs/vue3';

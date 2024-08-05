@@ -66,7 +66,7 @@ class BlogController extends Controller
         
         $res = DB::select("SELECT 
             pun.fecha, pun.dni, pos.nombres, pos.primer_apellido, pos.segundo_apellido,
-            modalidad, pun.puntaje, pun.apto as condicion, pun.programa, pro.nombre AS programa
+            modalidad, pun.puntaje, pun.puntaje_vocacional, pun.apto as condicion, pun.programa, pro.nombre AS programa
         FROM puntajes pun
         JOIN postulante pos ON pos.nro_doc = pun.dni
         JOIN inscripciones ins ON ins.id_postulante = pos.id and ins.estado = 0
