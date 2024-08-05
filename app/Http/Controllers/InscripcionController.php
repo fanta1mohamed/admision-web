@@ -193,7 +193,7 @@ class InscripcionController extends Controller
             'id_modalidad' => $request['postulante']['id_modalidad'],
             'estado' => 0,
             'id_usuario' => auth()->id() 
-        ]);
+        ]); 
 
         // $avancePostulante = AvancePostulante::where('dni_postulante', $request['postulante']['dni_temp'])->first();
         // $avancePostulante->avance = 3;
