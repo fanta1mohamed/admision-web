@@ -617,6 +617,10 @@ Route::get('/get-pago-caja/{dni}', function ($dni) {
 
 Route::get('/get-pago-BN/{dni}', [PagosController::class, 'getPagosBN_OTI']);
 
+Route::get('/ver-cepre', [CepreController::class, 'getFilteredPostulantes']);
+
+
+
 
 // Route::get('/get-pago-BN/{dni}', function ($dni) {
 //     try {

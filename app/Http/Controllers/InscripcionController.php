@@ -11,6 +11,7 @@ use App\Models\AvancePostulante;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 
 class InscripcionController extends Controller
 {
@@ -169,10 +170,18 @@ class InscripcionController extends Controller
     }
 
     public function Inscribir(Request $request){
-     
+
+        $proceso = Proceso::find(auth()->user()->id_proceso);
+        $dateString1 = $proceso->fec_1;
+        $dateString2 = $proceso->fec_2;
+        $formattedDate1 = $this->formatDate($dateString1);
+        $formattedDate2 = $this->formatDate($dateString2);
+
+        return $formattedDate2;
+        
         $prog = $request['postulante']['cod_programa'];
 
-        $res = $siguiente = Inscripcion::where('codigo', 'like', 'C224'.$prog.'%')
+        $res = $siguiente = Inscripcion::where('codigo', 'like', 'G224'.$prog.'%')
         ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
@@ -203,6 +212,7 @@ class InscripcionController extends Controller
      
         $inscripcion = Inscripcion::find($request->id);
 
+
         if( $inscripcion->id_programa != $request->id_programa) {
             $inscripcion->estado = 3;
             $inscripcion->observaciones = "Cambio de programa a $request->id_programa";
@@ -210,13 +220,13 @@ class InscripcionController extends Controller
 
             
             $id_programa = str_pad($request->id_programa, 2, '0', STR_PAD_LEFT);
-            $res = $siguiente = Inscripcion::where('codigo', 'like', 'C224'.$id_programa.'%')
+            $res = $siguiente = Inscripcion::where('codigo', 'like', 'G224'.$id_programa.'%')
             ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
             $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
 
             $inscripcion = Inscripcion::create([
-                'codigo' => 'C224' . $id_programa . $res,
+                'codigo' => 'G224' . $id_programa . $res,
                 'id_postulante'=> $request->id_postulante,
                 'id_proceso'=> auth()->user()->id_proceso,
                 'id_programa' => $request->id_programa,
@@ -242,6 +252,12 @@ class InscripcionController extends Controller
 
     public function pdfInscripcion($dni) {
 
+        $proceso = Proceso::find(auth()->user()->id_proceso);
+        $dateString1 = $proceso->fec_1;
+        $dateString2 = $proceso->fec_2;
+        $dia1 = $this->formatDate($dateString1);
+        $dia2 = $this->formatDate($dateString2);
+
         $carreras_previas = DB::select("SELECT codigo, cod_car, nombre, condicion FROM carreras_previas
         WHERE dni_postulante = $dni");
 
@@ -266,13 +282,12 @@ class InscripcionController extends Controller
         JOIN users on inscripciones.id_usuario = users.id
         WHERE postulante.nro_doc = $dni AND inscripciones.estado = 0 AND inscripciones.id_proceso = ". auth()->user()->id_proceso);
 
-
         $foto = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/' . $dni . '.jpg');
         $huellaIzquierda = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/' . $dni . '.jpg');
         $huellaDerecha = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/'. $dni . 'x.jpg');
 
         $data = $datos[0];
-        $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data','carreras_previas','foto','huellaIzquierda','huellaDerecha'));
+        $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data','carreras_previas','foto','huellaIzquierda','huellaDerecha','dia1','dia2'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
@@ -318,6 +333,13 @@ class InscripcionController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
 
+    }
+
+
+    private function formatDate($dateString)
+    {
+        $date = Carbon::createFromFormat('Y-m-d', $dateString);
+        return $date->locale('es')->translatedFormat('l j \d\e F');
     }
 
 

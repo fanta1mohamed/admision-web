@@ -144,7 +144,7 @@
                         </div>
                         <div style="margin-top: -8px;">
                             <span style="font-weight:bold;">
-                                HORARIO DE INGRESO (Sábado 3 de agosto):
+                                HORARIO DE INGRESO ( {{ $dia1 }} ):
                             </span> 
                             <div style="margin-top: -8px; margin-left:-5px;">
                                 <ul>
@@ -155,7 +155,7 @@
                         </div>
                         <div style="margin-top: -8px; margin-left:-5px;">
                             <span style="font-weight:bold;">
-                                HORARIOS SOLO PARA CLASIFICADOS (Domingo 4 de agosto):
+                                HORARIOS SOLO PARA CLASIFICADOS ( {{ $dia2}} ):
                             </span>
                             <div style="margin-top: -8px">
                                 <ul>

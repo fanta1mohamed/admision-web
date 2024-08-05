@@ -7,12 +7,14 @@ use App\Http\Controllers\ApixController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ResCepreController;
 use App\Http\Controllers\SancionadoController;
+use App\Http\Controllers\CepreController;
 use App\Http\Controllers\HuellaController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-ingresante/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
     Route::get('/get-postulante-pago/{dni}/{proceso}', [ApixController::class, 'getPostulantePago']);
 });
+Route::middleware('throttle:50,1')->post('/v1/postulante-cepre-inscrito', [CepreController::class, 'getVerInscripcion']);
 
 //Route::get('/get-ingresantes/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
 
