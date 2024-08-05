@@ -38,7 +38,9 @@ use App\Http\Controllers\CepreController;
 use App\Http\Controllers\PagosController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\PagoBancoController;
+use App\Http\Controllers\CertificadoController;
 //use App\Http\Controllers\VocacionalController;
+use App\Http\Controllers\PuntajeController;
 use App\Http\Controllers\SyncController;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -573,7 +575,7 @@ Route::post('/get-puntajes-examen', [ResultadosController::class, 'getPuntajes']
 Route::get('/get-pdf-resultados/{sim}', [ResultadosController::class, 'getResultadosPDF']);
 
 
-//PREINSCRIPCIONES CEPREUNA
+
 Route::get('{p}/preinscripcion', [ProcesoController::class, 'getFormulario']);
 Route::get('/get-participante-cepre/{dni}', [CepreController::class, 'getParticipanteCepre']);
 Route::get('/get-sancionado/{dni}/{pro}', [SancionadoController::class, 'getSancionado']);
@@ -619,39 +621,6 @@ Route::get('/get-pago-BN/{dni}', [PagosController::class, 'getPagosBN_OTI']);
 
 Route::get('/ver-cepre', [CepreController::class, 'getFilteredPostulantes']);
 
-
-
-
-// Route::get('/get-pago-BN/{dni}', function ($dni) {
-//     try {
-//         $response = Http::get('https://service2.unap.edu.pe/PayOnBankADMISION2024/v1/' . $dni . '/');        
-//         if ($response->successful()) {
-//             $datos = $response->json();
-
-//             if (isset($datos['data']) && is_array($datos['data'])) {
-//                 // Filtrar los elementos por fecha
-//                 $filteredData = array_filter($datos['data'], function ($item) {
-//                     if (isset($item['date'])) {
-//                         $fecha = $item['date'];
-//                         $fechaObj = new DateTime($fecha);
-//                         $fechaLimite = new DateTime('2024-07-01');
-//                         return $fechaObj > $fechaLimite;
-//                     }
-//                     return false;
-//                 });
-
-//                 return response()->json(array_values($filteredData));
-//             } else {
-//                 return response()->json(['error' => 'No se encontró el campo "data" en la respuesta o no es un arreglo'], 500);
-//             }
-//         } else {
-//             return response()->json(['error' => 'La solicitud no fue exitosa'], $response->status());
-//         }
-//     } catch (\Exception $e) {
-//         return response()->json(['error' => 'Se produjo un error al procesar la solicitud: ' . $e->getMessage()], 500);
-//     }
-// });
-
 Route::post('/insertar-pago', [PagoSimulacroController::class, 'insertarPago']);
 Route::get('/eliminar-pago/{dni}/{operacion}', [PagoSimulacroController::class, 'eliminarPago']);
 Route::get('/get-pagos-dni/{dni}', [PagoSimulacroController::class, 'getPagosDNI']);
@@ -671,6 +640,18 @@ Route::get('/descargar-reglamento', [DocumentoController::class, 'descargarRegla
 
 Route::get('/sync-tables', [SyncController::class, 'syncTables']);
 Route::get('/ver-pago/{concepto}', [PagoBancoController::class, 'getComprobanteConcepto']);
+
+
+
+Route::get('{p}/resultados', [ProcesoController::class, 'getViewResultados']);
+Route::get('get-puntajes-maximos-proceso/{p}', [PuntajeController::class, 'getPunajesMaximos']);
+
+
+
+Route::get('/certificado', fn () => Inertia::render('Publico/Resultados/components/certificado'));
+Route::post('/save-certificado', [CertificadoController::class, 'save']);
+//Route::get('/get-idiomas', [IdiomaController::class, 'getIdiomas']);
+//Route::get('/eliminar-idioma/{id}', [IdiomaController::class, 'eliminar']);
 
 
 

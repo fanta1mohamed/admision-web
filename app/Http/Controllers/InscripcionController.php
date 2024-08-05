@@ -176,17 +176,15 @@ class InscripcionController extends Controller
         $dateString2 = $proceso->fec_2;
         $formattedDate1 = $this->formatDate($dateString1);
         $formattedDate2 = $this->formatDate($dateString2);
-
-        return $formattedDate2;
         
         $prog = $request['postulante']['cod_programa'];
 
-        $res = $siguiente = Inscripcion::where('codigo', 'like', 'G224'.$prog.'%')
+        $res = $siguiente = Inscripcion::where('codigo', 'like', $proceso->codigo_proceso.$prog.'%')
         ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
         $inscripcion = Inscripcion::create([
-            'codigo' => 'C224' . $prog . $res,
+            'codigo' => $proceso->codigo_proceso . $prog . $res,
             'id_postulante'=> $request['postulante']['id'],
             'id_proceso'=> auth()->user()->id_proceso,
             'id_programa' => $request['postulante']['id_programa'],
@@ -194,39 +192,32 @@ class InscripcionController extends Controller
             'estado' => 0,
             'id_usuario' => auth()->id() 
         ]); 
-
-        // $avancePostulante = AvancePostulante::where('dni_postulante', $request['postulante']['dni_temp'])->first();
-        // $avancePostulante->avance = 3;
-        // $avancePostulante->save();
-
         $this->pdfInscripcion($request['postulante']['dni_temp']);
 
         $this->response['estado'] = true;
         $this->response['datos'] = $request['postulante']['dni_temp'];
         return response()->json($this->response, 200);
-        // return redirect('http://admision-web.test/admin/pdf-inscripción/70757838');         
+ 
     }
 
 
     public function Actualizar(Request $request){
      
         $inscripcion = Inscripcion::find($request->id);
-
+        $proceso = Proceso::find(auth()->user()->id_proceso);
 
         if( $inscripcion->id_programa != $request->id_programa) {
             $inscripcion->estado = 3;
             $inscripcion->observaciones = "Cambio de programa a $request->id_programa";
             $inscripcion->save();
-
             
             $id_programa = str_pad($request->id_programa, 2, '0', STR_PAD_LEFT);
-            $res = $siguiente = Inscripcion::where('codigo', 'like', 'G224'.$id_programa.'%')
+            $res = $siguiente = Inscripcion::where('codigo', 'like', $proceso->codigo_proceso.$id_programa.'%')
             ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
             $res = str_pad($res, 4, '0', STR_PAD_LEFT);
 
-
             $inscripcion = Inscripcion::create([
-                'codigo' => 'G224' . $id_programa . $res,
+                'codigo' => $proceso->codigo_proceso . $id_programa . $res,
                 'id_postulante'=> $request->id_postulante,
                 'id_proceso'=> auth()->user()->id_proceso,
                 'id_programa' => $request->id_programa,
@@ -243,7 +234,6 @@ class InscripcionController extends Controller
         }
 
         $this->pdfInscripcion($request->dni);
-
         $this->response['titulo'] = 'REGISTRO MODIFICADO';
         $this->response['mensaje'] = 'DATOS ACTUALIZADOS CORRECTAMENTE';
         $this->response['estado'] = true;

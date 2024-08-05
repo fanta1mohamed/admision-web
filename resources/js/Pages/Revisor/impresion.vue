@@ -520,7 +520,7 @@ watch(dniseleccionado, ( newValue, oldValue ) => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/10/inscripciones/constancias/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/'+postulante.value.id_proceso+'/inscripciones/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();

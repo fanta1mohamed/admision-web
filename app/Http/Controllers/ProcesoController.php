@@ -142,6 +142,16 @@ class ProcesoController extends Controller
     }
   }
 
+  public function getViewResultados($nombreProceso)
+  {
+    $proceso = Proceso::where('slug', $nombreProceso)->first();
+    if($proceso){ 
+      return Inertia::render('Publico/Resultados/index', ['procceso_seleccionado' => $proceso]); 
+    } else {
+      abort(404);
+    }
+  }
+
 
   public function getSelectProceso( ) {
     $res = Proceso::where('estado', 1)
