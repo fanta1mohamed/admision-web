@@ -41,6 +41,7 @@ use App\Http\Controllers\PagoBancoController;
 use App\Http\Controllers\CertificadoController;
 //use App\Http\Controllers\VocacionalController;
 use App\Http\Controllers\PuntajeController;
+use App\Http\Controllers\DniController;
 use App\Http\Controllers\SyncController;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -650,8 +651,12 @@ Route::get('get-puntajes-maximos-proceso/{p}', [PuntajeController::class, 'getPu
 
 Route::get('/certificado', fn () => Inertia::render('Publico/Resultados/components/certificado'));
 Route::post('/save-certificado', [CertificadoController::class, 'save']);
-//Route::get('/get-idiomas', [IdiomaController::class, 'getIdiomas']);
-//Route::get('/eliminar-idioma/{id}', [IdiomaController::class, 'eliminar']);
+Route::post('/get-certificados-postulante', [CertificadoController::class, 'getCertificados']);
+Route::get('/eliminar-certificado/{id}', [CertificadoController::class, 'delete']);
+
+Route::post('/save-dni', [DniController::class, 'save']);
+Route::post('/get-dnis-postulante', [DniController::class, 'getDnis']);
+Route::get('/eliminar-dni/{id}', [DniController::class, 'delete']);
 
 
 

@@ -11,7 +11,13 @@
     </a-row>
   </div>
 
-  <Certificado :id_proceso="props.procceso_seleccionado.id" dni="70757838"/>
+  <div>
+    <Certificado :id_proceso="props.procceso_seleccionado.id" dni="70757838"/>
+  </div>
+  <div class="mt-2">
+    <Dni :id_proceso="props.procceso_seleccionado.id" dni="70757838"/>
+  </div>
+
 
 </Layout>
 
@@ -24,8 +30,8 @@ import dayjs from 'dayjs';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { notification } from 'ant-design-vue';
-import certificado from './components/certificado.vue';
 import Certificado from './components/certificado.vue';
+import Dni from './components/dni.vue';
 
 const maximos = ref([]);
 
@@ -36,16 +42,7 @@ const getMaximos = async () => {
   }
 }
 
-
 getMaximos();
-
-
-
-
-
-
-
-
 
 const loading = ref(true);
 const modalcepreaviso = ref(false);

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Certificado;
+use App\Models\DocumentosBiometrico;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -11,76 +11,96 @@ class CertificadoController extends Controller
 {
     public function save(Request $request)
     {
-        // Validar la entrada
         $request->validate([
             'dni' => 'required|string',
-            'id_proceso' => 'required|integer',
-            'file' => 'nullable|file|mimes:jpg,png,pdf,doc,docx|max:4096',
-            'tipo' => 'required|integer',
+            'file' => 'nullable|file|mimes:pdf|max:4096',
+            'tipo' => 'required|integer'
         ]);
-
+    
         $dni = $request->dni;
         $id_proceso = $request->id_proceso;
         $rutaCarpeta = 'documentos/' . $id_proceso . '/biometrico/certificados/';
-
-        // Asegúrate de que el directorio de destino exista
+    
         if (!File::exists(public_path($rutaCarpeta))) {
-            File::makeDirectory(public_path($rutaCarpeta), 0755, true);
+            if (!File::makeDirectory(public_path($rutaCarpeta), 0755, true)) {
+                return response()->json(['error' => 'Unable to create directory'], 500);
+            }
         }
-
-        if (!$request->id) {
-            // Caso de crear un nuevo registro
+    
+        if (!$request->has('id')) {
             if ($request->hasFile('file')) {
-                // Guardar el archivo en la ruta especificada
                 $file = $request->file('file');
-                $fileName = $file->getClientOriginalName();
-                $filePath = $rutaCarpeta . $dni.'.pdf';
-                $file->move(public_path($rutaCarpeta), $dni.'.pdf');
-                $certificado = new Certificado();
+                $filePath = $rutaCarpeta . $dni . '.pdf';
+                $file->move(public_path($rutaCarpeta), $dni . '.pdf');
+    
+                $certificado = new DocumentosBiometrico();
                 $certificado->observacion = $request->observacion;
                 $certificado->id_tipo = $request->tipo;
                 $certificado->url = $filePath;
                 $certificado->save();
 
-                return response()->json(['success' => 'File uploaded successfully'], 200);
-            } else {
+                $certificado->save();
+                return response()->json(['message' => 'Registrado con exito'], 200);
+             } else {
                 return response()->json(['error' => 'No file found'], 400);
             }
         } else {
-            // Caso de actualización de un registro existente
-            $titulo = Titulo::find($request->id);
-
-            if (!$titulo) {
-                return response()->json(['error' => 'Title not found'], 404);
+            $certificado = DocumentosBiometrico::find($request->id);
+            if (!$certificado) {
+                return response()->json(['error' => 'Record not found'], 404);
             }
-
-            $titulo->denominacion = $request->descripcion;
-            $titulo->institucion = $request->institucion;
-            $titulo->fec_expedicion = $request->fec_expedicion;
-            $titulo->reg_sunedu = $request->reg_sunedu;
-            $titulo->id_tipo = $request->tipo;
-
+    
+            $certificado->observacion = $request->observacion;
+            $certificado->id_tipo = $request->tipo;
+    
             if ($request->hasFile('file')) {
-                // Obtener el archivo subido
                 $file = $request->file('file');
                 $fileName = $file->getClientOriginalName();
                 $filePath = $rutaCarpeta . $fileName;
-
-                // Eliminar el archivo anterior si existe
-                if (File::exists(public_path($titulo->url))) {
-                    File::delete(public_path($titulo->url));
-                }
-
-                // Mover el nuevo archivo a la carpeta de destino
                 $file->move(public_path($rutaCarpeta), $fileName);
-                $titulo->url = $filePath;
+                $certificado->url = $filePath;
             }
-
-            $titulo->id_usuario = auth()->id();
-            $titulo->save();
-
-            return response()->json(['message' => 'Title updated successfully'], 200);
+    
+            $certificado->id_usuario = auth()->id();
+            $saved = $certificado->save();
+    
+            // Verificar si se guardó correctamente
+            if ($saved) {
+                return response()->json(['message' => 'Record updated successfully'], 200);
+            } else {
+                return response()->json(['error' => 'Failed to update the record'], 500);
+            }
         }
+    }
+
+    public function getCertificados( Request $request){
+        $res = DB::select("SELECT crt.id, crt.dni, crt.id_tipo, crt.observacion, crt.url, crt.estado, col.gestion, col.nombre AS colegio
+        FROM documentos_biometrico crt
+        JOIN postulante pos ON crt.dni = pos.nro_doc 
+        JOIN colegios col ON col.id = pos.id_colegio
+        WHERE dni = ". $request->dni ." AND crt.id_tipo IN (1,2)");
+    
+        $this->response['estado'] = !empty($res);
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
+
+    public function delete($id) {
+         
+        $file = DocumentosBiometrico::find($id);
+
+        if (!$file) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+        if (Storage::disk('public')->exists($file->url)) {
+            Storage::disk('public')->delete($file->url);
+        }
+        $file->delete();
+
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+    
     }
 
 

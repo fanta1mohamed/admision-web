@@ -2,29 +2,29 @@
 <a-card class="mx-2 my-2 mt-2" >
 <div>
     <div class="flex justify-between border-b-2" style="border-bottom: solid 2px #009DD1; padding-bottom: 8px;">
-        <div><span style="font-weight: bold; font-size: 1rem; color:#009DD1;">CERTIFICADO DE ESTUDIOS</span></div>
+        <div><span style="font-weight: bold; font-size: 1rem; color:#009DD1;">DOCUMENTO DE IDENTIDAD</span></div>
         <div style="margin-top: -5px;"><a-button @click="abrirModal()">Agregar</a-button></div>
     </div>
 
     <div class="mt-3">
-        <div class="mb-2" v-for="certificado in certificados" :key="certificado">
+        <div class="mb-2" v-for="dni in dnis" :key="dni">
             <a-row :gutter="16">
                 <a-col :xs="24" :sm="24" :md="24" :lg="24">
                     <div class="flex justify-between" style="">
                         <div class="">
-                            <div> <span class="font-bold" style="font-size:1rem;"> {{  }}</span></div>                             
-                            <div v-if="certificado.id_tipo == 1"> <span class="font-bold" style="font-size:1rem;"> CERTIFICADO BLANCO</span></div>
-                            <div v-if="certificado.id_tipo == 2"> <span class="font-bold" style="font-size:1rem;"> CERTIFICADO AMARILLO</span></div>
-                            <div> <span class="">TIPO DE COLEGIO: </span> {{ certificado.gestion}} </div>
+                            <div v-if="dni.id_tipo == 3"> <span class="font-bold" style="font-size:1rem;"> DNI BLANCO</span></div>
+                            <div v-if="dni.id_tipo == 4"> <span class="font-bold" style="font-size:1rem;"> DNI AMARILLO</span></div>
+                            <div v-if="dni.id_tipo == 5"> <span class="font-bold" style="font-size:1rem;"> DOCUMENTO C4</span></div>
+                            <div v-if="dni.id_tipo == 6"> <span class="font-bold" style="font-size:1rem;"> CARNÉ DE EXTRANJERÍA</span></div>
                         </div>
                         <div class="flex" style="margin-top: 0px;">
-                            <a-button @click="abriPDf(certificado.url)" class="mr-2" style="width: 20px; height: 20px; padding-left: 3px; border: solid #1a2843 1px;">
+                            <a-button @click="abriPDf(dni.url)" class="mr-2" style="width: 20px; height: 20px; padding-left: 3px; border: solid #1a2843 1px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </a-button>
-                            <a-button @click="abrirEditar(certificado)" class="mr-2" style="width: 20px; height: 20px; padding-left: 3px; border: solid #1a2843 1px;">
+                            <a-button @click="abrirEditar(dni)" class="mr-2" style="width: 20px; height: 20px; padding-left: 3px; border: solid #1a2843 1px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a2843" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                             </a-button>
-                            <a-button danger @click="eliminarTitulo(certificado.id)" style="width: 20px; height: 20px; padding-left: 3px;">
+                            <a-button danger @click="eliminarTitulo(dni.id)" style="width: 20px; height: 20px; padding-left: 3px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </a-button>
                         </div>
@@ -40,7 +40,7 @@
     
 
 <div class="">
-    <a-modal v-model:visible="modaltitulo" width="800px" class="w-full md:w-3/4" title="Registro de certificado"  @ok="handleOk">
+    <a-modal v-model:visible="modaltitulo" width="800px" class="w-full md:w-3/4" title="Registro de dni"  @ok="handleOk">
         <a-form
             ref="formDatos"
             name="form"
@@ -161,10 +161,12 @@ const abrirEditar = (item) => {
 }
 
 const modaltitulo = ref(false);
-const certificados = ref([]);
+const dnis = ref([]);
 const tipos = ref([
-    { value:1, label:"CERTIFICADO BLANCO" },
-    { value:2, label:"CERTIFICADO AMARILLO" }
+    { value:3, label:"DNI BLANCO" },
+    { value:4, label:"DNI AMARILLO" },
+    { value:5, label:"DOCUMENTO C4" },
+    { value:6, label:"CARNÉ DE EXTRANJERÍA" }
 ]);
 const modalPDF = ref(false);
 const pdfItem = ref(null);
@@ -187,9 +189,9 @@ const selecionarTipo = value => {
 };
 
 const eliminarTitulo = async (id) => {
-    let res = await axios.get("/eliminar-certificado/"+id)
+    let res = await axios.get("/eliminar-dni/"+id)
     if (res.data.estado == true) {
-        getCertificados()
+        getdnis()
     } else {
         console.log("Ocurrió un error");
     }
@@ -213,10 +215,10 @@ const beforeUpload = (file) => {
     return false;
 };
 
-const getCertificados = async () => {
-    const response = await axios.post('/get-certificados-postulante', {dni: props.dni, id_proceso: props.id_proceso });
+const getdnis = async () => {
+    const response = await axios.post('/get-dnis-postulante', {dni: props.dni, id_proceso: props.id_proceso });
     if (response.data.estado == true){
-        certificados.value = response.data.datos;
+        dnis.value = response.data.datos;
     }else{ 
         console.log("No se encontraron datos"); 
     }
@@ -241,7 +243,7 @@ const save = async () => {
         loading.value = true;
         uploadProgress.value = 0;
 
-        const response = await axios.post("/save-certificado", formData, {
+        const response = await axios.post("/save-dni", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: 'Bearer your-auth-token',
@@ -253,7 +255,7 @@ const save = async () => {
         modaltitulo.value = false;
         loading.value = false;
         message.success('¡Archivo PDF cargado exitosamente!');
-        await getCertificados();
+        await getdnis();
     } catch (error) {
         loading.value = false;
         message.error('Error al cargar el archivo.');
@@ -261,7 +263,7 @@ const save = async () => {
     }
 };
 
-getCertificados();
+getdnis();
 // getTipos()
 
 </script>
