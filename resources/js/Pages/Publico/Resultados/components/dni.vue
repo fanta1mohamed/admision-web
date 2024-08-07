@@ -162,8 +162,7 @@ const abrirEditar = (item) => {
 const modaltitulo = ref(false);
 const dnis = ref([]);
 const tipos = ref([
-    { value:3, label:"DNI BLANCO" },
-    { value:4, label:"DNI AMARILLO" },
+    { value:3, label:"DNI" },
     { value:5, label:"DOCUMENTO C4" },
     { value:6, label:"CARNÉ DE EXTRANJERÍA" }
 ]);
