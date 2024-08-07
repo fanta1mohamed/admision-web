@@ -12,8 +12,7 @@
                 <a-col :xs="24" :sm="24" :md="24" :lg="24">
                     <div class="flex justify-between" style="">
                         <div class="">
-                            <div v-if="dni.id_tipo == 3"> <span class="font-bold" style="font-size:1rem;"> DNI BLANCO</span></div>
-                            <div v-if="dni.id_tipo == 4"> <span class="font-bold" style="font-size:1rem;"> DNI AMARILLO</span></div>
+                            <div v-if="dni.id_tipo == 3"> <span class="font-bold" style="font-size:1rem;"> DNI</span></div>
                             <div v-if="dni.id_tipo == 5"> <span class="font-bold" style="font-size:1rem;"> DOCUMENTO C4</span></div>
                             <div v-if="dni.id_tipo == 6"> <span class="font-bold" style="font-size:1rem;"> CARNÉ DE EXTRANJERÍA</span></div>
                         </div>
