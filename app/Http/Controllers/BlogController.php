@@ -80,4 +80,31 @@ class BlogController extends Controller
         
     }
 
+
+    public function getPuntajesProceso(Request $request){
+        
+        $res = DB::select("SELECT 
+            pun.fecha, pun.dni, pos.nombres, pos.primer_apellido, pos.segundo_apellido,
+            modalidad, pun.puntaje, pun.puntaje_vocacional, pun.apto as condicion, pun.programa, pro.nombre AS programa
+        FROM puntajes pun
+        JOIN postulante pos ON pos.nro_doc = pun.dni
+        JOIN inscripciones ins ON ins.id_postulante = pos.id and ins.estado = 0
+        JOIN programa pro ON pro.id = ins.id_programa
+        WHERE pun.dni = $request->dni AND pun.id_proceso = ins.id_proceso
+        AND pun.id_proceso = $request->id_proceso
+        ORDER BY pun.fecha DESC;");
+
+        if(count($res) > 0 ){
+            $this->response['estado'] = true;
+            $this->response['datos'] = $res;
+        }else{
+            $this->response['estado'] = false;
+            $this->response['mensaje'] = "No se ha encontrado el N° de documento en el proceso";
+        }
+
+
+        return response()->json($this->response, 200);
+        
+    }
+
 }

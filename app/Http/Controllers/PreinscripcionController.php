@@ -474,11 +474,12 @@ class PreinscripcionController extends Controller
 
     public function generarCaptcha()
     {
-        $captchaText = Str::random(6);
+        $caracteresPermitidos = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123';
+        $captchaText = substr(str_shuffle($caracteresPermitidos), 0, 6);
         session(['captcha' => $captchaText]);
-
         return response()->json(['captcha' => $captchaText]);
     }
+
 
     public function estaPreinscrito($id_proceso, $dni){
         $preinscripcion = Preinscripcion::where('postulante.nro_doc', $dni)

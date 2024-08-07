@@ -21,7 +21,7 @@
           <div>
             <div class="flex justify-center" style="height: 40px; ">
               <hr class="line-pre mr-2"/>
-              <span style="font-size: 1.4rem;">Resultados</span>
+              <span style="font-size: 1.4rem; text-transform: capitalize;">Puntaje obtenido</span>
               <hr class="line-pre ml-2"/>
             </div>
           </div>

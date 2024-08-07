@@ -35,6 +35,7 @@ class DniController extends Controller
     
                 $dni = new DocumentosBiometrico();
                 $dni->observacion = $request->observacion;
+                $dni->dni = $request->dni;
                 $dni->id_tipo = $request->tipo;
                 $dni->url = $filePath;
                 $dni->save();
@@ -50,6 +51,7 @@ class DniController extends Controller
             }
     
             $dni->observacion = $request->observacion;
+            $dni->dni = $request->dni;
             $dni->id_tipo = $request->tipo;
     
             if ($request->hasFile('file')) {

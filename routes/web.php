@@ -39,7 +39,7 @@ use App\Http\Controllers\PagosController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\PagoBancoController;
 use App\Http\Controllers\CertificadoController;
-//use App\Http\Controllers\VocacionalController;
+use App\Http\Controllers\DocumentosResultadoController;
 use App\Http\Controllers\PuntajeController;
 use App\Http\Controllers\DniController;
 use App\Http\Controllers\SyncController;
@@ -488,6 +488,7 @@ Route::get('/resultados', fn () => Inertia::render('Resultados/index'))->name('r
 Route::get('/test', fn () => Inertia::render('Prueba/test'));
 //Route::get('/', [BlogController::class, 'verPuntajes']);
 Route::get('/get-puntajes/{dni}', [BlogController::class, 'getPuntajes']);
+Route::post('/get-puntajes-proceso', [BlogController::class, 'getPuntajesProceso']);
 Route::get('/constancias-ingreso', [IngresoController::class, 'constanciasIngreso']);
 
 
@@ -658,6 +659,8 @@ Route::post('/save-dni', [DniController::class, 'save']);
 Route::post('/get-dnis-postulante', [DniController::class, 'getDnis']);
 Route::get('/eliminar-dni/{id}', [DniController::class, 'delete']);
 
+
+Route::post('/get-documentos-resultados', [DocumentosResultadoController::class, 'getDocumentos']);
 
 
 require __DIR__.'/auth.php';

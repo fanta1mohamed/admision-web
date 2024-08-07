@@ -35,6 +35,7 @@ class CertificadoController extends Controller
     
                 $certificado = new DocumentosBiometrico();
                 $certificado->observacion = $request->observacion;
+                $certificado->dni= $request->dni;
                 $certificado->id_tipo = $request->tipo;
                 $certificado->url = $filePath;
                 $certificado->save();
@@ -51,6 +52,7 @@ class CertificadoController extends Controller
             }
     
             $certificado->observacion = $request->observacion;
+            $certificado->dni = $request->dni;
             $certificado->id_tipo = $request->tipo;
     
             if ($request->hasFile('file')) {

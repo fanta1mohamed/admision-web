@@ -1,5 +1,5 @@
 <template>
-<a-card class="mx-2 my-2 mt-2" >
+<div class="mt-6" >
 <div>
     <div class="flex justify-between border-b-2" style="border-bottom: solid 2px #009DD1; padding-bottom: 8px;">
         <div><span style="font-weight: bold; font-size: 1rem; color:#009DD1;">CERTIFICADO DE ESTUDIOS</span></div>
@@ -35,7 +35,7 @@
 
     </div>
 </div>
-</a-card>
+</div>
 
     
 
