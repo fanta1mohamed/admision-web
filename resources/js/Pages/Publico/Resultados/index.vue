@@ -11,7 +11,7 @@
     <div>
       <h1 style="font-size: 1.7rem;">Resultados del examen</h1>
       <p style="text-align: justify; font-size: 1em;">
-        Para consultar la relación de ingresantes del EXAMEN GENERAL 2024-II, 
+        Para consultar la relación de ingresantes del EXAMEN {{ props.procceso_seleccionado.nombre }}, 
         haga clic en el botón "Descargar" correspondiente a la fecha de su interés. 
         El archivo se descargará automáticamente, y podrá abrirlo para visualizar el 
         listado de ingresantes ordenado por mérito.
@@ -46,7 +46,7 @@
     <div class="mt-6" style="">
       <div style="margin-top: -10px; text-align: left;">
         <div class="ml-1 mb-2">
-          Para consultar el puntaje del EXAMEN GENERAL 2024-II, siga estos pasos:
+          Para consultar el puntaje del EXAMEN {{ props.procceso_seleccionado.nombre  }}, siga estos pasos:
         </div>
         <div class="ml-4">
           <div class="mb-2">1. Ingrese su DNI en el campo de texto proporcionado.</div>
