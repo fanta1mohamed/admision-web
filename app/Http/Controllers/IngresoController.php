@@ -82,23 +82,26 @@ class IngresoController extends Controller {
     public function biometrico(Request $request){
 
         $re = DB::select("SELECT procesos.anio, procesos.ciclo_oti, programa.programa_oti,
-            postulante.primer_apellido AS paterno, postulante.segundo_apellido AS materno, postulante.nombres, 
-            tipo_documento_identidad.documento_oti AS tipo_doc_oti, postulante.nro_doc AS dni, users.name, 
-            users.paterno as upaterno, postulante.fec_nacimiento, postulante.sexo, postulante.ubigeo_residencia,
-            postulante.direccion, postulante.estado_civil, resultados.fecha, postulante.email,
-            postulante.celular, programa.cod_esp, modalidad.modalidad_oti, resultados.puntaje, resultados.puesto,
-            resultados.puesto_general, postulante.id AS id_postulante, procesos.id AS id_proceso, procesos.nombre AS proceso, modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
-            programa.nombre AS programa
-            FROM resultados JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
-            JOIN inscripciones ON inscripciones.id_postulante = postulante.id
-            JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
-            JOIN procesos ON resultados.id_proceso = procesos.id
-            LEFT join users on users.id = inscripciones.id_usuario
-            JOIN programa ON programa.id = inscripciones.id_programa
-            JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
-            AND resultados.dni_postulante = ".$request->dni." AND resultados.id_proceso = ".auth()->user()->id_proceso.
-            " AND inscripciones.id_proceso = ".auth()->user()->id_proceso.";" );
+        postulante.primer_apellido AS paterno, postulante.segundo_apellido AS materno, postulante.nombres, 
+        tipo_documento_identidad.documento_oti AS tipo_doc_oti, postulante.nro_doc AS dni, users.name, 
+        users.paterno as upaterno, postulante.fec_nacimiento, postulante.sexo, postulante.ubigeo_residencia,
+        postulante.direccion, postulante.estado_civil, resultados.fecha, postulante.email,
+        postulante.celular, programa.cod_esp, modalidad.modalidad_oti, resultados.puntaje, resultados.puesto,
+        resultados.puesto_general, postulante.id AS id_postulante, procesos.id AS id_proceso, procesos.nombre AS proceso, modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
+        programa.nombre AS programa
+        FROM resultados 
+        JOIN postulante ON resultados.dni_postulante = postulante.nro_doc
+        JOIN inscripciones ON inscripciones.id_postulante = postulante.id
+        JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
+        JOIN procesos ON resultados.id_proceso = procesos.id
+        LEFT JOIN users ON users.id = inscripciones.id_usuario
+        JOIN programa ON programa.id = inscripciones.id_programa
+        JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
+        WHERE resultados.apto = 'SI' 
+        AND inscripciones.estado = 0
+        AND resultados.dni_postulante = ".$request->dni."
+        AND resultados.id_proceso = ".auth()->user()->id_proceso."
+        AND inscripciones.id_proceso = ".auth()->user()->id_proceso.";");
 
             // $nuevoCodigo = null;
             // if($re[0]->id_modalidad == 2 ){
@@ -332,7 +335,7 @@ class IngresoController extends Controller {
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
             WHERE resultados.apto = 'SI' AND inscripciones.estado = 0 AND control_biometrico.id_proceso = "
             . auth()->user()->id_proceso ." AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso =".
-            auth()->user()->id_proceso ."AND inscripciones.id_proceso = ". auth()->user()->id_proceso);
+            auth()->user()->id_proceso ." AND inscripciones.id_proceso = ". auth()->user()->id_proceso);
 
         $data = $datos[0];
         $hinsI = public_path('documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/').$dni.'x.jpg';
