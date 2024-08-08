@@ -363,7 +363,7 @@ class IngresoController extends Controller {
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        file_put_contents(public_path('/documentos/8/control_biometrico/constancias/').$dni.'.pdf', $output);
+        file_put_contents(public_path('/documentos/'.auth()->user()->id_proceso.'/control_biometrico/constancias/').$dni.'.pdf', $output);
         return $pdf->stream();
     }
     
