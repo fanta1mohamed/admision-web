@@ -346,14 +346,11 @@ class IngresoController extends Controller {
         $hbioD = public_path('documentos/'.auth()->user()->id_proceso.'/control_biometrico/huellas/').$dni.'x.jpg';
         $fins = public_path('documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/').$dni.'.jpg';
         $fbio = public_path('documentos/'.auth()->user()->id_proceso.'/control_biometrico/fotos/').$dni.'.jpg';
-        // $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');
         $fecha = $data->fecha;
         $date = \Carbon\Carbon::createFromFormat('Y-m-d', $fecha)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
-        // $fec_imp = '2023-07-31';
-        //$fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
         $fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
         $fec_nac = $datos[0]->fec_nacimiento;
@@ -363,8 +360,18 @@ class IngresoController extends Controller {
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        file_put_contents(public_path('/documentos/'.auth()->user()->id_proceso.'/control_biometrico/constancias/').$dni.'.pdf', $output);
+        $userIdProceso = Auth::user()->id_proceso;
+        $documentoDir = public_path('/documentos/' . $userIdProceso . '/control_biometrico/constancias/');
+        $filePath = $documentoDir . $dni . '.pdf';
+    
+        if (!file_exists($documentoDir)) {
+            mkdir($documentoDir, 0755, true);
+        }
+    
+        file_put_contents($filePath, $output);
+
         return $pdf->stream();
+
     }
     
     public function getCodigo($dni){
