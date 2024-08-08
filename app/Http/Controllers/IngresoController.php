@@ -360,7 +360,7 @@ class IngresoController extends Controller {
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
 
-        $userIdProceso = Auth::user()->id_proceso;
+        $userIdProceso = auth()->user()->id_proceso;
         $documentoDir = public_path('/documentos/' . $userIdProceso . '/control_biometrico/constancias/');
         $filePath = $documentoDir . $dni . '.pdf';
     
