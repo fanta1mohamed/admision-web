@@ -11,6 +11,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\FilialController;
+use App\Http\Controllers\VerificacionFotosController;
 use App\Http\Controllers\ModalidadController;
 use App\Http\Controllers\ApoderadoController;
 use App\Http\Controllers\ProgramaController;
@@ -661,6 +662,20 @@ Route::get('/eliminar-dni/{id}', [DniController::class, 'delete']);
 
 
 Route::post('/get-documentos-resultados', [DocumentosResultadoController::class, 'getDocumentos']);
+
+
+//DELETE LAST PROCESO
+
+Route::post('/actualizar-verificacion', [VerificacionFotosController::class, 'updateEstado']);
+
+#Route::get('/filial', [FilialController::class, 'index'])->name('filial-index');
+Route::post('/get-fotos-verificacion', [VerificacionFotosController::class, 'getFotosVerificaion']);
+Route::post('/save-filial', [VerificacionFotosController::class, 'saveFilial']);
+Route::get('/eliminar-filial/{id}', [VerificacionFotosController::class, 'deleteFilial']);
+
+Route::middleware('auth','admin')->get('/', function () {
+    Route::get('/verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'));
+});
 
 
 require __DIR__.'/auth.php';
