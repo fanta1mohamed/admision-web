@@ -42,21 +42,15 @@ class FotoController extends Controller {
             $photo = str_replace(' ', '+', $photo);
             $photoData = base64_decode($photo);
     
-            // Genera un nombre único para la foto recortada
             $fileName = $request->dni . '.jpg';
             $rutaCarpeta = public_path('documentos/'.auth()->user()->id_proceso.'/control_biometrico/fotos/');
             if (!File::exists($rutaCarpeta)) {
                 File::makeDirectory($rutaCarpeta, 0755, true, true);
             }
-    
+
             $filePath = $rutaCarpeta . $fileName;
-    
-            // Guarda la foto recortada en el servidor
+
             file_put_contents($filePath, $photoData);
-    
-            // Realiza cualquier acción adicional después de guardar la foto recortada
-            // ...
-    
             return response()->json(['message' => 'Foto recortada guardada correctamente']);
         }
     

@@ -674,7 +674,8 @@ Route::post('/save-filial', [VerificacionFotosController::class, 'saveFilial']);
 Route::get('/eliminar-filial/{id}', [VerificacionFotosController::class, 'deleteFilial']);
 
 
-Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'))->middleware('auth');
+Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'))->middleware('auth','simulacro');
+
 
 
 

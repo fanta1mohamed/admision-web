@@ -81,33 +81,15 @@ class IngresoController extends Controller {
 
     public function biometrico(Request $request){
 
-        $re = DB::select("SELECT
-            procesos.anio, procesos.ciclo_oti,
-            programa.programa_oti,
-            postulante.primer_apellido AS paterno,
-            postulante.segundo_apellido AS materno, postulante.nombres,
-            tipo_documento_identidad.documento_oti AS tipo_doc_oti,
-            postulante.nro_doc AS dni,
-            users.name, users.paterno as upaterno,
-            postulante.fec_nacimiento,
-            postulante.sexo,
-            postulante.ubigeo_residencia,
-            postulante.direccion,
-            postulante.estado_civil,
-            resultados.fecha,
-            postulante.email,
-            postulante.celular,
-            programa.cod_esp,
-            modalidad.modalidad_oti,
-            resultados.puntaje,
-            resultados.puesto,
-            resultados.puesto_general,
-            postulante.id AS id_postulante,
-            procesos.id AS id_proceso, procesos.nombre AS proceso,
-            modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
+        $re = DB::select("SELECT procesos.anio, procesos.ciclo_oti, programa.programa_oti,
+            postulante.primer_apellido AS paterno, postulante.segundo_apellido AS materno, postulante.nombres, 
+            tipo_documento_identidad.documento_oti AS tipo_doc_oti, postulante.nro_doc AS dni, users.name, 
+            users.paterno as upaterno, postulante.fec_nacimiento, postulante.sexo, postulante.ubigeo_residencia,
+            postulante.direccion, postulante.estado_civil, resultados.fecha, postulante.email,
+            postulante.celular, programa.cod_esp, modalidad.modalidad_oti, resultados.puntaje, resultados.puesto,
+            resultados.puesto_general, postulante.id AS id_postulante, procesos.id AS id_proceso, procesos.nombre AS proceso, modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
             programa.nombre AS programa
-            FROM resultados
-            JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
+            FROM resultados JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
             JOIN inscripciones ON inscripciones.id_postulante = postulante.id
             JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
             JOIN procesos ON resultados.id_proceso = procesos.id
@@ -136,8 +118,7 @@ class IngresoController extends Controller {
             try {
                 DB::transaction(function () use ($request, $re) {
 
-                    $ingreso = 1;
-                    $i_admision = 0;
+                    $ingreso = 1; $i_admision = 0;
                     if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
 
                     $database2 = 'mysql_secondary';
@@ -146,7 +127,7 @@ class IngresoController extends Controller {
                     $nuevoCodigo = $rs[0]->siguiente;
  
                     $biometric = ControlBiometrico::create([
-                        'id_proceso' => 8,
+                        'id_proceso' => auth()->user()->id_proceso,
                         'id_postulante' => $re[0]->id_postulante,
                         'codigo_ingreso' => $nuevoCodigo,
                         'estado' => 1,
@@ -185,7 +166,6 @@ class IngresoController extends Controller {
                         'puesto_general' => $re[0]->puesto_general,
                         'ano_ing' => $re[0]->anio,
                         'per_ing' => $re[0]->ciclo_oti
-
                     ]);
 
                     $this->pdfbiometrico2($request->dni);
@@ -242,10 +222,9 @@ class IngresoController extends Controller {
         LEFT join users on users.id = inscripciones.id_usuario
         JOIN programa ON programa.id = inscripciones.id_programa
         JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-        JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id AND control_biometrico.id_proceso = 8
-        WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
-        AND resultados.dni_postulante = $dni AND resultados.id_proceso = 8
-        AND inscripciones.id_proceso =  8;");
+        JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
+        AND control_biometrico.id_proceso = ".auth()->user()->id_proceso ." WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
+        AND resultados.dni_postulante = $dni AND resultados.id_proceso = " . auth()->user()->id_proceso ."AND inscripciones.id_proceso =  ".auth()->user()->id_proceso);
 
         try {
             DB::transaction(function () use ($re) {
@@ -327,28 +306,19 @@ class IngresoController extends Controller {
         if (!File::exists($rutaCarpeta)) {
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
-        file_put_contents($rutaCarpeta . $dni . '.pdf', $output);
-        
+        file_put_contents($rutaCarpeta . $dni . '.pdf', $output);   
         return $pdf->stream();
     }
 
     public function pdfbiometrico2($dni){
 
         $datos = DB::select(
-            "SELECT
-            procesos.nombre as proceso,
-            postulante.primer_apellido AS paterno,
-            postulante.segundo_apellido AS materno, postulante.nombres,
-            tipo_documento_identidad.nombre,
-            postulante.nro_doc AS dni,
-            postulante.fec_nacimiento AS fec_nacimiento,
-            users.name, users.paterno as upaterno,
-            modalidad.nombre as modalidad,
-            resultados.fecha,
-            resultados.puntaje,
-            resultados.puesto,
-            resultados.puesto_general,
-            control_biometrico.codigo_ingreso AS cod_ingreso,
+            "SELECT procesos.nombre as proceso, postulante.primer_apellido AS paterno,
+            postulante.segundo_apellido AS materno, postulante.nombres, tipo_documento_identidad.nombre,
+            postulante.nro_doc AS dni, postulante.fec_nacimiento AS fec_nacimiento,
+            users.name, users.paterno as upaterno, modalidad.nombre as modalidad,
+            resultados.fecha, resultados.puntaje, resultados.puesto,
+            resultados.puesto_general, control_biometrico.codigo_ingreso AS cod_ingreso,
             control_biometrico.segunda_carrera AS segunda_carrera,
             programa.nombre AS programa
             FROM resultados
@@ -360,27 +330,27 @@ class IngresoController extends Controller {
             JOIN programa ON programa.id = inscripciones.id_programa
             JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
             LEFT JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0 AND control_biometrico.id_proceso = 8
-            AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso = 8 AND inscripciones.id_proceso = 8"
-        );
+            WHERE resultados.apto = 'SI' AND inscripciones.estado = 0 AND control_biometrico.id_proceso = "
+            . auth()->user()->id_proceso ." AND resultados.dni_postulante = " .$dni. " AND resultados.id_proceso =".
+            auth()->user()->id_proceso ."AND inscripciones.id_proceso = ". auth()->user()->id_proceso);
 
         $data = $datos[0];
-        $hinsI = public_path('documentos/8/inscripciones/huellas/').$dni.'x.jpg';
-        $hinsD = public_path('documentos/8/inscripciones/huellas/').$dni.'.jpg';
-        $hexaI = public_path('documentos/8/examen/huellas/').$dni.'.jpg';
-        $hexaD = public_path('documentos/8/examen/huellas/').$dni.'x.jpg';
-        $hbioI = public_path('documentos/8/control_biometrico/huellas/').$dni.'.jpg';
-        $hbioD = public_path('documentos/8/control_biometrico/huellas/').$dni.'x.jpg';
-        $fins = public_path('documentos/8/inscripciones/fotos/').$dni.'.jpg';
-        $fbio = public_path('documentos/8/control_biometrico/fotos/').$dni.'.jpg';
+        $hinsI = public_path('documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/').$dni.'x.jpg';
+        $hinsD = public_path('documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/').$dni.'.jpg';
+        $hexaI = public_path('documentos/'.auth()->user()->id_proceso.'/examen/huellas/').$dni.'.jpg';
+        $hexaD = public_path('documentos/'.auth()->user()->id_proceso.'/examen/huellas/').$dni.'x.jpg';
+        $hbioI = public_path('documentos/'.auth()->user()->id_proceso.'/control_biometrico/huellas/').$dni.'.jpg';
+        $hbioD = public_path('documentos/'.auth()->user()->id_proceso.'/control_biometrico/huellas/').$dni.'x.jpg';
+        $fins = public_path('documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/').$dni.'.jpg';
+        $fbio = public_path('documentos/'.auth()->user()->id_proceso.'/control_biometrico/fotos/').$dni.'.jpg';
         // $fbio = public_path('fotos/biometricogeneral/').$dni.'.jpg';
 
         setlocale(LC_TIME, 'es_ES.utf8');
         $fecha = $data->fecha;
         $date = \Carbon\Carbon::createFromFormat('Y-m-d', $fecha)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
-        $fec_imp = '2023-07-31';
-        //$fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
+        // $fec_imp = '2023-07-31';
+        $fimp = \Carbon\Carbon::createFromFormat('Y-m-d', $fec_imp)->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
         $fimp =  Carbon::now()->locale('es')->isoFormat('DD [de] MMMM [del] YYYY');
 
         $fec_nac = $datos[0]->fec_nacimiento;
@@ -392,32 +362,6 @@ class IngresoController extends Controller {
 
         file_put_contents(public_path('/documentos/8/control_biometrico/constancias/').$dni.'.pdf', $output);
         return $pdf->stream();
-    }
-
-    public function UnirPDF($dni){
-
-        $pdf = new Fpdi();
-
-        $files = [
-            public_path('/documentos/cepre2023-II/'.$dni.'/').'constancia-ingreso-1.pdf',
-            public_path('/documentos/cepre2023-II/'.$dni.'/').'control-biometrico-1.pdf'
-        ];
-
-        foreach ($files as $file) {
-            $pageCount = $pdf->setSourceFile($file);
-            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                $template = $pdf->importPage($pageNo);
-                $pdf->AddPage();
-                $pdf->useTemplate($template);
-            }
-        }
-
-        $outputFilePath = public_path('/documentos/cepre2023-II/'.'/'.$dni.'control-biometrico-unido.pdf');
-        $pdf->Output($outputFilePath, 'F');
-
-        return response()->download($outputFilePath);
-        // return response()->download($outputFilePath)->deleteFileAfterSend();
-
     }
     
     public function getCodigo($dni){
