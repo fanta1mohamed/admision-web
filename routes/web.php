@@ -673,7 +673,7 @@ Route::post('/get-fotos-verificacion', [VerificacionFotosController::class, 'get
 Route::post('/save-filial', [VerificacionFotosController::class, 'saveFilial']);
 Route::get('/eliminar-filial/{id}', [VerificacionFotosController::class, 'deleteFilial']);
 
-Route::middleware('auth','admin')->get('/', function () {
+Route::middleware('auth')->get('/', function () {
     Route::get('/verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'));
 });
 
