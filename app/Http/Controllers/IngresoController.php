@@ -88,7 +88,7 @@ class IngresoController extends Controller {
         postulante.direccion, postulante.estado_civil, resultados.fecha, postulante.email,
         postulante.celular, programa.cod_esp, modalidad.modalidad_oti, resultados.puntaje, resultados.puesto,
         resultados.puesto_general, postulante.id AS id_postulante, procesos.id AS id_proceso, procesos.nombre AS proceso, modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
-        programa.nombre AS programa, programa.id_ as id_programa
+        programa.nombre AS programa, programa.id as id_programa
         FROM resultados 
         JOIN postulante ON resultados.dni_postulante = postulante.nro_doc
         JOIN inscripciones ON inscripciones.id_postulante = postulante.id
@@ -205,7 +205,7 @@ class IngresoController extends Controller {
         postulante.id AS id_postulante,
         procesos.id AS id_proceso, procesos.nombre AS proceso,
         modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
-        programa.nombre AS programa,
+        programa.nombre AS programa, programa.id,
         control_biometrico.codigo_ingreso as codigo
         FROM resultados
         JOIN postulante ON resultados.dni_postulante =  postulante.nro_doc
