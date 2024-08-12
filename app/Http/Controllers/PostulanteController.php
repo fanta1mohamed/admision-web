@@ -549,14 +549,6 @@ class PostulanteController extends Controller
   public function getCarrerasPrevias(Request $request)
   {
 
-    return response()->json([
-      'anteriores' => [],
-      'loading' => false,
-      'modalSancionado' => false,
-      'confirmacion' => false,
-      'message' => 'No tiene carreras previas'
-    ]);
-
       $participante = $request->input('participante', null);
       $formState = $request->input('formState', null);
       $dni = $participante ? $participante['dni'] : ($formState ? $formState : null);
