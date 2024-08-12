@@ -48,3 +48,6 @@ Route::get('/obtener-origin2', function (Request $request) {
 
 Route::post('/cargar-imagen', [HuellaController::class, 'upload']);
 Route::post('/cargar-imagen-cepre', [HuellaController::class, 'uploadcepre']);
+
+Route::post('/cargar-imagen-juli', [HuellaController::class, 'uploadJuli']);
+Route::post('/cargar-imagen-azangaro', [HuellaController::class, 'uploadAzangaro']);

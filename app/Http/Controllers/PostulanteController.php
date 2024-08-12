@@ -548,7 +548,6 @@ class PostulanteController extends Controller
 
   public function getCarrerasPrevias(Request $request)
   {
-
       $participante = $request->input('participante', null);
       $formState = $request->input('formState', null);
       $dni = $participante ? $participante['dni'] : ($formState ? $formState : null);
