@@ -47,3 +47,4 @@ Route::get('/obtener-origin2', function (Request $request) {
 });
 
 Route::post('/cargar-imagen', [HuellaController::class, 'upload']);
+Route::post('/cargar-imagen-cepre', [HuellaController::class, 'uploadCepre']);
