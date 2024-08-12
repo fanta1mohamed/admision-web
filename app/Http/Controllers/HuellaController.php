@@ -38,7 +38,7 @@ class HuellaController extends Controller
     }
 
 
-    public function uploadCepre(Request $request) {
+    public function uploadcepre(Request $request) {
         try {
             $dni = $request->input('dni');
             $etapa = $request->input('etapa');
