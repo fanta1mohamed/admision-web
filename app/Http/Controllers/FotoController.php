@@ -49,7 +49,6 @@ class FotoController extends Controller {
             }
 
             $filePath = $rutaCarpeta . $fileName;
-
             file_put_contents($filePath, $photoData);
             return response()->json(['message' => 'Foto recortada guardada correctamente']);
         }

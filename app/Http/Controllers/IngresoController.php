@@ -369,7 +369,6 @@ class IngresoController extends Controller {
         }
     
         file_put_contents($filePath, $output);
-
         return $pdf->stream();
 
     }

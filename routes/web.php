@@ -251,7 +251,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/', fn () => Inertia::render('Revisor/revisor'))->name('revisor');
     Route::get('/validacion', fn () => Inertia::render('Revisor/validacion'))->name('revisor-validacion');
     Route::get('/documentos', fn () => Inertia::render('Revisor/documentos'))->name('revisor-documentos');
-    Route::get('/imprimir', fn () => Inertia::render('Revisor/imprimir'))->name('revisor-imprimir');
+    Route::get('/imprimir', fn () => Inertia::render('Revisor/imprimir', [ 'id_proceso' => auth()->user()->id_proceso]))->name('revisor-imprimir');
     Route::get('/postulantes', fn () => Inertia::render('Revisor/postulantes'))->name('revisor-postulantes');
     Route::get('/comprobantes-xd', fn () => Inertia::render('Revisor/components/voucher'));
 

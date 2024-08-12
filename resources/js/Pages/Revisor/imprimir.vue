@@ -1,22 +1,10 @@
 <template>
-<Head title="Revisión de documentos"/>
+<Head title="Revisión Posterior"/>
 <AuthenticatedLayout>
   <div>
     <a-card style="background: white;" class="mb-0 p-0" >
       <a-row :gutter="16" class="mb-3">
-        <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: space-between;">
-
-            <div>
-              <a-select
-                v-model:value="codigo"
-                mode="single"
-                style="width: 280px"
-                placeholder="Selecciona los códigos"
-                :options="codigos"
-                @change="handleChange"
-              ></a-select>
-            </div>
-
+        <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end;">
             <div>
               <label style="margin-right: 10px;"> Buscar:</label>
               <a-auto-complete
@@ -136,17 +124,17 @@
 
                       <a-col :xs="24" :sm="12" :md="12" :lg="2" :xl="2">
                         <div class="mb-3">
-                          <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+ingresante.nro_doc+'.jpg'" height="80"/>
+                          <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+ingresante.nro_doc+'.jpg'" height="80"/>
                           <div class="flex justify-center"> H. Der.</div>
                         </div>
 
                         <div>
-                          <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+ingresante.nro_doc+'x.jpg'" height="80" />
+                          <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+ingresante.nro_doc+'x.jpg'" height="80" />
                           <div class="flex justify-center"> H. Izq.</div>
                         </div>
                       </a-col>
                       <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
-                        <img :src="baseUrl+'/documentos/8/control_biometrico/fotos/'+ingresante.nro_doc+'.jpg'" width="250" />
+                        <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/fotos/'+ingresante.nro_doc+'.jpg'" width="250" />
 
                       </a-col>
 
@@ -187,7 +175,7 @@
                       <a-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
                         <a-form-item :rules="[{ required: true, message: 'El nombre es obligatorio' }]">
                           <label>Proceso</label>
-                          <a-input v-model:value="ingresante.proceso" />
+                          <a-input v-model:value="ingresante.proceso"/>
                         </a-form-item>
                       </a-col>
 
@@ -262,7 +250,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/8/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/'+id_proceso+'/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
                     </div>
                 </div>
                 </div>
@@ -271,7 +259,7 @@
                 <div>
                   <div style="width:100%; height:380px; position:relative; overflow:hidden">
                     <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-                      <iframe :src="baseUrl+'/documentos/8/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+                      <iframe :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
                     </div>
                   </div>
                 </div>
@@ -284,13 +272,13 @@
                     <a-row :gutter="16">
                         <a-col :xs="24" :sm="12" :md="8" :lg="12">
                           <div class="p-6">
-                            <img :src="baseUrl+'/documentos/8/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> Foto Inscripción.</div>
                           </div>
                         </a-col>                        
                         <a-col :xs="24" :sm="12" :md="8" :lg="12">
                           <div class="p-6">
-                            <img :src="baseUrl+'/documentos/8/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> Foto Biometrico.</div>
                           </div>
                         </a-col>
@@ -305,31 +293,31 @@
                     <a-row :gutter="16">
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>                        
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="4">
                           <div>
-                            <img :src="baseUrl+'/documentos/8/examen/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/examen/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. Examen</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. Biometrico</div>
                           </div>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
                             <div class="flex justify-center"> H. Biometrico</div>
                           </div>
                         </a-col>
@@ -348,7 +336,7 @@
       <div class="mt-4 flex justify-end" style="margin-right: -10px;">
         <a-button type="primary"  @click="abrirVentana()">Registrar</a-button>
       </div>
-    </a-card> -->
+    </a-card>
 
     <div style="max-width:100%;">
       <div style="max-width:1000px">
@@ -367,7 +355,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/8/inscripciones/dnis/'+codigo+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/'+id_proceso+'/biometrico/dnis/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -378,7 +366,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/8/inscripciones/certificados/'+dniseleccionado+codigo+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/'+id_proceso+'/biometrico/certificados/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -390,7 +378,7 @@
       <div>
           <div style="width:100%; height:400px; position:relative; overflow:hidden">
             <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-              <iframe :src="baseUrl+'/documentos/8/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
+              <iframe :src="baseUrl+'/documentos/'+id_proceso+'/preinscripcion/solicitudes/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="100%" scrolling="yes" frameborder="1" ></iframe>
             </div>
           </div>
       </div>
@@ -401,7 +389,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/8/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/constancias/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -415,13 +403,13 @@
             <a-row :gutter="16">
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
-                    <img :src="baseUrl+'/documentos/8/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
+                    <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                     <div class="flex justify-center"> Foto Inscripción.</div>
                   </div>
                 </a-col>                        
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
-                    <img :src="baseUrl+'/documentos/8/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                    <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
                     <div class="flex justify-center"> Foto Biometrico.</div>
                   </div>
                 </a-col>
@@ -436,31 +424,31 @@
           <a-row :gutter="16">
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. inscripción</div>
                 </div>
               </a-col>                        
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/8/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
+                  <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
                   <div class="flex justify-center"> H. inscripción</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="4">
                 <div>
-                  <img :src="baseUrl+'/documentos/8/examen/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/'+id_proceso+'/examen/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. Examen</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/8/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
+                  <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
@@ -487,17 +475,19 @@ import { watch, computed, ref, unref } from 'vue';
 import { FormOutlined, DeleteOutlined, PrinterOutlined, CreditCardOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
+import { defineProps } from 'vue';
 import Vouchers from './components/voucher.vue'
 import Anterior from './components/anteriores.vue'
 import dayjs from 'dayjs';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+const props = defineProps({ id_proceso: { type: Number, required: true }, });
 const baseUrl = window.location.origin;
 
 const dni = ref(null);
-const dniseleccionado = ref("")
-const modal = ref(false);
+const dniseleccionado = ref("60511968")
+const modal = ref(true);
 const codigo = ref("");
 const postulante = ref("");
 const postulantes = ref([])
@@ -658,7 +648,7 @@ const abrirVentana = async () => {
 const imprimirPDF =  (dnni) => {
     var iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/8/control_biometrico/constancias/'+dnni+'.pdf';
+    iframe.src = baseUrl+'/documentos/'+id_proceso+'/control_biometrico/constancias/'+dnni+'.pdf';
     document.body.appendChild(iframe);
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
@@ -699,7 +689,6 @@ const getCarrerasPrevias = async() => {
   }
 };
 
-
 const value = ref([]);
 const codigos =ref([]);
 
@@ -714,9 +703,6 @@ const getCodigos = async () => {
 }
 getPostulantesBiometrico()
 
-
-//
-
 const notificacion = (type, titulo, mensaje) => {
   notification[type]({
     message: titulo,
@@ -726,96 +712,28 @@ const notificacion = (type, titulo, mensaje) => {
 
 
 const dataSource = ref([
-  {
-    key: '1',
-    name: 'Derechos de admisión',
-    age: '20-23-2024',
-    address: '150.00',
-  },
-  {
-    key: '2',
-    name: 'Examen médico',
-    age: '20-23-2024',
-    address: '200.00',
-  }
+  { key: '1', name: 'Derechos de admisión', age: '20-23-2024', address: '150.00', },
+  { key: '2', name: 'Examen médico', age: '20-23-2024', address: '200.00', }
 ]);
 
 
 const columns = ref([
-  {
-    title: 'Banco',
-    dataIndex: 'banco',
-    width:'110px',
-  },
-  {
-    title: 'Concepto',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Fecha',
-    dataIndex: 'age',
-    key: 'age',
-    width:'190px',
-    align:'center'
-  },
-  {
-    title: 'Monto S/',
-    dataIndex: 'address',
-    key: 'address',
-    width:'130px',
-    align:'center'
-
-  },
-  {
-    title: '',
-    dataIndex: 'option',
-    width:'80px',
-
-  }
+  { title: 'Banco', dataIndex: 'banco', width:'110px',},
+  { title: 'Concepto', dataIndex: 'name', key: 'name',},
+  { title: 'Fecha', dataIndex: 'age', key: 'age', width:'190px', align:'center' },
+  { title: 'Monto S/', dataIndex: 'address', key: 'address', width:'130px', align:'center' },
+  { title: '', dataIndex: 'option', width:'80px', }
 ])
 
 const colpostulantes = ref([
-  {
-    title: 'DNI',
-    dataIndex: 'dni',
-    width:'110px',
-  },
-  {
-    title: 'Nombres',
-    dataIndex: 'nombres'
-  },
-  {
-    title: 'Programa',
-    dataIndex: 'programa',
-    key: 'name',
-  },
-  {
-    title: 'Modalidad',
-    dataIndex: 'modalidad',
-    align:'center'
-  },
-  {
-    title: 'Area',
-    dataIndex: 'area',
-    align:'center'
-  },
-  {
-    title: 'Codigo',
-    dataIndex: 'codigo',
-    align:'center'
-  },
-  {
-    title: '',
-    dataIndex: 'acciones',
-    width:'120px',
-
-  }
-])
-
-
-
-
+  { title: 'DNI', dataIndex: 'dni', width:'110px',},
+  { title: 'Nombres', dataIndex: 'nombres'},
+  { title: 'Programa', dataIndex: 'programa', key: 'name',},
+  { title: 'Modalidad', dataIndex: 'modalidad', align:'center'},
+  { title: 'Area', dataIndex: 'area', align:'center'},
+  { title: 'Codigo', dataIndex: 'codigo', align:'center'},
+  { title: '', dataIndex: 'acciones', width:'120px',}
+]);
 </script>
 
 

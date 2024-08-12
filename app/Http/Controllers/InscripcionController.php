@@ -7,7 +7,6 @@ use Inertia\Inertia;
 use App\Models\Postulante;
 use App\Models\Inscripcion;
 use App\Models\Proceso;
-use App\Models\AvancePostulante;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -170,18 +169,33 @@ class InscripcionController extends Controller
     }
 
     public function Inscribir(Request $request){
-
+        
         $proceso = Proceso::find(auth()->user()->id_proceso);
-        $dateString1 = $proceso->fec_1;
-        $dateString2 = $proceso->fec_2;
-        $formattedDate1 = $this->formatDate($dateString1);
-        $formattedDate2 = $this->formatDate($dateString2);
         
         $prog = $request['postulante']['cod_programa'];
-
-        $res = $siguiente = Inscripcion::where('codigo', 'like', $proceso->codigo_proceso.$prog.'%')
-        ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
+        $res = Inscripcion::where('codigo', 'like', $proceso->codigo_proceso.$prog.'%')
+            ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
         $res = str_pad($res, 4, '0', STR_PAD_LEFT);
+    
+        $dni = $request['postulante']['dni_temp'];
+        $fotoPath = public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/fotos/' . $dni . '.jpg');
+        $huellaIzquierdaPath = public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . '.jpg');
+        $huellaDerechaPath = public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . 'x.jpg');
+    
+        $hasFoto = File::exists($fotoPath);
+        $hasHuellaIzquierda = File::exists($huellaIzquierdaPath);
+        $hasHuellaDerecha = File::exists($huellaDerechaPath);
+        $missingFiles = [];
+  
+        if (!$hasFoto) { $missingFiles[] = 'foto'; }
+        if (!$hasHuellaIzquierda) { $missingFiles[] = 'huella izquierda'; }
+        if (!$hasHuellaDerecha) { $missingFiles[] = 'huella derecha'; }
+    
+        if (!empty($missingFiles)) {
+            $this->response['estado'] = false;
+            $this->response['mensaje'] = 'Faltan los siguientes archivos necesarios para completar la inscripción: ' . implode(', ', $missingFiles) . '.';
+            return response()->json($this->response, 400);
+        }
 
         $inscripcion = Inscripcion::create([
             'codigo' => $proceso->codigo_proceso . $prog . $res,
@@ -191,13 +205,14 @@ class InscripcionController extends Controller
             'id_modalidad' => $request['postulante']['id_modalidad'],
             'estado' => 0,
             'id_usuario' => auth()->id() 
-        ]); 
-        $this->pdfInscripcion($request['postulante']['dni_temp']);
-
+        ]);
+    
+        $this->pdfInscripcion($dni);
+    
         $this->response['estado'] = true;
-        $this->response['datos'] = $request['postulante']['dni_temp'];
+        $this->response['datos'] = $dni;
         return response()->json($this->response, 200);
- 
+    
     }
 
 
@@ -241,54 +256,59 @@ class InscripcionController extends Controller
 
 
     public function pdfInscripcion($dni) {
-
         $proceso = Proceso::find(auth()->user()->id_proceso);
         $dateString1 = $proceso->fec_1;
-        $dateString2 = $proceso->fec_2;
+        $dateString2 = $proceso->fec_2 ?? null;
         $dia1 = $this->formatDate($dateString1);
         $dia2 = $this->formatDate($dateString2);
-
+    
         $carreras_previas = DB::select("SELECT codigo, cod_car, nombre, condicion FROM carreras_previas
-        WHERE dni_postulante = $dni");
-
+        WHERE dni_postulante = ?", [$dni]);
+    
         $datos = DB::select("SELECT 
-        postulante.nro_doc AS dni, 
-        inscripciones.codigo as codigo,
-        postulante.nombres AS nombre, 
-        postulante.primer_apellido AS paterno,
-        postulante.segundo_apellido AS materno,
-        programa.nombre AS programa,
-        inscripciones.id_programa as id_programa,
-        modalidad.nombre AS modalidad,
-        procesos.nombre AS proceso,
-        LPAD(codigo_sunedu,3,'0') AS cod_sunedu,
-        inscripciones.created_at as fecha,
-        users.name, users.paterno as upaterno
+            postulante.nro_doc AS dni, 
+            inscripciones.codigo as codigo,
+            postulante.nombres AS nombre, 
+            postulante.primer_apellido AS paterno,
+            postulante.segundo_apellido AS materno,
+            programa.nombre AS programa,
+            inscripciones.id_programa as id_programa,
+            modalidad.nombre AS modalidad,
+            procesos.nombre AS proceso,
+            LPAD(codigo_sunedu,3,'0') AS cod_sunedu,
+            inscripciones.created_at as fecha,
+            users.name, users.paterno as upaterno
         FROM inscripciones
         JOIN postulante ON inscripciones.id_postulante = postulante.id
         JOIN programa ON inscripciones.id_programa = programa.id
         JOIN modalidad ON inscripciones.id_modalidad = modalidad.id 
         JOIN procesos ON inscripciones.id_proceso = procesos.id
         JOIN users on inscripciones.id_usuario = users.id
-        WHERE postulante.nro_doc = $dni AND inscripciones.estado = 0 AND inscripciones.id_proceso = ". auth()->user()->id_proceso);
-
-        $foto = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/' . $dni . '.jpg');
-        $huellaIzquierda = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/' . $dni . '.jpg');
-        $huellaDerecha = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/'. $dni . 'x.jpg');
-
+        WHERE postulante.nro_doc = ? AND inscripciones.estado = 0 AND inscripciones.id_proceso = ?", [$dni, auth()->user()->id_proceso]);
+    
+        $foto = getFileUrlWithHash(public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/fotos/' . $dni . '.jpg'));
+        $huellaIzquierda = getFileUrlWithHash(public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . '.jpg'));
+        $huellaDerecha = getFileUrlWithHash(public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . 'x.jpg'));
+    
         $data = $datos[0];
-        $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data','carreras_previas','foto','huellaIzquierda','huellaDerecha','dia1','dia2'));
+        $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data', 'carreras_previas', 'foto', 'huellaIzquierda', 'huellaDerecha', 'dia1', 'dia2'));
         $pdf->setPaper('A4', 'portrait');
         $output = $pdf->output();
-
+    
         $rutaCarpeta = public_path('/documentos/'.auth()->user()->id_proceso.'/inscripciones/constancias/');
         if (!File::exists($rutaCarpeta)) {
             File::makeDirectory($rutaCarpeta, 0755, true, true);
         }
         file_put_contents($rutaCarpeta . $dni . '.pdf', $output);
         return $pdf->stream();
-        // return $pdf->download('constancia-inscripcion.pdf');
+    }
 
+    function getFileUrlWithHash($path) {
+        if (File::exists($path)) {
+            $hash = md5_file($path);
+            return $path . '?v=' . $hash;
+        }
+        return $path;
     }
 
 
@@ -328,8 +348,16 @@ class InscripcionController extends Controller
 
     private function formatDate($dateString)
     {
-        $date = Carbon::createFromFormat('Y-m-d', $dateString);
-        return $date->locale('es')->translatedFormat('l j \d\e F');
+        if (!$dateString) {
+            return null; 
+        }
+
+        try {
+            $date = Carbon::createFromFormat('Y-m-d', $dateString);
+            return $date->locale('es')->translatedFormat('l j \d\e F');
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
 

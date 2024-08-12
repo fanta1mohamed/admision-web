@@ -154,21 +154,22 @@
                             </div>
                         </div>
                         <div style="margin-top: -8px; margin-left:-5px;">
-                            <span style="font-weight:bold;">
-                                HORARIOS SOLO PARA CLASIFICADOS ( {{ $dia2}} ):
-                            </span>
-                            <div style="margin-top: -8px">
-                                <ul>
-                                    <li>Ingreso: 08:00 a 09:30 horas.</li>
-                                </ul>
-                            </div>
+                            @if($dia2)
+                                <span style="font-weight: bold;">
+                                    HORARIOS SOLO PARA CLASIFICADOS ( {{ $dia2 }} ):
+                                </span>
+                                <div style="margin-top: -8px;">
+                                    <ul>
+                                        <li>Ingreso: 08:00 a 09:30 horas.</li>
+                                    </ul>
+                                </div>
+                            @endif
                         </div>
                     </td>
 
                     <td valign="top">
                         <div style="font-size: 8pt;">
                             <div style=" width 80px; height: 101px; border:solid 1px black;">
-                                {{-- <img src="{{ public_path('huellascepre/'.$data->dni.'.jpg')}} " alt="" width="95">  --}}
                                 <img src="{{ $huellaDerecha }}" alt="foto" width="76"> 
                             </div>
                             <div style="text-align: center; margin-top:6px;"><span>Indice Derecho</span></div>
@@ -183,7 +184,6 @@
                     <td valign="top">
                         <div style="font-size: 8pt; margin-top:2px;">
                             <div style="border:solid 1px black; width 85px; height: 101px; margin-top:-2px;">
-
                             </div>
                             <div style="text-align: center; margin-top:6px;"  >Indice Derecho </div>
                             <div style="border:solid 1px black; width 85px; height: 101px; margin-top:10px;">
