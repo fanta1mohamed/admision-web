@@ -37,7 +37,7 @@
     
         <p style="line-height: 1.5rem;">
             La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, en cumplimiento pleno del 
-            Reglamento General de Admisión 2024-I, <label style="font-weight:bold;">HACE CONSTAR </label> 
+            Reglamento General de Admisión 2024-II, <label style="font-weight:bold;">HACE CONSTAR </label> 
             que <label style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</label>, identificado (a) con 
             DNI N° <label style="font-weight:bold;">{{$data->dni}}</label>, es 
             <label style="font-weight:bold;">INGRESANTE APTO</label> al programa de estudios de <label style="font-weight:bold;">{{$data->programa}}</label>, 
@@ -185,7 +185,7 @@
         <p style="line-height: 1.5rem;">
             Así mismo, se deja constancia que ha validado su identidad a 
             través del control biométrico y acreditó los documentos personales, según 
-            los requisitos exigidos en el Reglamento General de Admisión 2024-I. De 
+            los requisitos exigidos en el Reglamento General de Admisión 2024-II. De 
             igual manera se proporciona al ingresante 
             un correo institucional de gran utilidad para fines académicos y administrativos.
         </p>
@@ -197,7 +197,12 @@
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @else
                 Correo institucional: <span style="font-weight: bold"> {{$data->dni}}@est.unap.edu.pe </span><br> 
-                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.general1.2024 </span><br>
+                @if ( $data->proceso == 'EXAMEN GENERAL')
+                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.General.2024 </span><br>
+                @else
+                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.Cepreuna.2024 </span><br>
+                @endif
+
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @endif
         </p>

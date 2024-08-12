@@ -371,7 +371,6 @@
         </div>
       </div>
 
-
       <div style="margin-top:20px;">
         <h2>Solicitud de inscripción</h2>
       </div>
@@ -486,8 +485,8 @@ const props = defineProps({ id_proceso: { type: Number, required: true }, });
 const baseUrl = window.location.origin;
 
 const dni = ref(null);
-const dniseleccionado = ref("60511968")
-const modal = ref(true);
+const dniseleccionado = ref("")
+const modal = ref(false);
 const codigo = ref("");
 const postulante = ref("");
 const postulantes = ref([])
@@ -501,24 +500,6 @@ const options = [
   { label: 'Vouchers', value: 2 },
   { label: 'Certificado', value: 3 }
 ]
-
-const checkAll = ref(true);
-
-const onCheckAllChange = (e) => {
-  checkAll.value = e.target.checked;
-  checkedList.value = e.target.checked ? options.map((option) => option.value) : [];
-};
-
-const onCheckboxChange = (checkedValues) => {
-  checkedList.value = checkedValues;
-  checkAll.value = checkedValues.length === options.length;
-};
-
-const requisitos = ref([]);
-const getRequisitos = async () => {
-  let res = await axios.get('get-requisitos');
-  requisitos.value = res.data.datos;
-}
 
 const dniInput = ref(null)
 const save = async () => {
@@ -601,13 +582,36 @@ const getPostulantesBiometrico =  async (term = "", page = 1) => {
 }
 
 const getPostulantesByDni = async () => {
+
   let res = await axios.post("get-postulante-dni",{ dni: dniseleccionado.value });
-  postulante.value.id = res.data.datos.id_postulante;
-  postulante.value.dni_temp = res.data.datos.dni
+  if (res.data.datos && res.data.datos.id_postulante) {
+      modal.value = true;
+      postulante.value.id = res.data.datos.id_postulante;
+      postulante.value.dni_temp = res.data.datos.dni;
+
+    } else {
+      ingresante.value.id = null
+      ingresante.value.nro_doc= ""
+      ingresante.value.tipo_doc= null
+      ingresante.value.nombres = null
+      ingresante.value.sexo= null
+      ingresante.value.fec_nacimiento = null
+      ingresante.value.primer_apellido = ""
+      ingresante.value.segundo_apellido =""
+      ingresante.value.proceso= ""
+      ingresante.value.modalidad = ""
+      ingresante.value.puntaje= ""
+      ingresante.value.programa = ""
+      ingresante.value.fecha = ""
+      ingresante.value.puesto =""
+      notificacion("error","No se han encontrado datos");
+      // Puedes agregar lógica adicional aquí, como mostrar un mensaje de error
+    }
+
 }
 
 watch(dni, (newValue, oldValue ) => {
-  if(newValue.length >= 0){
+  if(newValue.length >= 8){
     // getPostulantes();
     getPostulantesByDni()
   
@@ -630,11 +634,7 @@ watch(codigo, (newValue, oldValue ) => {
 
 watch(dniseleccionado, (newValue, oldValue ) => {
     if(newValue.length >= 8){
-      if(codigo.value.length == 6){
-        modal.value = true;
-      }
       getIngresante();
-      getCodigos();
     }
 })
 
@@ -696,11 +696,6 @@ const handleChange = (newValue) => {
   console.log('Valor seleccionado:', newValue);
 };
 
-const getCodigos = async () => {
-  let res = await axios.get("get-codigos-postulante/"+dniseleccionado.value);
-  codigos.value = res.data.datos;
-  
-}
 getPostulantesBiometrico()
 
 const notificacion = (type, titulo, mensaje) => {
