@@ -645,15 +645,21 @@ const abrirVentana = async () => {
   dniseleccionado.value = null
 }
 
-const imprimirPDF =  (dnni) => {
-    var iframe = document.createElement('iframe');
+const imprimirPDF = (dnni) => {
+    const url = `${baseUrl}/documentos/${props.id_proceso}/control_biometrico/constancias/${dnni}.pdf`;
+    console.log("URL del PDF:", url); 
+    const iframe = document.createElement('iframe');
     iframe.style.display = "none";
-    iframe.src = baseUrl+'/documentos/'+id_proceso+'/control_biometrico/constancias/'+dnni+'.pdf';
+    iframe.src = url;
+    
+    iframe.onload = () => {
+        console.log("PDF cargado, iniciando impresión...");
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+    };
+    
     document.body.appendChild(iframe);
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-}
-
+};
 const getCarrerasPrevias = async() => {
   anteriores.value = []
   n_carrera.value = 0
