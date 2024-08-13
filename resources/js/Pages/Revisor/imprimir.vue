@@ -287,7 +287,7 @@
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="hIzq"/>
+                            <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>
