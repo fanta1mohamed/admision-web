@@ -262,6 +262,12 @@
               <option :value='43'>TRABAJO SOCIAL</option>
               <option :value='44'>TURISMO</option>
               <option :value='45'>PSICOLOGÍA</option>
+              <option :value='46'>INGENIERÍA ECONÓMICA - AZANGARO</option>
+              <option :value='47'>INGENIERÍA DE MINAS - AZANGARO</option>
+              <option :value='48'>INGENERÍA DE TELECOMUNICACIONES</option>
+              <option :value='49'>CIENCIAS CONTABLES - JULI</option>
+              <option :value='50'>ARQUITECTURA Y URBANISMO - JULI</option>
+              <option :value='51'>INGENIERÍA AGROINDUSTRIAL - JULI</option> 
             </select>
           </div>
 
