@@ -396,7 +396,7 @@
                 </a-col>
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
-                    <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                    <img :src="fot"/>
                     <div class="flex justify-center"> Foto Biometrico.</div>
                   </div>
                 </a-col>
@@ -542,6 +542,9 @@ const getIngresante =  async ( ) => {
   hDer.value = res.data.hDerecha;
   docDni.value = res.data.doc_dni;
   docCert.value = res.data.doc_certificado;
+  if(res.data.datos){
+    modal.value = true;
+  }
 
  }
 
