@@ -310,6 +310,8 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/nuevo-pdf-inscripcion/{dni}', [InscripcionController::class, 'pdfInscripcion']);
 
     
+    Route::post('/cambiar-codigo', [DocumentoController::class, 'cambiarCodigo']);
+
     Route::get('/api-pagos/{parametro}', function ($parametro) {
         try {
             $response = Http::get('http://unap.scielodigital.net.pe/caja/pago_admision/server/CHECK_PAYMENT/?w=' . $parametro);

@@ -233,10 +233,9 @@
               </template>
 
               <template v-if="column.dataIndex === 'acciones'">
-                <a-button type="primary" disabled @click="abrirEditar(filiales[index])" size="small">
+                <a-button class="mr-1" type="primary" @click="Editar(record)" size="small">
                 <template #icon><form-outlined/></template>
                 </a-button>
-                <a-divider type="vertical" />
                   <a :href="'../../'+record.url" target="_blank">
                     <a-button type="primary"  @click="eliminar(filiales[index])" shape="" size="small">
                         <template #icon><eye-outlined/></template>
@@ -321,6 +320,15 @@
 
 </div>
 
+<a-modal v-model:visible="openModal" title="Editar Código" :footer="false">
+  <div>Codigo de certificado</div>
+  <a-input v-model:value="doc.codigo" placeholder="Ingresar Codigo"></a-input>
+
+  <div class="flex justify-end">
+    <a-button @click="CambiarCodigo" style="background: #0e4165; color:white;">Cambiar codigo</a-button>
+  </div>
+
+</a-modal>
 
 </AuthenticatedLayout>
 
@@ -339,6 +347,15 @@ const baseUrl = window.location.origin;
 const foto_postulante = ref(null);
 const huellaD_postulante = ref(null);
 const huellaI_postulante = ref(null);
+
+const doc = ref({id:null, codigo: "" });
+const openModal = ref(false);
+const Editar  =  async ( item ) => {
+  openModal.value = true;
+  doc.value = item;
+  console.log(item);
+
+}
  
 const props = defineProps({  baseUrl: String });
 
@@ -429,6 +446,19 @@ const getAnteriores =  async () => {
     anteriores.value = res.data.datos;
   }
 }
+
+const CambiarCodigo =  async () => {
+  let res = await axios.post( "cambiar-codigo", doc.value );
+  doc.value = { 
+    id:"",
+    codigo:"",
+    id_programa:"",
+    dni_temp:""
+  }
+  openModal.value = false;
+  getDocumentos();
+}
+
 
 const Inscribir =  async () => {
   let res = await axios.post( "inscribir", { postulante: postulante.value });

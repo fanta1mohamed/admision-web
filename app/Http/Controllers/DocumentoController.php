@@ -55,6 +55,19 @@ class DocumentoController extends Controller {
     $this->response['datos'] = $documento;
     return response()->json($this->response, 200);
   }
+
+
+  public function cambiarCodigo( Request $request) {
+    $documento = Documento::find($request->id);
+    $documento->codigo = $request->codigo;
+    $documento->save();
+
+    $this->response['titulo'] = '!CERTIFICADO ACTUALIZADO!';
+    $this->response['mensaje'] = 'Estado Cambiado con exito';
+    $this->response['estado'] = true;
+    $this->response['datos'] = $documento;
+    return response()->json($this->response, 200);
+  }
   
   public function getDocumentosAdmin(Request $request)
   {

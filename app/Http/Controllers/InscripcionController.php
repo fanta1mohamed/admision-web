@@ -115,7 +115,7 @@ class InscripcionController extends Controller
 
     public function getDocumentos($dni){
         $res = DB::select('SELECT 
-        documento.codigo, documento.nombre, 
+        documento.id, documento.codigo, documento.nombre, 
         documento.url, documento.estado, documento.verificado, 
         tipo_documento.nombre  AS tipo  
         FROM documento
