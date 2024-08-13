@@ -286,9 +286,9 @@ class InscripcionController extends Controller
         JOIN users on inscripciones.id_usuario = users.id
         WHERE postulante.nro_doc = ? AND inscripciones.estado = 0 AND inscripciones.id_proceso = ?", [$dni, auth()->user()->id_proceso]);
     
-        $foto = getFileUrlWithHash(public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/fotos/' . $dni . '.jpg'));
-        $huellaIzquierda = getFileUrlWithHash(public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . '.jpg'));
-        $huellaDerecha = getFileUrlWithHash(public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . 'x.jpg'));
+        $foto = public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/fotos/' . $dni . '.jpg');
+        $huellaIzquierda = public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . '.jpg');
+        $huellaDerecha = public_path('/documentos/' . auth()->user()->id_proceso . '/inscripciones/huellas/' . $dni . 'x.jpg');
     
         $data = $datos[0];
         $pdf = Pdf::loadView('inscripcion.inscripcion', compact('data', 'carreras_previas', 'foto', 'huellaIzquierda', 'huellaDerecha', 'dia1', 'dia2'));

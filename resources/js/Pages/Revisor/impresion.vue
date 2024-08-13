@@ -462,6 +462,7 @@ const CambiarCodigo =  async () => {
 
 const Inscribir =  async () => {
   let res = await axios.post( "inscribir", { postulante: postulante.value });
+
   imprimirPDF(dniseleccionado.value)
   dniseleccionado.value = "";
   dni.value = "";
