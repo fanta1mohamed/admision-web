@@ -352,7 +352,8 @@ class SeleccionDataController extends Controller
         return response()->json($this->response, 200);
     }
     else{
-        $this->response['estado'] = true;
+        $this->response['estado'] = false;
+        $this->response['mensaje'] = "No se encontraron datos";
         $this->response['datos'] = null;
         return response()->json($this->response, 200);
     }

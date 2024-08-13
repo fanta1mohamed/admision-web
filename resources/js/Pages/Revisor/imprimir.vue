@@ -1,19 +1,18 @@
 <template>
 <Head title="Revisión Posterior"/>
-<AuthenticatedLayout>
+<AuthenticatedLayout :title="props.id_proceso">
   <div>
-    <a-card style="background: white;" class="mb-0 p-0" >
-      <a-row :gutter="16" class="mb-3">
+    <a-card class="mb-0 p-0" >
+      <a-row :gutter="16" class="mb-2">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="display:flex; justify-content: end;">
-            <div>
-              <label style="margin-right: 10px;"> Buscar:</label>
+            <div class="mr-0">
+              <label class="mr-2"> Buscar:</label>
               <a-auto-complete
                 v-model:value="dniseleccionado"
                 :options="postulantes"
                 style="width: 300px"
                 @select="onSelect"
-                @search="onSearch"
-              >
+                @search="onSearch">
                 <a-input
                   ref="dniInput"
                   placeholder="Buscar"
@@ -35,17 +34,6 @@
         </a-col>
       </a-row>
 
-      <a-row >
-        <a-col :span="24" :sm="24" :md="24" :lg="24">
-          <div style="height: 40px; margin-left: -10px;">
-            <a-checkbox-group v-model:value="checkedList" >
-              <a-checkbox v-for="(option, index) in requisitos" :key="option.value" :value="option.value" :class="{ 'first-item': index === 0 }" class="checkbox-item">
-               <span style="font-weight: bold;">{{ option.label }}</span>
-              </a-checkbox>
-            </a-checkbox-group> 
-          </div>
-        </a-col>
-      </a-row>
       <a-row :gutter="16">
         <a-col :span="24" :sm="24" :md="24" :lg="24" style="border: 1px solid #d9d9d9; min-width: 600px;" class="m-0 p-0">
           <div style="margin-right: -8px; margin-left: -8px; min-width: 600px;">
@@ -124,17 +112,17 @@
 
                       <a-col :xs="24" :sm="12" :md="12" :lg="2" :xl="2">
                         <div class="mb-3">
-                          <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+ingresante.nro_doc+'.jpg'" height="80"/>
+                          <img :src="hDer" height="80"/>
                           <div class="flex justify-center"> H. Der.</div>
                         </div>
 
                         <div>
-                          <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+ingresante.nro_doc+'x.jpg'" height="80" />
+                          <img :src="hIzq" height="80" />
                           <div class="flex justify-center"> H. Izq.</div>
                         </div>
                       </a-col>
                       <a-col :xs="24" :sm="12" :md="12" :lg="5" :xl="5">
-                        <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/fotos/'+ingresante.nro_doc+'.jpg'" width="250" />
+                        <img :src="fot" width="250"/>
 
                       </a-col>
 
@@ -264,7 +252,7 @@
                   </div>
                 </div>
               </a-tab-pane>
-              
+
               <a-tab-pane key="6" tab="D. Biométricos">
               <div>
                 <div class="flex justify-center mb-6" style="width: 100%;">
@@ -275,10 +263,10 @@
                             <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> Foto Inscripción.</div>
                           </div>
-                        </a-col>                        
+                        </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="12">
                           <div class="p-6">
-                            <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
+                            <img :src="hDer"/>
                             <div class="flex justify-center"> Foto Biometrico.</div>
                           </div>
                         </a-col>
@@ -296,10 +284,10 @@
                             <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
-                        </a-col>                        
+                        </a-col>
                         <a-col :xs="24" :sm="12" :md="8" :lg="5">
                           <div>
-                            <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
+                            <img :src="hIzq"/>
                             <div class="flex justify-center"> H. inscripción</div>
                           </div>
                         </a-col>
@@ -327,7 +315,7 @@
 
               </div>
               </a-tab-pane>
-            
+
             </a-tabs>
 
           </div>
@@ -355,7 +343,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/'+id_proceso+'/biometrico/dnis/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="docDni" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -366,7 +354,7 @@
       <div>
         <div style="width:100%; height:380px; position:relative; overflow:hidden">
           <div v-if="dniseleccionado !== null && dniseleccionado.length === 8">
-            <iframe :src="baseUrl+'/documentos/'+id_proceso+'/biometrico/certificados/'+dniseleccionado+'.pdf'" style="top:-54px; position:absolute" width="100%" height="470px"   scrolling="yes" frameborder="1" ></iframe>
+            <iframe :src="docCert" style="top:-54px; position:absolute" width="100%" height="470px" scrolling="yes" frameborder="1" ></iframe>
           </div>
         </div>
       </div>
@@ -405,7 +393,7 @@
                     <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/fotos/'+dniseleccionado+'.jpg'"/>
                     <div class="flex justify-center"> Foto Inscripción.</div>
                   </div>
-                </a-col>                        
+                </a-col>
                 <a-col :xs="24" :sm="12" :md="8" :lg="12">
                   <div class="p-6">
                     <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/fotos/'+dniseleccionado+'.jpg'"/>
@@ -426,7 +414,7 @@
                   <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'.jpg'"/>
                   <div class="flex justify-center"> H. inscripción</div>
                 </div>
-              </a-col>                        
+              </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
                   <img :src="baseUrl+'/documentos/'+id_proceso+'/inscripciones/huellas/'+dniseleccionado+'x.jpg'"/>
@@ -441,19 +429,19 @@
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+dniseleccionado+'.jpg'"/>
+                  <img :src="hDer"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
               <a-col :xs="24" :sm="12" :md="8" :lg="5">
                 <div>
-                  <img :src="baseUrl+'/documentos/'+id_proceso+'/control_biometrico/huellas/'+dniseleccionado+'x.jpg'"/>
+                  <img :src="hIzq"/>
                   <div class="flex justify-center"> H. Biometrico</div>
                 </div>
               </a-col>
           </a-row>
         </div>
-      </div>    
+      </div>
 
       <template #footer>
         <div class="flex justify-end mr-2 mb-3">
@@ -471,7 +459,7 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { FormOutlined, DeleteOutlined, PrinterOutlined, CreditCardOutlined } from '@ant-design/icons-vue';
+import { CreditCardOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import { defineProps } from 'vue';
@@ -493,13 +481,7 @@ const postulantes = ref([])
 const anteriores = ref([]);
 const n_carrera = ref(0)
 
-function focusInput() { save() }
 const checkedList = ref([]);
-const options = [
-  { label: 'Solicitud', value: 1 },
-  { label: 'Vouchers', value: 2 },
-  { label: 'Certificado', value: 3 }
-]
 
 const dniInput = ref(null)
 const save = async () => {
@@ -529,6 +511,14 @@ const ingresante = ref({
   puesto:""
 })
 
+const fot = ref("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd_mbg2w3PjAKYTjjQ_Pb1g9fIeIHmqSbQberdQP5UL2EM5OCndsXeYDurhhEjQitF-Wo&usqp=CAU");
+const hIzq = ref("https://previews.123rf.com/images/viktorijareut/viktorijareut1511/viktorijareut151100169/47517431-negro-silueta-de-la-ilustraci%C3%B3n-de-huellas-digitales-trama-icono-de-huella-digital-huella-digital.jpg");
+const hDer = ref("https://previews.123rf.com/images/viktorijareut/viktorijareut1511/viktorijareut151100169/47517431-negro-silueta-de-la-ilustraci%C3%B3n-de-huellas-digitales-trama-icono-de-huella-digital-huella-digital.jpg");
+
+const docDni = ref("");
+const docCert = ref("");
+
+
 const getIngresante =  async ( ) => {
 
   let res = await axios.get( "get-ingresante-general/"+dni.value );
@@ -547,7 +537,13 @@ const getIngresante =  async ( ) => {
   ingresante.value.puesto= res.data.datos.puesto
   if(res.data.datos.fecha){ ingresante.value.fecha = res.data.datos.fecha }
   getCarrerasPrevias()
-}
+  fot.value = res.data.foto;
+  hIzq.value = res.data.hIzquierda;
+  hDer.value = res.data.hDerecha;
+  docDni.value = res.data.doc_dni;
+  docCert.value = res.data.doc_certificado;
+
+ }
 
 const actualizar = async ( ) => {
   let res = await axios.post(
@@ -565,14 +561,6 @@ const actualizar = async ( ) => {
   getPostulantesByDni();
 }
 
-const getPostulantes =  async (term = "", page = 1) => {
-  let res = await axios.post(
-      "get-postulantes?page=" + page,
-      { term: dni.value }
-  );
-  postulantes.value = res.data.datos.data;
-}
-
 const getPostulantesBiometrico =  async (term = "", page = 1) => {
   let res = await axios.post(
       "get-postulantes-biometrico?page=" + page,
@@ -581,55 +569,12 @@ const getPostulantesBiometrico =  async (term = "", page = 1) => {
   postulantes.value = res.data.datos.data;
 }
 
-const getPostulantesByDni = async () => {
-
-  let res = await axios.post("get-postulante-dni",{ dni: dniseleccionado.value });
-  if (res.data.datos && res.data.datos.id_postulante) {
-      modal.value = true;
-      postulante.value.id = res.data.datos.id_postulante;
-      postulante.value.dni_temp = res.data.datos.dni;
-
-    } else {
-      ingresante.value.id = null
-      ingresante.value.nro_doc= ""
-      ingresante.value.tipo_doc= null
-      ingresante.value.nombres = null
-      ingresante.value.sexo= null
-      ingresante.value.fec_nacimiento = null
-      ingresante.value.primer_apellido = ""
-      ingresante.value.segundo_apellido =""
-      ingresante.value.proceso= ""
-      ingresante.value.modalidad = ""
-      ingresante.value.puntaje= ""
-      ingresante.value.programa = ""
-      ingresante.value.fecha = ""
-      ingresante.value.puesto =""
-      notificacion("error","No se han encontrado datos");
-      // Puedes agregar lógica adicional aquí, como mostrar un mensaje de error
-    }
-
-}
-
-watch(dni, (newValue, oldValue ) => {
-  if(newValue.length >= 8){
-    // getPostulantes();
-    getPostulantesByDni()
-  
-  } 
-})
-
 let timeoutId;
-watch(buscar, ( newValue, oldValue ) => { 
+watch(buscar, ( newValue, oldValue ) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-        getPostulantesBiometrico(); 
-    }, 500);    
-})
-
-watch(codigo, (newValue, oldValue ) => {
-  if(dniseleccionado.value.length == 8 ){
-    modal.value = true;
-  }   
+        getPostulantesBiometrico();
+    }, 500);
 })
 
 watch(dniseleccionado, (newValue, oldValue ) => {
@@ -647,17 +592,17 @@ const abrirVentana = async () => {
 
 const imprimirPDF = (dnni) => {
     const url = `${baseUrl}/documentos/${props.id_proceso}/control_biometrico/constancias/${dnni}.pdf`;
-    console.log("URL del PDF:", url); 
+    console.log("URL del PDF:", url);
     const iframe = document.createElement('iframe');
     iframe.style.display = "none";
     iframe.src = url;
-    
+
     iframe.onload = () => {
         console.log("PDF cargado, iniciando impresión...");
         iframe.contentWindow.focus();
         iframe.contentWindow.print();
     };
-    
+
     document.body.appendChild(iframe);
 };
 const getCarrerasPrevias = async() => {
@@ -765,35 +710,35 @@ const colpostulantes = ref([
 }
 
 .header-biometrico-nombre{
-  font-size: 3rem; 
-  font-family: 'Helvetica'; 
-  color:white; 
+  font-size: 3rem;
+  font-family: 'Helvetica';
+  color:white;
   font-weight: bold;
 }
 .header-biometrico-2da{
-  font-size: 1.2rem; 
-  font-family: 'Helvetica'; 
-  color:white; 
+  font-size: 1.2rem;
+  font-family: 'Helvetica';
+  color:white;
   letter-spacing: .22rem;
 }
 .header-biometrico-programa{
-  font-size: 1.2rem; 
-  font-family: 'Helvetica'; 
-  color:#0a3d5a ; 
-  font-weight: bold; 
+  font-size: 1.2rem;
+  font-family: 'Helvetica';
+  color:#0a3d5a ;
+  font-weight: bold;
   letter-spacing: .12rem;
 }
 .header-biometrico-modalidad{
-  font-size: .9rem; 
-  font-family: 'Helvetica'; 
-  color:black; 
+  font-size: .9rem;
+  font-family: 'Helvetica';
+  color:black;
   letter-spacing: .22rem;
 }
 
 .header-biometrico-container-foto{
-  position: absolute; 
-  top:60px; 
-  left: 20px; 
+  position: absolute;
+  top:60px;
+  left: 20px;
   border: solid 5px #e7e7e7;
 }
 .biometrico-foto-imagen{
@@ -815,13 +760,13 @@ const colpostulantes = ref([
 @media screen and (max-width: 600px) {
   .header-biometrico-nombre{ font-size: 1.5rem; }
   .header-biometrico-2da{
-    font-size: .7rem; 
+    font-size: .7rem;
   }
   .header-biometrico-programa{
-    font-size: .7rem; 
+    font-size: .7rem;
   }
   .header-biometrico-modalidad{
-    font-size: .5rem; 
+    font-size: .5rem;
   }
   .header-biometrico-container-foto{
     top:60px; left: 10px;  border: solid 2px #e7e7e7;

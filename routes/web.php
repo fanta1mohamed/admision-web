@@ -270,7 +270,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::post('/get-postulantes', [SeleccionDataController::class, 'getPostulantes']);
     Route::post('/get-postulantes-biometrico', [PostulanteController::class, 'getPostulantesBiometrico']);
 
-    Route::post('/get-postulante-dni', [SeleccionDataController::class, 'getPostulanteByDni']);
+    Route::post('/get-postulante-dni', [SeleccionDataController::class, '   ']);
 
     Route::post('/get-postulante-requisitos', [SeleccionDataController::class, 'getPostulanteRequisitos']);
     Route::post('/get-postulantes-requisitos', [SeleccionDataController::class, 'getRequisitoPostulantes']);

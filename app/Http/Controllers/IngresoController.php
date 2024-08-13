@@ -50,31 +50,43 @@ class IngresoController extends Controller {
 
     public function getDatosIngresoGeneral($dni){
         $res = DB::select("SELECT
-        postulante.id as id,
-        postulante.nro_doc,
-        postulante.nombres,
-        postulante.primer_apellido,
-        postulante.segundo_apellido,
-        postulante.tipo_doc,
-        postulante.sexo, 
-        postulante.fec_nacimiento,
-        programa.nombre AS programa,
-        procesos.nombre AS proceso,
-        modalidad.nombre AS modalidad,
-        resultados.puntaje,
-        resultados.puesto,
-        resultados.puesto_general,
-        resultados.fecha as fecha
-      FROM resultados
-      JOIN postulante ON postulante.nro_doc = resultados.dni_postulante
-      JOIN inscripciones ON postulante.id = inscripciones.id_postulante
-      JOIN programa ON programa.id = inscripciones.id_programa
-      JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
-      JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = inscripciones.id_proceso
-      WHERE inscripciones.id_proceso = ".auth()->user()->id_proceso."
-      AND postulante.nro_doc = $dni ");
+            postulante.id as id,
+            postulante.nro_doc,
+            postulante.nombres,
+            postulante.primer_apellido,
+            postulante.segundo_apellido,
+            postulante.tipo_doc,
+            postulante.sexo, 
+            postulante.fec_nacimiento,
+            programa.nombre AS programa,
+            procesos.nombre AS proceso,
+            modalidad.nombre AS modalidad,
+            resultados.puntaje,
+            resultados.puesto,
+            resultados.puesto_general,
+            resultados.fecha as fecha
+        FROM resultados
+        JOIN postulante ON postulante.nro_doc = resultados.dni_postulante
+        JOIN inscripciones ON postulante.id = inscripciones.id_postulante
+        JOIN programa ON programa.id = inscripciones.id_programa
+        JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
+        JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = inscripciones.id_proceso
+        WHERE inscripciones.id_proceso = ".auth()->user()->id_proceso."
+        AND postulante.nro_doc = $dni ");
+
+        $fotoUrl = url("/documentos/" . auth()->user()->id_proceso . "/control_biometrico/fotos/" . $dni . ".jpg") . '?v=' . time();
+        $huellaDerecha = url("/documentos/" . auth()->user()->id_proceso . "/control_biometrico/huellas/" . $dni . ".jpg") . '?v=' . time();
+        $huellaIzquierda = url("/documentos/" . auth()->user()->id_proceso . "/control_biometrico/huellas/" . $dni . "x.jpg") . '?v=' . time();
+
+        $doc_dni = url("/documentos/" . auth()->user()->id_proceso . "/biometrico/dnis/" . $dni . ".pdf") . '?v=' . time();
+        $doc_certificado = url("/documentos/" . auth()->user()->id_proceso . "/biometrico/certificados/" . $dni . ".pdf") . '?v=' . time();
 
         $this->response['estado'] = true;
+        $this->response['foto'] = $fotoUrl;
+        $this->response['hDerecha'] = $huellaDerecha;
+        $this->response['hIzquierda'] = $huellaIzquierda;
+        $this->response['doc_dni'] = $doc_dni;
+        $this->response['doc_certificado'] = $doc_certificado;
         $this->response['datos'] = $res[0];
         return response()->json($this->response, 200);
     }
