@@ -677,7 +677,7 @@ Route::get('/eliminar-filial/{id}', [VerificacionFotosController::class, 'delete
 
 Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'))->middleware('auth','simulacro');
 
-Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma']);
+Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma'])->middleware('auth');
 
 
 require __DIR__.'/auth.php';
