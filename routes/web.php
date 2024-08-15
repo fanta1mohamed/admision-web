@@ -42,9 +42,9 @@ use App\Http\Controllers\PagoBancoController;
 use App\Http\Controllers\CertificadoController;
 use App\Http\Controllers\DocumentosResultadoController;
 use App\Http\Controllers\PuntajeController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\DniController;
 use App\Http\Controllers\SyncController;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 
@@ -667,7 +667,6 @@ Route::post('/get-documentos-resultados', [DocumentosResultadoController::class,
 
 
 //DELETE LAST PROCESO
-
 Route::post('/actualizar-verificacion', [VerificacionFotosController::class, 'updateEstado']);
 
 #Route::get('/filial', [FilialController::class, 'index'])->name('filial-index');
@@ -678,7 +677,7 @@ Route::get('/eliminar-filial/{id}', [VerificacionFotosController::class, 'delete
 
 Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'))->middleware('auth','simulacro');
 
-
+Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma']);
 
 
 require __DIR__.'/auth.php';
