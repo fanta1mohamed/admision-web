@@ -22,6 +22,13 @@
                 </div>
             </template>
 
+
+            <template v-if="column.dataIndex === 'gen_juli_2024_II'">
+                <div style="width: 150px;">
+                    <img :src="'https://inscripciones.admision.unap.edu.pe/documentos/11/inscripciones/fotos/'+record.dni+'.jpg'" alt="">
+                </div>
+            </template>
+
             <template v-if="column.dataIndex === 'gen_2024_II'">
                 <div style="width: 150px;">
                     <img :src="'https://inscripciones.admision.unap.edu.pe/documentos/9/inscripciones/fotos/'+record.dni+'.jpg'" alt="">
@@ -222,6 +229,7 @@ getFotos()
 const columnsFotos = [
     { title: 'DNI', dataIndex: 'dni',},
     { title: 'Nombre', dataIndex: 'nombres',width:'96px' },
+    { title: 'GEN JULI 2024-II', dataIndex: 'gen_juli_2024_II',},
     { title: 'GENERAL 2024-II', dataIndex: 'gen_2024_II',},
     { title: 'CEPRE 2024-II', dataIndex: 'cep_2024_II',},
     { title: 'GENERAL 2024-I', dataIndex: 'gen_2024_I'},
