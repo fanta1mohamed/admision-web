@@ -229,7 +229,7 @@
               </nav-link>
             </a-menu-item>
 
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
+            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <nav-link :href="route('admin-inscripciones')" :active="route().current('admin-inscripciones')" style="margin: 0px; margin-left: -25px; ">
                 <div class="flex ml-6" style=" width: 100%; align-items: center;">
                   <setting-filled style=""/>
@@ -240,6 +240,15 @@
               </nav-link>
             </a-menu-item>
 
+            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
+              <nav-link :href="route('admin-control-biometrico')" :active="route().current('admin-control-biometrico')" style="margin: 0px; margin-left: -25px; ">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
+                  <setting-filled style=""/>
+                  <span>Ctrl biométrico</span>
+                </div>
+              </nav-link>
+            </a-menu-item>
+            
           </a-sub-menu>
 
 
@@ -382,6 +391,7 @@
     <div v-if="route().current('admin-colegio-index')"> {{ submenu = 3  }}</div>
     <div v-if="route().current('admin-postulante-index')"> {{ submenu = 3  }}</div>
     <div v-if="route().current('admin-apoderado-index')"> {{ submenu = 3 }}</div>
+    <div v-if="route().current('admin-control-biometrico')"> {{ submenu = 3  }}</div>
 
     <div v-if="route().current('admin-participante-docente')"> {{ submenu = 4  }}</div>
     <div v-if="route().current('admin-participante-administrativo')"> {{ submenu = 4  }}</div>

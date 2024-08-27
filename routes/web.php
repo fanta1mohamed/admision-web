@@ -42,6 +42,7 @@ use App\Http\Controllers\PagoBancoController;
 use App\Http\Controllers\CertificadoController;
 use App\Http\Controllers\DocumentosResultadoController;
 use App\Http\Controllers\PuntajeController;
+use App\Http\Controllers\ControlBiometricoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\DniController;
 use App\Http\Controllers\SyncController;
@@ -217,6 +218,11 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/perfil-postulante', fn () => Inertia::render('Admin/Postulante/Perfil'));
     Route::get('postulante-perfil/{dni}', [DashboardController::class, 'showPostulante']);
     Route::post('get-procesos', [DashboardController::class, 'getInsPostulante']);
+
+
+    //CONTROL BIOMETRICO
+    Route::get('/control-biometrico', fn () => Inertia::render('Admin/ControlBiometrico/Lista'))->name('admin-control-biometrico');
+    Route::post('/get-control-posterior', [ControlBiometricoController::class, 'getControlPosterior']);
     
     //PARTICIPANTES
     Route::get('/participante-docente', fn () => Inertia::render('Admin/Participante/Docente'))->name('admin-participante-docente');
@@ -245,6 +251,11 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
 
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
+
+
+
+
+
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 

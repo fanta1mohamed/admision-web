@@ -2,23 +2,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Proceso;
-use App\Models\TipoProceso;
 use App\Models\ControlBiometrico;
-use App\Models\Preinscripcion;
-use App\Models\Documento;
 use App\Models\Estudiante;
-use App\Models\AvancePostulante;
 use App\Models\CarrerasPrevias;
-use App\Models\Paso;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Models\RegistroEstudiante;
-use Inertia\Inertia;
 use Carbon\Carbon;
-use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\File;
-use setasign\Fpdi\Fpdi;
 use Illuminate\Support\Facades\Http;
 
 
