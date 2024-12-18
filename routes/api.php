@@ -10,6 +10,7 @@ use App\Http\Controllers\SancionadoController;
 use App\Http\Controllers\CepreController;
 use App\Http\Controllers\HuellaController;
 use App\Http\Controllers\PagoBancoController;
+use App\Http\Controllers\ProcesoController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-ingresante/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
@@ -56,3 +57,5 @@ Route::post('/cargar-imagen-azangaro', [HuellaController::class, 'uploadAzangaro
 
 Route::post('/get-pagos-banco', [PagoBancoController::class, 'getComprobantesDNI']);
 Route::post('/get-pagos-banco-secuencia', [PagoBancoController::class, 'getComprobantesSecuencia']);
+
+Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProceso']);
