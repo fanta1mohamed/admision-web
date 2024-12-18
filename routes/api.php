@@ -15,6 +15,7 @@ use App\Http\Controllers\ProcesoController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-ingresante/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
     Route::get('/get-postulante-pago/{dni}/{proceso}', [ApixController::class, 'getPostulantePago']);
+    Route::post('/get-procesos', [ProcesoController::class, 'getProcesos']);
 });
 Route::middleware('throttle:50,1')->post('/v1/postulante-cepre-inscrito', [CepreController::class, 'getVerInscripcion']);
 
@@ -59,3 +60,4 @@ Route::post('/get-pagos-banco', [PagoBancoController::class, 'getComprobantesDNI
 Route::post('/get-pagos-banco-secuencia', [PagoBancoController::class, 'getComprobantesSecuencia']);
 
 Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProceso']);
+
