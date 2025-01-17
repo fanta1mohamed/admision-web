@@ -43,10 +43,10 @@
     @endfor
 </div>
 <div class="content">
-    <div style="margin-top:0px;"> 
+    <div style="margin-top:0px;">
         <div style="margin:auto; width:400px; text-align:center; margin-bottom:14px; font-size:9pt; font-style: italic;">
             <span>
-                “Año del Bicentenario, de la consolidación de nuestra Independencia, y de la conmemoración de las heroicas batallas de Junín y Ayacucho”
+                “{{ $data->nombre_anio}}”
             </span>
         </div>
         <div>
@@ -57,7 +57,7 @@
                         <p style="text-align: justify; line-height:1.5rem;">
                         <span style="font-weight: bold;">SOLICITO:</span> Inscripción para postular en el <span style="font-weight: bold;"> EXAMEN {{ $data->proceso }}.</span> </p></td>
                 </tr>
-            </table>    
+            </table>
         </div>
         <div style="margin-top: 14px;">
             <table>
@@ -75,19 +75,19 @@
                     <td style="width: 50%"></td>
                     <td style="width: 50%">
                         <p style="text-align: justify; line-height:1.8rem;">
-                            Yo, <span style="text-transform: uppercase;">{{$data->nombres}} {{$data->primer_apellido}} {{ $data->segundo_apellido }}</span>, 
-                            identificado(a) con {{$data->tipo_doc}} N° {{ $data->dni}}, 
-                            con domicilio en {{$data->direccion }} 
+                            Yo, <span style="text-transform: uppercase;">{{$data->nombres}} {{$data->primer_apellido}} {{ $data->segundo_apellido }}</span>,
+                            identificado(a) con {{$data->tipo_doc}} N° {{ $data->dni}},
+                            con domicilio en {{$data->direccion }}
                             @if ($data->distrito == null )
                                 de {{$data->pais}},
                             @else
                                 del distrito de {{ $data->distrito }},
-                            @endif ante usted 
+                            @endif ante usted
                             me presento y expongo:
                         </span>
                     </td>
                 </tr>
-            </table>    
+            </table>
         </div>
 
         <div style="margin-top: 12px;">
@@ -101,8 +101,8 @@
                                 <strong>SOLICITO la inscripción para postular en el EXAMEN
                                 {{ $data->proceso }}</strong>
                                 que se llevará a cabo el {{ $data->fecha_examen }}
-                                del año en curso. Asimismo, pongo a vuestro conocimiento que 
-                                postulo al programa de estudios de<span style="font-weight: bold;"> {{ $data->programa }}</span> 
+                                del año en curso. Asimismo, pongo a vuestro conocimiento que
+                                postulo al programa de estudios de<span style="font-weight: bold;"> {{ $data->programa }}</span>
                                 bajo la modalidad  <span style="font-weight: bold;">{{ $data->modalidad }}</span>.
                             </div>
                         </div>
@@ -110,13 +110,20 @@
                             Adjunto a esta solicitud los siguientes documentos:
                         </div>
                         <div style="padding-left:20px; margin-top: 14px;">
+                          @if( $data->id_modalidad == 12)
                             <table>
-                                <tr><td style="height: 23px;">1.</td><td>Comprobante de pago.</td></tr>
-                                <tr><td style="height: 23px;">2.</td><td>Documento de identidad (<span style="color:red;">*</span>original y copia).</td></tr>
-                                <tr><td style="height: 23px;">3.</td><td>Certificado de estudios (<span style="color:red;">*</span>original y copia).</td></tr>
-                                <tr><td v-align="top"><div style="margin-top:-20px;">4.</div></td><td style="height: 23px;">Otros requisitos según lo estipulado en el Art. 16 del Reglamento General de admisión 2024-II conforme a la modalidad de postulación.</td></tr>
-                                
+                                <tr><td style="height: 23px;">1.</td><td>Documento de identidad (<span style="color:red;">*</span>original y copia).</td></tr>
+                                <tr><td style="height: 23px;">2.</td><td>Certificado de estudios (<span style="color:red;">*</span>original y copia).</td></tr>
+                                <tr><td v-align="top"><div style="margin-top:-20px;">3.</div></td><td style="height: 23px;">Otros requisitos según lo estipulado en el Art. 15 del Reglamento General de admisión 2025 conforme a la modalidad de postulación.</td></tr>
                             </table>
+                          @else
+                            <table>
+                              <tr><td style="height: 23px;">1.</td><td>Váuchers de pago.</td></tr>
+                              <tr><td style="height: 23px;">2.</td><td>Documento de identidad (<span style="color:red;">*</span>original y copia).</td></tr>
+                              <tr><td style="height: 23px;">3.</td><td>Certificado de estudios (<span style="color:red;">*</span>original y copia).</td></tr>
+                              <tr><td v-align="top"><div style="margin-top:-20px;">4.</div></td><td style="height: 23px;">Otros requisitos según lo estipulado en el Art. 15 del Reglamento General de admisión 2025 conforme a la modalidad de postulación.</td></tr>
+                          </table>
+                          @endif
                         </div>
                         <div style="margin-top:10px; margin-bottom:-14px;">
                             Nota (<span style="color:red;">*</span> Solo para verificación</span>)
@@ -124,7 +131,7 @@
 
                         <div style="margin-top: 14px; text-align:justify;">
                             @if( $data->id_modalidad != 2)
-                                <P style="line-height:1.5rem;"> 
+                                <P style="line-height:1.5rem;">
                                 @if($carreras_previas != null)
                                     Adicionalmente, deseo informar que estoy postulando a mi
                                     @if(count($carreras_previas) == 1)
@@ -136,44 +143,46 @@
                                     @elseif( count($carreras_previas) == 4 )
                                         quinta carrera
                                     @else
-                                    @endif 
-                                    en esta prestigiosa universidad. 
-                                    He tenido ingresos previos en las siguientes carreras:                             
+                                    @endif
+                                    en esta prestigiosa universidad.
+                                    He tenido ingresos previos en las siguientes carreras:
                                     @foreach ($carreras_previas as $index=>$item)
                                         <div style="margin-top: 8px; margin-left:20px;">
                                             {{$index + 1}}. {{ $item->nombre }} - CODIGO: <span style="font-weight: bold;">{{ $item->codigo }} </span>
-                                        </div>                                
+                                        </div>
                                     @endforeach
+                                    <p style="margin-top: 5px; margin-bottom: -3px;"> Importante: Revisar artículo 18 del reglamento general de admisión 2025</p>
                                 @else
                                 @endif
                             @endif
 
                             @if( $data->id_modalidad == 2)
-                                <p style="line-height:1.5rem;"> 
-                                    Adicionalmente, deseo informar que me encuentro matriculado en:    
+                                <p style="line-height:1.5rem;">
+                                    Adicionalmente, deseo informar que me encuentro matriculado en:
                                         <div style="margin-top: 8px; margin-left:20px;">
                                             {{ $data->nom_car }} con el CODIGO: <span style="font-weight: bold;">{{ $data->cod_car }} </span>
-                                        </div>                                
+                                        </div>
                                 </p>
+
                             @endif
                         </div>
 
 
                         <div style="text-align: justify; margin-top:12px;" >
-                                                    
+
                             @if( $data->id_modalidad_proceso == 1)
                             <p style="line-height:1.5rem;">
-                                Agradezco su atención a la presente y me comprometo a cumplir con la inscripción presencial 
+                                Agradezco su atención a la presente y me comprometo a cumplir con la inscripción presencial
                                 según el último digito de mi DNI, tal como se encuentra especificado en el cronograma.
                             </p>
-                            
-                            @else 
-                            
+
+                            @else
+
                             <p style="line-height:1.5rem;">
-                                Agradezco su atención a la presente y me comprometo a cumplir con la inscripción presencial 
+                                Agradezco su atención a la presente y me comprometo a cumplir con la inscripción presencial
                                 según como se encuentra especificado en el cronograma.
                             </p>
-                            @endif 
+                            @endif
 
                         </div>
 
@@ -195,22 +204,22 @@
             </table>
         </div>
 
-        <div style="margin-top:108px">  
+        <div style="margin-top:88px">
 
             <table style="width:100%; bakcground:orange; margin-top:0px">
                 <tr>
                     <td align="center"  style="vertical-align: bottom;">
                         <div style="text-align: center;">
 
-                            <div style="margin-bottom: 5px;">_______________________________</div>
-                            <div style="margin-bottom: 5px;"><span style="text-transform:uppercase">Nombre: ______________________________</span></div>
+                            <div style="margin-bottom: 10px;">FIRMA: _______________________________</div>
+                            <div style="margin-bottom: 10px;"><span style="text-transform:uppercase">Nombre y Apellidos: ____________________________________</span></div>
                             {{-- <div><span style="text-transform:uppercase">{{$data->nombres}} {{$data->primer_apellido }} {{ $data->segundo_apellido }}</span></div> --}}
                             <span> {{$data->tipo_doc}} N.° {{ $data->dni}}</span>
                         </div>
 
                         {{-- <div>966637192</div> --}}
-                    </td>  
-                    {{-- <td style="width: 50%"> 
+                    </td>
+                    {{-- <td style="width: 50%">
                         <div style=" margin-left: 160px; height: 150px; text-align:center;">
                             <span style="font-size:6pt;"><?php echo DNS2D::getBarcodeHTML('https://admision.unap.edu.pe/verificar-solicitud/'.$data->dni, 'QRCODE',4,4);?> </span>
                         </div>
