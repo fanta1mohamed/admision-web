@@ -46,7 +46,7 @@
     <div style="margin-top:0px;"> 
         <div style="margin:auto; width:400px; text-align:center; margin-bottom:14px; font-size:9pt; font-style: italic;">
             <span>
-                “Año del Bicentenario, de la consolidación de nuestra Independencia, y de la conmemoración de las heroicas batallas de Junín y Ayacucho”
+                “Año de la recuperación y consolidación de la economía peruana”
             </span>
         </div>
         <div>
@@ -112,10 +112,10 @@
                             Adjunto a esta solicitud los siguientes documentos:
                         </div>
                         <div style="padding-left:20px; margin-top: 14px;">
-                            <div  style="margin-top: 5px;">1.	Comprobante de pago.</div>
+                            <div  style="margin-top: 5px;">1.	Vauchers de pago.</div>
                             <div  style="margin-top: 5px;">2.	Documento de identidad (<span style="color:red;">*</span>original y copia).</div>
                             <div  style="margin-top: 5px;">3.	Certificado de estudios (<span style="color:red;">*</span>original y copia).</div>
-                            <div  style="margin-top: 5px; color:red;">4.	Otros requisitos según lo estipulado en el Art. 16.b del reglamento general de admisión 2024-II conforme a la modalidad de postulación.</div>
+                            <div  style="margin-top: 5px; color:red;">4.	Otros requisitos según lo estipulado en el Art. 15 del reglamento general de admisión 2025 conforme a la modalidad de postulación.</div>
                         </div>
                         <div style="margin-top:10px; margin-bottom:-14px;">
                             Nota (<span style="color:red;">*</span> Solo para verificación</span>)

@@ -151,7 +151,7 @@
                                             {{$index + 1}}. {{ $item->nombre }} - CODIGO: <span style="font-weight: bold;">{{ $item->codigo }} </span>
                                         </div>
                                     @endforeach
-                                    <p style="margin-top: 5px; margin-bottom: -3px;"> Importante: Revisar artículo 18 del reglamento general de admisión 2025</p>
+                                    <p style="margin-top: 5px; margin-bottom: -3px;"> Importante: Revisar artículo 18 del Reglamento General de Admisión 2025</p>
                                 @else
                                 @endif
                             @endif
