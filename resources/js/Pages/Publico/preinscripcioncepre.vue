@@ -342,6 +342,25 @@
 
     </a-modal>
 
+
+    <a-modal v-model:visible="modalUbigeo" :footer="false">
+      <span class="font-bold text-xl">{{ datos_preinscripcion.tipo_certificado }}</span>
+      
+      <a-tabs v-model:activeKey="activeKey" :size="size">
+        <a-tab-pane key="1" tab="DNI ELECTRÓNICO">
+          <div style="max-height: 450px; overflow-y: scroll;">
+            <img src="../../../assets/imagenes/dni/electronico.png">
+          </div>
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="DNI ANTIGUO">
+          <div>
+            <img src="../../../assets/imagenes/dni/azul.png">
+          </div>
+        </a-tab-pane>
+      </a-tabs>
+
+    </a-modal>
+
     <div style="width: 100%; min-height: calc(100vh - 390px); padding: 20px 20px; margin-top: 0px;">
 
       <div v-if="nc == 1"><pre> {{ presionado = 1 }} {{ nc = 0 }} </pre> </div>
@@ -392,8 +411,8 @@
               </div>
             <div style="display: flex; justify-content: center; margin-top: 20px;">
               <!-- <a-button type="primary" @click="getDatosApi()">Iniciar Postulación</a-button> -->
-              <a-button type="primary" v-if="participa == 0 || codigo_aleatorio !== formState.codigo_secreto || modalcarrerasprevias == true"  disabled>Iniciar Postulación</a-button>
-              <a-button type="primary" v-if="participa == 1 && formState.codigo_secreto === codigo_aleatorio && modalcarrerasprevias == false" @click="getDatosPersonales()">Iniciar Postulación</a-button>
+              <a-button type="primary" v-if="participa == 0 || codigo_aleatorio !== formState.codigo_secreto || modalcarrerasprevias == true" style="background: #cdcdcd; color: white; border:none; border-radius: 5px;"  disabled>Iniciar Postulación</a-button>
+              <a-button type="primary" v-if="participa == 1 && formState.codigo_secreto === codigo_aleatorio && modalcarrerasprevias == false" style="background: teal; border:none; border-radius: 5px;" @click="getDatosPersonales()">Iniciar Postulación</a-button>
             </div>
           </a-form>
         </a-card>
@@ -482,7 +501,7 @@
                 </a-row>
 
                 <a-row :gutter="[16, 0]" class="form-row" style="margin-top: -20px;">
-                  <a-col :span="24" :md="24" :lg="16" :xl="16" :xxl="16">
+                  <a-col :span="24" :md="24" :lg="16" :xl="12" :xxl="16">
                     <a-form-item
                         name="correo"
                         :rules="[
@@ -495,10 +514,12 @@
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="24" :md="24" :lg="8" :xl="8" :xxl="8">                    
+                  <a-col :span="24" :md="24" :lg="8" :xl="12" :xxl="8">                    
                     <a-form-item v-if="datospersonales.tipo_doc === 1" name="ubigeo"
                         :rules="[ { required: true, message: 'Ingresa ubigeo de nacimiento', trigger: 'change'},]">
-                      <div><label>Ubigeo de nacimiento (<span style="color:red;">*</span>)</label></div>
+                      <div class="flex justify-between"><label>Ubigeo de nacimiento (<span style="color:red;">*</span>)</label>
+                        <span style="color: teal; cursor: pointer;" @click="modalUbigeo = true">Ejemplo</span>
+                      </div>
                       <a-input type="text" @input="correoInput"  v-model:value="datospersonales.ubigeo" />
                     </a-form-item>
                     <a-form-item v-else name="ubigeo">
@@ -1125,11 +1146,11 @@
 
         <div v-if="pagina_pre === 7 || postulante_inscrito === 1">
           <div style="width: 100%; height:calc(100vh - 300px); display:flex; align-items:center; ">
-            <a-card style="padding-top: 5px; padding-bottom:0px; background: #24c1ff25;">
+            <a-card style="padding-top: 5px; padding-bottom:0px; background: #00808025;">
               <div class="">
                 <div class="flex justify-center">
                   <div  style="text-align:center; max-width: 300px;" >
-                    <div>FINALIZASTE CON EXITO EL REGISTRO DE TUS DATOS</div>
+                    <div>COMPLETÓ SU PREINSCRIPCIÓN Y ESTÁ LISTO PARA SU INSCRIPCIÓN PRESENCIAL</div>
                   </div>
                 </div>
 
@@ -1145,14 +1166,9 @@
                       </a-button>
                   </div>
                   
-                  <div v-if="props.procceso_seleccionado.id_modalidad === 1" class="flex justify-center mt-4 mb-4 mr-2">
-                    <a-button @click="descargaReglamento()" class="custom-button" shape="round">
-                        <template #icon>
-                          <div class="flex custom-icon2">
-                            <img src="../../../assets/imagenes/iconos/icono-descargar.png" alt="icono descarga" class="icono-img">
-                            <div class="icono-text2">DESCARGAR REGLAMENTO</div>
-                          </div>
-                        </template>
+                  <div class="flex justify-center mt-4 mb-4 mr-2">
+                    <a-button @click="descargaReglamento()" class="custom-button" shape="round" disabled>
+                            <div>DESCARGAR REGLAMENTO</div>
                       </a-button>
                   </div>
                 </div>
@@ -1169,7 +1185,7 @@
       </div>
       <a-affix v-if="pagina_pre !== 0" :offset-bottom="bottom" style="margin-top: 0px;">
         <div v-if="pagina_pre !== 8" style="background: none;">
-          <a-progress :percent="avance" width="90%" :format="percent => avance+'%'" stroke-color="purple"/>
+          <a-progress :percent="avance" width="90%" :format="percent => avance+'%'" stroke-color="teal"/>
         </div>
 
         <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 1">
@@ -1245,7 +1261,7 @@
           </div>
 
           <div class="flex justify-center">
-            <a-button @click="cancelarInscripcion()" style="background:#454554; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
+            <a-button @click="cancelarInscripcion()" style="background:teal; color:white; font-weight:bold; height:40px; width:110px; border-radius:8px; border:none;">
               Aceptar
             </a-button>
           </div>
@@ -1294,14 +1310,14 @@
                 <span> Se ha registrado su información</span>
               </div>
               <div class="flex justify-center mt-6">
-                  <a-button style="background: #476175; color:white; width:120px;" @click="modalcarrerasprevias = false">Continuar</a-button>
+                  <a-button style="background: teal; border:none; color:white; width:120px;" @click="modalcarrerasprevias = false">Continuar</a-button>
               </div>
             </div>
           </div>
           <div>
 
             <div class="flex justify-end mt-6 mb-3"> 
-              <a-button @click="cancelarInscripcion()" class="mr-2" style="color: #476175; border: 1px solid #476175; border-radius:5px;">Cancelar</a-button>
+              <a-button @click="cancelarInscripcion()" class="mr-2" style="color: teal; border: 1px solid teal; border-radius:5px;">Cancelar</a-button>
               <div v-if="selectedItems">
                 <a-button v-if="selectedItems.length === 0" disabled style=" border: 1px solid gray; border-radius:5px;">Continuar</a-button>
                 <a-button v-if="selectedItems.length > 0" @click="registrarPrevias()" style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
@@ -1336,7 +1352,7 @@
                 <a-alert message="!Importante! los datos registrados anteriormente se cargarán automáticamente" type="info" show-icon />
               </div>
               <div class="flex justify-center mt-4">
-                  <a-button type="primary" style="color:white; width:120px; height:42px;" @click="modalcarrerasprevias = false">Continuar</a-button>
+                  <a-button type="" style=" border:none; background: teal; color:white; width:120px; height:42px;" @click="modalcarrerasprevias = false">Continuar</a-button>
               </div>
             </div>
           </div>
@@ -1368,7 +1384,7 @@
                   <a-alert message="!Importante! los datos registrados anteriormente se cargarán automáticamente" type="info" show-icon />
                 </div>
                 <div class="flex justify-center mt-4">
-                    <a-button type="primary" style="color:white; width:120px; height:42px;" @click="modalcarrerasprevias = false">Continuar</a-button>
+                    <a-button type="primary" style="border:none; background: teal; color:white; width:120px; height:42px;" @click="modalcarrerasprevias = false">Continuar</a-button>
                 </div>
               </div>
             </div>
@@ -1396,6 +1412,7 @@ import { DownOutlined } from '@ant-design/icons-vue';
 
 const loading = ref(true);
 const modalcepreaviso = ref(false);
+const modalUbigeo = ref(false);
 const nombrecolegiox = ref("");
 const ejemplo = ref(false);
 const modalDatos = ref(true);
@@ -1444,7 +1461,7 @@ const datospersonales = reactive({
 
 const formDatosResidencia = ref();
 const datosresidencia = reactive({
-  pais:"",
+  pais:125,
   dep: null,
   prov: null,
   dist: null,
@@ -2435,9 +2452,9 @@ input[type=file]::file-selector-button:hover {
 .btn-vocacional{ background: #13136b; color: white; }
 .btn-vocacional:hover { background: #af1f75; }
 
-.boton-anterior { width: 175px; height: 40px; color:#350261; border: #564267 solid 2px; font-weight: bold; }
-.boton-siguiente { width: 175px; height: 40px; background: #350261; border:none; }
-.boton-siguiente:hover {  border-radius: 5px; background: #6414ab; color:white; }
+.boton-anterior { width: 175px; height: 40px; color: teal; border: teal solid 1px; font-weight: bold; }
+.boton-siguiente { width: 175px; height: 40px; background: teal; border:none; }
+.boton-siguiente:hover {  border-radius: 5px; background: #045454; color:white; }
 .datos-postulacion { display: flex}
 .selector-modalidad { width: 250px }
 .vocacional {height:calc(100vh - 227px); overflow-y:scroll;}
@@ -2456,7 +2473,7 @@ input[type=file]::file-selector-button:hover {
 
 @media (max-width: 480px), screen and (orientation: portrait) {
   .cardInicio { margin-top: -10px; border:none; }
-  .boton-anterior { width: 50%; border-radius: 0%; border: none; background: #5f506c42; }
+  .boton-anterior { width: 50%; border-radius: 0%; border: none; background: #506b6c42; }
   .boton-siguiente { width: 50%; border-radius: 0%; border: none; }
   .datos-postulacion { display: block;}
   .selector-modalidad { width: 100%; margin-bottom: 10px; }
@@ -2519,13 +2536,13 @@ input[type=file]::file-selector-button:hover {
 .aparecer-div { opacity: 0; transition: opacity 0.5s ease-in-out; }
 .aparecer-div-mostrar { opacity: 1; }
 
-.custom-button { background: none; border: #02445e 1px solid; padding: 0px 10px; }
-.custom-button:hover { background: #02445e; color:white; padding: 0px 10px; }
+.custom-button { background: #045c59; color: white; border: teal 2px solid; }
+.custom-button:hover { background: teal; border:none; color:white; }
 .custom-icon { display: flex; align-items: center; }
 .icono-img { margin-top: 0px; width: 30px; }
 
-.custom-button2 { background: white; padding: 0px 20px; }
-.custom-button2:hover { background: #02445e; color:white; padding: 0px 20px; }
+.custom-button2 { background: white; border: none; padding: 0px 20px; }
+.custom-button2:hover { background: teal; color:white; padding: 0px 20px; }
 .custom-icon2 { display: flex; align-items: center; }
 .icono-img2 { margin-top: 0px; width: 30px; }
 </style>

@@ -52,7 +52,7 @@ const props = defineProps(['nombre']);
 .headPre{
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: linear-gradient(#5430b8b2, #36228893), url('./../../assets/imagenes/f-head-sim.jpg');
+    background-image: linear-gradient(#178069b2, #1d7a5793), url('./../../assets/imagenes/f-head-sim.jpg');
 }
 .logoPre{
     display: flex;
