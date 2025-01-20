@@ -1120,7 +1120,7 @@
                         <a-input placeholder="Cod Examen médico" v-model:value="datos_preinscripcion.codigo_medico"/>
                       </a-form-item>
                     </a-col>
-                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12" v-if="datos_preinscripcion.modalidad != 2">
+                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12" v-if="datos_preinscripcion.modalidad != 2 || datos_preinscripcion.modalidad != 3 || datos_preinscripcion.modalidad != 1">
                       <a-form-item
                       name="tipo_certificado"
                       :rules="[{ required: true, message: 'Seleccine el tipo de certificado', trigger: 'change' },]"
@@ -1137,7 +1137,7 @@
                         </a-select>
                       </a-form-item>
                     </a-col>
-                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12" v-if="datos_preinscripcion.modalidad != 2">
+                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12" v-if="datos_preinscripcion.modalidad != 2 || datos_preinscripcion.modalidad != 3 || datos_preinscripcion.modalidad != 1">
                       <a-form-item
                       name="codigo_certificado"
                       :rules="[{ required: true, message: 'Ingrese el cod. de certificado', trigger: 'change' },]"
