@@ -19,7 +19,7 @@ class ProgramaProcesoController extends Controller
             MAX(CASE WHEN pp.id_modalidad = 2 THEN "SI" ELSE "-" END) AS "2",
             MAX(CASE WHEN pp.id_modalidad = 3 THEN "SI" ELSE "-" END) AS "3",
             MAX(CASE WHEN pp.id_modalidad = 4 THEN "SI" ELSE "-" END) AS "4",
-            MAX(CASE WHEN pp.id_modalidad = 5 THEN "SI" ELSE "-" END) AS "5" 
+            MAX(CASE WHEN pp.id_modalidad = 5 THEN "SI" ELSE "-" END) AS "5"
         FROM programas_proceso pp
         JOIN programa pro ON pro.id = pp.id_programa
         WHERE pp.id_proceso = '. auth()->user()->id_proceso.'  and pp.estado = 1 GROUP BY pro.nombre_corto;');
@@ -35,7 +35,7 @@ class ProgramaProcesoController extends Controller
         $res = DB::select("SELECT mo.id AS value, nombre AS label FROM (SELECT distinct id_modalidad FROM programas_proceso
         WHERE id_proceso = $id_proceso) AS pp
         JOIN modalidad mo ON mo.id = pp.id_modalidad");
-        
+
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
@@ -46,15 +46,40 @@ class ProgramaProcesoController extends Controller
         $res = DB::select("SELECT programa.id AS value, programa.nombre AS label  FROM (SELECT id_programa FROM programas_proceso
             WHERE id_modalidad = $request->id_modalidad AND id_proceso = $request->id_proceso AND programas_proceso.estado = 1) AS programas_proceso
             JOIN programa ON programa.id = programas_proceso.id_programa");
-        
+
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
 
+    public function getSelectProgramasProcesoArea(Request $request) {
+
+      $res = DB::select("SELECT programa.id AS value, programa.nombre AS label
+      FROM (
+          SELECT id_programa
+          FROM programas_proceso
+          WHERE id_modalidad = :id_modalidad
+                AND id_proceso = :id_proceso
+                AND programas_proceso.estado = 1
+          ) AS programas_proceso
+          JOIN programa ON programa.id = programas_proceso.id_programa
+          WHERE programa.area = :area", [
+              'id_modalidad' => $request->id_modalidad,
+              'id_proceso' => $request->id_proceso,
+              'area' => $request->area,
+          ]
+  );
+
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res;
+      return response()->json($this->response, 200);
+  }
+
+
+
 
     public function saveProceso(Request $request ) {
-    
+
         $proceso = null;
         if (!$request->id) {
             $proceso = ProgramaProceso::create([
@@ -68,11 +93,23 @@ class ProgramaProcesoController extends Controller
             $this->response['mensaje'] = 'Proceso '.$proceso->nombre.' creado con exito';
             $this->response['estado'] = true;
             $this->response['datos'] = $proceso;
-        
+
         }
-     
-    
+
+
         return response()->json($this->response, 200);
-      }   
+    }
+
+    public function getAreaByCodigo($codigo){
+
+      $res = DB::select("SELECT distinct pro.area FROM carreras_previas car
+          JOIN programa pro ON car.cod_car = pro.programa_oti
+          WHERE car.codigo = $codigo");
+
+      $this->response['estado'] = true;
+      $this->response['datos'] = $res[0];
+      return response()->json($this->response, 200);
+
+    }
 
 }

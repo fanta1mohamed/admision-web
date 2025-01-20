@@ -193,7 +193,7 @@
       <div>
         <h1 style="font-weight:bold; font-size:1.2rem;">Datos de postulación</h1>
         <hr>
-        
+
         <div class="datos-container" style="margin-bottom: 10px;">
           <div class="datos-column">
             <label for="name">Modalidad:</label>
@@ -267,7 +267,7 @@
               <option :value='48'>INGENERÍA DE TELECOMUNICACIONES</option>
               <option :value='49'>CIENCIAS CONTABLES - JULI</option>
               <option :value='50'>ARQUITECTURA Y URBANISMO - JULI</option>
-              <option :value='51'>INGENIERÍA AGROINDUSTRIAL - JULI</option> 
+              <option :value='51'>INGENIERÍA AGROINDUSTRIAL - JULI</option>
             </select>
           </div>
 
@@ -321,7 +321,7 @@
 
     <a-modal v-model:visible="ejemplo" :footer="false">
       <span class="font-bold text-xl">{{ datos_preinscripcion.tipo_certificado }}</span>
-      
+
       <a-tabs v-model:activeKey="activeKey" :size="size">
         <a-tab-pane key="1" tab="CERT. AMARILLO">
           <div style="max-height: 450px; overflow-y: scroll;">
@@ -345,7 +345,7 @@
 
     <a-modal v-model:visible="modalUbigeo" :footer="false">
       <span class="font-bold text-xl">{{ datos_preinscripcion.tipo_certificado }}</span>
-      
+
       <a-tabs v-model:activeKey="activeKey" :size="size">
         <a-tab-pane key="1" tab="DNI ELECTRÓNICO">
           <div style="max-height: 450px; overflow-y: scroll;">
@@ -369,7 +369,7 @@
         <a-card v-if="pagina_pre === 0"  style="width: 100%;  max-width: 350px; max-height:380px" class="pl-3 pr-3 cardInicio" >
           <div>
             <h1 style="font-size: 1.1rem;">Datos de validación</h1>
-            
+
           </div>
           <a-form
               ref="formRef" :model="formState"
@@ -401,7 +401,7 @@
               <div class="mt-3"><label>Código secreto</label></div>
                 <a-form-item
                   name="codigo_secreto"
-                  :rules="[{ required: true, message: 'Ingresa el código del cuadro', trigger: 'change' }, 
+                  :rules="[{ required: true, message: 'Ingresa el código del cuadro', trigger: 'change' },
                     { min: 6, message: 'El ubigeo debe tener 6 caracteres', trigger: 'blur',},
                     { validator: validateCodigoSecreto, trigger: 'change' }
                     ]"
@@ -514,7 +514,7 @@
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="24" :md="24" :lg="8" :xl="12" :xxl="8">                    
+                  <a-col :span="24" :md="24" :lg="8" :xl="12" :xxl="8">
                     <a-form-item v-if="datospersonales.tipo_doc === 1" name="ubigeo"
                         :rules="[ { required: true, message: 'Ingresa ubigeo de nacimiento', trigger: 'change'},]">
                       <div class="flex justify-between"><label>Ubigeo de nacimiento (<span style="color:red;">*</span>)</label>
@@ -605,7 +605,7 @@
                           <a-select-option :value="124" v-if="datospersonales.tipo_doc !== 1">PARAGUAY</a-select-option>
                           <a-select-option :value="128" v-if="datospersonales.tipo_doc !== 1">PUERTO RICO</a-select-option>
                           <a-select-option :value="149" v-if="datospersonales.tipo_doc !== 1">REPUBLICA DOMINICANA</a-select-option>
-                      </a-select>  
+                      </a-select>
                   </a-form-item>
                 </a-col>
                 <a-col :span="24" :md="24" :lg="12" :xl="8" :xxl="8">
@@ -1086,7 +1086,17 @@
                           </a-col>
                       </a-row>
                   </a-col>
-                    
+
+                    <a-col v-if="datos_preinscripcion.modalidad == 2" :span="24" :md="24" :lg="12" :xl="24" :xxl="24">
+                      <a-form-item
+                        name="observacion"
+                        :rules="[{ required: true, message: 'Código requerido', trigger: 'change' },]"
+                      >
+                        <div><label>Código de matricula</label></div>
+                        <a-input placeholder="Código de matrícula actual" v-model:value="datos_preinscripcion.observacion"/>
+                      </a-form-item>
+                    </a-col>
+
                     <a-col :span="24" :md="24" :lg="12" :xl="24" :xxl="24">
                       <a-form-item
                       name="programa"
@@ -1110,7 +1120,7 @@
                         <a-input placeholder="Cod Examen médico" v-model:value="datos_preinscripcion.codigo_medico"/>
                       </a-form-item>
                     </a-col>
-                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12">
+                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12" v-if="datos_preinscripcion.modalidad != 2">
                       <a-form-item
                       name="tipo_certificado"
                       :rules="[{ required: true, message: 'Seleccine el tipo de certificado', trigger: 'change' },]"
@@ -1127,7 +1137,7 @@
                         </a-select>
                       </a-form-item>
                     </a-col>
-                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12">
+                    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12" v-if="datos_preinscripcion.modalidad != 2">
                       <a-form-item
                       name="codigo_certificado"
                       :rules="[{ required: true, message: 'Ingrese el cod. de certificado', trigger: 'change' },]"
@@ -1165,14 +1175,14 @@
                         </template>
                       </a-button>
                   </div>
-                  
+
                   <div class="flex justify-center mt-4 mb-4 mr-2">
                     <a-button @click="descargaReglamento()" class="custom-button" shape="round" disabled>
                             <div>DESCARGAR REGLAMENTO</div>
                       </a-button>
                   </div>
                 </div>
-                
+
               </div>
             </a-card>
             </div>
@@ -1213,10 +1223,8 @@
         </div>
         <div class="flex" style="justify-content: space-between; background:none;" v-if="pagina_pre === 6">
           <a-button @click="prev()" class="boton-anterior">Anterior</a-button>
-          <a-button v-if="datos_preinscripcion.modalidad == 2" @click="abrirModalDatos()" :disabled="id_anterior === null" class="boton-siguiente">
-            Verificar Datos
-          </a-button>
-          <a-button v-else @click="abrirModalDatos()" class="boton-siguiente" style="color:white;">
+
+          <a-button @click="abrirModalDatos()" class="boton-siguiente" style="color:white;">
             Verificar Datos
           </a-button>
 
@@ -1246,9 +1254,9 @@
             <div><span></span></div>
           </div>
         </div>
-      </div>  
+      </div>
     </div>
-    
+
     <div v-if="loading === false"  class="flex justify-center" style="">
 
       <div v-if="modalSancionado === true" :class="modalsancionado === true ? 'aparecer-div':'aparecer-div-mostrar'">
@@ -1267,11 +1275,11 @@
           </div>
       </div>
       <div v-else>
-        <div v-if="anteriores.length >= 1" style="width: 100%; max-width: 1000px; margin-top:20px;"> 
+        <div v-if="anteriores.length >= 1" style="width: 100%; max-width: 1000px; margin-top:20px;">
           <div class="mb-4">
             <div class="flex justify-center"><span>Se ha detectado Que Ud. Tiene ingresos previos</span></div>
             <div class="mt-3 flex justify-left"><span>Seleccine los programas para continuar</span></div>
-          </div>   
+          </div>
           <a-row style="display:flex; justify-content:center;" class="pb-0">
               <a-col :span="24">
                   <a-row :gutter="16" style="display:fleX; justify-content:center;">
@@ -1316,7 +1324,7 @@
           </div>
           <div>
 
-            <div class="flex justify-end mt-6 mb-3"> 
+            <div class="flex justify-end mt-6 mb-3">
               <a-button @click="cancelarInscripcion()" class="mr-2" style="color: teal; border: 1px solid teal; border-radius:5px;">Cancelar</a-button>
               <div v-if="selectedItems">
                 <a-button v-if="selectedItems.length === 0" disabled style=" border: 1px solid gray; border-radius:5px;">Continuar</a-button>
@@ -1324,20 +1332,20 @@
               </div>
             </div>
           </div>
-      </div> 
+      </div>
 
       <div v-else>
-        <div v-if="props.procceso_seleccionado.id_modalidad_proceso !== 2 && anteriores.length === 0 " style="width: 100%; max-width: 1000px; margin-top:20px;">    
+        <div v-if="props.procceso_seleccionado.id_modalidad_proceso !== 2 && anteriores.length === 0 " style="width: 100%; max-width: 1000px; margin-top:20px;">
           <div class="flex justify-center">
             <div>
               <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
                 <div><span style="font-size:1.4rem;">
-                  VERIFICACIÓN FINALIZADA  
+                  VERIFICACIÓN FINALIZADA
                 </span></div>
               </div>
               <div class="mt-3 mb-3 flex justify-center" style="text-align:justify;">
                 <div><span style="font-size:1rem;">
-                  Hemos revisado tu información y cumples con los requisitos 
+                  Hemos revisado tu información y cumples con los requisitos
                   para postular.
                   Para continuar con el proceso de postulación, sigue estos pasos:</span></div>
               </div>
@@ -1358,18 +1366,18 @@
           </div>
           </div>
 
-          <div v-if="props.procceso_seleccionado.id_modalidad_proceso === 2 && datacepre.nro_documento" style="width: 100%; max-width: 1000px; margin-top:20px;">    
-            
+          <div v-if="props.procceso_seleccionado.id_modalidad_proceso === 2 && datacepre.nro_documento" style="width: 100%; max-width: 1000px; margin-top:20px;">
+
             <div class="flex justify-center">
               <div>
                 <div class="mt-0 mb-3 flex justify-center" style="text-align:center;">
                   <div><span style="font-size:1.4rem;">
-                    VERIFICACIÓN FINALIZADA  
+                    VERIFICACIÓN FINALIZADA
                   </span></div>
                 </div>
                 <div class="mt-3 mb-3 flex justify-center" style="text-align:justify;">
                   <div><span style="font-size:1rem;">
-                    Hemos revisado tu información y cumples con los requisitos 
+                    Hemos revisado tu información y cumples con los requisitos
                     para postular.
                     Para continuar con el proceso de postulación, sigue estos pasos:</span></div>
                 </div>
@@ -1388,7 +1396,7 @@
                 </div>
               </div>
             </div>
-        </div>       
+        </div>
       </div>
 
       </div>
@@ -1505,6 +1513,7 @@ const datos_preinscripcion = reactive({
   tipo_certificado:null,
   codigo_medico: null,
   codigo_certificado:null,
+  observacion: null
 })
 
 const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, ''); };
@@ -1608,7 +1617,6 @@ const getMadreApi = () => {
 };
 
 const desactivar = () => {
-
   modalcarrerasprevias.value = false;
   window.location.reload();
 }
@@ -1616,13 +1624,13 @@ const desactivar = () => {
 
 
 watch(() => datospadre.dni, (newValue, oldValue) => {
-  if(newValue.length == 8){ 
-    getApoderadoDNI(1); 
+  if(newValue.length == 8){
+    getApoderadoDNI(1);
   }
 });
 watch(() => datosmadre.dni, (newValue, oldValue) => {
-  if(newValue.length == 8){ 
-    getApoderadoDNI(2); 
+  if(newValue.length == 8){
+    getApoderadoDNI(2);
   }
 });
 
@@ -1630,7 +1638,7 @@ watch(() => datos_preinscripcion.tipo_certificado, (newValue, oldValue) => {
   if(newValue === 'CERTIFICADO AMARILLO'){ activeKey.value = "1"; }
   if(newValue === 'CERTIFICADO BLANCO'){ activeKey.value = "2";  }
   if(newValue === 'CONSTANCIA DE ESTUDIOS'){ activeKey.value = "3"; }
-  ejemplo.value = true; 
+  ejemplo.value = true;
 });
 
 
@@ -1659,6 +1667,28 @@ watch(() => datos_preinscripcion.modalidad, (newValue, oldValue) => {
   datos_preinscripcion.programa = null;
   getProgramas();
 });
+
+watch(() => datos_preinscripcion.observacion, (newValue, oldValue) => {
+  datos_preinscripcion.programa = null;
+  if(newValue.length == 6 || newValue.length == 0){
+    getAreaCodigo()
+  }
+
+});
+
+
+const temp_area = ref(null);
+const getAreaCodigo =  async () => {
+  let res = await axios.get( "/get-area-by-codigo/"+datos_preinscripcion.observacion);
+  temp_area.value = res.data.datos.area;
+  await getProgramasArea();
+}
+
+
+const getProgramasArea =  async () => {
+  let res = await axios.post( "/get-select-programas-proceso-area",{ "id_modalidad": datos_preinscripcion.modalidad, "id_proceso": props.procceso_seleccionado.id, "area": temp_area.value });
+  programas.value = res.data.datos;
+}
 
 const programas = ref([]);
 const getProgramas =  async () => {
@@ -1747,7 +1777,7 @@ const getDatosPersonales2 = async () => {
       provseleccionada.value = res.data.datos[0].prov;
       datosresidencia.prov = res.data.datos[0].provincia
       distseleccionado.value = res.data.datos[0].dist;
-      datosresidencia.pais = res.data.datos[0].id_pais;      
+      datosresidencia.pais = res.data.datos[0].id_pais;
       datosresidencia.dist = res.data.datos[0].distrito
       datospersonales.ubigeo_residencia = res.data.datos[0].ubigeo_residencia
       datospersonales.ubigeo = res.data.datos[0].ubigeo
@@ -1793,7 +1823,7 @@ const savePasos =  async (namex, num, avan ) => {
 }
 
 const saveDNI =  async () => {
-  
+
   let res = await axios.post( "/save-postulante-dni", {
     tipo_doc: datospersonales.tipo_doc,
     nro_doc: formState.dni,
@@ -1854,7 +1884,7 @@ const saveDatosResidencia =  async () => {
 
 
 watch(pagina_pre, ( newValue, oldValue ) => {
-  
+
   if(pagina_pre === 2 ){
     getDatosPersonales();
     getDepartamentos();
@@ -1912,7 +1942,7 @@ const getApoderadoDNI = async (tipo) => {
 
   if(tipo == 1){
     let res = await axios.post( "/get-apoderado-dni", {dni: datospadre.dni });
-    if (res.data.estado === true ){  
+    if (res.data.estado === true ){
       datospadre.dni = res.data.datos.dni
       datospadre.nombres = res.data.datos.nombres
       datospadre.paterno = res.data.datos.paterno
@@ -1922,7 +1952,7 @@ const getApoderadoDNI = async (tipo) => {
     }
   }else{
     let res = await axios.post( "/get-apoderado-dni", {dni: datosmadre.dni });
-    if (res.data.estado === true ){  
+    if (res.data.estado === true ){
       datosmadre.dni = res.data.datos.dni
       datosmadre.nombres = res.data.datos.nombres
       datosmadre.paterno = res.data.datos.paterno
@@ -1956,7 +1986,7 @@ const savecolegio = async () => {
     const response = await axios.post('/save-postulante-colegio', {
       id:  datospersonales.id,
       anio_egreso: datoscolegio.egreso,
-      colegio: datoscolegio.id_colegio, 
+      colegio: datoscolegio.id_colegio,
       actualizar: ac,
       proceso: props.procceso_seleccionado.id
     },);
@@ -2156,14 +2186,15 @@ const submit = async () => {
   fd.append('tipo_certificado', datos_preinscripcion.tipo_certificado)
   fd.append('codigo_certificado', datos_preinscripcion.codigo_certificado)
   fd.append('codigo_medico', datos_preinscripcion.codigo_medico)
+  fd.append('observacion', datos_preinscripcion.observacion)
   fd.append('id_postulante', datospersonales.id)
   fd.append('id_proceso', props.procceso_seleccionado.id)
   fd.append('id_anterior', id_anterior.value )
   await axios.post("/save-pre-inscripcion", fd).then(res=>{
-      if( avance_current.value < 100){ 
-        savePasos("Registro de datos preinscripcion", 6, 110) 
-      } else { 
-        next() 
+      if( avance_current.value < 100){
+        savePasos("Registro de datos preinscripcion", 6, 110)
+      } else {
+        next()
       }
       showToast("success","2",res.data.menssje);
   }).catch(err=>console.log(err))
@@ -2178,7 +2209,7 @@ const getDocs = async () => {
   }else{
     window.open("/pdf-solicitud-extranjeros/"+props.procceso_seleccionado.id+"/"+formState.dni, '_blank');
   }
-  
+
 
 
 }
@@ -2271,7 +2302,7 @@ const consultaInscripcion = async () => {
       if (res.data.estado === true) {
         postulante_inscrito.value = 1;
         modalcarrerasprevias.value = false;
-        loading.value = false; 
+        loading.value = false;
         pagina_pre.value = 7;
       } else {
         if(props.procceso_seleccionado.id_modalidad_proceso == 2){
@@ -2286,7 +2317,7 @@ const consultaInscripcion = async () => {
       }
   } catch (error) {
     console.error("Error al obtener datos del participante", error);
-  } 
+  }
 }
 
 const consultaInscripcion2 = async () => {
@@ -2297,7 +2328,7 @@ const consultaInscripcion2 = async () => {
         pagina_pre.value = 7;
       }else{
         pagina_pre.value = 6;
-      } 
+      }
   } catch (error) {
     console.error("Error al obtener datos del participante", error);
   }
