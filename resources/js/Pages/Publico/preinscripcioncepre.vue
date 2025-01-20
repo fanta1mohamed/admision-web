@@ -1656,6 +1656,7 @@ const getModalidades =  async () => {
 
 
 watch(() => datos_preinscripcion.modalidad, (newValue, oldValue) => {
+  datos_preinscripcion.programa = null;
   getProgramas();
 });
 
