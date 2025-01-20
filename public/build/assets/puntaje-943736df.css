@@ -1,0 +1,1 @@
+.seat-map{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.seat-group{display:flex;flex-direction:column;align-items:center;gap:10px;margin:10px}.seat-element{display:flex;gap:10px}.seat-row{display:flex;justify-content:center;gap:10px}.seat{width:25px;height:25px;display:flex;justify-content:center;align-items:center;color:#ccc}.selected{color:#007bff}
