@@ -1049,7 +1049,8 @@
                   <!-- v-if="props.procceso_seleccionado.id_modalidad_proceso === 3" -->
                   <div style="margin-top:-20px; margin-bottom:20px;" v-if="props.procceso_seleccionado.id_modalidad_proceso === 3 && datos_preinscripcion.modalidad === 2">
                     <a-alert
-                      description="¡MUY IMPORTANTE! El postulante debe seleccionar el programa del cual desea trasladarse internamente y el programa al que desea postularse."
+                      description="¡MUY IMPORTANTE! El postulante debe elegir un programa de estudios que pertenezca al mismo área del programa que está cursando actualmente."
+
                       type="info"
                     />
                   </div>
