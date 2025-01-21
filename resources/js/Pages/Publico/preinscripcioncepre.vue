@@ -1027,7 +1027,7 @@
                       <div style="margin-bottom: 25px; margin-top: 10px; ">
                         <h1 style="font-size: 1.1rem;"> Datos Postulación</h1>
                       </div>
-                      <div class="mb-3">
+                      <div class="mb-3" v-if="datos_preinscripcion.modalidad !== 1">
                         <a-form-item
                           name="modalidad"
                           :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
@@ -1050,7 +1050,6 @@
                   <div style="margin-top:-20px; margin-bottom:20px;" v-if="props.procceso_seleccionado.id_modalidad_proceso === 3 && datos_preinscripcion.modalidad === 2">
                     <a-alert
                       description="¡MUY IMPORTANTE! El postulante debe elegir un programa de estudios que pertenezca al mismo área del programa que está cursando actualmente."
-
                       type="info"
                     />
                   </div>
@@ -1060,6 +1059,26 @@
                   </div>
 
                   <a-row :gutter="[16, 0]" class="form-row">
+
+                    <a-col v-if="datos_preinscripcion.modalidad == 1" :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
+                      <a-form-item
+                          name="modalidad"
+                          :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
+                          >
+                          <div><label>Modalidad</label></div>
+                          <a-select
+                            ref="select"
+                            v-model:value="datos_preinscripcion.modalidad"
+                            style="width: 100%"
+                            :options="modalidades"
+                            @focus="focus"
+                            @change="handleChange"
+                          ></a-select>
+                        </a-form-item>
+                    </a-col>
+
+
+
                     <a-col :span="24">
                       <a-row :gutter="16" style="display:fleX; justify-content:center;">
                           <a-col v-for="item in carreras_previas" :key="item" :xs="24" :sm="24" :md="24" :lg="24"
