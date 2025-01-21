@@ -163,5 +163,17 @@ class ProcesoController extends Controller
     return response()->json($this->response, 200);
   }
 
+  public function getSelectProcesoHuellas( ) {
+    $res = Proceso::where('estado', 1)
+    ->select('id as value', 'nombre as label','anio', DB::raw("IF(ciclo = 1, 'I', 'II') as ciclo"))
+    ->get();
+    
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+
+
+
 
 }
