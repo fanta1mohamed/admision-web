@@ -349,12 +349,17 @@
       <a-tabs v-model:activeKey="activeKey" :size="size">
         <a-tab-pane key="1" tab="DNI ELECTRÓNICO">
           <div style="max-height: 450px; overflow-y: scroll;">
-            <img src="../../../assets/imagenes/dni/electronico.png">
+            <img src="../../../assets/imagenes/dni/1.jpg">
           </div>
         </a-tab-pane>
-        <a-tab-pane key="2" tab="DNI ANTIGUO">
+        <a-tab-pane key="2" tab="DNI AMARILLO">
           <div>
-            <img src="../../../assets/imagenes/dni/azul.png">
+            <img src="../../../assets/imagenes/dni/2.jpg">
+          </div>
+        </a-tab-pane>
+        <a-tab-pane key="3" tab="DNI AZUL">
+          <div>
+            <img src="../../../assets/imagenes/dni/3.jpg">
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -501,7 +506,7 @@
                 </a-row>
 
                 <a-row :gutter="[16, 0]" class="form-row" style="margin-top: -20px;">
-                  <a-col :span="24" :md="24" :lg="16" :xl="12" :xxl="16">
+                  <a-col :span="24" :md="24" :lg="12" :xl="12" :xxl="16">
                     <a-form-item
                         name="correo"
                         :rules="[
@@ -514,11 +519,11 @@
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="24" :md="24" :lg="8" :xl="12" :xxl="8">
+                  <a-col :span="24" :md="24" :lg="12" :xl="12" :xxl="8">
                     <a-form-item v-if="datospersonales.tipo_doc === 1" name="ubigeo"
                         :rules="[ { required: true, message: 'Ingresa ubigeo de nacimiento', trigger: 'change'},]">
                       <div class="flex justify-between"><label>Ubigeo de nacimiento (<span style="color:red;">*</span>)</label>
-                        <span style="color: teal; cursor: pointer;" @click="modalUbigeo = true">Ejemplo</span>
+                        <span style="color: crimson; cursor: pointer;" @click="modalUbigeo = true"> ver ejemplo</span>
                       </div>
                       <a-input type="text" @input="correoInput"  v-model:value="datospersonales.ubigeo" />
                     </a-form-item>
