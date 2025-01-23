@@ -171,7 +171,7 @@ public function uploadFotos(Request $request) {
 
         // Nombres de los archivos
         $fotoName = $dni . ".jpg";
-        $hIzqName = $dni . ".jpg";
+        $hIzqName = $dni . "x.jpg";
         $hDerName = $dni . ".jpg";
 
         // Mover archivos a las carpetas correspondientes
