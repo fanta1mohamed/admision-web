@@ -179,9 +179,9 @@ class HuellaController extends Controller
             $h_derecha->move($rutaCarpetaHuellas, $hDerName);
     
             return response()->json([
-                'foto_path' => asset("documentos/$id_proceso/$etapa/fotos/$fotoName"),
-                'huella_izquierda_path' => asset("documentos/$id_proceso/$etapa/huellas/$hIzqName"),
-                'huella_derecha_path' => asset("documentos/$id_proceso/$etapa/huellas/$hDerName"),
+                'foto_path' => asset("documentos/$id_proceso/"+Str::lower($etapa)+"/fotos/$fotoName"),
+                'huella_izquierda_path' => asset("documentos/$id_proceso/"+Str::lower($etapa)+"/huellas/$hIzqName"),
+                'huella_derecha_path' => asset("documentos/$id_proceso/"+Str::lower($etapa)+"/huellas/$hDerName"),
             ]);
         } catch (\Exception $e) {
             return response()->json([
