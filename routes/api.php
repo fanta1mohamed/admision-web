@@ -59,5 +59,8 @@ Route::post('/cargar-imagen-azangaro', [HuellaController::class, 'uploadAzangaro
 Route::post('/get-pagos-banco', [PagoBancoController::class, 'getComprobantesDNI']);
 Route::post('/get-pagos-banco-secuencia', [PagoBancoController::class, 'getComprobantesSecuencia']);
 
-Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProcesoHuellas']);
+Route::get('/helper-photos', [HuellaController::class, 'uploadFotos']);
 
+
+
+//id_proceso, id_etapa, foto 
