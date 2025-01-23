@@ -183,7 +183,7 @@ class HuellaController extends Controller
                 'huella_izquierda_path' => asset("documentos/$id_proceso/"+Str::lower($etapa)+"/huellas/$hIzqName"),
                 'huella_derecha_path' => asset("documentos/$id_proceso/"+Str::lower($etapa)+"/huellas/$hDerName"),
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {   
             return response()->json([
                 'error' => 'Error al cargar los archivos: ' . $e->getMessage()
             ], 500);
