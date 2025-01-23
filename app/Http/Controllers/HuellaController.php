@@ -170,8 +170,8 @@ class HuellaController extends Controller
     
             // Nombres de los archivos
             $fotoName = $dni . ".jpg";
-            $hIzqName = $dni . "_izq.jpg";
-            $hDerName = $dni . "_der.jpg";
+            $hIzqName = $dni . "x.jpg";
+            $hDerName = $dni . ".jpg";
     
             // Mover archivos a las carpetas correspondientes
             $foto->move($rutaCarpetaFotos, $fotoName);
