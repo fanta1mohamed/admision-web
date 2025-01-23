@@ -61,7 +61,7 @@ Route::post('/get-pagos-banco-secuencia', [PagoBancoController::class, 'getCompr
 
 Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProcesoHuellas']);
 
-Route::get('/helper-photos', [HuellaController::class, 'uploadFotos']);
+Route::post('/helper-photos', [HuellaController::class, 'uploadFotos']);
 
 
 
