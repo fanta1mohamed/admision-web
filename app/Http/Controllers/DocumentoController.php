@@ -159,9 +159,22 @@ class DocumentoController extends Controller {
 
   }
 
-  public function descargarReglamento(){
-    $archivo = public_path('/reglamento_2024_II.pdf');
-    return response()->download($archivo);
+  public function descargarReglamento($id_proceso){
+
+    $res = DB::select("SELECT reg.url FROM reglamento reg
+    JOIN procesos pro ON reg.id = pro.id_reglamento
+    WHERE pro.id = $id_proceso");
+
+    if(count($res) > 0 ){
+      $archivo = public_path($res[0]->url);
+      return response()->download($archivo);      
+    }else{
+
+      $this->response['estado'] = false;      
+      $this->response['message'] = "Reglamento no encontrado";
+      return response()->json($this->response, 200);
+    }
+
   } 
 
 

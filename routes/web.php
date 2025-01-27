@@ -651,7 +651,7 @@ Route::get('/pdftest', [TestController::class, 'pdfTest']);
 Route::post('/get-carreras-previas', [PostulanteController::class, 'getCarrerasPrevias']);
 
 
-Route::get('/descargar-reglamento', [DocumentoController::class, 'descargarReglamento']);
+Route::get('/descargar-reglamento/{p}', [DocumentoController::class, 'descargarReglamento']);
 
 
 Route::get('/sync-tables', [SyncController::class, 'syncTables']);

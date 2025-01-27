@@ -1202,7 +1202,7 @@
                   </div>
 
                   <div class="flex justify-center mt-4 mb-4 mr-2">
-                    <a-button @click="descargaReglamento()" class="custom-button" shape="round" disabled>
+                    <a-button @click="descargaReglamento()" class="custom-button" shape="round">
                             <div>DESCARGAR REGLAMENTO</div>
                       </a-button>
                   </div>
@@ -2456,13 +2456,13 @@ const getCarrerasPreviasPostulacion = async () => {
 
 const descargaReglamento = async () => {
   try {
-        const response = await axios.get('/descargar-reglamento', {
+        const response = await axios.get('/descargar-reglamento/'+props.procceso_seleccionado.id, {
           responseType: 'blob',
         });
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'reglamento.pdf'); // Nombre del archivo que se descargará
+        link.setAttribute('download', 'reglamento.pdf');
         document.body.appendChild(link);
         link.click();
       } catch (error) {
