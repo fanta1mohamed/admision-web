@@ -159,9 +159,11 @@
                             @if( $data->id_modalidad == 2)
                                 <p style="line-height:1.5rem;">
                                     Adicionalmente, deseo informar que me encuentro matriculado en:
+                                    @foreach ($carreras_previas as $index=>$item)
                                         <div style="margin-top: 8px; margin-left:20px;">
-                                            {{ $data->nom_car }} con el CODIGO: <span style="font-weight: bold;">{{ $data->cod_car }} </span>
+                                            {{$index + 1}}. {{ $item->nombre }} - CODIGO: <span style="font-weight: bold;">{{ $item->codigo }} </span>
                                         </div>
+                                    @endforeach
                                 </p>
 
                             @endif
