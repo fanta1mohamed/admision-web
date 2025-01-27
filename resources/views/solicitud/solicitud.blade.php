@@ -135,13 +135,13 @@
                                 @if($carreras_previas != null)
                                     Adicionalmente, deseo informar que estoy postulando a mi
                                     @if(count($carreras_previas) == 1)
-                                        segunda postulación
+                                        segunda carrera
                                     @elseif( count($carreras_previas) == 2 )
-                                        tercera postulación
+                                        tercera carrera
                                     @elseif( count($carreras_previas) == 3 )
-                                        cuarta postulación
+                                        cuarta carrera
                                     @elseif( count($carreras_previas) == 4 )
-                                        quinta postulación
+                                        quinta carrera
                                     @else
                                     @endif
                                     en esta prestigiosa universidad.
