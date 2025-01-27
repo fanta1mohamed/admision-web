@@ -21,7 +21,7 @@ class PagoBancoController extends Controller
     ])
     ->leftjoin('procesos','procesos.id','banco_pagos.id_proceso')
     ->where(\DB::raw('SUBSTRING(num_doc, 8, 8)'), '=', $request->dni)
-    ->where('banco_pagos.fch_pag', '>', '2024-01-01')
+    ->where('banco_pagos.fch_pag', '>', '2025-01-01')
     ->get();
 
     $this->response['estado'] = true;
@@ -42,7 +42,7 @@ class PagoBancoController extends Controller
     ])
     ->leftjoin('procesos','procesos.id','banco_pagos.id_proceso')
     ->where('banco_pagos.secuencia', '=', $request->secuencia)
-    ->where('banco_pagos.fch_pag', '>', '2024-01-01')
+    ->where('banco_pagos.fch_pag', '>', '2025-01-01')
     ->get();
 
     $this->response['estado'] = true;
