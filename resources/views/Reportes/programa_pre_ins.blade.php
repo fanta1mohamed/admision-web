@@ -94,6 +94,7 @@
             <thead>
                 <tr>
                     <th><div style="text-align: center;">N°</div></th>
+                    <th><div style="text-align: center;">Cod</div></th>
                     <th><div style="text-align: left;">Programa de estudios</div></th>
                     <th><div style="text-align: center;">Inscritos</div></th>
                     <th><div style="text-align: center;">PreInscritos</div></th>
@@ -105,6 +106,7 @@
                 @foreach ($res as $index=>$item)
                 <tr>
                     <td><div style="text-align: center;">{{ $index + 1 }}</div> </td>
+                    <td><div style="text-align: center; font-weight:bold;">{{ $item->codigo}}</div> </td>
                     <td><div style="text-align: left;">{{ $item->programa}}</div> </td>
                     <td><div style="text-align: center;">{{ $item->inscripciones}}</div> </td>
                     <td><div style="text-align: center;">{{ $item->preinscripciones}}</div> </td>
@@ -125,7 +127,7 @@
 
             @endif
             <tr>
-                <td colspan="2"><div style="text-align: right; font-weight: bold;">Totales:</div></td>
+                <td colspan="3"><div style="text-align: right; font-weight: bold;">Totales:</div></td>
                 <td><div style="text-align: center; font-weight: bold;">{{ $totales[0]->total_inscripciones }}</div></td>
                 <td><div style="text-align: center; font-weight: bold;">{{ $totales[0]->total_preinscripciones }}</div></td>
                 <td><div style="text-align: center; font-weight: bold;">{{ $totales[0]->total_diferencia }}</div></td>

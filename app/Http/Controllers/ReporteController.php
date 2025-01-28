@@ -15,25 +15,26 @@ class ReporteController extends Controller
         $sim = auth()->user()->id_proceso;
         $proceso = Proceso::find($sim);
     
-        $res = DB::select("SELECT 
-            COALESCE(pre.programa, ins.programa) AS programa,
-            COALESCE(ins.inscripciones, 0) AS inscripciones,
-            COALESCE(pre.preinscripciones, 0) AS preinscripciones,
-            COALESCE(pre.preinscripciones, 0) - COALESCE(ins.inscripciones, 0) AS diferencia
-        FROM (
-            SELECT pro.nombre AS programa, COUNT(*) AS preinscripciones FROM pre_inscripcion pre
-            JOIN programa pro ON pre.id_programa = pro.id
-            WHERE pre.id_proceso = ".auth()->user()->id_proceso." AND pre.estado = 1
-            GROUP BY pro.nombre
-        ) pre
-        INNER JOIN (
-            SELECT pro.nombre AS programa, COUNT(*) AS inscripciones
-            FROM inscripciones ins
-            JOIN programa pro ON ins.id_programa = pro.id
-            WHERE ins.id_proceso = ".auth()->user()->id_proceso." AND ins.estado = 0
-            GROUP BY pro.nombre
-        ) ins ON pre.programa = ins.programa
-        ORDER BY preinscripciones DESC, inscripciones DESC;");
+            $res = DB::select("SELECT 
+                pre.cod_pro AS codigo,
+                COALESCE(pre.programa, ins.programa) AS programa,
+                COALESCE(ins.inscripciones, 0) AS inscripciones,
+                COALESCE(pre.preinscripciones, 0) AS preinscripciones,
+                COALESCE(pre.preinscripciones, 0) - COALESCE(ins.inscripciones, 0) AS diferencia
+            FROM (
+                SELECT pro.id AS cod_pro, pro.nombre AS programa, COUNT(*) AS preinscripciones FROM pre_inscripcion pre
+                JOIN programa pro ON pre.id_programa = pro.id
+                WHERE pre.id_proceso = 13 AND pre.estado = 1
+                GROUP BY pro.id, pro.nombre
+            ) pre
+            INNER JOIN (
+                SELECT pro.nombre AS programa, COUNT(*) AS inscripciones
+                FROM inscripciones ins
+                JOIN programa pro ON ins.id_programa = pro.id
+                WHERE ins.id_proceso = 13 AND ins.estado = 0
+                GROUP BY pro.nombre
+            ) ins ON pre.programa = ins.programa
+            ORDER BY pre.cod_pro");
 
         $totales = DB::select("SELECT
             SUM(COALESCE(ins.inscripciones, 0)) AS total_inscripciones,
