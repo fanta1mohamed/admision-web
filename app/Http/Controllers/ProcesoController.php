@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Proceso;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -144,12 +145,12 @@ class ProcesoController extends Controller
 
   public function getViewResultados($nombreProceso)
   {
+    $admin = User::where('estado', 1)->where('id', auth()->id())->where('id_rol', 1)->exists() ? 1 : 0;
     $proceso = Proceso::where('slug', $nombreProceso)->first();
     if($proceso){ 
-      return Inertia::render('Publico/Resultados/index', ['procceso_seleccionado' => $proceso]); 
-    } else {
-      abort(404);
+      return Inertia::render('Publico/Resultados/index', ['proceso_seleccionado' => $proceso, 'admin' => $admin]); 
     }
+    abort(404);
   }
 
 

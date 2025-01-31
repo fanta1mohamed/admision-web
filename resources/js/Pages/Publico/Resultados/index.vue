@@ -1,6 +1,6 @@
 <template style="background:pink;">
 <Head title="Resultados"/>
-<Layout :nombre="props.procceso_seleccionado.nombre">
+<Layout :nombre="props.proceso_seleccionado.nombre">
 
   <!-- <a-breadcrumb>
     <a-breadcrumb-item >Inicio</a-breadcrumb-item>
@@ -11,7 +11,7 @@
     <div>
       <h1 style="font-size: 1.7rem;">Resultados del examen</h1>
       <p style="text-align: justify; font-size: 1em;">
-        Para consultar la relación de ingresantes del EXAMEN {{ props.procceso_seleccionado.nombre }}, 
+        Para consultar la relación de ingresantes del EXAMEN {{ props.proceso_seleccionado.nombre }}, 
         haga clic en el botón "Descargar" correspondiente a la fecha de su interés. 
         El archivo se descargará automáticamente, y podrá abrirlo para visualizar el 
         listado de ingresantes ordenado por mérito.
@@ -29,16 +29,44 @@
       </div>
 
       <div>
-        <a-button @click="downloadFile(baseUrl+'/'+documento.url)" style=" height: 36px; background: #088dcf; color: white; border: none;">
-          <div class="flex">
-            <div class="mr-1"> Descargar</div>
-            <div style="margin-top: -2px;"> 
-              <DownloadOutlined />
-            </div>
-          </div>          
-        </a-button>
+        <div class="flex">
+          <div class="mr-2">
+            <a-button @click="viewFile(baseUrl+'/'+documento.url)" style=" height: 36px; background: #256d7d; color: white; border: none;">
+              <div class="flex">
+                <div style="margin-top: -2px;"> 
+                  <EyeOutlined/>
+                </div>
+              </div>          
+            </a-button>
+          </div>
+          <div>
+            <a-button @click="downloadFile(baseUrl+'/'+documento.url)" style=" height: 36px; background: #088dcf; color: white; border: none;">
+              <div class="flex">
+                <div style="margin-top: -2px;"> 
+                  <DownloadOutlined />
+                </div>
+              </div>          
+            </a-button>
+          </div>
+
+        </div>
+
+
+
       </div>
     </div>
+
+    <div v-if="props.admin === 1" class="mt-4">
+      <a-button @click="abrirModal()" style="height: 36px; background: #088dcf; color: white; border: none;">
+        <div class="flex">
+          <div class="mr-1">Subir archivo</div>
+          <div style="margin-top: -2px;"> 
+            <UploadOutlined/>
+          </div>
+        </div>          
+      </a-button>
+    </div>
+
 
 
     <div class="mt-6"></div>
@@ -46,7 +74,7 @@
     <div class="mt-6" style="">
       <div style="margin-top: -10px; text-align: left;">
         <div class="ml-1 mb-2">
-          Para consultar el puntaje del EXAMEN {{ props.procceso_seleccionado.nombre  }}, siga estos pasos:
+          Para consultar el puntaje del EXAMEN {{ props.proceso_seleccionado.nombre  }}, siga estos pasos:
         </div>
         <div class="ml-4">
           <div class="mb-2">1. Ingrese su DNI en el campo de texto proporcionado.</div>
@@ -135,6 +163,9 @@
         </template>
       </a-table> 
 
+      <div>
+
+      </div>
     </div>
 
     <div v-if="ingresante === 1" class="mt-6">
@@ -146,14 +177,74 @@
       <div class="mt-6"></div>
       <h1 style="font-size: 1.7rem;">Subir archivos </h1>
       <div>
-        <Certificado :id_proceso="props.procceso_seleccionado.id" :dni="formState.dni"/>
+        <Certificado :id_proceso="props.proceso_seleccionado.id" :dni="formState.dni"/>
       </div>
       <div class="mt-2">
-        <Dni :id_proceso="props.procceso_seleccionado.id" :dni="formState.dni"/>
+        <Dni :id_proceso="props.proceso_seleccionado.id" :dni="formState.dni"/>
       </div>
     </div>
 
   </a-card>
+
+
+  <a-modal v-model:visible="archivomodal" title="Archivo Resultado" :footer="false">
+      <a-form
+        ref="formRefArchivo" 
+        :model="formArchivo"
+        name="formArchivo"
+      >
+      <a-radio-group v-model:value="formArchivo.estado"  class="flex justify-end" style="display: flex; width: yellow;" name="radioGroup">
+        <a-radio :value="1">Activo</a-radio>
+        <a-radio :value="0">Inactivo</a-radio>
+      </a-radio-group>
+
+      <div style="margin-bottom: 7px;"><label>Descripción</label></div>
+      <a-form-item
+          name="descripcion"
+          :rules="[{ required: true, message: 'Ingrese la descripción', trigger: 'change' },]"
+        >
+        <a-input  v-model:value="formArchivo.descripcion" placeholder="Descripción"/>
+      </a-form-item>
+
+      <div class="mb-4">
+        <div class="mt-3"><label>Observaciónes</label></div>
+        <a-form-item name="observacion">
+          <a-textarea v-model:value="formArchivo.observacion" :maxlength="100" placeholder="Observación"/>
+        </a-form-item>
+      </div>
+
+      <div class="mb-4">
+        <a-upload-dragger
+            v-model:fileList="fileList"
+            :before-upload="beforeUpload"
+            :multiple="false"
+          >
+            <div class="flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <p class="ant-upload-text">Haz clic o arrastra el archivo aquí para cargarlo</p>
+            <p class="ant-upload-hint">No subir archivos no autorizados</p>
+          </a-upload-dragger>
+
+
+      </div>
+    </a-form>
+
+      <div class="flex justify-end">
+        <div class="mr-2">
+          <a-button @click="cancelar" style="height: 36px; background: none; color: #088dcf; border: #088dcf solid 1px;">
+            <div class="mr-1">Cancelar</div>
+        </a-button>
+        </div>
+        <a-button @click="save" style="height: 36px; background: #088dcf; color: white; border: none;">
+            <div class="mr-1">Guardar</div>
+        </a-button>
+      </div>
+      </a-modal>  
 
 </Layout>
 
@@ -165,11 +256,17 @@ import { Head } from '@inertiajs/vue3';
 import { notification } from 'ant-design-vue';
 import Certificado from './components/certificado.vue';
 import Dni from './components/dni.vue';
-import { DownloadOutlined } from '@ant-design/icons-vue';
+import { DownloadOutlined, UploadOutlined, EyeOutlined } from '@ant-design/icons-vue';
+import { Footer } from 'ant-design-vue/lib/layout/layout';
 const baseUrl = window.location.origin;
 
-const props = defineProps(['procceso_seleccionado']);
+const archivomodal = ref(false);
+
+const props = defineProps(['proceso_seleccionado','admin']);
 const codigo_secreto = ref("");
+
+const formRefArchivo = ref();
+const formArchivo = reactive({ descripcion: '', observacion: '', estado:1, file:[] });
 
 const formRef = ref();
 const formState = reactive({ dni: '', codigo_secreto: '', });
@@ -182,7 +279,7 @@ const getPuntaje = async () => {
   try {
     const res = await axios.post(`/get-puntajes-proceso/`, {
       dni: formState.dni,
-      id_proceso: props.procceso_seleccionado.id
+      id_proceso: props.proceso_seleccionado.id
     });
 
     if (res.data.estado == false) {
@@ -226,39 +323,25 @@ function validateCodigoSecreto(rule, value) {
 
 const maximos = ref([]);
 const getMaximos = async () => {
-  let res = await axios.get( "/get-puntajes-maximos-proceso/"+props.procceso_seleccionado.id);
+  let res = await axios.get( "/get-puntajes-maximos-proceso/"+props.proceso_seleccionado.id);
   if(res.data.estado == true){
      maximos.value = res.data.datos;
   }
 }
 
+const abrirModal = () => {
+  archivomodal.value = true;
+}
+
 const documentos = ref([]);
 const getDocumentos = async () => {
-  let res = await axios.post( "/get-documentos-resultados",{id_proceso: props.procceso_seleccionado.id});
+  let res = await axios.post( "/get-documentos-resultados",{id_proceso: props.proceso_seleccionado.id});
   if(res.data.estado == true){
      documentos.value = res.data.datos;
   }
 }
 
-const downloadFile = async (path) => {
-  try {
-    const response = await axios({
-      url: path,
-      method: 'GET',
-      responseType: 'blob',
-    });
-
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', path.split('/').pop()); // Extraer el nombre del archivo del path
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  } catch (error) {
-    console.error('Error descargando archivo:', error);
-  }
-};
+const viewFile = (path) => window.open(path, '_blank');
 
 getMaximos();
 getDocumentos();
@@ -295,7 +378,51 @@ function voltear(fecha) {
 }
 
 
+//UPDLOAD
 
+const beforeUpload = (file) => {
+  formArchivo.file = [file]; 
+  return false; 
+};
+
+const save = async () => {
+
+  const values = await formRefArchivo.value.validateFields();
+  if (formArchivo.file.length === 0) {
+    alert("Por favor, selecciona un archivo primero.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", formArchivo.file[0]);
+  formData.append("descripcion", formArchivo.descripcion);
+  formData.append("estado", formArchivo.estado);
+  formData.append("observacion", formArchivo.observacion);
+  formData.append("id_proceso", props.proceso_seleccionado.id );
+
+  try {
+    const response = await fetch("/save-documento-resultado", {
+      method: "POST", body: formData, headers: { "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content, },
+    });
+
+    if (!response.ok) {
+      throw new Error("Error en la subida del archivo");
+    }
+
+    const result = await response.json();
+      alert("Archivo subido con éxito: " + result.fileName);
+  } catch (error) {
+      alert("Error: " + error.message);
+  }
+};
+
+const cancelar = () => {
+  formArchivo.file = [];
+  formArchivo.descripcion = '';
+  formRefArchivo.estado = 1;
+  formArchivo.observacion = '';
+  archivomodal.value = false;
+};
 
 
 getCodigoAleatorio();

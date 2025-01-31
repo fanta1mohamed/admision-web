@@ -674,8 +674,10 @@ Route::post('/get-dnis-postulante', [DniController::class, 'getDnis']);
 Route::get('/eliminar-dni/{id}', [DniController::class, 'delete']);
 
 
-Route::post('/get-documentos-resultados', [DocumentosResultadoController::class, 'getDocumentos']);
 
+
+Route::post('/get-documentos-resultados', [DocumentosResultadoController::class, 'getDocumentos']);
+Route::post('/save-documento-resultado', [DocumentosResultadoController::class, 'cargarArchivoResultado'])->middleware('auth','admin');
 
 //DELETE LAST PROCESO
 Route::post('/actualizar-verificacion', [VerificacionFotosController::class, 'updateEstado']);
