@@ -343,6 +343,26 @@ const getDocumentos = async () => {
 
 const viewFile = (path) => window.open(path, '_blank');
 
+const downloadFile = async (path) => {
+  try {
+    const response = await axios({
+      url: path,
+      method: 'GET',
+      responseType: 'blob',
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', path.split('/').pop()); // Extraer el nombre del archivo del path
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.error('Error descargando archivo:', error);
+  }
+};
+
 getMaximos();
 getDocumentos();
 
@@ -377,9 +397,7 @@ function voltear(fecha) {
   return fecha.split('-').reverse().join('-');
 }
 
-
 //UPDLOAD
-
 const beforeUpload = (file) => {
   formArchivo.file = [file]; 
   return false; 
@@ -411,6 +429,7 @@ const save = async () => {
 
     const result = await response.json();
       alert("Archivo subido con éxito: " + result.fileName);
+      cancelar();
   } catch (error) {
       alert("Error: " + error.message);
   }
