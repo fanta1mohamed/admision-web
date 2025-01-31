@@ -26,12 +26,23 @@
         <div>
           <span>{{ documento.nombre }}</span>
         </div>
+
       </div>
 
       <div>
         <div class="flex">
-          <div class="mr-2">
-            <a-button @click="viewFile(baseUrl+'/'+documento.url)" style=" height: 36px; background: #256d7d; color: white; border: none;">
+          <div class="mr-1">
+            <a-button @click="elimarArchivo(documento.id)" size="small" style=" height: 30px; background: crimson; color: white; border: none;">
+              <div class="flex">
+                <div style="margin-top: -2px;"> 
+                  <DeleteOutlined/>
+                </div>
+              </div>          
+            </a-button>
+          </div>
+
+          <div class="mr-1">
+            <a-button @click="viewFile(baseUrl+'/'+documento.url)" size="small" style=" height: 30px; background: #256d7d; color: white; border: none;">
               <div class="flex">
                 <div style="margin-top: -2px;"> 
                   <EyeOutlined/>
@@ -40,7 +51,7 @@
             </a-button>
           </div>
           <div>
-            <a-button @click="downloadFile(baseUrl+'/'+documento.url)" style=" height: 36px; background: #088dcf; color: white; border: none;">
+            <a-button @click="downloadFile(baseUrl+'/'+documento.url)" size="small" style=" height: 30px; background: #088dcf; color: white; border: none;">
               <div class="flex">
                 <div style="margin-top: -2px;"> 
                   <DownloadOutlined />
@@ -229,8 +240,6 @@
             <p class="ant-upload-text">Haz clic o arrastra el archivo aquí para cargarlo</p>
             <p class="ant-upload-hint">No subir archivos no autorizados</p>
           </a-upload-dragger>
-
-
       </div>
     </a-form>
 
@@ -256,7 +265,7 @@ import { Head } from '@inertiajs/vue3';
 import { notification } from 'ant-design-vue';
 import Certificado from './components/certificado.vue';
 import Dni from './components/dni.vue';
-import { DownloadOutlined, UploadOutlined, EyeOutlined } from '@ant-design/icons-vue';
+import { DownloadOutlined, UploadOutlined, EyeOutlined, DeleteOutlined, DoubleLeftOutlined } from '@ant-design/icons-vue';
 import { Footer } from 'ant-design-vue/lib/layout/layout';
 const baseUrl = window.location.origin;
 
@@ -354,7 +363,7 @@ const downloadFile = async (path) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', path.split('/').pop()); // Extraer el nombre del archivo del path
+    link.setAttribute('download', path.split('/').pop());
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -385,12 +394,12 @@ const resultados = ref([]);
 const ingresante = ref(null);
 
 const columnsResultados = [
-    { title: 'Nombre', dataIndex: 'nombres'},    
-    { title: 'Programa', dataIndex:'programa', responsive: ['sm'], },
-    { title: 'Puntaje', dataIndex:'puntaje', align:'center'},
-    { title: 'Vocacional', dataIndex:'puntaje_vocacional', align:'center'},
-    { title: 'Fecha', dataIndex: 'fecha', align:'center'},
-    { title: 'Condición', dataIndex: 'condicion', align:'center'},
+  { title: 'Nombre', dataIndex: 'nombres'},    
+  { title: 'Programa', dataIndex:'programa', responsive: ['sm'], },
+  { title: 'Puntaje', dataIndex:'puntaje', align:'center'},
+  { title: 'Vocacional', dataIndex:'puntaje_vocacional', align:'center'},
+  { title: 'Fecha', dataIndex: 'fecha', align:'center'},
+  { title: 'Condición', dataIndex: 'condicion', align:'center'},
 ];
 
 function voltear(fecha) {
@@ -429,11 +438,25 @@ const save = async () => {
 
     const result = await response.json();
       alert("Archivo subido con éxito: " + result.fileName);
+      getDocumentos();
       cancelar();
+
   } catch (error) {
       alert("Error: " + error.message);
   }
 };
+
+
+const elimarArchivo = async ( ide ) => {
+  let res = await axios.get("/delete-documento-resultados/"+ide);
+  await getDocumentos();
+  // notificacion("error", "Archivo eliminado", "");
+
+}
+
+
+
+
 
 const cancelar = () => {
   formArchivo.file = [];

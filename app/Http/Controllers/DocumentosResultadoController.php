@@ -72,7 +72,7 @@ class DocumentosResultadoController extends Controller
 
 
     public function getDocumentos( Request $request){
-        $res = DB::select("SELECT nombre, id_tipo, fecha, url FROM documentos_resultado 
+        $res = DB::select("SELECT id, nombre, id_tipo, fecha, url FROM documentos_resultado 
             WHERE id_proceso = $request->id_proceso");
     
         $this->response['estado'] = !empty($res);
@@ -119,10 +119,8 @@ class DocumentosResultadoController extends Controller
         $doc_resultado = time();
         $nombreArchivo = $doc_resultado .".". $file->getClientOriginalExtension();  
 
-        // Mover el archivo a la carpeta
         $file->move($rutaCarpeta, $nombreArchivo);
     
-        // Guardar en la base de datos
         $archivo = new DocumentoResultado();
         $archivo->nombre = $request->descripcion;
         $archivo->url = "documentos/".$request->id_proceso."/resultados/{$nombreArchivo}";
@@ -139,6 +137,25 @@ class DocumentosResultadoController extends Controller
             'fileName' => $archivo->nombre,
             'filePath' => url($archivo->url),
         ]);
+    }
+
+
+
+    public function deleteArchivo($id) {
+         
+        $file = DocumentoResultado::find($id);
+
+        if (!$file) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+        if (Storage::disk('public')->exists($file->url)) {
+            Storage::disk('public')->delete($file->url);
+        }
+        $file->delete();
+
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+    
     }
     
 
