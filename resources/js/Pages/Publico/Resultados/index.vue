@@ -11,9 +11,9 @@
     <div>
       <h1 style="font-size: 1.7rem;">Resultados del examen</h1>
       <p style="text-align: justify; font-size: 1em;">
-        Para consultar la relación de ingresantes del EXAMEN {{ props.proceso_seleccionado.nombre }}, 
-        haga clic en el botón "Descargar" correspondiente a la fecha de su interés. 
-        El archivo se descargará automáticamente, y podrá abrirlo para visualizar el 
+        Para consultar la relación de ingresantes del EXAMEN {{ props.proceso_seleccionado.nombre }},
+        haga clic en el botón "Descargar" correspondiente a la fecha de su interés.
+        El archivo se descargará automáticamente, y podrá abrirlo para visualizar el
         listado de ingresantes ordenado por mérito.
       </p>
     </div>
@@ -34,29 +34,29 @@
           <div class="mr-1">
             <a-button @click="elimarArchivo(documento.id)" size="small" style=" height: 30px; background: crimson; color: white; border: none;">
               <div class="flex">
-                <div style="margin-top: -2px;"> 
+                <div style="margin-top: -2px;">
                   <DeleteOutlined/>
                 </div>
-              </div>          
+              </div>
             </a-button>
           </div>
 
           <div class="mr-1">
             <a-button @click="viewFile(baseUrl+'/'+documento.url)" size="small" style=" height: 30px; background: #256d7d; color: white; border: none;">
               <div class="flex">
-                <div style="margin-top: -2px;"> 
+                <div style="margin-top: -2px;">
                   <EyeOutlined/>
                 </div>
-              </div>          
+              </div>
             </a-button>
           </div>
           <div>
             <a-button @click="downloadFile(baseUrl+'/'+documento.url)" size="small" style=" height: 30px; background: #088dcf; color: white; border: none;">
               <div class="flex">
-                <div style="margin-top: -2px;"> 
+                <div style="margin-top: -2px;">
                   <DownloadOutlined />
                 </div>
-              </div>          
+              </div>
             </a-button>
           </div>
 
@@ -71,10 +71,10 @@
       <a-button @click="abrirModal()" style="height: 36px; background: #088dcf; color: white; border: none;">
         <div class="flex">
           <div class="mr-1">Subir archivo</div>
-          <div style="margin-top: -2px;"> 
+          <div style="margin-top: -2px;">
             <UploadOutlined/>
           </div>
-        </div>          
+        </div>
       </a-button>
     </div>
 
@@ -107,7 +107,8 @@
                     :rules="[{ required: true, message: 'Por favor ingresa tu DNI', trigger: 'change' },
                     { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]"
                   >
-                  <a-input v-model:value="formState.dni" @input="dniInput" :disabled="ingresante" :maxlength="8" placeholder="N° Documento"/>
+                  <a-input v-model:value="formState.dni" @input="dniInput" :disabled="true" :maxlength="8" placeholder="N° Documento"/>
+                  <!-- <a-input v-model:value="formState.dni" @input="dniInput" :disabled="ingresante" :maxlength="8" placeholder="N° Documento"/> -->
                 </a-form-item>
                 <div class="texto-imagen">
                   {{ codigo_aleatorio }}
@@ -117,7 +118,7 @@
                   <div class="mt-3"><label>Código</label></div>
                     <a-form-item
                       name="codigo_secreto"
-                      :rules="[{ required: true, message: 'Ingresa el código del cuadro', trigger: 'change' }, 
+                      :rules="[{ required: true, message: 'Ingresa el código del cuadro', trigger: 'change' },
                         { min: 6, message: 'El ubigeo debe tener 6 caracteres', trigger: 'blur',},
                         { validator: validateCodigoSecreto, trigger: 'change' }
                         ]"
@@ -137,12 +138,12 @@
     </div>
 
     <div v-if="resultados.length > 0 " class="mt-6">
-        <a-table 
-        :columns="columnsResultados" 
+        <a-table
+        :columns="columnsResultados"
         :data-source="resultados"
         :pagination="false"
         size="small"
-        > 
+        >
         <template #bodyCell="{ column, index, record }" >
             <template v-if="column.dataIndex === 'puntaje'">
                 <div>
@@ -172,7 +173,7 @@
                 </div>
             </template>
         </template>
-      </a-table> 
+      </a-table>
 
       <div>
 
@@ -200,7 +201,7 @@
 
   <a-modal v-model:visible="archivomodal" title="Archivo Resultado" :footer="false">
       <a-form
-        ref="formRefArchivo" 
+        ref="formRefArchivo"
         :model="formArchivo"
         name="formArchivo"
       >
@@ -253,12 +254,12 @@
             <div class="mr-1">Guardar</div>
         </a-button>
       </div>
-      </a-modal>  
+      </a-modal>
 
 </Layout>
 
 </template>
-<script setup> 
+<script setup>
 import Layout from '@/Layouts/LayoutPuntaje.vue'
 import { defineProps, watch, reactive, ref, computed } from 'vue';
 import { Head } from '@inertiajs/vue3';
@@ -283,7 +284,7 @@ const dniInput = (event) => { formState.dni = event.target.value.replace(/\D/g, 
 
 
 const getPuntaje = async () => {
-  
+
   ingresante.value = 0;
   try {
     const res = await axios.post(`/get-puntajes-proceso/`, {
@@ -328,7 +329,7 @@ function validateCodigoSecreto(rule, value) {
       resolve();
     }
   });
-} 
+}
 
 const maximos = ref([]);
 const getMaximos = async () => {
@@ -394,7 +395,7 @@ const resultados = ref([]);
 const ingresante = ref(null);
 
 const columnsResultados = [
-  { title: 'Nombre', dataIndex: 'nombres'},    
+  { title: 'Nombre', dataIndex: 'nombres'},
   { title: 'Programa', dataIndex:'programa', responsive: ['sm'], },
   { title: 'Puntaje', dataIndex:'puntaje', align:'center'},
   { title: 'Vocacional', dataIndex:'puntaje_vocacional', align:'center'},
@@ -408,8 +409,8 @@ function voltear(fecha) {
 
 //UPDLOAD
 const beforeUpload = (file) => {
-  formArchivo.file = [file]; 
-  return false; 
+  formArchivo.file = [file];
+  return false;
 };
 
 const save = async () => {
@@ -482,7 +483,7 @@ getCodigoAleatorio();
     -webkit-background-clip: text;
     display: inline-block;
     user-select: none;
-    -webkit-user-select: none; 
+    -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
 }
@@ -493,7 +494,7 @@ getCodigoAleatorio();
     left: 0;
     width: 100%;
     height: 100%;
-    background: #ffffff00; 
+    background: #ffffff00;
     pointer-events: none;
 }
 .example{
