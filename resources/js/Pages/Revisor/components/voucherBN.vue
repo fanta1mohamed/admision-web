@@ -24,11 +24,12 @@
                   <template #bodyCell="{ column, record }">
                       <template v-if="column.dataIndex === 'opcion'">
                         <template v-if="column.dataIndex === 'opcion'">
-                          <div v-if="record.estado">
-                            <div v-if="record.estado === 0"> 
+                          <div v-if="record.status">
+
+                            <div v-if="record.status === 0"> 
                                 <a-button @click="verificarBN(record)" style="background: #133466; border:none; color: white;"> seleccionar </a-button> 
                             </div>
-                            <div v-if="record.estado === 1"> 
+                            <div v-if="record.status === 1"> 
                                 <a-button @click="verificarBN(record)" style="background: crimson; border-radius: 5px; border:none; color:white;"> seleccionado </a-button> 
                             </div>
                           </div>
@@ -91,10 +92,10 @@ const props = defineProps(['dni', 'proceso']);
 
 const pagos = ref([]);
 
-const getComprobantes = async () => {
-  let res = await axios.post('get-pagos-banco', { dni: props.dni });
-  comprobantes.value = res.data.datos;
-};
+//const getComprobantes = async () => {
+  //let res = await axios.post('get-pagos-banco', { dni: props.dni });
+  //comprobantes.value = res.data.datos;
+//};
 const comprobantesCaja = ref([]);
 const getCaja = async () => {
   let res = await axios.get('/get-pago-caja/'+props.dni);
@@ -122,17 +123,18 @@ const verificarCaja = async (comp) => {
     monto: comp.paymentAmount
   }
 
-  if(comp.estado){
-    if(comp.estado == 1){ 
+  if(comp.status){
+    if(comp.status == 1){ 
       let res = await axios.get('/eliminar-pago/'+pag.dni+"/"+pag.operacion);
-      comp.estado = 0; 
       getPagosGeneral();
-    }else{ comp.estado = 1; }
+      getBN();
+      comp.status = 0;
+    }else{ comp.status = 1; }
   }else{
-    comp.estado = 1;
     let res = await axios.post('/insertar-pago', { pag });
     getPagosGeneral();
-    notificacion(res.data.type, res.data.titulo, res.data.mensaje);
+    getBN();
+    notificacion("success", res.data.titulo, res.data.mensaje);
   }
 
 
@@ -148,14 +150,14 @@ const verificarBN = async (comp) => {
     monto: comp.amount
   }
 
-  if(comp.estado){
-    if(comp.estado == 1){ 
+  if(comp.status){
+    if(comp.status == 1){ 
       let res = await axios.get('/eliminar-pago/'+pag.dni+"/"+pag.operacion);
-      comp.estado = 0; 
+      comp.status = 0; 
       getPagosGeneral();
-    }else{ comp.estado = 1; }
+    }else{ comp.status = 1; }
   }else{
-    comp.estado = 1;
+    comp.status = 1;
     let res = await axios.post('/insertar-pago', { pag });
     getPagosGeneral();
     notificacion(res.data.type, res.data.titulo, res.data.mensaje);
@@ -170,7 +172,7 @@ const getPagosGeneral = async (comp) => {
 
 watch(() => props.dni, async (newDni) => {
   if (props.dni.length === 8 && /^[0-9]+$/.test(props.dni)) {
-    await getComprobantes();
+    // await getComprobantes();
     await getCaja();
     await getBN();
     await getPagosGeneral();    

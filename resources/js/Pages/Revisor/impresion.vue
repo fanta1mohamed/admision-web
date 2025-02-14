@@ -218,10 +218,11 @@
         </div>
       </div>
 
-      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1rem; font-weight:bold;"> Documentos </span></div>
+      <div class="mb-4" style="margin-top: 0px;"><span style="font-size:1rem; font-weight:bold;"> Documentos</span></div>
       <div class="mb-6">
         <div>
           <a-table :dataSource="documentos" :columns="colDocumentos" size="small" :pagination="false">
+            
             <template #bodyCell="{ column, index, record}">
               <template v-if="column.dataIndex === 'verificado'">
                 <div v-if="record.verificado == 1" type="primary" ghost>
@@ -233,14 +234,17 @@
               </template>
 
               <template v-if="column.dataIndex === 'acciones'">
-                <a-button class="mr-1" type="primary" @click="Editar(record)" size="small">
+                <a-button class="mr-1" type="" @click="validar(record)" size="small">
+                <template #icon><CheckOutlined/></template>
+                </a-button>
+                <a-button class="mr-1" type="" @click="Editar(record)" size="small">
                 <template #icon><form-outlined/></template>
                 </a-button>
-                  <a :href="'../../'+record.url" target="_blank">
-                    <a-button type="primary"  @click="eliminar(filiales[index])" shape="" size="small">
+                  <!-- <a :href="'../../'+record.url" target="_blank">
+                    <a-button type=""  @click="eliminar(filiales[index])" shape="" size="small">
                         <template #icon><eye-outlined/></template>
                     </a-button>
-                  </a>  
+                  </a>   -->
               </template>
             </template>    
           </a-table>
@@ -281,10 +285,10 @@
             <template #bodyCell="{ column, index, record}">
               <template v-if="column.dataIndex === 'estado'">
                   <div v-if="record.estado == 1" type="primary" ghost>
-                    <a-tag color="green"> Disponible </a-tag>            
+                    <a-tag color="green"> Sin inscripción </a-tag>            
                   </div>
                   <div v-else type="danger" ghost>
-                    <a-tag color="pink"> Bloqueado </a-tag>            
+                    <a-tag color="pink"> Inscrito </a-tag>            
                   </div>
               </template>
 
@@ -338,7 +342,7 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/LayoutDocente.vue'
 import {ref, watch} from 'vue'
-import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons-vue';
+import { ExclamationCircleOutlined, FormOutlined, DeleteOutlined, EyeOutlined, CheckOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
 import { format } from 'date-fns';
 import { notification } from 'ant-design-vue';
@@ -445,6 +449,15 @@ const getAnteriores =  async () => {
     let res = await axios.get("/carreras-previas/" + dniseleccionado.value);
     anteriores.value = res.data.datos;
   }
+}
+
+
+
+const validar =  async (doc) => {
+  let temp  = doc.verificado === 1 ? 0 : 1;
+  console.log("ESTAO:::", temp);
+  let res = await axios.post( "cambiar-estado", {id: doc.id, estado: temp });
+  getDocumentos();
 }
 
 const CambiarCodigo =  async () => {
@@ -588,8 +601,9 @@ const colDocumentos =  [
   { title: 'Documento', dataIndex: 'nombre', key: 'nombre',},
   { title: 'Tipo', dataIndex: 'tipo', key: 'tipo',},
   { title: 'estado', dataIndex: 'verificado'},
-  { title: 'Acciones', dataIndex: 'acciones'}  
+  { title: 'Acciones', dataIndex: 'acciones', width:'78px'}  
 ]
+
 const colPreinscripciones =  [
   { title: 'Programa', dataIndex: 'programa', key: 'programa',},
   { title: 'Proceso', dataIndex: 'proceso', key: 'proceso',},

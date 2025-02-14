@@ -10,45 +10,6 @@ use DB;
 class PagoSimulacroController extends Controller
 {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
     public function getPagos(){
         $data = Comprobante::all();
         return $data;
@@ -226,7 +187,6 @@ class PagoSimulacroController extends Controller
     public function insertarPago(Request $request)
     {   $req = $request['pag'];
         
-
         DB::table('pagos_general')->insert([
             'dni' => $req['dni'],
             'operacion' => $req['operacion'],
@@ -247,7 +207,10 @@ class PagoSimulacroController extends Controller
 
     public function getPagosDNI($dni)
     {
-        $pagos = DB::table('pagos_general')->where('dni', $dni)->get();
+        $pagos = DB::table('pagos_general')
+        ->where('proceso', auth()->user()->id_proceso)
+        ->where('dni', $dni)->get()
+        ;
         return response()->json(['data' => $pagos]);
     }
 
