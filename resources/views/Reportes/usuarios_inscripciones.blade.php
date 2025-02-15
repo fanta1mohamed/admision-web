@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>REPORTE - INSCRITOS - PROGRAMA {{ date('d/m/Y H:i:s') }}</title>
+    <title>REPORTE USUARIO INSCRIPCIONES {{ date('d/m/Y H:i:s') }}</title>
     <style>
         @page {
             margin: 4.2cm 1cm 2.5cm 1cm;
@@ -67,7 +67,7 @@
         <div style="border-bottom: solid 1px #dddddd; margin-top:0px;"></div>
         <div>
             <div style="text-align: center">
-                <span style="font-weight:bold; font-size:1rem; text-transform:uppercase"> RESUMEN DE INSCRIPCIONES DIARIAS - EXAMEN {{ $proceso->nombre }}</span>
+                <span style="font-weight:bold; font-size:1rem; text-transform:uppercase"> INSCRIPCIONES POR USUARIO PARA EL EXAMEN {{ $proceso->nombre }}</span>
             </div> 
             <div style="font-size:10pt; text-align:center;" > FECHA Y HORA : {{ date('d/m/Y H:i:s') }}</div>
         </div>
@@ -81,9 +81,8 @@
         <table>
             <thead>
                 <tr style="background:#c9c9c9;">
-                    <th rowspan="2">N°</th>
-                    <th rowspan="2">COD</th>
-                    <th rowspan="2">PROGRAMA DE ESTUDIOS</th>
+                    <th rowspan="2"><div style="text-align: center">N°</div></th>
+                    <th rowspan="2" style="min-width: 300px;">USUARIO</th>
                     @php
                         setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain', 'Spanish');
                         $meses = [];
@@ -97,7 +96,7 @@
                             {{ ucfirst(strftime('%B', mktime(0, 0, 0, $mes, 1))) }}
                         </th>
                     @endforeach
-                    <th rowspan="2">TOTAL</th>
+                    <th rowspan="2" align="center"> <div style="text-align: center">TOTAL</div> </th>
                 </tr>
                 <tr style="background:#cdcdcd">
                     @foreach ($meses as $dias)
@@ -112,12 +111,11 @@
                     @foreach ($res as $index => $item)
                         <tr>
                             <td style="text-align: center;">{{ $index + 1 }}</td>
-                            <td style="text-align: center; font-weight:bold;">{{ $item->codigo }}</td>
-                            <td>{{ $item->programa }}</td>
+                            <td>{{ $item->name }} {{ $item->paterno }}</td>
                             @foreach ($fechas as $fec)
-                                <td style="text-align: center;">{{ $item->{'ins_' . $fec} }}</td>
+                                <td style="text-align: center;">{{ $item->{$fec} }}</td>
                             @endforeach
-                            <td style="text-align: center;">{{ $item->inscripciones }}</td>
+                            <td style="text-align: center; min-width:40px;">{{ $item->total }}</td>
                         </tr>   
                     @endforeach
                 </tbody>
@@ -128,13 +126,15 @@
                     </tr>   
                 </tbody>
             @endif
-            <tr>
-                <td colspan="3" style="text-align: right; font-weight: bold;">Totales:</td>
-                @foreach ($fechas as $fec)
-                    <td style="text-align: center; font-weight: bold;">{{ $totales[0]->{'ins_' . $fec} }}</td>
-                @endforeach
-                <td style="text-align: center; font-weight: bold;">{{ $totales[0]->total_inscripciones }}</td>
-            </tr>
+            <tfoot>
+                <tr>
+                    <td colspan="2" style="text-align: right; font-weight: bold;">Totales </td>
+                    @foreach($fechas as $fec)
+                        <td style="font-weight: bold; text-align: center">{{ $totales[0]->{$fec} }}</td>
+                    @endforeach
+                    <td style="font-weight: bold; text-align: center">{{ $totales[0]->total_inscripciones }}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <script type="text/php">

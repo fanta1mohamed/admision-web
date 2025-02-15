@@ -143,6 +143,81 @@ class ReporteController extends Controller
         return $pdf->stream(date('d/m/Y H:i:s')." Reporte inscripciones diarias por programa.pdf");
     }
 
+
+
+    public function reporteUsuarios(Request $request)
+    {
+        $sim = auth()->user()->id_proceso;
+        $proceso = Proceso::find($sim);
+
+        $fechas = DB::table('inscripciones')
+            ->select(DB::raw('DATE(created_at) as fecha'))
+            ->where('id_proceso', $sim)
+            ->where('estado', 0)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy(DB::raw('DATE(created_at)'))
+            ->pluck('fecha')
+            ->toArray();
+
+        if (empty($fechas)) {
+            return response()->json(['message' => 'No hay datos disponibles para este proceso'], 404);
+        }
+
+        $columnas = [];
+        foreach ($fechas as $fecha) {
+            $columnas[] = "COALESCE(SUM(CASE WHEN DATE(ins.created_at) = '$fecha' THEN 1 ELSE 0 END), 0) AS `$fecha`";
+        }
+
+        $columnas[] = "COALESCE(SUM(CASE WHEN DATE(ins.created_at) IN ('" . implode("','", $fechas) . "') THEN 1 ELSE 0 END), 0) AS total";
+
+
+        $query = "
+            SELECT 
+                upper(users.name) as name,
+                upper(users.paterno) as paterno,
+                " . implode(", ", $columnas) . "
+            FROM inscripciones ins
+            JOIN users ON users.id = ins.id_usuario
+            WHERE ins.estado = 0 AND ins.id_proceso = ?
+            GROUP BY users.paterno, users.name
+            ORDER BY Total DESC
+        ";
+
+
+        $columnasTotales = [];
+        foreach ($fechas as $fecha) {
+            $columnasTotales[] = "COALESCE(SUM(CASE WHEN DATE(created_at) = '$fecha' THEN 1 ELSE 0 END), 0) AS `$fecha`";
+        }
+        $columnasTotales[] = "COUNT(id) AS total_inscripciones";
+
+        // Consulta para obtener los totales generales
+        $totales = DB::select("
+            SELECT " . implode(", ", $columnasTotales) . "
+            FROM inscripciones 
+            WHERE id_proceso = ? AND estado = 0
+        ", [$sim]);
+
+        $res = DB::select($query, [$sim]);
+
+        $pdf = Pdf::loadView('Reportes.usuarios_inscripciones', compact('res', 'fechas', 'proceso','totales'));
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->setPaper('A4', 'portrait');
+
+        $rutaCarpeta = public_path("/documentos/$sim/reportes/");
+        $rutaArchivo = $rutaCarpeta . 'ReporteUsuarios_' . date('Y-m-d_H-i-s') . auth()->id() . '.pdf';
+
+        if (!file_exists($rutaCarpeta)) {
+            mkdir($rutaCarpeta, 0755, true);
+        }
+
+        file_put_contents($rutaArchivo, $pdf->output());
+
+        return $pdf->stream();
+
+
+    }
+
     
     
 

@@ -686,6 +686,8 @@ Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'
 
 Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma'])->middleware('auth');
 Route::get('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
+Route::get('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
+
 
 
 require __DIR__.'/auth.php';
