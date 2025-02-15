@@ -213,7 +213,7 @@ class ReporteController extends Controller
 
         file_put_contents($rutaArchivo, $pdf->output());
 
-        return $pdf->stream();
+        return $pdf->stream(date('d/m/Y H:i:s')." Reporte inscripciones diarias del usuario.pdf");
 
 
     }

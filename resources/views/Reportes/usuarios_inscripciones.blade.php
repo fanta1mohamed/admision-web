@@ -82,7 +82,11 @@
             <thead>
                 <tr style="background:#c9c9c9;">
                     <th rowspan="2"><div style="text-align: center">N°</div></th>
-                    <th rowspan="2" style="min-width: 300px;">USUARIO</th>
+                    @if (count($fechas) > 5)
+                        <th rowspan="2">USUARIO</th>
+                    @else
+                        <th rowspan="2" style="min-width: 300px;">USUARIO</th>
+                    @endif
                     @php
                         setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain', 'Spanish');
                         $meses = [];
