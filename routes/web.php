@@ -219,7 +219,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('postulante-perfil/{dni}', [DashboardController::class, 'showPostulante']);
     Route::post('get-procesos', [DashboardController::class, 'getInsPostulante']);
 
-
     //CONTROL BIOMETRICO
     Route::get('/control-biometrico', fn () => Inertia::render('Admin/ControlBiometrico/Lista'))->name('admin-control-biometrico');
     Route::post('/get-control-posterior', [ControlBiometricoController::class, 'getControlPosterior']);
@@ -249,10 +248,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
 });
 
-
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
-
-
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 

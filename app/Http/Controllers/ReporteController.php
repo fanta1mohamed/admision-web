@@ -24,14 +24,14 @@ class ReporteController extends Controller
             FROM (
                 SELECT pro.id AS cod_pro, pro.nombre AS programa, COUNT(*) AS preinscripciones FROM pre_inscripcion pre
                 JOIN programa pro ON pre.id_programa = pro.id
-                WHERE pre.id_proceso = 13 AND pre.estado = 1
+                WHERE pre.id_proceso = ".auth()->user()->id_proceso." AND pre.estado = 1
                 GROUP BY pro.id, pro.nombre
             ) pre
             INNER JOIN (
                 SELECT pro.nombre AS programa, COUNT(*) AS inscripciones
                 FROM inscripciones ins
                 JOIN programa pro ON ins.id_programa = pro.id
-                WHERE ins.id_proceso = 13 AND ins.estado = 0
+                WHERE ins.id_proceso = ".auth()->user()->id_proceso." AND ins.estado = 0
                 GROUP BY pro.nombre
             ) ins ON pre.programa = ins.programa
             ORDER BY pre.cod_pro");
