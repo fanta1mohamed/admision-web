@@ -67,7 +67,86 @@ class ReporteController extends Controller
     
         file_put_contents($rutaArchivo, $pdf->output());
     
-        return $pdf->stream();
+        return $pdf->stream("tepo");
     }
+
+
+    public function reporteProgramaDiario(Request $request)
+    {
+        $sim = auth()->user()->id_proceso;
+        $proceso = Proceso::find($sim);
+    
+        // Obtener todas las fechas únicas dentro del proceso
+        $fechas = DB::table('inscripciones')
+            ->selectRaw('DATE(created_at) as fecha')
+            ->where('id_proceso', $sim)
+            ->groupByRaw('DATE(created_at)')
+            ->orderByRaw('DATE(created_at)')
+            ->pluck('fecha')
+            ->toArray();
+    
+        if (empty($fechas)) {
+            return response()->json(['message' => 'No hay datos disponibles para este proceso'], 404);
+        }
+    
+        // Generar dinámicamente las columnas solo para inscripciones
+        $columnasFecha = implode(", ", array_map(function ($fecha) {
+            return "COALESCE(SUM(CASE WHEN DATE(ins.created_at) = '$fecha' THEN 1 ELSE 0 END), 0) AS `ins_$fecha`";
+        }, $fechas));
+    
+        // Query para obtener los datos organizados
+        $query = "
+            SELECT 
+                p.nombre AS programa,
+                p.id AS codigo,
+                $columnasFecha,
+                COUNT(ins.id) AS inscripciones
+            FROM programa p
+            LEFT JOIN inscripciones ins ON p.id = ins.id_programa 
+                AND ins.id_proceso = ? 
+            WHERE p.id_filial = $proceso->id_sede_filial 
+            AND p.estado = 1
+            GROUP BY p.nombre, p.id
+            ORDER BY p.id
+        ";
+    
+        $res = DB::select($query, [$sim]);
+    
+        // Totales generales
+        $columnasTotales = implode(", ", array_map(function ($fecha) {
+            return "COALESCE(SUM(CASE WHEN DATE(created_at) = '$fecha' THEN 1 ELSE 0 END), 0) AS `ins_$fecha`";
+        }, $fechas));
+    
+        $totales = DB::select("
+            SELECT $columnasTotales,
+            COUNT(id) AS total_inscripciones
+            FROM inscripciones 
+            WHERE id_proceso = ?
+        ", [$sim]);
+    
+        // Generar PDF
+        $pdf = Pdf::loadView('Reportes.programa_ins', compact('res', 'proceso', 'totales', 'fechas'));
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->setPaper('A4', 'portrait');
+    
+        // Guardar el PDF en la carpeta pública
+        $rutaCarpeta = public_path("/documentos/$sim/reportes/");
+        $rutaArchivo = $rutaCarpeta . 'ReporteProgramas_' . date('Y-m-d_H-i-s') . auth()->id() . '.pdf';
+    
+        if (!file_exists($rutaCarpeta)) {
+            mkdir($rutaCarpeta, 0755, true);
+        }
+    
+        file_put_contents($rutaArchivo, $pdf->output());
+    
+        return $pdf->stream(date('d/m/Y H:i:s')." Reporte inscripciones diarias por programa.pdf");
+    }
+
+    
+    
+
+
+
 
 }
