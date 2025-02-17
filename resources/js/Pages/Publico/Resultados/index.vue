@@ -31,7 +31,8 @@
 
       <div>
         <div class="flex">
-          <div class="mr-1">
+
+          <div  v-if="props.admin === 1" class="mr-1">
             <a-button @click="elimarArchivo(documento.id)" size="small" style=" height: 30px; background: crimson; color: white; border: none;">
               <div class="flex">
                 <div style="margin-top: -2px;">
@@ -107,7 +108,7 @@
                     :rules="[{ required: true, message: 'Por favor ingresa tu DNI', trigger: 'change' },
                     { min: 8, message: 'El dni debe tener 8 digitos', trigger: 'blur',},]"
                   >
-                  <a-input v-model:value="formState.dni" @input="dniInput" :disabled="true" :maxlength="8" placeholder="N° Documento"/>
+                  <a-input v-model:value="formState.dni" @input="dniInput" :maxlength="8" placeholder="N° Documento"/>
                   <!-- <a-input v-model:value="formState.dni" @input="dniInput" :disabled="ingresante" :maxlength="8" placeholder="N° Documento"/> -->
                 </a-form-item>
                 <div class="texto-imagen">
