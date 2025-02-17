@@ -49,7 +49,7 @@ class SancionadoController extends Controller
                         ->first();
 
         if ($sancionado) {
-            return response()->json(['estado' => true], 200);
+            return response()->json(['motivo'=>$sancionado->motivo, 'estado' => true], 200);
         } else {
             // Si no se encuentra ningún registro, devuelve la respuesta con estado false
             return response()->json(['estado' => false], 404);
