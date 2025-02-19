@@ -246,6 +246,13 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/proceso-configuracion-programa', fn () => Inertia::render('Procesos/Configuracion/programas'));
     Route::get('/get-programas-proceso',[ProgramaProcesoController::class, 'getProgramaProceso']);
 
+
+    //OBSERVADOS
+    Route::get('/observados', fn () => Inertia::render('Admin/Observados/index'))->name('admin-observados');
+    Route::post('/get-observados-lista', [SancionadoController::class, 'getObservadosLista']);
+    Route::post('/save-observado', [SancionadoController::class, 'save']);
+
+
 });
 
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);

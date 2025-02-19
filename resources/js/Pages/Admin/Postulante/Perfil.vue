@@ -65,7 +65,7 @@
                                             <DownloadOutlined />
                                         </template>
                                     </a-button>
-                                    
+
                                 </div>
                             </div>
                             <div>
@@ -224,11 +224,11 @@
                             <h1 style="font-weight: bold; font-size: 1.1rem;">Actividad Reciente</h1>
                         </div>
                         <a-table :dataSource="dataSource" :columns="columns" style="width: 100%;">
-                            <template #bodyCell="{ column, index, record }">
+                            <template #bodyCell="{ column, record }">
                                 <template v-if="column.dataIndex === 'acciones'">
                                     <div class="" style="justify-content: flex-start;">
                                         <span class="mr-2">{{ record.usuario }} </span>
-                                            <span> <a-tag v-if="record.acciones == 'insertó'" color="green"> {{ record.acciones }} </a-tag></span>  
+                                            <span> <a-tag v-if="record.acciones == 'insertó'" color="green"> {{ record.acciones }} </a-tag></span>
                                             <span> <a-tag v-if="record.acciones == 'actualizó'" color="blue"> {{ record.acciones }} </a-tag> </span>
                                             <span> <a-tag v-if="record.acciones == 'eliminó'" color="red"> {{ record.acciones }} </a-tag> </span>
                                             el registro <span class="mr-2 ml-2" style="font-weight: bold;"> N° {{ record.registro }} </span> en la tabla {{ record.tabla }}
@@ -236,7 +236,7 @@
                                 </template>
                             </template>
                         </a-table>
-                    </a-row>    
+                    </a-row>
                 </div>
 
              </div>
@@ -249,7 +249,7 @@
         </div>
 
         <a-modal v-model:visible="open" title="Editar Datos">
-            
+
         </a-modal>
 
 
@@ -258,8 +258,8 @@
         </a-modal>
 
     </AuthenticatedLayout>
-</template>    
-    
+</template>
+
 <script setup>
 import { reactive, ref, onMounted, watch } from 'vue';
 import { Head } from '@inertiajs/vue3';
@@ -389,9 +389,9 @@ const columns = ref([
 .container {
     max-width: 1200px;
 }</style>
-    
-    
-    
+
+
+
 
 
 

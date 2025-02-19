@@ -1,15 +1,15 @@
 <template>
   <a-layout style="min-height: 100vh;">
-    <a-layout-sider 
-      v-model:collapsed="collapsed" 
-      width="230px" 
-      style="overflow-x: hidden; overflow-y:hidden; height: 100vh;  background:#476175; width: 230px; border-right: 1px solid #00000010;"  
+    <a-layout-sider
+      v-model:collapsed="collapsed"
+      width="230px"
+      style="overflow-x: hidden; overflow-y:hidden; height: 100vh;  background:#476175; width: 230px; border-right: 1px solid #00000010;"
       :trigger="null" :triggerSubMenuAcción="true" collapsible collapsed-width="0">
 
     <div style="display: flex; align-items: center; justify-content: left; margin-top: 6px; margin-left: 20px; margin-bottom: 6px;">
         <div>
             <img src="../../assets/imagenes/logotiny.png" width="35"/>
-        </div> 
+        </div>
         <div style="border-left: 1px solid #d9d9d9; height: 30px; margin-left: 10px; margin-right: 5px; "></div>
         <div style="margin: 0px 6px; color: #f3f3f3; margin-top: -5px;">
             <div style="display: flex; justify-content: center; margin-top: 10px;"><span style="letter-spacing: .1rem; font-size:.90rem; font-weight: 500;">DIRECCIÓN DE</span></div>
@@ -18,14 +18,14 @@
     </div>
 
     <div class="custom-scrollbar"  style="height: calc(100vh - 65px); over-flow:scroll-y; ">
-      <a-menu 
+      <a-menu
           v-model:selectedKeys="selectedKeys"
           v-model:openKeys="openKeys"
           theme="dark" mode="inline" style="background: none; margin-left: -5px; font-weight: 500; font-size: .8rem; ">
           <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
             <span>Administración</span>
           </div>
-          
+
           <!-- <a-menu-item key="1" style="background: #ff000000;"></a-menu-item> -->
           <a-menu-item class="" style="margin-left: -10px; width: 265px; background:#476175; margin-top: -10px;">
               <nav-link :href="route('admin-dashboard')" :active="route().current('admin-dashboard')" style="margin: 0px; margin-left: -25px; ">
@@ -36,7 +36,7 @@
               </nav-link>
             </a-menu-item>
 
-          
+
           <a-sub-menu key="sub5">
             <template #title>
               <span>
@@ -44,7 +44,7 @@
                 <span>Conf. Proceso</span>
               </span>
             </template>
-            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;"> 
+            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
               <!-- <div v-if="route().current('proceso-index') && openKeys !== null" style="display: none;">{{ titleClick('sub3')  }}</div> -->
 
               <nav-link :href="route('proceso-index')" :active="route().current('proceso-index')" style="margin: 0px; margin-left: -28px; ">
@@ -55,7 +55,7 @@
               </nav-link>
             </a-menu-item>
 
-            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;"> 
+            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <!-- <div v-if="route().current('programa-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
               <nav-link :href="route('programa-index')" :active="route().current('programa-index')" style="margin: 0px; margin-left: -28px; ">
                 <div class="flex ml-6" style="align-items: center;">
@@ -85,7 +85,7 @@
               </nav-link>
             </a-menu-item>
 
-            <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;"> 
+            <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
               <!-- <div v-if="route().current('filial-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
               <nav-link :href="route('filial-index')" :active="route().current('filial-index')" style="margin: 0px; margin-left: -28px;">
                 <div class="flex ml-6" style="align-items: center;">
@@ -105,7 +105,7 @@
                 <span>Configuración</span>
               </span>
             </template>
-            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;"> 
+            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
               <!-- <div v-if="route().current('proceso-index') && openKeys !== null" style="display: none;">{{ titleClick('sub3')  }}</div> -->
 
               <nav-link :href="route('proceso-index')" :active="route().current('proceso-index')" style="margin: 0px; margin-left: -28px; ">
@@ -116,7 +116,7 @@
               </nav-link>
             </a-menu-item>
 
-            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;"> 
+            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <!-- <div v-if="route().current('programa-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
               <nav-link :href="route('programa-index')" :active="route().current('programa-index')" style="margin: 0px; margin-left: -28px; ">
                 <div class="flex ml-6" style="align-items: center;">
@@ -136,7 +136,7 @@
               </nav-link>
             </a-menu-item>
 
-            <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;"> 
+            <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
               <!-- <div v-if="route().current('filial-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
               <nav-link :href="route('filial-index')" :active="route().current('filial-index')" style="margin: 0px; margin-left: -28px;">
                 <div class="flex ml-6" style="align-items: center;">
@@ -154,7 +154,7 @@
                   <span>Roles y Usuarios</span>
                 </div>
             </template>
-            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;"> 
+            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
               <!-- <div v-if="route().current('roles-index') && openKeys !== null" style="display: none;">{{ titleClick('sub1') }}</div> -->
               <nav-link :href="route('roles-index')" :active="route().current('roles-index')" style="margin: 0px; margin-left: -25px; ">
                 <div class="flex ml-6" style="align-items: center;">
@@ -164,7 +164,7 @@
               </nav-link>
             </a-menu-item>
 
-            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom:-5px;"> 
+            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom:-5px;">
               <!-- <div v-if="route().current('usuarios-index')" style="display: none;">{{ titleClick('sub1') }}</div> -->
               <nav-link :href="route('usuarios-index')" :active="route().current('usuarios-index')" style="margin: 0px; margin-left: -25px; ">
                 <div class="flex ml-6" style="align-items: center;">
@@ -172,7 +172,7 @@
                   <span>usuarios</span>
                 </div>
               </nav-link>
-            </a-menu-item> 
+            </a-menu-item>
 
           </a-sub-menu>
 
@@ -248,7 +248,16 @@
                 </div>
               </nav-link>
             </a-menu-item>
-            
+
+            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: 0px; margin-bottom: -5px;">
+              <nav-link :href="route('admin-observados')" :active="route().current('admin-observados')" style="margin: 0px; margin-left: -25px; ">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
+                  <setting-filled style=""/>
+                  <span>Observados</span>
+                </div>
+              </nav-link>
+            </a-menu-item>
+
           </a-sub-menu>
 
 
@@ -381,7 +390,7 @@
     <div v-if="route().current('programa-index')"> {{ submenu = 1 }}</div>
     <div v-if="route().current('modalidad-index')"> {{ submenu = 1 }}</div>
     <div v-if="route().current('filial-index')"> {{ submenu = 1 }}</div>
-    
+
     <div v-if="route().current('roles-index')"> {{ submenu = 2 }}</div>
     <div v-if="route().current('usuarios-index')"> {{ submenu = 2 }}</div>
 
@@ -392,6 +401,8 @@
     <div v-if="route().current('admin-postulante-index')"> {{ submenu = 3  }}</div>
     <div v-if="route().current('admin-apoderado-index')"> {{ submenu = 3 }}</div>
     <div v-if="route().current('admin-control-biometrico')"> {{ submenu = 3  }}</div>
+    <div v-if="route().current('admin-observados')"> {{ submenu = 3  }}</div>
+
 
     <div v-if="route().current('admin-participante-docente')"> {{ submenu = 4  }}</div>
     <div v-if="route().current('admin-participante-administrativo')"> {{ submenu = 4  }}</div>
@@ -404,7 +415,7 @@
 import NavLink from '@/Components/NavLink.vue';
 import { Link } from '@inertiajs/vue3'
 import Header from '@/Layouts/Header.vue';
-import { 
+import {
   PieChartOutlined, DesktopOutlined, GoldFilled, AppstoreFilled, TeamOutlined, FileOutlined,
   MenuUnfoldOutlined, PieChartTwoTone, SettingFilled,
   MenuFoldOutlined, PrinterFilled, CameraFilled
@@ -453,7 +464,7 @@ export default defineComponent({
       if(this.submenu == 3){ this.openKeys = ['sub3']; }
       if(this.submenu == 4){ this.openKeys = ['sub4']; }
     }
-  } 
+  }
 });
 </script>
 <style scoped>

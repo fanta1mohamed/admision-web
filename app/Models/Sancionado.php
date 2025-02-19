@@ -11,6 +11,6 @@ class Sancionado extends Model
 
     protected $table = 'sancionados';
 
-    protected $filable = ['dni','paterno','materno','motivo','observacion'];
-    
+    protected $fillable = ['dni','paterno','materno','nombres','motivo','observacion'];
+
 }
