@@ -43,7 +43,7 @@ Route::get('/obtener-origin', function (Request $request) {
     $contenido = $respuesta->getBody()->getContents();
     return response()->json($contenido);
 });
-
+ 
 Route::get('/obtener-origin2', function (Request $request) {
     $origin = $request->header('Origin');
     return response()->json(['origin' => $origin]);

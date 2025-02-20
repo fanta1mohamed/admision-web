@@ -190,7 +190,6 @@ class ReporteController extends Controller
         }
         $columnasTotales[] = "COUNT(id) AS total_inscripciones";
 
-        // Consulta para obtener los totales generales
         $totales = DB::select("
             SELECT " . implode(", ", $columnasTotales) . "
             FROM inscripciones 
