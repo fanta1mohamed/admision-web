@@ -253,6 +253,12 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/save-observado', [SancionadoController::class, 'save']);
 
 
+    //PAGOS
+    Route::get('/pagos-banco', fn () => Inertia::render('Admin/Pagos/index'))->name('admin-pagos-banco');
+    //Route::post('/get-observados-lista', [SancionadoController::class, 'getObservadosLista']);
+    //Route::post('/save-observado', [SancionadoController::class, 'save']);
+
+
 });
 
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
@@ -593,8 +599,6 @@ Route::post('/calificar-examen', [ResultadosController::class, 'CalificarExamen'
 Route::post('/get-puntajes-examen', [ResultadosController::class, 'getPuntajes']);
 Route::get('/get-pdf-resultados/{sim}', [ResultadosController::class, 'getResultadosPDF']);
 
-
-
 Route::get('{p}/preinscripcion', [ProcesoController::class, 'getFormulario']);
 Route::get('/get-participante-cepre/{dni}', [CepreController::class, 'getParticipanteCepre']);
 Route::get('/get-sancionado/{dni}/{pro}', [SancionadoController::class, 'getSancionado']);
@@ -687,7 +691,6 @@ Route::post('/actualizar-verificacion', [VerificacionFotosController::class, 'up
 Route::post('/get-fotos-verificacion', [VerificacionFotosController::class, 'getFotosVerificaion']);
 Route::post('/save-filial', [VerificacionFotosController::class, 'saveFilial']);
 Route::get('/eliminar-filial/{id}', [VerificacionFotosController::class, 'deleteFilial']);
-
 
 Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'))->middleware('auth','simulacro');
 

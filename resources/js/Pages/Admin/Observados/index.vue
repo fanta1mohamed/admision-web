@@ -27,7 +27,6 @@
               <template v-if="column.dataIndex === 'dni'">
                   <div><span style="font-size: .9rem">{{ record.dni }}</span></div>
               </template>
-
               <template v-if="column.dataIndex === 'nombres'">
                   <div><span style="font-size: .9rem;">{{ record.paterno }} {{ record.materno }} {{ record.nombres }}</span></div>
               </template>
@@ -39,23 +38,21 @@
               </template>
               <template v-if="column.dataIndex === 'area'">
                   <div class="flex" style="justify-content: center;">
-                      <a-tag style="font-size: .8rem;" color="cyan" v-if=" programas[index].area == 'BIOMÉDICAS'">{{ programas[index].area }}</a-tag>
-                      <a-tag style="font-size: .8rem;" color="purple" v-if=" programas[index].area == 'SOCIALES'">{{ programas[index].area }}</a-tag>
-                      <a-tag style="font-size: .8rem;" color="blue" v-if=" programas[index].area == 'INGENIERÍAS'">{{ programas[index].area }}</a-tag>
+                      <a-tag style="font-size: .8rem;" color="cyan" v-if=" record.area == 'BIOMÉDICAS'">{{ record.area }}</a-tag>
+                      <a-tag style="font-size: .8rem;" color="purple" v-if=" record.area == 'SOCIALES'">{{ record.area }}</a-tag>
+                      <a-tag style="font-size: .8rem;" color="blue" v-if=" record.area == 'INGENIERÍAS'">{{ record.area }}</a-tag>
                   </div>
               </template>
-
               <template v-if="column.dataIndex === 'estado'">
                   <div class="flex" style="justify-content: center;">
-                      <div v-if="1 == programas[index].estado">
+                      <div v-if="1 == record.estado">
                           <a-tag color="green">Si</a-tag>
                       </div>
-                      <div v-if="programas[index].estado == 0">
+                      <div v-if="record.estado == 0">
                           <a-tag color="red">No</a-tag>
                       </div>
                   </div>
               </template>
-
               <template v-if="column.dataIndex === 'acciones'">
                   <a-button disabled type="" @click="verDetalle(record)" style="border-radius:4px; background: none; color: green" size="small">
                       <template #icon><eye-outlined/></template>
@@ -76,7 +73,6 @@
 
   </div>
 
-  </AuthenticatedLayout>
 
   <div>
       <a-modal v-model:visible="visible" style="margin-top: -40px;">
@@ -135,15 +131,16 @@
               <a-col :span="24" :md="12" :lg="12" :xl="16" :xxl="16">
                 <a-form-item name="id_proceso" :rules="[{ required: true, message: 'Ingresa el ID de proceso', trigger: 'change'}]">
                   <div class="flex justify-between"><label>Proceso (<span style="color:red;">*</span>)</label></div>
-                <a-select
-                    :options="facultades"
-                    ref="Tipo"
-                    style="width: 100%"
-                    @focus="focus"
-                    @change="handleChange"
+                  <a-select
                     v-model:value="observado.id_proceso"
-                    >
-                </a-select>
+                    :options="facultades"
+                    style="width: 100%"
+                    @change="handleChange"
+                  >
+                    <template #option="{ label, value }">
+                      <span>{{ label }} (ID: {{ value }})</span>
+                    </template>
+                  </a-select>
 
                 </a-form-item>
               </a-col>
@@ -165,6 +162,10 @@
       </template>
       </a-modal>
   </div>
+
+</AuthenticatedLayout>
+
+
 
 </template>
 
@@ -199,8 +200,60 @@ const observado = reactive({
   id_proceso: null
 });
 
-  const showModalPrograma = () => {
-      visible.value = true;
+const showModalPrograma = () => {
+    visible.value = true;
+    observado.id = null;
+    observado.dni = null;
+    observado.nombres = null;
+    observado.paterno = null;
+    observado.materno = null;
+    observado.motivo = null;
+    observado.id_proceso = null;
+};
+
+watch(buscar, ( newValue, oldValue ) => {
+    getProgramas()
+})
+
+
+watch(buscarDep, ( newValue, oldValue ) => {
+    getDepartamentos()
+})
+
+watch(pagina, ( newValue, oldValue ) => {
+    getProgramas()
+})
+
+
+
+const abrirEditar = (item) => {
+    visible.value = true;
+    observado.id = item.id;
+    observado.dni = item.dni;
+    observado.nombres = item.nombres;
+    observado.paterno = item.paterno;
+    observado.materno = item.materno;
+    observado.motivo = item.motivo;
+    observado.id_proceso = item.id_proceso;
+}
+
+const getFacultades =  async ( ) => { 
+  let res = await axios.get( "get-select-procesos");
+  facultades.value = res.data.datos;
+}
+
+const getProgramas =  async (term = "") => {
+    let res = await axios.post( "get-observados-lista?page=" + pagina.value,{ term: buscar.value });
+    programas.value = res.data.datos.data;
+    totalpaginas.value = res.data.datos.total;
+}
+
+const guardar = async () => {
+    const values = await formObservados.value.validateFields();
+    axios.post("save-observado", observado).then((result) => {
+      getProgramas()
+      observado.value = { id: null, dni:null, nombres: "", paterno: "", nombres:"", materno:"", motivo:"", observacion:"", id_proceso: null};
+      notificacion(result.data.tipo, result.data.titulo, "");
       observado.id = null;
       observado.dni = null;
       observado.nombres = null;
@@ -208,98 +261,32 @@ const observado = reactive({
       observado.materno = null;
       observado.motivo = null;
       observado.id_proceso = null;
-  };
+      visible.value = false;
+    });
+}
 
-  watch(buscar, ( newValue, oldValue ) => {
-      getProgramas()
-  })
+const eliminar = (item) => {
+  axios.get("eliminar-programa/"+item.id).then((result) => {
+    getProgramas();
+    notificacion('warning', 'PROGRAMA ELIMINADO', result.data.mensaje );
+  });
+}
 
-
-  watch(buscarDep, ( newValue, oldValue ) => {
-      getDepartamentos()
-  })
-
-  watch(pagina, ( newValue, oldValue ) => {
-      getProgramas()
-  })
-
-  const abrirEditar = (item) => {
-
-      visible.value = true;
-      observado.id = item.id;
-      observado.dni = item.dni;
-      observado.nombres = item.nombres;
-      observado.paterno = item.paterno;
-      observado.materno = item.materno;
-      observado.motivo = item.motivo;
-      observado.id_proceso = item.id_proceso;
-
-  }
+const columnsProgramas = [
+  { title: 'Cod', dataIndex: 'dni', width:'100px', align:'center', responsive: ['md'],},
+  { title: 'Nombre', dataIndex: 'nombres'},
+  { title: 'Motivo', dataIndex: 'motivo', align:'center', responsive: ['md'],},
+  { title: 'Proceso', dataIndex: 'id_proceso', align:'center', width:"150px", responsive: ['md'],},
+  { title: 'Acciones', dataIndex: 'acciones', width:"90px", align:'center'},
+];
 
 
-  const getFacultades =  async ( ) => {
-      let res = await axios.get(
-      "get-select-procesos");
-      facultades.value = res.data.datos;
-  }
+const notificacion = (type, titulo, mensaje) => { notification[type]({ message: titulo, description: mensaje, }); };
 
+const verDetalle = (item) => { console.log("Detalle:", item); };
 
-  const getProgramas =  async (term = "") => {
-      let res = await axios.post(
-      "get-observados-lista?page=" + pagina.value,
-      { term: buscar.value }
-      );
-      programas.value = res.data.datos.data;
-      totalpaginas.value = res.data.datos.total;
-  }
-
-
-  const guardar = async () => {
-     const values = await formObservados.value.validateFields();
-      axios.post("save-observado", observado).then((result) => {
-        getProgramas()
-        observado.value = { id: null, dni:null, nombres: "", paterno: "", nombres:"", materno:"", motivo:"", observacion:"", id_proceso: null};
-        notificacion(result.data.tipo, result.data.titulo, "");
-        observado.id = null;
-        observado.dni = null;
-        observado.nombres = null;
-        observado.paterno = null;
-        observado.materno = null;
-        observado.motivo = null;
-        observado.id_proceso = null;
-        visible.value = false;
-      });
-  }
-
-  const eliminar = (item) => {
-      axios.get("eliminar-programa/"+item.id).then((result) => {
-      getProgramas();
-      notificacion('warning', 'PROGRAMA ELIMINADO', result.data.mensaje );
-      });
-  }
-
-  const columnsProgramas = [
-      { title: 'Cod', dataIndex: 'dni', width:'100px', align:'center', responsive: ['md'],},
-      { title: 'Nombre', dataIndex: 'nombres'},
-      { title: 'Motivo', dataIndex: 'motivo', align:'center', responsive: ['md'],},
-      { title: 'Proceso', dataIndex: 'id_proceso', align:'center', width:"150px", responsive: ['md'],},
-      { title: 'Acciones', dataIndex: 'acciones', width:"90px", align:'center'},
-  ];
-
-
-  const notificacion = (type, titulo, mensaje) => {
-      notification[type]({
-      message: titulo,
-      description: mensaje,
-      });
-  };
-
-  const verDetalle = (item) => {
-      console.log("Detalle:", item);
-  };
-
-  getFacultades()
-  getProgramas()
+getFacultades()
+getProgramas()
 
 
 </script>

@@ -219,6 +219,16 @@
                 </div>
               </nav-link>
             </a-menu-item>
+            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
+              <nav-link :href="route('admin-pagos-banco')" :active="route().current('admin-pagos-banco')" style="margin: 0px; margin-left: -25px; ">
+                <div class="flex ml-6" style=" width: 100%; align-items: center;">
+                  <setting-filled style=""/>
+                  <span>
+                    Pagos BN
+                  </span>
+                </div>
+              </nav-link>
+            </a-menu-item>
 
             <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
               <nav-link :href="route('admin-preinscripciones')" :active="route().current('admin-preinscripciones')" style="margin: 0px; margin-left: -25px; ">
@@ -402,6 +412,7 @@
     <div v-if="route().current('admin-apoderado-index')"> {{ submenu = 3 }}</div>
     <div v-if="route().current('admin-control-biometrico')"> {{ submenu = 3  }}</div>
     <div v-if="route().current('admin-observados')"> {{ submenu = 3  }}</div>
+    <div v-if="route().current('admin-pagos-banco')"> {{ submenu = 3  }}</div>
 
 
     <div v-if="route().current('admin-participante-docente')"> {{ submenu = 4  }}</div>

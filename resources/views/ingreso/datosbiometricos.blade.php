@@ -37,13 +37,13 @@
     
         <p style="line-height: 1.5rem;">
             La Dirección de Admisión de la Universidad Nacional del Altiplano de Puno, en cumplimiento pleno del 
-            Reglamento General de Admisión 2024-II, <label style="font-weight:bold;">HACE CONSTAR </label> 
+            Reglamento General de Admisión 2025-I, <label style="font-weight:bold;">HACE CONSTAR </label> 
             que <label style="font-weight:bold;">{{$data->paterno}} {{$data->materno}} {{$data->nombres}}</label>, identificado (a) con 
             DNI N° <label style="font-weight:bold;">{{$data->dni}}</label>, es 
             <label style="font-weight:bold;">INGRESANTE APTO</label> al programa de estudios de <label style="font-weight:bold;">{{$data->programa}}</label>, 
             bajo la modalidad <label style="font-weight:bold;">{{$data->modalidad}}</label>, El ingresante está en el puesto <label style="font-weight:bold;">{{ $data->puesto }}</label> y obtuvo el puntaje de
             <label style="font-weight:bold;">{{ $data->puntaje }} </label>puntos el {{ $date }}. El (la) estudiante en mención,
-            queda expedito(a) con código <label style="font-weight:bold;"> {{$data->cod_ingreso}} </label> para matricularse en el referido programa de estudios.
+            queda expedito(a) con código <label style="font-weight:bold;"> {{$data->cod_ingreso}} </label> para matricularse en el referido programa de estudios semestre 2025-I, siendo la modalidad de estudio PRESENCIAL.
         </p>
 
     </div>
@@ -185,7 +185,7 @@
         <p style="line-height: 1.5rem;">
             Así mismo, se deja constancia que ha validado su identidad a 
             través del control biométrico y acreditó los documentos personales, según 
-            los requisitos exigidos en el Reglamento General de Admisión 2024-II. De 
+            los requisitos exigidos en el Reglamento General de Admisión 2025-I. De 
             igual manera se proporciona al ingresante 
             un correo institucional de gran utilidad para fines académicos y administrativos.
         </p>
@@ -196,9 +196,21 @@
                 Use el correo institucional que ya tiene asignado<br>
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @else
-                Correo institucional: <span style="font-weight: bold"> {{$data->dni}}@est.unap.edu.pe </span><br> 
-                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.Filial.2024 </span><br>
-                Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
+                    @php
+                        $nombres = explode(' ', $data->nombres);
+                        $iniciales = '';
+                    
+                        foreach ($nombres as $nombreParte) {
+                            $iniciales .= strtolower(substr($nombreParte, 0, 1));
+                        }
+                    
+                        $iniciales .= strtolower($data->paterno); 
+                        $iniciales .= strtolower(substr($data->materno, 0, 1));
+                    @endphp
+
+                    Correo institucional: <span style="font-weight: bold"> {{$iniciales}} @est.unap.edu.pe </span><br> 
+                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$iniciales}} </span><br>
+                    Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
                 {{-- @if ( $data->proceso == 'EXAMEN GENERAL')
                     Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.General.2024 </span><br>
                 @else

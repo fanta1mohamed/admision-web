@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
-
 class IngresoController extends Controller {
 
     public function getDatosIngreso($dni){
@@ -113,7 +112,7 @@ class IngresoController extends Controller {
                 $ingreso = 1; $i_admision = 0;
                 if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
 
-                $prefijo = $re[0]->id_programa == '38' ? '25' : '24';
+                $prefijo = $re[0]->id_programa == '38' ? '25' : '25';
             
                 $database2 = 'mysql_secondary';
                 $rs = DB::connection($database2)->select("SELECT CONCAT('$prefijo', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1, 1), 4, '0')) AS siguiente 

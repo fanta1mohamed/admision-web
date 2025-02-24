@@ -66,12 +66,15 @@ class SancionadoController extends Controller
       $res = Sancionado::select('sancionados.id','sancionados.dni','sancionados.nombres','sancionados.paterno','sancionados.materno','sancionados.motivo','procesos.nombre as nombre_proceso','procesos.id as id_proceso')
         ->join ('procesos', 'procesos.id', '=','sancionados.id_proceso')
         ->where($query_where)
+        ->where('procesos.id','=',auth()->user()->id_proceso)
         ->where(function ($query) use ($request) {
             return $query
                 ->orWhere('sancionados.dni', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('sancionados.nombres', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('sancionados.paterno', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('sancionados.materno', 'LIKE', '%' . $request->term . '%')
+                ->orWhere(DB::raw("CONCAT(sancionados.paterno,' ',sancionados.materno,' ',sancionados.nombres)"), 'LIKE', '%' . $request->term . '%')
+                ->orWhere(DB::raw("CONCAT(sancionados.nombres,' ',sancionados.paterno, ' ', sancionados.materno)"), 'LIKE', '%' . $request->term . '%')
                 ->orWhere('procesos.nombre', 'LIKE', '%' . $request->term . '%');
         })->orderBy('sancionados.id', 'DESC')
         ->paginate(50);
