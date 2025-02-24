@@ -208,7 +208,7 @@
                         $iniciales .= strtolower(substr($data->materno, 0, 1));
                     @endphp
 
-                    Correo institucional: <span style="font-weight: bold"> {{$iniciales}} @est.unap.edu.pe </span><br> 
+                    Correo institucional: <span style="font-weight: bold"> {{$iniciales}}@est.unap.edu.pe </span><br> 
                     Contraseña de primer ingreso: <span style="font-weight: bold"> {{$iniciales}} </span><br>
                     Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
                 {{-- @if ( $data->proceso == 'EXAMEN GENERAL')
