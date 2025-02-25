@@ -8,6 +8,7 @@ use App\Models\CarrerasPrevias;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Models\RegistroEstudiante;
+use App\Models\Postulante;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
