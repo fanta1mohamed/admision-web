@@ -219,7 +219,7 @@ class IngresoController extends Controller {
         JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
         JOIN control_biometrico ON control_biometrico.id_postulante = postulante.id
         AND control_biometrico.id_proceso = ".auth()->user()->id_proceso ." WHERE resultados.apto = 'SI' AND inscripciones.estado = 0
-        AND resultados.dni_postulante = $dni AND resultados.id_proceso = " . auth()->user()->id_proceso ."AND inscripciones.id_proceso =  ".auth()->user()->id_proceso);
+        AND resultados.dni_postulante = $dni AND resultados.id_proceso = " . auth()->user()->id_proceso ." AND inscripciones.id_proceso =  ".auth()->user()->id_proceso);
 
         try {
             DB::transaction(function () use ($re) {
