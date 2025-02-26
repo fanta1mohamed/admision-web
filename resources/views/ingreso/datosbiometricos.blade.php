@@ -209,7 +209,7 @@
                     @endphp
 
                     Correo institucional: <span style="font-weight: bold"> {{$iniciales}}@est.unap.edu.pe </span><br> 
-                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$iniciales}} </span><br>
+                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$iniciales}}2025</span><br>
                     Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
                 {{-- @if ( $data->proceso == 'EXAMEN GENERAL')
                     Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.General.2024 </span><br>
