@@ -243,7 +243,7 @@
     }
     
     const getProgramas =  async (term = "") => {
-        let res = await axios.post( "get-observados-lista?page=" + pagina.value,{ term: buscar.value });
+        let res = await axios.post( "get-pagos-oti?page=" + pagina.value,{ term: buscar.value });
         programas.value = res.data.datos.data;
         totalpaginas.value = res.data.datos.total;
     }

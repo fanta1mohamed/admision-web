@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\PagoBanco;
 use Illuminate\Http\Request;
+use App\Models\PagoOTI;
 use DB;
 
 class PagoBancoController extends Controller
@@ -137,6 +138,29 @@ class PagoBancoController extends Controller
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
+
+    
+
+  }
+
+  public function getPagosOTI(Request $request)
+  {
+    $query_where = [];
+   // array_push($query_where, ['filial.cod_dep', '=', 'provincia.cod_dep']);
+    $res = PagoOTI::on('mysql_secondary')
+    ->where(function ($query) use ($request) {
+        $query->orWhere('secuencia', 'LIKE', '%' . $request->term . '%')
+              ->orWhereRaw("RIGHT(num_doc, 8) LIKE ?", ["%{$request->term}%"])
+              ->orWhere('nom_cli', 'LIKE', '%' . $request->term . '%');
+    })
+    ->paginate(50);
+
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+
+    $estudiantes = PagoOTI::on('mysql_secondary')->get();
+
   }
 
 

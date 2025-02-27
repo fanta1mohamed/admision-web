@@ -255,6 +255,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     //PAGOS
     Route::get('/pagos-banco', fn () => Inertia::render('Admin/Pagos/index'))->name('admin-pagos-banco');
+    Route::post('/get-pagos-oti', [PagoBancoController::class, 'getPagosOTI']);
     //Route::post('/get-observados-lista', [SancionadoController::class, 'getObservadosLista']);
     //Route::post('/save-observado', [SancionadoController::class, 'save']);
 
@@ -273,6 +274,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/comprobantes-xd', fn () => Inertia::render('Revisor/components/voucher'));
 
     Route::post('/get-pagos-banco', [PagoBancoController::class, 'getComprobantesDNI']);
+    
 
     Route::post('/get-certificados-revision', [DocumentoController::class, 'getCertificadosRevision']);
     Route::post('/cambiar-estado', [DocumentoController::class, 'cambiarEstado']);
