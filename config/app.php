@@ -196,8 +196,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        Elibyy\TCPDF\ServiceProvider::class,
+        App\Providers\RouteServiceProvider::class
 
     ],
 
@@ -214,8 +213,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
-        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
-        'TPDF' => Elibyy\TCPDF\Facades\TCPDF::class,
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class
     ])->toArray(),
 
 ];

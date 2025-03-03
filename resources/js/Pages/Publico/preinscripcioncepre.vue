@@ -512,7 +512,7 @@
                         :rules="[
                           { required: true, message: 'Ingresa un correo valido', trigger: 'change'},
                           { type: 'email', message: 'Ingresa un correo valido'},
-                          { validator: validateCorreo, trigger:'blur'}
+                          { validator: validateCorreo, trigger:'blur'} 
                         ]">
                       <div><label>Correo (<span style="color:red;">*</span>)</label></div>
                       <a-input type="email" @input="correoInput"  v-model:value="datospersonales.correo" />

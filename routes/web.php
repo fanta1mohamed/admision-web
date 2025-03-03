@@ -1,13 +1,13 @@
 <?php
-
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SimulacroController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\VacantesController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\FilialController;
@@ -45,6 +45,7 @@ use App\Http\Controllers\PuntajeController;
 use App\Http\Controllers\ControlBiometricoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\DniController;
+use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\SyncController;
 use Inertia\Inertia;
 
@@ -158,6 +159,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/save-modalidad', [ModalidadController::class, 'saveModalidad']);
     Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
     Route::get('/eliminar-modalidad/{id}', [ModalidadController::class, 'deleteModalidad']);
+    Route::get('/get-modalidades-activas', [ModalidadController::class, 'getModalidadesActivas']);
 
     //PRE-INSCRIPCIONES
     Route::get('/pre-inscripcion', [PreinscripcionController::class, 'index'])->name('preincripcion-index');
@@ -258,6 +260,12 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-pagos-oti', [PagoBancoController::class, 'getPagosOTI']);
     //Route::post('/get-observados-lista', [SancionadoController::class, 'getObservadosLista']);
     //Route::post('/save-observado', [SancionadoController::class, 'save']);
+
+    //VACANTES
+    Route::get('/vacantes', fn () => Inertia::render('Admin/Vacantes/index'))->name('admin-vacantes');
+    Route::post('/get-vacantes-admin', [VacantesController::class, 'getVacantes']);
+    Route::post('/save-numero-vacantes', [VacantesController::class, 'saveNumeroVacantes']);
+    Route::post('/delete-vacante', [VacantesController::class, 'eliminar']);
 
 
 });
@@ -463,6 +471,7 @@ Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'g
 Route::post('/get-postulante-datos-personales2', [PostulanteController::class, 'getPostulanteXDni2']);
 Route::post('/save-postulante-dni', [PostulanteController::class, 'saveDniPostulante']);
 Route::post('/save-postulante', [PostulanteController::class, 'savePostulante']);
+Route::post('/save-postulante-segundas', [PostulanteController::class, 'savePostulanteSegundas']);
 Route::post('/save-postulante-residencia', [PostulanteController::class, 'saveResidencia']);
 Route::post('/save-postulante-colegio', [PostulanteController::class, 'saveColegio']);
 Route::post('/save-postulante-apoderado', [ApoderadoController::class, 'saveApoderado']);
@@ -545,8 +554,10 @@ Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
 Route::get('/get-select-modalidad-proceso/{id}',[ProgramaProcesoController::class, 'getSelectModalidadesProceso']);
 Route::post('/get-select-programas-proceso',[ProgramaProcesoController::class, 'getSelectProgramasProceso']);
 Route::post('/get-select-programas-proceso-area',[ProgramaProcesoController::class, 'getSelectProgramasProcesoArea']);
-
 Route::get('/get-area-by-codigo/{area}',[ProgramaProcesoController::class, 'getAreaByCodigo']);
+
+Route::get('/get-select-modalidad-proceso-segundas/{id}',[VacantesController::class, 'getSelectModalidadesProceso']);
+Route::post('/get-select-programas-proceso-segundas',[VacantesController::class, 'getSelectProgramasProceso']);
 
 
 
@@ -681,6 +692,12 @@ Route::get('/eliminar-certificado/{id}', [CertificadoController::class, 'delete'
 Route::post('/save-dni', [DniController::class, 'save']);
 Route::post('/get-dnis-postulante', [DniController::class, 'getDnis']);
 Route::get('/eliminar-dni/{id}', [DniController::class, 'delete']);
+
+Route::post('/save-documentos-segundas', [DocumentoSegundaController::class, 'save']);
+Route::post('/get-documentos-segundas-postulante-titulos', [DocumentoSegundaController::class, 'getTitulos']);
+Route::post('/get-documentos-segundas-postulante-fotos', [DocumentoSegundaController::class, 'getFotos']);
+Route::get('/eliminar-documentos-segundas/{id}', [DocumentoSegundaController::class, 'delete']);
+Route::get('/verificar-documentos-preinscripcion/{d}/{p}', [DocumentoSegundaController::class, 'verificarDocumentos']);
 
 Route::post('/get-documentos-resultados', [DocumentosResultadoController::class, 'getDocumentos']);
 Route::post('/save-documento-resultado', [DocumentosResultadoController::class, 'cargarArchivoResultado'])->middleware('auth','admin');

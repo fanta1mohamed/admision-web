@@ -200,27 +200,27 @@
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="24" :md="24" :lg="12">
-                                <label>Ubicación: Dep/Prov/Dist <span style="color:red;">*</span></label>
-                                <a-form-item name="ubigeo">
-                                    <a-auto-complete
-                                        v-model:value="residencia"                
-                                        :options="residencias"
-                                        @select="onSelectResidencias"
-                                    >
-                                        <a-input
-                                            placeholder="Lugar"
-                                            v-model:value="buscarResidencia"
-                                            @keypress="handleKeyPress"
-                                        >
-                                            <template #suffix>
-                                                <a-tooltip title="Extra information">
-                                                <down-outlined/>
-                                                </a-tooltip>
-                                            </template>
-                                        </a-input>
-                                    </a-auto-complete>
-                                </a-form-item>
-                            </a-col>
+                        <label>Ubicación: Dep/Prov/Dist <span style="color:red;">*</span></label>
+                        <a-form-item name="ubigeo">
+                            <a-auto-complete
+                                v-model:value="residencia"                
+                                :options="residencias"
+                                @select="onSelectResidencias"
+                            >
+                                <a-input
+                                    placeholder="Lugar"
+                                    v-model:value="buscarResidencia"
+                                    @keypress="handleKeyPress"
+                                >
+                                    <template #suffix>
+                                        <a-tooltip title="Extra information">
+                                        <down-outlined/>
+                                        </a-tooltip>
+                                    </template>
+                                </a-input>
+                            </a-auto-complete>
+                        </a-form-item>
+                    </a-col>
                     <a-col :xs="24" :sm="24" :md="24" :lg="12">
                         <label>Dirección</label>
                         <a-form-item

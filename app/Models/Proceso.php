@@ -29,5 +29,6 @@ class Proceso extends Model
         'id_usuario',
         'observaciones',
         'url',
+        'nivel'
     ];
 }

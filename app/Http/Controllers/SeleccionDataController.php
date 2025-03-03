@@ -400,15 +400,17 @@ class SeleccionDataController extends Controller
 
   public function getUbigeos(Request $request) {
     $res = DB::table('ubigeo')
-    ->select('ubigeo.ubigeo as key' , DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre) as value'))
+    ->select('ubigeo.ubigeo as key' , DB::raw('CONCAT(ubigeo.ubigeo, "-", departamento.nombre, "/", provincia.nombre, "/", distritos.nombre) as value'))
     ->join('departamento', 'ubigeo.id_departamento', '=', 'departamento.id')
     ->join('provincia', 'ubigeo.id_provincia', '=', 'provincia.id')
     ->join('distritos', 'ubigeo.id_distrito', '=', 'distritos.id')
     ->where(function ($query) use ($request) {
       return $query
+          ->orWhere('ubigeo.ubigeo', 'LIKE', '%' . $request->term . '%')
           ->orWhere('departamento.nombre', 'LIKE', '%' . $request->term . '%')
           ->orWhere('provincia.nombre', 'LIKE', '%' . $request->term . '%')
           ->orWhere(DB::raw('CONCAT(departamento.nombre, "/", provincia.nombre, "/", distritos.nombre)'),'LIKE','%'.$request->term . '%')
+          ->orWhere(DB::raw('CONCAT(ubigeo.ubigeo, "-", departamento.nombre, "/", provincia.nombre, "/", distritos.nombre)'),'LIKE','%'.$request->term . '%')
           ->orWhere('distritos.nombre', 'LIKE', '%' . $request->term . '%');
     })
     ->paginate(50);

@@ -137,7 +137,14 @@ class ProcesoController extends Controller
   {
     $proceso = Proceso::where('slug', $nombreProceso)->where('estado',1)->first();
     if($proceso){ 
-      return Inertia::render('Publico/preinscripcioncepre', ['procceso_seleccionado' => $proceso]); 
+      if( $proceso->nivel == 1 ){
+        return Inertia::render('Publico/preinscripcioncepre', ['procceso_seleccionado' => $proceso]); 
+      }else{
+        if( $proceso->nivel == 2 ){
+          return Inertia::render('Segundas/Publico/preinscripcion', ['procceso_seleccionado' => $proceso]); 
+        } 
+      }
+
     } else {
       abort(404);
     }

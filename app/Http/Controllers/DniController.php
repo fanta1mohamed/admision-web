@@ -13,7 +13,7 @@ class DniController extends Controller
     {
         $request->validate([
             'dni' => 'required|string',
-            'file' => 'nullable|file|mimes:pdf|max:4096',
+            #'file' => 'nullable|file|mimes:pdf|max:4096',
             'tipo' => 'required|integer'
         ]);
     
@@ -37,6 +37,7 @@ class DniController extends Controller
                 $dni->observacion = $request->observacion;
                 $dni->dni = $request->dni;
                 $dni->id_tipo = $request->tipo;
+                $dni->id_proceso = $request->id_proceso;
                 $dni->url = $filePath;
                 $dni->save();
 
@@ -75,7 +76,7 @@ class DniController extends Controller
 
     public function getDnis( Request $request){
         $res = DB::select("SELECT crt.id, crt.dni, crt.id_tipo, crt.observacion, crt.url, crt.estado FROM documentos_biometrico crt
-        WHERE dni = ". $request->dni . " AND crt.id_tipo IN (3,4,5,6)");
+        WHERE dni = ". $request->dni . " AND crt.id_tipo IN (3,4,5,6,7)");
     
         $this->response['estado'] = !empty($res);
         $this->response['datos'] = $res;

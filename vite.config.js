@@ -1,9 +1,21 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
 export default defineConfig({
-    plugins: [
+      server: {
+        host: 'localhost', // Asegura que se sirva en localhost
+        port: 5173, // Puerto de Vite
+        strictPort: true,
+        cors: {
+            origin: '*', // Permitir cualquier origen (o especificar 'http://admision-web.test')
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+        },
+      },  
+      plugins: [
         laravel({
             input: 'resources/js/app.js',
             refresh: true,
@@ -15,7 +27,14 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
-        })
+        }),
+        Components({
+            resolvers: [
+              AntDesignVueResolver({
+                importStyle: false, // css in js
+              }),
+            ],
+          }),
     ],
     css: {
         preprocessorOptions: {

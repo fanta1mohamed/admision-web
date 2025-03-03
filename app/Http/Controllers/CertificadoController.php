@@ -37,6 +37,7 @@ class CertificadoController extends Controller
                 $certificado->observacion = $request->observacion;
                 $certificado->dni= $request->dni;
                 $certificado->id_tipo = $request->tipo;
+                $certificado->id_proceso = $request->id_proceso;
                 $certificado->url = $filePath;
                 $certificado->save();
 

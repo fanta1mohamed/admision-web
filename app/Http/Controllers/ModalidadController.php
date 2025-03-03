@@ -101,5 +101,17 @@ class ModalidadController extends Controller
     return response()->json($this->response, 200);
 
   }
+
+
+  public function getModalidadesActivas( ) {
+    $res = Modalidad::where('estado', 1)
+    ->select('id as value', 'nombre as label')
+    ->get();
+    
+    $this->response['estado'] = true;
+    $this->response['datos'] = $res;
+    return response()->json($this->response, 200);
+  }
+  
     
 }

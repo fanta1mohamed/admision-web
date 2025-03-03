@@ -232,6 +232,8 @@ class PostulanteController extends Controller
       
       return response()->json($this->response, 200);
     }
+
+
   
   //END PASO 1 PRE INSCRIPCION 
 
@@ -620,7 +622,101 @@ class PostulanteController extends Controller
   
           return response()->json($responseArray);
   }
-  
+
+
+    //segundas
+    public function savePostulanteSegundas(Request $request) {
+        DB::beginTransaction();
+        try {
+            $solo_unapellido = $request->segundo_apellido === null ? 0 : 1;
+
+            if (!$request->id) {
+                // Crear nuevo postulante
+                $postulante = Postulante::create([
+                    'tipo_doc' => $request->tipo_doc,
+                    'nro_doc' => $request->nro_doc,
+                    'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+                    'ubigeo_residencia' => $request->ubigeo_residencia,
+                    'sexo' => $request->sexo,
+                    'estado_civil' => $request->estado_civil, 
+                    'primer_apellido' => $request->primer_apellido, 
+                    'segundo_apellido' => $request->segundo_apellido,
+                    'solo_un_apellido' => $solo_unapellido,
+                    'direccion'=> $request->direccion,
+                    'anio_egreso'=> $request->egreso,
+                    'nombres' => $request->nombres,
+                    'email' => $request->correo,
+                    'celular' => $request->celular,
+                    'fec_nacimiento' => $request->fec_nacimiento,
+                ]);
+
+                $paso = Paso::firstOrCreate(
+                    ['nombre' => 'REGISTRO DE DATOS PERSONALES SEGUNDAS', 'proceso' => $request->proceso],
+                    ['nro' => 5, 'avance' => 80, 'postulante' => $postulante->id]
+                );
+
+                $this->response = [
+                    'tipo' => 'success',
+                    'titulo' => 'REGISTRO NUEVO',
+                    'mensaje' => 'Proceso ' . $postulante->nombres . ' creado con éxito',
+                    'estado' => true,
+                    'datos' => $postulante
+                ];
+            } else {
+
+                $postulante = Postulante::findOrFail($request->id);
+                $original = clone $postulante;
+
+                $postulante->update([
+                    'tipo_doc' => $request->tipo_doc,
+                    'nro_doc' => $request->nro_doc,
+                    'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+                    'ubigeo_residencia' => $request->ubigeo_residencia,
+                    'sexo' => $request->sexo,
+                    'estado_civil' => $request->estado_civil, 
+                    'anio_egreso' => $request->egreso, 
+                    'primer_apellido' => $request->primer_apellido, 
+                    'segundo_apellido' => $request->segundo_apellido,
+                    'solo_un_apellido' => $solo_unapellido,
+                    'nombres' => $request->nombres,
+                    'email' => $request->correo,
+                    'direccion' => $request->direccion,
+                    'celular' => $request->celular,
+                    'fec_nacimiento' => $request->fec_nacimiento,
+                    'id_usuario' => auth()->id()
+                ]);
+
+                Paso::firstOrCreate(
+                  ['nombre' => 'REGISTRO DE DATOS PERSONALES SEGUNDAS', 'proceso' => $request->proceso],
+                  ['nro' => 5, 'avance' => 80, 'postulante' => $postulante->id]
+                );
+
+                if ($original->getAttributes() == $postulante->getAttributes()) {
+                    $this->response['estado'] = false;
+                } else {
+                    $this->response = [
+                        'tipo' => 'info',
+                        'titulo' => '!REGISTRO MODIFICADO!',
+                        'mensaje' => 'Datos de ' . $postulante->nombres . ' actualizados',
+                        'estado' => true,
+                        'datos' => $postulante
+                    ];
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'tipo' => 'error',
+                'titulo' => 'ERROR',
+                'mensaje' => 'Ocurrió un problema: ' . $e->getMessage(),
+                'estado' => false
+            ], 500);
+        }
+
+        return response()->json($this->response, 200);
+    } 
 
 
 }

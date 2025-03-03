@@ -1,526 +1,558 @@
 <template>
-  <a-layout style="min-height: 100vh;">
+  <a-layout class="min-h-screen">
+    <!-- Sidebar -->
     <a-layout-sider
       v-model:collapsed="collapsed"
-      width="230px"
-      style="overflow-x: hidden; overflow-y:hidden; height: 100vh;  background:#476175; width: 230px; border-right: 1px solid #00000010;"
-      :trigger="null" :triggerSubMenuAcción="true" collapsible collapsed-width="0">
-
-    <div style="display: flex; align-items: center; justify-content: left; margin-top: 6px; margin-left: 20px; margin-bottom: 6px;">
+      :width="265"
+      :collapsed-width="50"
+      class="custom-sider"
+    >
+      <div class="sider-header mt-3">
         <div>
-            <img src="../../assets/imagenes/logotiny.png" width="35"/>
+          <img 
+            src="../../assets/imagenes/logotiny.png" 
+            class="sider-logo"
+            alt="Logo"
+          />
         </div>
-        <div style="border-left: 1px solid #d9d9d9; height: 30px; margin-left: 10px; margin-right: 5px; "></div>
-        <div style="margin: 0px 6px; color: #f3f3f3; margin-top: -5px;">
-            <div style="display: flex; justify-content: center; margin-top: 10px;"><span style="letter-spacing: .1rem; font-size:.90rem; font-weight: 500;">DIRECCIÓN DE</span></div>
-            <div style="display: flex; justify-content: center; margin-top: -8px;"><span style="letter-spacing: .1rem; font-size: 1.38rem; font-weight: 600;">ADMISIÓN</span></div>
-        </div>
-    </div>
 
-    <div class="custom-scrollbar"  style="height: calc(100vh - 65px); over-flow:scroll-y; ">
-      <a-menu
+        <div class="sider-title" v-if="!collapsed">
+          Sistema de Admisión
+        </div>
+      </div>
+
+      <div class="h-[calc(100vh-80px)] overflow-y-scroll custom-scrollbar">
+        <div class="mb-4">
+          <div class="flex justify-center">
+            <img 
+              src="../../assets/imagenes/usuario.png" 
+              style="width: 150px;"
+            />
+          </div>
+
+          <div class="flex justify-center text-gray-400" v-if="!collapsed">
+            <div>
+              <div class="text-center text-md mb-2">Administrador</div>
+              <div>
+                <a-select
+                    ref="select"
+                    v-model:value="proceso"
+                    style="width: 200px;"
+                    theme="dark"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="general">General 2025-I</a-select-option>
+                    <!-- <a-select-option value="cepreuna">Cepreuna 2025-I</a-select-option>
+                    <a-select-option value="extraordinario">Extraordinario 2025-I</a-select-option> -->
+                  </a-select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <a-menu
           v-model:selectedKeys="selectedKeys"
           v-model:openKeys="openKeys"
-          theme="dark" mode="inline" style="background: none; margin-left: -5px; font-weight: 500; font-size: .8rem; ">
-          <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
-            <span>Administración</span>
-          </div>
-
-          <!-- <a-menu-item key="1" style="background: #ff000000;"></a-menu-item> -->
-          <a-menu-item class="" style="margin-left: -10px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-dashboard')" :active="route().current('admin-dashboard')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
-                  <AppstoreFilled/>
-                  <span>Dashboard</span>
-                </div>
-              </nav-link>
+          theme="dark"
+          mode="inline"
+          class="custom-menu"
+        >
+          <template v-for="item in menuItems" :key="item.key">
+            <a-menu-item 
+              v-if="!item.children" 
+              :key="item"
+              :class="{ 'menu-item-active': route().current(item.route) }"
+            >
+              <Link :href="route(item.route)">
+                <component :is="item.icon" class="menu-icon" />
+                <span class="menu-text">{{ item.label }}</span>
+              </Link>
             </a-menu-item>
-
-
-          <a-sub-menu key="sub5">
-            <template #title>
-              <span>
-                <setting-filled/>
-                <span>Conf. Proceso</span>
-              </span>
-            </template>
-            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
-              <!-- <div v-if="route().current('proceso-index') && openKeys !== null" style="display: none;">{{ titleClick('sub3')  }}</div> -->
-
-              <nav-link :href="route('proceso-index')" :active="route().current('proceso-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Vacantes</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <!-- <div v-if="route().current('programa-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
-              <nav-link :href="route('programa-index')" :active="route().current('programa-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Tarifas</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="4" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <!-- <div v-if="route().current('modalidad-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
-              <nav-link :href="route('modalidad-index')" :active="route().current('modalidad-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Usuarios</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="4" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <!-- <div v-if="route().current('modalidad-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
-              <nav-link :href="route('modalidad-index')" :active="route().current('modalidad-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Inhabilitados</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
-              <!-- <div v-if="route().current('filial-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
-              <nav-link :href="route('filial-index')" :active="route().current('filial-index')" style="margin: 0px; margin-left: -28px;">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Actividades</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-          </a-sub-menu>
-
-
-
-          <a-sub-menu key="sub1">
-            <template #title>
-              <span>
-                <setting-filled/>
-                <span>Configuración</span>
-              </span>
-            </template>
-            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
-              <!-- <div v-if="route().current('proceso-index') && openKeys !== null" style="display: none;">{{ titleClick('sub3')  }}</div> -->
-
-              <nav-link :href="route('proceso-index')" :active="route().current('proceso-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Procesos</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <!-- <div v-if="route().current('programa-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
-              <nav-link :href="route('programa-index')" :active="route().current('programa-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>programas</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="4" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <!-- <div v-if="route().current('modalidad-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
-              <nav-link :href="route('modalidad-index')" :active="route().current('modalidad-index')" style="margin: 0px; margin-left: -28px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>modalidades</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="5" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
-              <!-- <div v-if="route().current('filial-index')" style="display: none;">{{ titleClick('sub3') }}</div> -->
-              <nav-link :href="route('filial-index')" :active="route().current('filial-index')" style="margin: 0px; margin-left: -28px;">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Filiales</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-          </a-sub-menu>
-
-          <a-sub-menu key="sub2" >
-            <template #title>
-                <div class="flex" style="align-items: center;">
-                  <gold-filled/>
-                  <span>Roles y Usuarios</span>
-                </div>
-            </template>
-            <a-menu-item key="2" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
-              <!-- <div v-if="route().current('roles-index') && openKeys !== null" style="display: none;">{{ titleClick('sub1') }}</div> -->
-              <nav-link :href="route('roles-index')" :active="route().current('roles-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>Roles</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item key="3" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom:-5px;">
-              <!-- <div v-if="route().current('usuarios-index')" style="display: none;">{{ titleClick('sub1') }}</div> -->
-              <nav-link :href="route('usuarios-index')" :active="route().current('usuarios-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style="align-items: center;">
-                  <setting-filled/>
-                  <span>usuarios</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-          </a-sub-menu>
-
-          <hr style="border-top: 1px solid #FFFFFF23;">
-          <a-sub-menu key="sub3" >
-            <template #title>
-                <div class="flex" style="align-items: center;">
-                  <gold-filled/>
-                  <span>Mantenieminto</span>
-                </div>
-            </template>
-            <a-menu-item style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
-              <nav-link :href="route('admin-apoderado-index')" :active="route().current('admin-apoderado-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Apoderados</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-postulante-index')" :active="route().current('admin-postulante-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Postulantes</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-colegios')" :active="route().current('admin-colegios')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Colegios</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-documento-index')" :active="route().current('admin-documento-index')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Documentos</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-pagos-banco')" :active="route().current('admin-pagos-banco')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>
-                    Pagos BN
-                  </span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-preinscripciones')" :active="route().current('admin-preinscripciones')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Preinscripciones</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px;">
-              <nav-link :href="route('admin-inscripciones')" :active="route().current('admin-inscripciones')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>
-                    Inscripciones
-                  </span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
-              <nav-link :href="route('admin-control-biometrico')" :active="route().current('admin-control-biometrico')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Ctrl biométrico</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: 0px; margin-bottom: -5px;">
-              <nav-link :href="route('admin-observados')" :active="route().current('admin-observados')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Observados</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-          </a-sub-menu>
-
-
-          <a-sub-menu key="sub4" >
-            <template #title>
-                <div class="flex" style="align-items: center;">
-                  <gold-filled/>
-                  <span>Participantes</span>
-                </div>
-            </template>
-            <a-menu-item style="margin-left: -30px; width: 265px; background:#476175; margin-top: -0px;">
-              <nav-link :href="route('admin-participante-docente')" :active="route().current('admin-participante-docente')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>Docentes</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
-              <nav-link :href="route('admin-participante-administrativo')" :active="route().current('admin-participante-administrativo')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>
-                    Administrativos
-                  </span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style="margin-left: -30px; width: 265px; background:#476175; margin-top: -10px; margin-bottom: -5px;">
-              <nav-link :href="route('admin-participante-sorteo')" :active="route().current('admin-participante-sorteo')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex ml-6" style=" width: 100%; align-items: center;">
-                  <setting-filled style=""/>
-                  <span>
-                    Sorteo
-                  </span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-          </a-sub-menu>
-
-
-
-
-
-
-
-            <hr style="border-top: 1px solid #FFFFFF23;">
-            <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
-              <span>Inscripcion</span>
-            </div>
-
-            <a-menu-item style="margin-left: -10px; width: 250px; background: #ff000000;">
-              <nav-link :href="route('admin-foto-inscripcion')" :active="route().current('admin-foto-inscripcion')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
-                  <printer-filled style=""/>
-                  <span>Foto Inscripción</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
-              <nav-link :href="route('impresion-cepre')" :active="route().current('impresion-cepre')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
-                  <printer-filled style=""/>
-                  <span>Inscripción</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-            <a-menu-item class="" style=" background: #ff000000;  margin-left: -10px; width: 250px;">
-              <nav-link :href="route('admin-reporte')" :active="route().current('admin-reporte')" style="margin: 0px; margin-left: -25px; ">
-                <div class="flex" style=" width: 100%; align-items: center;">
-                  <printer-filled style=""/>
-                  <span>Res Vocacional</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-          <hr style="border-top: 1px solid #FFFFFF23;">
-
-          <div style="margin-top: 30px; margin-left: 25px; margin-bottom: 25px;">
-            <span>Biométrico</span>
-          </div>
-
-            <a-menu-item style="margin-left: -10px; width: 250px; background: #ff000000;">
-              <nav-link :href="route('admin-foto-biometrico')" :active="route().current('admin-foto-biometrico')" style="margin: 0px; margin-left: -25px;">
-                <div class="flex" style="justify-content: center; width: 100%; align-items: center;">
-                  <camera-filled style=""/>
-                  <span>Fotos Biométrico</span>
-                </div>
-              </nav-link>
-            </a-menu-item>
-
-          <a-menu-item key="12">
-            <div class="flex" style=" width: 100%; align-items: center;">
-              <printer-filled/>
-              <span>Impresión</span>
-            </div>
-          </a-menu-item>
-          <hr style="border-top: 1px solid #FFFFFF23;">
-      </a-menu>
-    </div>
+            
+            <a-sub-menu 
+              v-else 
+              :key="item.key"
+              :title="item.label"
+              class="submenu"
+            >
+              <template #icon>
+                <component :is="item.icon" />
+              </template>
+              
+              <a-menu-item
+                v-for="child in item.children"
+                :key="child.key"
+                :class="{ 'menu-item-active': route().current(child.route) }"
+              >
+                <Link :href="route(child.route)">
+                  <component :is="child.icon" class="child-icon" />
+                  <span class="child-text">{{ child.label }}</span>
+                </Link>
+              </a-menu-item>
+            </a-sub-menu>
+          </template>
+        </a-menu>
+      </div>
     </a-layout-sider>
+
+    <!-- Contenido principal -->
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0; position: relative;" >
-      <div style="border-bottom: 1px solid #00000013;">
-        <menu-fold-outlined style="font-size: 1.3rem; margin-left: 20px;" class="trigger" @click="() => (collapsed = !collapsed)" />
-        <div style=" display: flex; align-items: center; justify-content: right; position: absolute; right: 20px; top: 0px; margin-bottom: -130px !important;">
-          <Header/>
-        </div>
-      </div>
-    </a-layout-header>
-    <a-layout-content
-      :style="{ padding: '0px'}"
-      style="height: calc(100vh - 94px); margin-top:14px;"
-      class="custom-scrollbar2"
-      >
-      <div style=" padding:0px 14px 14px 14px; ">
+      <a-layout-header class="main-header" style="background: white;">
+        <menu-fold-outlined 
+          class="collapse-trigger"
+          @click="collapsed = !collapsed"
+        />
+        <Header class="header-content" />
+      </a-layout-header>
+
+      <a-layout-content class="main-content">
+        <div class="content-container">
           <slot />
-      </div>
-
-    </a-layout-content>
+        </div>
+      </a-layout-content>
+    </a-layout>
   </a-layout>
-
-  <div style="display: none;">
-    <div v-if="route().current('proceso-index')"> {{ submenu = 1 }}</div>
-    <div v-if="route().current('programa-index')"> {{ submenu = 1 }}</div>
-    <div v-if="route().current('modalidad-index')"> {{ submenu = 1 }}</div>
-    <div v-if="route().current('filial-index')"> {{ submenu = 1 }}</div>
-
-    <div v-if="route().current('roles-index')"> {{ submenu = 2 }}</div>
-    <div v-if="route().current('usuarios-index')"> {{ submenu = 2 }}</div>
-
-    <div v-if="route().current('admin-inscripciones')"> {{ submenu = 3  }}</div>
-    <div v-if="route().current('admin-reporte')"> {{ submenu = 3  }}</div>
-    <div v-if="route().current('admin-documento-index')"> {{ submenu = 3  }}</div>
-    <div v-if="route().current('admin-colegio-index')"> {{ submenu = 3  }}</div>
-    <div v-if="route().current('admin-postulante-index')"> {{ submenu = 3  }}</div>
-    <div v-if="route().current('admin-apoderado-index')"> {{ submenu = 3 }}</div>
-    <div v-if="route().current('admin-control-biometrico')"> {{ submenu = 3  }}</div>
-    <div v-if="route().current('admin-observados')"> {{ submenu = 3  }}</div>
-    <div v-if="route().current('admin-pagos-banco')"> {{ submenu = 3  }}</div>
-
-
-    <div v-if="route().current('admin-participante-docente')"> {{ submenu = 4  }}</div>
-    <div v-if="route().current('admin-participante-administrativo')"> {{ submenu = 4  }}</div>
-  </div>
-
-</a-layout>
 </template>
 
-<script>
-import NavLink from '@/Components/NavLink.vue';
-import { Link } from '@inertiajs/vue3'
+<script setup>
+import { ref, watch } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
 import Header from '@/Layouts/Header.vue';
-import {
-  PieChartOutlined, DesktopOutlined, GoldFilled, AppstoreFilled, TeamOutlined, FileOutlined,
-  MenuUnfoldOutlined, PieChartTwoTone, SettingFilled,
-  MenuFoldOutlined, PrinterFilled, CameraFilled
+import { 
+  AppstoreFilled,
+  SettingFilled,
+  MenuFoldOutlined
 } from '@ant-design/icons-vue';
-import { defineComponent, ref } from 'vue';
-export default defineComponent({
-  components: {
-    Header,
-    PieChartOutlined,
-    DesktopOutlined,
-    GoldFilled,
-    TeamOutlined,
-    FileOutlined,
-    CameraFilled,
-    PrinterFilled,
-    PieChartTwoTone,
-    AppstoreFilled,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-    NavLink,
-    Link,
-    SettingFilled
-  },
-  data() {
-    return {
-      key: 'sub1',
-      collapsed: ref(false),
-      openKeys: [''],
-      selectedKeys : ['sub1','sub2'],
-      submenu: 0
-    };
-  },
-  methods:{
-    titleClick (open) {
-      let item = this.openKeys.includes(open);
-      if(item == false){
-        this.openKeys.push(open)
-      }
-    }
-  },
 
-  watch:{
-    submenu () {
-      if(this.submenu == 1){ this.openKeys = ['sub1']; }
-      if(this.submenu == 2){ this.openKeys = ['sub2']; }
-      if(this.submenu == 3){ this.openKeys = ['sub3']; }
-      if(this.submenu == 4){ this.openKeys = ['sub4']; }
+const collapsed = ref(false);
+const selectedKeys = ref([]);
+const openKeys = ref([]);
+const proceso = ref('general')
+
+const menuItems = [
+  {
+    key: 'dashboard',
+    icon: AppstoreFilled,
+    label: 'Dashboard',
+    route: 'admin-dashboard'
+  },
+  {
+    key: 'configuracion',
+    icon: SettingFilled,
+    label: 'Configuración',
+    children: [
+      {
+        key: 'vacantes',
+        icon: SettingFilled,
+        label: 'Vacantes',
+        route: 'admin-vacantes'
+      },
+      {
+        key: 'tarifas',
+        icon: SettingFilled,
+        label: 'Tarifas',
+        route: 'programa-index'
+      },
+      {
+        key: 'observados',
+        icon: SettingFilled,
+        label: 'Observados',
+        route: 'programa-index'
+      },
+      // {
+      //   key: 'vacantes',
+      //   icon: SettingFilled,
+      //   label: 'Vacantes',
+      //   route: 'admin-vacantes'
+      // }
+    ]
+  },
+  {
+    key: 'gestionadmision',
+    icon: SettingFilled,
+    label: 'Gestión de admision',
+    children: [
+      {
+        key: 'preinscripcion',
+        icon: SettingFilled,
+        label: 'Preinscripciones',
+        route: 'admin-preinscripciones'
+      },
+      {
+        key: 'inscripcion',
+        icon: SettingFilled,
+        label: 'Inscripciones',
+        route: 'admin-inscripciones'
+      },
+      {
+        key: 'controlbiometrico',
+        icon: SettingFilled,
+        label: 'Ctrl Biométrico',
+        route: 'admin-control-biometrico'
+      },
+      {
+        key: 'fotoshuellas',
+        icon: SettingFilled,
+        label: 'Fotos y huellas',
+        route: 'admin-pagos-banco'
+      },
+      {
+        key: 'resultados',
+        icon: SettingFilled,
+        label: 'Puntajes',
+        route: 'admin-pagos-banco'
+      },
+      {
+        key: 'observados',
+        icon: SettingFilled,
+        label: 'Observados',
+        route: 'admin-observados'
+      },
+      {
+        key: 'estudiantes',
+        icon: SettingFilled,
+        label: 'Estudiantes',
+        route: 'admin-observados'
+      },
+      {
+        key: 'estudiantecepre',
+        icon: SettingFilled,
+        label: 'Est. Cepreuna',
+        route: 'admin-observados'
+      },
+    ]
+  },
+  {
+    key: 'mantenimiento',
+    icon: SettingFilled,
+    label: 'Mantenimiento',
+    children: [
+      {
+        key: 'filial',
+        icon: SettingFilled,
+        label: 'Sede',
+        route: 'filial-index'
+      },
+      {
+        key: 'procesos',
+        icon: SettingFilled,
+        label: 'Procesos',
+        route: 'proceso-index'
+      },
+      {
+        key: 'programas',
+        icon: SettingFilled,
+        label: 'Programas',
+        route: 'programa-index'
+      },
+      {
+        key: 'modalidades',
+        icon: SettingFilled,
+        label: 'Modalidades',
+        route: 'modalidad-index'
+      },
+      {
+        key: 'colegios',
+        icon: SettingFilled,
+        label: 'Colegios',
+        route: 'admin-colegios'
+      },
+      {
+        key: 'ubigeo',
+        icon: SettingFilled,
+        label: 'Ubigeos',
+        route: 'programa-index'
+      },
+      {
+        key: 'pagos',
+        icon: SettingFilled,
+        label: 'Pagos',
+        route: 'programa-index'
+      },
+    ]
+  },
+  {
+    key: 'participantes',
+    icon: SettingFilled,
+    label: 'Gestion de participantes',
+    children: [
+      {
+        key: 'docentes',
+        icon: SettingFilled,
+        label: 'Docentes',
+        route: 'admin-participante-docente'
+      },
+      {
+        key: 'administrativos',
+        icon: SettingFilled,
+        label: 'Administrativos',
+        route: 'admin-participante-administrativo'
+      },
+      {
+        key: 'sorteo',
+        icon: SettingFilled,
+        label: 'Sorteo',
+        route: 'admin-participante-sorteo'
+      },
+      {
+        key: 'participantes',
+        icon: SettingFilled,
+        label: 'Participantes',
+        route: 'modalidad-index'
+      },
+    ]
+  },
+  {
+    key: 'usuarios',
+    icon: SettingFilled,
+    label: 'Roles y usuarios',
+    children: [
+      {
+        key: 'roles',
+        icon: SettingFilled,
+        label: 'Roles',
+        route: 'roles-index'
+      },
+      {
+        key: 'usuarios',
+        icon: SettingFilled,
+        label: 'Usuarios',
+        route: 'usuarios-index'
+      },
+    ]
+  },
+  
+  {
+    key: 'gestion',
+    icon: SettingFilled,
+    label: 'Gestión técnica',
+    children: [
+      {
+        key: 'apoderados',
+        icon: SettingFilled,
+        label: 'Apoderados',
+        route: 'admin-apoderado-index'
+      },
+      {
+        key: 'postulantes',
+        icon: SettingFilled,
+        label: 'Postulantes',
+        route: 'admin-postulante-index'
+      },
+      {
+        key: 'colegios',
+        icon: SettingFilled,
+        label: 'Colegios',
+        route: 'admin-colegios'
+      },
+      {
+        key: 'pagosbn',
+        icon: SettingFilled,
+        label: 'Pagos BN',
+        route: 'admin-pagos-banco'
+      },
+      {
+        key: 'pagosbn',
+        icon: SettingFilled,
+        label: 'Pagos BN',
+        route: 'admin-pagos-banco'
+      },
+    ]
+  },
+  {
+    key: 'reportes',
+    icon: SettingFilled,
+    label: 'Reportes',
+    children: [
+    {
+        key: 'resumen',
+        icon: SettingFilled,
+        label: 'Resumen',
+        route: 'usuarios-index'
+      },
+      {
+        key: 'reppreinscripcion',
+        icon: SettingFilled,
+        label: 'Rep preninscripcion',
+        route: 'roles-index'
+      },
+      {
+        key: 'repinscripcion',
+        icon: SettingFilled,
+        label: 'Rep inscripciones',
+        route: 'roles-index'
+      },
+      {
+        key: 'inscripcionprograma',
+        icon: SettingFilled,
+        label: 'Rep biométrico',
+        route: 'usuarios-index'
+      },
+      {
+        key: 'ratio',
+        icon: SettingFilled,
+        label: 'Ratio',
+        route: 'usuarios-index'
+      },
+      
+      {
+        key: 'resumenobservados',
+        icon: SettingFilled,
+        label: 'Rep observados',
+        route: 'programa-index'
+      },
+
+      {
+        key: 'errores',
+        icon: SettingFilled,
+        label: 'Rep errorres',
+        route: 'programa-index'
+      },
+    ]
+  },
+  {
+    key: 'ayuda',
+    icon: SettingFilled,
+    label: 'Centro de ayuda',
+    children: [
+      {
+        key: 'soportetecnico',
+        icon: SettingFilled,
+        label: 'Soporte técnico',
+        route: 'roles-index'
+      },
+      {
+        key: 'manualesguias',
+        icon: SettingFilled,
+        label: 'Manuales y guias',
+        route: 'usuarios-index'
+      },
+    ]
+  }
+  
+];
+
+const findParentKey = (routeName) => {
+  for (const item of menuItems) {
+    if (item.children) {
+      const found = item.children.find(child => route().current(child.route));
+      if (found) return item.key;
     }
   }
-});
+  return null;
+};
+
+watch(() => router.page.url, () => {
+  const activeItem = menuItems
+    .flatMap(item => item.children ? item.children : item)
+    .find(item => route().current(item.route));
+
+  selectedKeys.value = activeItem ? [activeItem.key] : [];
+  
+  const parentKey = findParentKey(router.page.url);
+  openKeys.value = parentKey ? [parentKey] : [];
+}, { immediate: true });
 </script>
-<style scoped>
-.custom-scrollbar {
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: 20px;
+
+<style>
+:root {
+  --sider-bg: #2d3748;
+  --primary-color: #1890ff;
+  --hover-bg: #4a5568;
+  --text-color: #cdcdcd;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 10px;
+  display: none;
+}sx
+
+.custom-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background-color: #476175;
+.custom-sider {
+  background: var(--sider-bg);
+  border-right: 1px solid #0000000f;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #476175;
+.sider-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #4240407a;
+.sider-logo {
+  height: 30px;
+  min-width: 30px;
 }
 
-.custom-scrollbar2 {
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
+.sider-title {
+  margin-left: 10px;
+  color: var(--text-color);
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
-.custom-scrollbar2::-webkit-scrollbar {
-  width: 10px;
+.custom-menu .ant-menu-item,
+.custom-menu .ant-menu-submenu-title {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.custom-scrollbar2::-webkit-scrollbar-track {
-  background-color: #dad7ee;
+.custom-menu .menu-item-active {
+  background: linear-gradient(
+    90deg,
+    rgba(24, 144, 255, 0.3) 0%,
+    rgba(24, 144, 255, 0.1) 100%
+  ) !important;
+  border-left: 3px solid var(--primary-color) !important;
+  /* margin-left: 46px !important; */
+
+  /* padding-left: 38px !important; */
 }
 
-.custom-scrollbar2::-webkit-scrollbar-thumb {
-  background-color: #476175;
+.custom-menu .menu-item-active .menu-text,
+.custom-menu .menu-item-active .anticon {
+  color: white !important;
+  font-weight: 600;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #e3e3e37a;
+.custom-menu .ant-menu-item:hover {
+  background: var(--hover-bg) !important;
 }
 
+.main-header {
+  background:yellow;
+  display: flex;
+  align-items: center;
+  padding: 10 0px;  
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.collapse-trigger {
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.collapse-trigger:hover {
+  color: var(--primary-color);
+}
+
+.header-content {
+  margin-left: auto;
+}
+
+.main-content {
+  height: calc(100vh - 140px);
+  margin-top: 0px;
+  padding: 12px 0px;
+  overflow-y: scroll;
+}
+
+.content-container {
+  padding: 0 14px 14px 14px;
+}
 </style>
