@@ -336,9 +336,13 @@
 
                           <a-col :xs="24" :sm="24" :md="24" :lg="12">
                             <label>Ubigeo Nacimiento: Dep/Prov/Dist <span style="color:red;">*</span></label>
-                            <a-form-item name="ubigeo_nacimiento">
+                            <a-form-item name="nacimiento"
+                                :rules="[
+                                    { required: true, message: 'Ingresa tu ubigeo de Nacimiento', trigger: 'change' }
+                                ]"
+                            >
                                 <a-auto-complete
-                                    v-model:value="nacimiento"                
+                                    v-model:value="datospersonales.nacimiento"                
                                     :options="ubigeosNacimiento"
                                     @select="onSelectNacimiento"
                                     allowClear
@@ -360,9 +364,12 @@
 
                         <a-col :xs="24" :sm="24" :md="24" :lg="12">
                             <label>Ubigeo Residencia: Dep/Prov/Dist <span style="color:red;">*</span></label>
-                            <a-form-item name="ubigeo">
+                            <a-form-item name="residencia" 
+                            :rules="[
+                                { required: true, message: 'Ingresa tu ubigeo de residencia', trigger: 'change' }
+                            ]">
                                 <a-auto-complete
-                                    v-model:value="residencia"                
+                                    v-model:value="datospersonales.residencia"                
                                     :options="residencias"
                                     @select="onSelectResidencias"
                                     :allowClear="true"
@@ -395,8 +402,6 @@
           </div>
   
           <div v-if="pagina_pre === 6">
-
-              
             <div style="width: 100%; margin-top: 5px; ">
               <a-card style="padding-top: -5px; max-width:900px; padding-bottom:0px;" class="cardInicio">
   
@@ -417,7 +422,7 @@
                     <a-col :span="24" :md="12" :lg="24" class="mb-4">
                         <a-form-item
                         name="programa"
-                        :rules="[{ required: true, message: 'Seleccine la modalidad', trigger: 'change' },]"
+                        :rules="[{ required: true, message: 'Seleccine el programa', trigger: 'change' },]"
                         >
                             <div><label>Programa de estudios</label></div>
                             <a-select
@@ -637,6 +642,9 @@ const datospersonales = reactive({
     direccion:"",
     ubigeo_nacimiento:"",
     ubigeo_residencia:"",
+    residencia:"",
+    nacimiento:"",
+
 });
 const formDatosResidencia = ref();
 const datosresidencia = reactive({
@@ -655,6 +663,12 @@ const datoscolegio = reactive({
     colegio:'',
 });
 
+
+const rules = {
+  ubigeo_nacimiento: [{ required: true, message: "El lugar de nacimiento es obligatorio" }],
+  ubigeo_residencia: [{ required: true, message: "El lugar de residencia es obligatorio" }],
+};
+
 const formPreinscripcion = ref();
 const datos_preinscripcion = reactive({
 modalidad: null,
@@ -672,6 +686,7 @@ const celularInput = (event) => { datospersonales.celular = event.target.value.r
 
 const departamentos = ref([])
 const departamentoscolegio = ref([])
+
 
 const residencia = ref(null)
 const buscarResidencia = ref(null)
@@ -854,7 +869,10 @@ let res = await axios.post( "/save-postulante-dni",
 }
 
 const saveDatosPersonales =  async () => {
-const values = await formDatosPersonales.value.validateFields();
+
+    await formDatosPersonales.value.validateFields(['ubigeo_nacimiento']);
+    const values = await formDatosPersonales.value.validateFields();
+
     let res = await axios.post(
         "/save-postulante-segundas",
         {
