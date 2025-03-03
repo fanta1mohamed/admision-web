@@ -112,8 +112,8 @@ class DocumentoSegundaController extends Controller
 
 
     public function verificarDocumentos($dni, $proceso){
-        $existing = \App\Models\DocumentoSegunda::where('dni', '70757831')
-            ->where('id_proceso', 16)
+        $existing = \App\Models\DocumentoSegunda::where('dni', $dni)
+            ->where('id_proceso', $proceso)
             ->whereIn('id_tipo', [7, 8])
             ->distinct()
             ->pluck('id_tipo')
