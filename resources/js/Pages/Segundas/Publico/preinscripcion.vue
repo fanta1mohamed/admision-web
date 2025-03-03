@@ -1177,7 +1177,7 @@ const validationMessage = ref('');
 
 const validateDocuments = async () => {
   try {
-    const response = await axios.get('http://admision-web.test/verificar-documentos-preinscripcion/'+formState.dni+'/'+props.procceso_seleccionado.id);
+    const response = await axios.get('/verificar-documentos-preinscripcion/'+formState.dni+'/'+props.procceso_seleccionado.id);
     const data = response.data;
     
     if (data.estado) {
