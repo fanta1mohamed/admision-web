@@ -105,7 +105,7 @@ class ReporteController extends Controller
             LEFT JOIN inscripciones ins ON p.id = ins.id_programa 
                 AND ins.id_proceso = ? 
             WHERE p.id_filial = $proceso->id_sede_filial 
-            AND p.nivel_academico = 'Segunda Especialidad'
+            AND p.nivel_academico = 'CARRERA PROFESIONAL'
             AND p.estado = 1
             GROUP BY p.nombre, p.id
             ORDER BY p.id
