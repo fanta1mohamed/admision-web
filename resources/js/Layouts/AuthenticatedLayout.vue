@@ -348,10 +348,10 @@ const menuItems = [
         route: 'admin-colegios'
       },
       {
-        key: 'pagosbn',
+        key: 'carrerasprevias',
         icon: SettingFilled,
-        label: 'Pagos BN',
-        route: 'admin-pagos-banco'
+        label: 'Estudios anteriores',
+        route: 'admin-carreras-previas'
       },
       {
         key: 'pagosbn',

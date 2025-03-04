@@ -46,6 +46,8 @@ use App\Http\Controllers\ControlBiometricoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\DniController;
 use App\Http\Controllers\DocumentoSegundaController;
+use App\Http\Controllers\CarrerasPreviasController;
+
 use App\Http\Controllers\SyncController;
 use Inertia\Inertia;
 
@@ -266,6 +268,13 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-vacantes-admin', [VacantesController::class, 'getVacantes']);
     Route::post('/save-numero-vacantes', [VacantesController::class, 'saveNumeroVacantes']);
     Route::post('/delete-vacante', [VacantesController::class, 'eliminar']);
+
+    //ESTUDIOS ANTERIORES
+    Route::get('/carreras-previas', fn () => Inertia::render('Admin/Estudios/carreras_previas'))->name('admin-carreras-previas');
+    Route::post('/get-carreras-previas-registrado', [CarrerasPreviascontroller::class, 'getCarrerasPrevias']);
+    Route::post('/save-carrera-previa', [CarrerasPreviascontroller::class, 'save']);
+    //Route::post('/programas/get-programas', [ProgramaController::class, 'getProgramas']);
+    Route::get('/eliminar-carrera-previa/{id}', [CarrerasPreviascontroller::class, 'delete']);
 
 
 });
