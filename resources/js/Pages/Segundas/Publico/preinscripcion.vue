@@ -82,7 +82,7 @@
   
             <div class="datos-column">
               <label for="name">Programa:</label>
-              <select v-model="datos_preinscripcion.programa">
+              <select v-model="datos_preinscripcion.programa" style="width:100%;">
                 <option disabled value="">Seleccione una especialidad</option>
                 <option 
                   v-for="item in especialidades" 

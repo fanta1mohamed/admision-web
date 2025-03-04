@@ -100,9 +100,11 @@ class VacantesController extends Controller
     }
 
     public function getSelectProgramasProceso(Request $request) {
-        $res = DB::select("SELECT programa.id AS value, programa.nombre AS label  FROM (SELECT id_programa FROM vacantes
+        $res = DB::select("SELECT programa.id AS value, concat(programa.nombre,' - ',facultad.facultad) AS label  FROM (SELECT id_programa FROM vacantes
             WHERE id_modalidad = $request->id_modalidad AND id_proceso = $request->id_proceso AND vacantes.estado = 1) AS programas_proceso
-            JOIN programa ON programa.id = programas_proceso.id_programa");
+            JOIN programa ON programa.id = programas_proceso.id_programa
+            JOIN facultad ON facultad.id = programa.id_facultad
+            ");
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

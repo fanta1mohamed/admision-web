@@ -1,1 +1,0 @@
-import{o as t,E as a,w as o,a9 as r,u as s,a7 as n}from"./app-8dc9d78c.js";const i={__name:"DropdownLink",setup(c){return(e,p)=>(t(),a(s(n),{class:"block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"},{default:o(()=>[r(e.$slots,"default")]),_:3}))}};export{i as _};
