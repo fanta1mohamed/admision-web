@@ -115,24 +115,18 @@ class PagoBancoController extends Controller
   }
 
 
-  public function getObservadosLista(Request $request)
+  public function getPagosAdmision(Request $request)
   {
     $query_where = [];
    // array_push($query_where, ['filial.cod_dep', '=', 'provincia.cod_dep']);
-    $res = PagoBanco::select('sancionados.id','sancionados.dni','sancionados.nombres','sancionados.paterno','sancionados.materno','sancionados.motivo','procesos.nombre as nombre_proceso','procesos.id as id_proceso')
-      ->join ('procesos', 'procesos.id', '=','sancionados.id_proceso')
+    $res = PagoBanco::select('num_mat','num_doc', 'secuencia', DB::raw("SUBSTRING(concepto, -3) AS concepto"), DB::raw("SUBSTRING(num_doc, -8) AS dni"), 'imp_pag', 'fch_pag', 'nom_cli', 'id', )
       ->where($query_where)
-      ->where('procesos.id','=',auth()->user()->id_proceso)
       ->where(function ($query) use ($request) {
           return $query
-              ->orWhere('sancionados.dni', 'LIKE', '%' . $request->term . '%')
-              ->orWhere('sancionados.nombres', 'LIKE', '%' . $request->term . '%')
-              ->orWhere('sancionados.paterno', 'LIKE', '%' . $request->term . '%')
-              ->orWhere('sancionados.materno', 'LIKE', '%' . $request->term . '%')
-              ->orWhere(DB::raw("CONCAT(sancionados.paterno,' ',sancionados.materno,' ',sancionados.nombres)"), 'LIKE', '%' . $request->term . '%')
-              ->orWhere(DB::raw("CONCAT(sancionados.nombres,' ',sancionados.paterno, ' ', sancionados.materno)"), 'LIKE', '%' . $request->term . '%')
-              ->orWhere('procesos.nombre', 'LIKE', '%' . $request->term . '%');
-      })->orderBy('sancionados.id', 'DESC')
+              ->orWhere('secuencia', 'LIKE', '%' . $request->term . '%')
+              ->orWhere('nom_cli', 'LIKE', '%' . $request->term . '%')
+              ->orWhere(DB::raw("SUBSTRING(num_doc, -8)"), 'LIKE', '%' . $request->term . '%');
+      })->orderBy('id', 'DESC')
       ->paginate(50);
 
     $this->response['estado'] = true;

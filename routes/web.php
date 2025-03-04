@@ -259,7 +259,8 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     //PAGOS
     Route::get('/pagos-banco', fn () => Inertia::render('Admin/Pagos/index'))->name('admin-pagos-banco');
-    Route::post('/get-pagos-oti', [PagoBancoController::class, 'getPagosOTI']);
+    Route::post('/get-pagos-bn-admision', [PagoBancoController::class, 'getPagosAdmision']);
+    //Route::post('/get-pagos-oti', [PagoBancoController::class, 'getPagosOTI']);
     //Route::post('/get-observados-lista', [SancionadoController::class, 'getObservadosLista']);
     //Route::post('/save-observado', [SancionadoController::class, 'save']);
 

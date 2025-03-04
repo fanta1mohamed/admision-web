@@ -8,8 +8,11 @@
           <a-button type="primary" style="border-radius: 5px; background: #476175; border:none;" @click="showModalPrograma">Agregar</a-button>
       </div>
       <div class="flex justify-between" style="position: relative;" >
-      <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 30px;"/>
-      <div class="mr-2" style="position: absolute; left: 8px; top: 3px; "><search-outlined /></div>
+        <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 10px;">
+          <template #prefix>
+            <search-outlined />
+          </template>
+        </a-input>
       </div>
   </row>
 
@@ -209,14 +212,15 @@ const showModalPrograma = () => {
     observado.id_proceso = null;
 };
 
+let timeoutId;
 watch(buscar, ( newValue, oldValue ) => {
-    getProgramas()
+  clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      getProgramas();
+    }, 500);  
+
 })
 
-
-watch(buscarDep, ( newValue, oldValue ) => {
-    getDepartamentos()
-})
 
 watch(pagina, ( newValue, oldValue ) => {
     getProgramas()
@@ -234,7 +238,7 @@ const abrirEditar = (item) => {
 }
 
 const getProgramas =  async (term = "") => {
-    let res = await axios.post( "get-pagos-oti?page=" + pagina.value,{ term: buscar.value });
+    let res = await axios.post( "get-pagos-bn-admision?page=" + pagina.value,{ term: buscar.value });
     programas.value = res.data.datos.data;
     totalpaginas.value = res.data.datos.total;
 }
@@ -264,10 +268,12 @@ const eliminar = (item) => {
 }
 
 const columnsProgramas = [
-  { title: 'Cod', dataIndex: 'dni', width:'100px', align:'center', responsive: ['md'],},
-  { title: 'Nombre', dataIndex: 'nombres'},
-  { title: 'Motivo', dataIndex: 'motivo', align:'center', responsive: ['md'],},
-  { title: 'Proceso', dataIndex: 'id_proceso', align:'center', width:"150px", responsive: ['md'],},
+  { title: 'Secuencia', dataIndex: 'secuencia', width:'100px', align:'center', responsive: ['md'],},
+  { title: 'Dni', dataIndex: 'dni', width:'100px', align:'center', responsive: ['md'],},
+  { title: 'Nombre', dataIndex: 'nom_cli'},
+  { title: 'Concepto', dataIndex: 'concepto', align:'center', responsive: ['md'],},
+  { title: 'Fecha', dataIndex: 'fch_pag', align:'center', width:"150px", responsive: ['md'],},
+  { title: 'Monto', dataIndex: 'imp_pag', align:'center', width:"150px", responsive: ['md'],},
   { title: 'Acciones', dataIndex: 'acciones', width:"90px", align:'center'},
 ];
 

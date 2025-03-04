@@ -196,13 +196,13 @@ const menuItems = [
         key: 'fotoshuellas',
         icon: SettingFilled,
         label: 'Fotos y huellas',
-        route: 'admin-pagos-banco'
+        route: 'about'
       },
       {
         key: 'resultados',
         icon: SettingFilled,
         label: 'Puntajes',
-        route: 'admin-pagos-banco'
+        route: 'about'
       },
       {
         key: 'observados',
@@ -259,6 +259,7 @@ const menuItems = [
         label: 'Colegios',
         route: 'admin-colegios'
       },
+
       {
         key: 'ubigeo',
         icon: SettingFilled,
@@ -340,6 +341,12 @@ const menuItems = [
         icon: SettingFilled,
         label: 'Postulantes',
         route: 'admin-postulante-index'
+      },
+      {
+        key: 'documentos',
+        icon: SettingFilled,
+        label: 'Documentos',
+        route: 'admin-documento-index'
       },
       {
         key: 'colegios',
