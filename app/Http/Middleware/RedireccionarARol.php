@@ -27,6 +27,8 @@ class RedireccionarARol
                 return redirect('/admin/dashboard');
             } elseif ($userRole == 2) {
                 return redirect('/revisor');
+            }elseif ($userRole == 3) {
+                return redirect('/segundas');
             }
         }
         

@@ -70,7 +70,7 @@ class Kernel extends HttpKernel
         'simulacro' => \App\Http\Middleware\Simulacro::class,
         'calificador' => \App\Http\Middleware\Calificador::class,
         'redirect' => \App\Http\Middleware\RedireccionarARol::class,
-
+        'segundas' => \App\Http\Middleware\Segundas::class,
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,

@@ -730,7 +730,7 @@ Route::get('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->
 
 
 require __DIR__.'/auth.php';
-
+require __DIR__.'/segundas.php';
 
 
 

@@ -113,7 +113,6 @@ class ReporteController extends Controller
     
         $res = DB::select($query, [$sim]);
     
-        // Totales generales
         $columnasTotales = implode(", ", array_map(function ($fecha) {
             return "COALESCE(SUM(CASE WHEN DATE(created_at) = '$fecha' THEN 1 ELSE 0 END), 0) AS `ins_$fecha`";
         }, $fechas));
@@ -125,13 +124,11 @@ class ReporteController extends Controller
             WHERE id_proceso = ?
         ", [$sim]);
     
-        // Generar PDF
         $pdf = Pdf::loadView('Reportes.programa_ins', compact('res', 'proceso', 'totales', 'fechas'));
         $pdf->getDomPDF()->set_option("isPhpEnabled", true);
         $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
         $pdf->setPaper('A4', 'portrait');
     
-        // Guardar el PDF en la carpeta pública
         $rutaCarpeta = public_path("/documentos/$sim/reportes/");
         $rutaArchivo = $rutaCarpeta . 'ReporteProgramas_' . date('Y-m-d_H-i-s') . auth()->id() . '.pdf';
     
@@ -142,6 +139,7 @@ class ReporteController extends Controller
         file_put_contents($rutaArchivo, $pdf->output());
     
         return $pdf->stream(date('d/m/Y H:i:s')." Reporte inscripciones diarias por programa.pdf");
+    
     }
 
 

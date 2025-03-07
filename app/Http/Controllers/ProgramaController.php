@@ -3,10 +3,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\DB;
 use App\Models\Filial;
 use App\Models\Dataversion;
 use App\Models\Programa;
+use DB;
 
 class ProgramaController extends Controller
 {

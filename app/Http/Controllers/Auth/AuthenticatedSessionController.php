@@ -42,7 +42,8 @@ class AuthenticatedSessionController extends Controller
         if ($user->id_rol == 7) { return redirect('/calificacion'); }
         if ($user->id_rol == 6) { return redirect('/simulacro'); }
         if ($user->id_rol == 1) { return redirect('/admin/dashboard'); } 
-        if ($user->id_rol == 2) { return redirect('/revisor'); }        
+        if ($user->id_rol == 2) { return redirect('/revisor'); }       
+        if ($user->id_rol == 3) { return redirect('/segundas'); }        
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
