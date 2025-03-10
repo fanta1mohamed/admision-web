@@ -15,7 +15,7 @@ Route::get('/segundas', fn () => Inertia::render('Segundas/Admin/Preinscripcione
 
 // Route::middleware('auth')->group(function () { });
 
-Route::prefix('segundas')->middleware('segundas')->group(function () {
+Route::prefix('segundas')->middleware('segundas','auth')->group(function () {
 
     //PROGRAMAS 
     Route::post('select-programas-segundas', [ProgramaSegundaController::class, 'getSelectProgramas']);
