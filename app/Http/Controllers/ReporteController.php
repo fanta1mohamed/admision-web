@@ -67,7 +67,7 @@ class ReporteController extends Controller
     
         file_put_contents($rutaArchivo, $pdf->output());
     
-        return $pdf->stream("tepo");
+        return $pdf->stream(date('d/m/Y H:i:s')." ".auth()->id()." Resumen por programa.pdf");
     }
 
 

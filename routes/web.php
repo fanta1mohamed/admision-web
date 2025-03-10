@@ -256,7 +256,6 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-observados-lista', [SancionadoController::class, 'getObservadosLista']);
     Route::post('/save-observado', [SancionadoController::class, 'save']);
 
-
     //PAGOS
     Route::get('/pagos-banco', fn () => Inertia::render('Admin/Pagos/index'))->name('admin-pagos-banco');
     Route::post('/get-pagos-bn-admision', [PagoBancoController::class, 'getPagosAdmision']);

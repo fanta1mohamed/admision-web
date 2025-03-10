@@ -84,17 +84,16 @@ class SancionadoController extends Controller
       return response()->json($this->response, 200);
     }
 
-
     public function save(Request $request ) {
 
       $request->validate([
-          'dni' => 'required|string|max:20',  // Validación del DNI
-          'nombres' => 'required|string|max:255',
-          'paterno' => 'required|string|max:255',
-          'materno' => 'required|string|max:255',
-          'motivo' => 'required|string|max:255',
-          'observacion' => 'nullable|string|max:500',
-          'id_proceso' => 'required|integer',
+        'dni' => 'required|string|max:20',
+        'nombres' => 'required|string|max:255',
+        'paterno' => 'required|string|max:255',
+        'materno' => 'required|string|max:255',
+        'motivo' => 'required|string|max:255',
+        'observacion' => 'nullable|string|max:500',
+        'id_proceso' => 'required|integer',
       ]);
 
       $observado = null;

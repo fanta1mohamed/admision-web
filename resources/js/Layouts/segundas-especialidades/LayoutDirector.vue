@@ -105,7 +105,7 @@
           @click="collapsed = !collapsed"
         />
         <Header class="header-content" />
-      </a-layout-header>
+      </a-layout-header>  
 
       <a-layout-content class="main-content">
         <div class="content-container">
@@ -147,26 +147,14 @@ const menuItems = [
         key: 'vacantes',
         icon: SettingFilled,
         label: 'Vacantes',
-        route: 'admin-vacantes'
-      },
-      {
-        key: 'tarifas',
-        icon: SettingFilled,
-        label: 'Tarifas',
-        route: 'programa-index'
+        route: 'segundas-vacantes-admin'
       },
       {
         key: 'observados',
         icon: SettingFilled,
         label: 'Observados',
-        route: 'programa-index'
+        route: 'segundas-observados-admin'
       },
-      // {
-      //   key: 'vacantes',
-      //   icon: SettingFilled,
-      //   label: 'Vacantes',
-      //   route: 'admin-vacantes'
-      // }
     ]
   },
   {
@@ -187,155 +175,18 @@ const menuItems = [
         route: 'admin-inscripciones'
       },
       {
-        key: 'controlbiometrico',
-        icon: SettingFilled,
-        label: 'Ctrl Biométrico',
-        route: 'admin-control-biometrico'
-      },
-      {
-        key: 'fotoshuellas',
-        icon: SettingFilled,
-        label: 'Fotos y huellas',
-        route: 'about'
-      },
-      {
         key: 'resultados',
         icon: SettingFilled,
         label: 'Puntajes',
         route: 'about'
       },
-      {
-        key: 'observados',
-        icon: SettingFilled,
-        label: 'Observados',
-        route: 'admin-observados'
-      },
-      {
-        key: 'estudiantes',
-        icon: SettingFilled,
-        label: 'Estudiantes',
-        route: 'admin-observados'
-      },
-      {
-        key: 'estudiantecepre',
-        icon: SettingFilled,
-        label: 'Est. Cepreuna',
-        route: 'admin-observados'
-      },
     ]
   },
-  {
-    key: 'mantenimiento',
-    icon: SettingFilled,
-    label: 'Mantenimiento',
-    children: [
-      {
-        key: 'filial',
-        icon: SettingFilled,
-        label: 'Sede',
-        route: 'filial-index'
-      },
-      {
-        key: 'procesos',
-        icon: SettingFilled,
-        label: 'Procesos',
-        route: 'proceso-index'
-      },
-      {
-        key: 'programas',
-        icon: SettingFilled,
-        label: 'Programas',
-        route: 'programa-index'
-      },
-      {
-        key: 'modalidades',
-        icon: SettingFilled,
-        label: 'Modalidades',
-        route: 'modalidad-index'
-      },
-      {
-        key: 'colegios',
-        icon: SettingFilled,
-        label: 'Colegios',
-        route: 'admin-colegios'
-      },
-
-      {
-        key: 'ubigeo',
-        icon: SettingFilled,
-        label: 'Ubigeos',
-        route: 'programa-index'
-      },
-      {
-        key: 'pagos',
-        icon: SettingFilled,
-        label: 'Pagos',
-        route: 'programa-index'
-      },
-    ]
-  },
-  {
-    key: 'participantes',
-    icon: SettingFilled,
-    label: 'Gestion de participantes',
-    children: [
-      {
-        key: 'docentes',
-        icon: SettingFilled,
-        label: 'Docentes',
-        route: 'admin-participante-docente'
-      },
-      {
-        key: 'administrativos',
-        icon: SettingFilled,
-        label: 'Administrativos',
-        route: 'admin-participante-administrativo'
-      },
-      {
-        key: 'sorteo',
-        icon: SettingFilled,
-        label: 'Sorteo',
-        route: 'admin-participante-sorteo'
-      },
-      {
-        key: 'participantes',
-        icon: SettingFilled,
-        label: 'Participantes',
-        route: 'modalidad-index'
-      },
-    ]
-  },
-  {
-    key: 'usuarios',
-    icon: SettingFilled,
-    label: 'Roles y usuarios',
-    children: [
-      {
-        key: 'roles',
-        icon: SettingFilled,
-        label: 'Roles',
-        route: 'roles-index'
-      },
-      {
-        key: 'usuarios',
-        icon: SettingFilled,
-        label: 'Usuarios',
-        route: 'usuarios-index'
-      },
-    ]
-  },
-  
   {
     key: 'gestion',
     icon: SettingFilled,
     label: 'Gestión técnica',
     children: [
-      {
-        key: 'apoderados',
-        icon: SettingFilled,
-        label: 'Apoderados',
-        route: 'admin-apoderado-index'
-      },
       {
         key: 'postulantes',
         icon: SettingFilled,
@@ -349,76 +200,90 @@ const menuItems = [
         route: 'admin-documento-index'
       },
       {
-        key: 'colegios',
-        icon: SettingFilled,
-        label: 'Colegios',
-        route: 'admin-colegios'
-      },
-      {
-        key: 'carrerasprevias',
-        icon: SettingFilled,
-        label: 'Estudios anteriores',
-        route: 'admin-carreras-previas'
-      },
-      {
         key: 'pagosbn',
         icon: SettingFilled,
         label: 'Pagos BN',
         route: 'admin-pagos-banco'
       },
     ]
-  },
-  {
-    key: 'reportes',
-    icon: SettingFilled,
-    label: 'Reportes',
-    children: [
-    {
-        key: 'resumen',
-        icon: SettingFilled,
-        label: 'Resumen',
-        route: 'usuarios-index'
-      },
-      {
-        key: 'reppreinscripcion',
-        icon: SettingFilled,
-        label: 'Rep preninscripcion',
-        route: 'roles-index'
-      },
-      {
-        key: 'repinscripcion',
-        icon: SettingFilled,
-        label: 'Rep inscripciones',
-        route: 'roles-index'
-      },
-      {
-        key: 'inscripcionprograma',
-        icon: SettingFilled,
-        label: 'Rep biométrico',
-        route: 'usuarios-index'
-      },
-      {
-        key: 'ratio',
-        icon: SettingFilled,
-        label: 'Ratio',
-        route: 'usuarios-index'
-      },
-      
-      {
-        key: 'resumenobservados',
-        icon: SettingFilled,
-        label: 'Rep observados',
-        route: 'programa-index'
-      },
+  },  
+  // {
+  //   key: 'mantenimiento',
+  //   icon: SettingFilled,
+  //   label: 'Mantenimiento',
+  //   children: [
+  //     {
+  //       key: 'programas',
+  //       icon: SettingFilled,
+  //       label: 'Programas',
+  //       route: 'programa-index'
+  //     },
+  //     {
+  //       key: 'ubigeo',
+  //       icon: SettingFilled,
+  //       label: 'Ubigeos',
+  //       route: 'programa-index'
+  //     },
+  //     {
+  //       key: 'pagos',
+  //       icon: SettingFilled,
+  //       label: 'Pagos',
+  //       route: 'programa-index'
+  //     },
+  //   ]
+  // },  
 
-      {
-        key: 'errores',
-        icon: SettingFilled,
-        label: 'Rep errorres',
-        route: 'programa-index'
-      },
-    ]
-  },
+  // {
+  //   key: 'reportes',
+  //   icon: SettingFilled,
+  //   label: 'Reportes',
+  //   children: [
+  //   {
+  //       key: 'resumen',
+  //       icon: SettingFilled,
+  //       label: 'Resumen',
+  //       route: 'usuarios-index'
+  //     },
+  //     {
+  //       key: 'reppreinscripcion',
+  //       icon: SettingFilled,
+  //       label: 'Rep preninscripcion',
+  //       route: 'roles-index'
+  //     },
+  //     {
+  //       key: 'repinscripcion',
+  //       icon: SettingFilled,
+  //       label: 'Rep inscripciones',
+  //       route: 'roles-index'
+  //     },
+  //     {
+  //       key: 'inscripcionprograma',
+  //       icon: SettingFilled,
+  //       label: 'Rep biométrico',
+  //       route: 'usuarios-index'
+  //     },
+  //     {
+  //       key: 'ratio',
+  //       icon: SettingFilled,
+  //       label: 'Ratio',
+  //       route: 'usuarios-index'
+  //     },
+      
+  //     {
+  //       key: 'resumenobservados',
+  //       icon: SettingFilled,
+  //       label: 'Rep observados',
+  //       route: 'programa-index'
+  //     },
+
+  //     {
+  //       key: 'errores',
+  //       icon: SettingFilled,
+  //       label: 'Rep errorres',
+  //       route: 'programa-index'
+  //     },
+  //   ]
+  // },
   {
     key: 'ayuda',
     icon: SettingFilled,

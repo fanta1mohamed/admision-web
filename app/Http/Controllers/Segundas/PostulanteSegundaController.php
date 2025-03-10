@@ -14,20 +14,15 @@ class PostulanteSegundaController extends Controller
 {
   public function getPostulantes(Request $request)
   {
-      // Inicializamos el array de condiciones
       $query_where = [];
   
-      // Si el usuario tiene programas asociados
       if (auth()->user()->programas != null) {
           $array = json_decode(auth()->user()->programas, true);
-  
-          // Si el array no está vacío, añadimos la condición
           if (!empty($array)) {
               $query_where[] = ['pre_inscripcion.id_programa', $array];
           }
       }
   
-      // Consulta principal
       $res = Preinscripcion::select(
           'postulante.id',
           'postulante.tipo_doc',
@@ -111,8 +106,6 @@ class PostulanteSegundaController extends Controller
     ->where('dni', $dni)
     ->where('id_tipo', 7)
     ->value('url');
-
-    #$foto = "https://inscripciones.admision.unap.edu.pe/fotos/inscripcion/$dni.jpg";
 
     $countPreInscripcion = Preinscripcion::where('id_postulante', '=', $postulanteInfo->id_postulante)->count();
     $countInscripcion = Inscripcion::where('id_postulante', '=', $postulanteInfo->id_postulante)->count();

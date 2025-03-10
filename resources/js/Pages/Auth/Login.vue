@@ -4,7 +4,7 @@
     <GuestLayout>
     <div class="container-login">
         <div style="width: 100%;">
-        <Link href="/" class="flex items-center justify-center" >
+        <Link href="/" class="mt-4 flex items-center justify-center" >
             <ApplicationLogo class=" fill-current text-gray-500" style="background: none" />
         </Link>
 
@@ -21,14 +21,14 @@
 
             <div class="mt-3">
                 <InputLabel for="password" value="Contraseña" />
-                <TextInput id="password" type="password" class="mt-1 block w-full" style="height: 40px;" v-model="form.password" required autocomplete="current-password" />
+                <TextInput id="password" :type="contra?'text':'password'" class="mt-1 block w-full" style="height: 40px;" v-model="form.password" required autocomplete="current-password" />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="mt-2 flex justify-between">
                 <label class="inline-flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="mx-2 text-sm text-gray-600">Recuerdame</span> </label>
+                    <Checkbox name="remember" v-model:checked="contra" />
+                    <span class="mx-2 text-sm text-gray-600">Ver contraseña</span> </label>
             </div>
 
             <div class="mt-8">
@@ -57,6 +57,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps({
     canResetPassword: Boolean,
@@ -68,6 +69,8 @@ const form = useForm({
     password: '',
     remember: false
 });
+
+const contra = ref(false);
 
 const submit = () => {
     form.post(route('login'), {

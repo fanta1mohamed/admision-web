@@ -1,75 +1,82 @@
 <template>
-    <Head title="Documentos"/>
+    <Head title="Preinscripciones"/>
     <Layout>
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">    
-    <row class="flex justify-between mb-4" >
-        <div class="mr-3">
-            <a-select
-                ref="select"
-                v-model:value="programa"
-                placeholder="Seleccionar programa de estudios"
-                :options="programasselect"
-                allowClear>
-            </a-select>
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 pb-0 mb-4">    
+    <row class="mb-4" >
+        <div class="flex justify-between">
+            <div class="ml-0 mt-1">
+                <span style="font-size: 1.5rem;">Preinscripción</span> <span style="font-size: 1.4rem;"> - {{ totalRegistros }} registros</span>
+            </div>
+            <div class="flex">
+                <div class="mr-1"><a-button @click="descargarResumen()" class="bg-blue-900" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;"><DownloadOutlined/></div> RESUMEN </div></a-button></div>
+                <div class="mr-1"><a-button class="bg-green-600" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;"><DownloadOutlined/></div> EXCEL </div></a-button></div>
+                <div><a-button @click="descargarDetalle()" class="bg-red-600" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;"><DownloadOutlined/></div> PDF </div></a-button></div>
+            </div>
         </div>
-        <div class="flex justify-between" style="position: relative;" >
-            <a-input type="text" placeholder="Escribe para buscar..!!" v-model:value="buscar" style="max-width: 300px; padding-left: 10px;">
-                <template #prefix> <search-outlined /></template>
-            </a-input>
+
+        <div class="flex mt-4 mb-6 justify-between">
+            <div>
+                <div class="mr-1">
+                    <div><a-button class="bg-gray-400" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;" disabled><PlusOutlined/></div> Nuevo Registro </div></a-button></div>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="mr-1">
+                    <a-select ref="select" v-model:value="programa" placeholder="Seleccionar programa de estudios" :options="programasautorizados" allowClear></a-select>
+                </div>
+                <div class="flex justify-between" style="position: relative;" >
+                    <a-input type="text" placeholder="Escribe para buscar..!!" v-model:value="buscar" style="max-width: 200px; padding-left: 10px;">
+                        <template #prefix> <search-outlined/></template>
+                    </a-input>
+                </div>
+            </div>
         </div>
+
     </row>
 
-    <a-table 
-        :columns="columnsInscripcion" 
-        :data-source="inscripciones"
-        :pagination="false"
-        size="small"
-        > 
+    </div>
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4"> 
+    <a-table  :columns="columnsInscripcion" :data-source="inscripciones" :pagination="false" size="small"> 
         <template #bodyCell="{ column, index, record }">
 
             <template v-if="column.dataIndex === 'dni'" >
                 <a-tag color="#476175" style="padding-top: 3px;">
-                    <span style="font-size: 1rem; font-weight: bold;">{{ record.dni }}</span>
+                    <span style="font-size: .81rem; font-weight: bold;">{{ record.dni }}</span>
                 </a-tag>
             </template>
 
             <template v-if="column.dataIndex === 'postulante'" >
-                <span style="font-size: 0.95rem;">{{ record.paterno }} {{ record.materno }}, {{ record.nombres }}</span>
+                <span style="font-size: 0.9rem;">{{ record.paterno }} {{ record.materno }}, {{ record.nombres }}</span>
+            </template>
+
+            <template v-if="column.dataIndex === 'modalidad'" >
+                <span style="font-size: 0.8rem;">{{ record.modalidad }}</span>
             </template>
 
             <template v-if="column.dataIndex === 'programa'" >
-                {{ record.programa }}
-            </template>
-
-            <template v-if="column.dataIndex === 'sexo'" >
-                <a-select
-                ref="select"
-                v-model:value="record.sexo"
-                placeholder="Seleccionar"
-                style="width: 60px;"
-                >
-                <a-select-option value='1'><span style="color:blue">M</span></a-select-option>
-                <a-select-option value='2'><span style="color:red">F</span></a-select-option>
-                </a-select>
-                <!-- <a-tag v-if="record.sexo === '1'" color="blue">M</a-tag>
-                <a-tag v-if="record.sexo === '2'" color="pink">F</a-tag> -->
+                <span style="font-size: 0.8rem; text-transform: uppercase;">
+                    {{ record.programa }}
+                </span>
             </template>
 
             <template v-if="column.dataIndex === 'estado'" >
-                <a-tag v-if="record.estado === 0" color="#476175">INSCRITO</a-tag>
-                <a-tag v-else color="#b01030">SIN INSCRIPCIÓN</a-tag>
+                <a-tag v-if="record.estado === 0" style="font-size: .5rem;" color="#476175">INSCRITO</a-tag>
+                <a-tag v-else color="#b01030" style="font-size: .7rem;">SIN INSCRIPCIÓN</a-tag>
             </template>
 
             <template v-if="column.dataIndex === 'acciones'">
-                <a-button class="mr-1" type="success" style="color: #476175;" @click="cambiarSexo(record.id_postulante, record.sexo )" size="small">
-                    <template #icon><SaveOutlined/></template>
-                </a-button>
-                <a-button class="mr-1" @click="abrirEditar(record)" style="color: blue;" size="small">
-                    <template #icon><form-outlined/></template>
-                </a-button>
-                <a-button @click="eliminar(record)" size="small" style="color: crimson;">
-                    <template #icon><delete-outlined/></template>
-                </a-button>  
+                <div class="flex justify-center" style="">
+                    <div class="mr-1">
+                        <a-button type="true" @click="abrirEditar(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:gray; display: flex; align-items: center;"> <SaveOutlined/> </a-button>
+                    </div>
+                    <div class="mr-1">
+                        <a-button type="true" @click="abrirEditar(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:blue; display: flex; align-items: center;"> <form-outlined/> </a-button>
+                    </div>
+                    <div class="">
+                        <a-button type="true" @click="eliminar(record)" size="small" style="background:#f3f3f3; height: 30px; color:crimson; border: solid 1px #d9d9d9; display: flex; align-items: center;"> <delete-outlined/></a-button>
+                    </div>
+                </div>
+
             </template>
         </template>
   
@@ -118,9 +125,7 @@
                             class="selector-modalidad"
                             style="width: 100%;"
                             >
-                            <a-select-option :value='9'>CEPREUNA</a-select-option>
-                            <a-select-option :value='8'>EXAMEN GENERAL</a-select-option>
-                            <a-select-option :value='7'>CONADIS</a-select-option>
+                            <a-select-option :value='1'>GRADUADOS Y TITULADOS</a-select-option>
                         </a-select>
                 </a-form-item>
                 <a-form-item has-feedback name="nombre">
@@ -142,12 +147,13 @@
 import { Head } from '@inertiajs/vue3';
 import Layout from '@/Layouts/segundas-especialidades/LayoutDirector.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { FormOutlined, PrinterOutlined, DeleteOutlined, SearchOutlined, SaveOutlined} from '@ant-design/icons-vue';
+import { FormOutlined, PlusOutlined, DownloadOutlined, DeleteOutlined, SearchOutlined, SaveOutlined} from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 const baseUrl = window.location.origin;
 
 
+const programasautorizados = ref([]);
 const programasselect = ref([]);
 const programa = ref(null);
 const buscar = ref("");
@@ -202,7 +208,7 @@ const abrirEditar = (item) => {
     inscripcion.value.codigo = item.codigo;
     inscripcion.value.id_programa = item.id_programa;
     inscripcion.value.id_modalidad = item.id_modalidad;
-    inscripcion.value.observacion = item.observaciones;
+    inscripcion.value.observacion = item.observacion;
     postulante.value.id = item.id_postulante;
     postulante.value.dni = item.dni;
     postulante.value.nombre = item.dni+" - "+item.nombres +" "+ item.paterno +" "+ item.materno;
@@ -213,7 +219,13 @@ const getProgramasSelect =  async ( ) => {
     let res = await axios.post( "/segundas/select-programas-segundas?page="+pagina.value , { term: buscar.value, paginashoja: pageSize.value, programa: programa.value } );
     programasselect.value = res.data.datos;
 }
+const getProgramasAutorizados =  async ( ) => {
+    let res = await axios.post( "/segundas/select-programas-segundas-autorizados?page="+pagina.value , { term: buscar.value, paginashoja: pageSize.value, programa: programa.value } );
+    programasautorizados.value = res.data.datos;
+}
+
 getProgramasSelect();
+getProgramasAutorizados();
 
 const getInscripciones =  async ( ) => {
     let res = await axios.post( "/segundas/get-preinscripciones-segundas?page="+pagina.value , { term: buscar.value, paginashoja: pageSize.value, programa: programa.value } );
@@ -261,7 +273,6 @@ const columnsInscripcion = [
     // { title: 'ID', dataIndex: 'id' },
     { title: 'DNI', dataIndex: 'dni', align:'center'},
     { title: 'Postulante', dataIndex: 'postulante'},
-    { title: 'Sexo', dataIndex: 'sexo', align:'center' },
     { title: 'Programa', dataIndex:'programa'},
     { title: 'Modalidad', dataIndex:'modalidad', align:'center'},
     { title: 'Estado', dataIndex: 'estado', align:'center'},
@@ -285,5 +296,66 @@ const rowSelection = computed(() => {
 
 const notificacion = (type, titulo, mensaje) => { notification[type]({ message: titulo, description: mensaje, }); };
 getInscripciones()
+
+
+
+const descargarDetalle = async (items) => {
+  try {
+    const response = await axios.post('/segundas/get-detalle-preinscripcion-segundas', 
+    { term: buscar.value, programa: programa.value },
+    {
+      responseType: 'blob'
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Error al obtener el archivo');
+    }
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    const fecha = new Date();
+    const formatoFecha = `${fecha.getDate().toString().padStart(2, '0')}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getFullYear()}_${fecha.getHours().toString().padStart(2, '0')}-${fecha.getMinutes().toString().padStart(2, '0')}-${fecha.getSeconds().toString().padStart(2, '0')}`;
+    const nombreArchivo = `${formatoFecha}_preinscritos.pdf`;
+    link.setAttribute('download', nombreArchivo);
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error al descargar el archivo:', error);
+  }
+};
+
+
+const descargarResumen = async (items) => {
+  try {
+    const response = await axios.post('/segundas/get-resumen-preinscripcion-segundas', 
+    { term: buscar.value, programa: programa.value },
+    {
+      responseType: 'blob'
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Error al obtener el archivo');
+    }
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    const fecha = new Date();
+    const formatoFecha = `${fecha.getDate().toString().padStart(2, '0')}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getFullYear()}_${fecha.getHours().toString().padStart(2, '0')}-${fecha.getMinutes().toString().padStart(2, '0')}-${fecha.getSeconds().toString().padStart(2, '0')}`;
+    const nombreArchivo = `${formatoFecha}_resumen.pdf`;
+    link.setAttribute('download', nombreArchivo);
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error al descargar el archivo:', error);
+  }
+};
 
 </script>
