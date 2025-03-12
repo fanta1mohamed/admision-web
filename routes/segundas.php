@@ -25,6 +25,8 @@ Route::prefix('segundas')->middleware('segundas','auth')->group(function () {
     Route::get('/preinscripciones', fn () => Inertia::render('Segundas/Admin/Preinscripciones/index'))->name('segundas-preinscripciones-admin');
     Route::post('get-postulantes-segundas', [PostulanteSegundaController::class, 'getPostulantes']);
     Route::get('postulante-perfil/{dni}', [PostulanteSegundaController::class, 'showPostulante']);
+    Route::get('get-postulante-datos/{dni}', [PostulanteSegundaController::class, 'getDatosPostulante']);
+    
     
     
     Route::post('actualizar-preinscripciones-segundas', [PreinscripcionSegundasController::class, 'Actualizar']);
@@ -50,10 +52,12 @@ Route::prefix('segundas')->middleware('segundas','auth')->group(function () {
     Route::post('/save-observado-segundas', [ObservadosSegundaController::class, 'save']);
 
 
-
     //REPORTES
     Route::post('/get-resumen-preinscripcion-segundas', [ResumenesSegundaController::class, 'getResumenPreinscripcion']);
     Route::post('/get-detalle-preinscripcion-segundas', [ResumenesSegundaController::class, 'getPreinscripciones']);
+
+
+    
 
 });
 

@@ -90,6 +90,17 @@ class PreinscripcionSegundasController extends Controller
         
     }
 
+    public function Inscribir(Request $request){
+
+        return $request;
+
+        $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
+        $this->response['mensaje'] = '';
+        $this->response['estado'] = true;
+        return response()->json($this->response, 200);
+        
+    }
+
     
 
 

@@ -112,7 +112,7 @@ class ResumenesSegundaController extends Controller
         ->get();
     
         $datos = $res->groupBy('programa')->map(function ($items, $programa) {
-            return [
+            return [    
                 'programa' => $programa,
                 'data' => $items->toArray()
             ];

@@ -178,7 +178,7 @@ const menuItems = [
         key: 'resultados',
         icon: SettingFilled,
         label: 'Puntajes',
-        route: 'about'
+        route: 'segundas-preinscripciones-admin'
       },
     ]
   },

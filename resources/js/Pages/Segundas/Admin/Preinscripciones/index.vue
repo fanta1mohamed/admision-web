@@ -67,7 +67,7 @@
             <template v-if="column.dataIndex === 'acciones'">
                 <div class="flex justify-center" style="">
                     <div class="mr-1">
-                        <a-button type="true" @click="abrirEditar(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:gray; display: flex; align-items: center;"> <SaveOutlined/> </a-button>
+                        <a-button type="true" @click="abrirModalInscribir(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:gray; display: flex; align-items: center;"> <EyeOutlined/> </a-button>
                     </div>
                     <div class="mr-1">
                         <a-button type="true" @click="abrirEditar(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:blue; display: flex; align-items: center;"> <form-outlined/> </a-button>
@@ -123,8 +123,7 @@
                             v-model:value="inscripcion.id_modalidad"
                             placeholder="Seleccionar programa"
                             class="selector-modalidad"
-                            style="width: 100%;"
-                            >
+                            style="width: 100%;">
                             <a-select-option :value='1'>GRADUADOS Y TITULADOS</a-select-option>
                         </a-select>
                 </a-form-item>
@@ -140,6 +139,10 @@
         </template>
         </a-modal>
     </div>
+
+    <a-modal v-model:open="modalInscribir" title="Inscripción" style="margin-top: -40px; min-width: 700px;">
+        <Inscribir dni="74820781" />
+    </a-modal>
     
 </template>
         
@@ -147,9 +150,10 @@
 import { Head } from '@inertiajs/vue3';
 import Layout from '@/Layouts/segundas-especialidades/LayoutDirector.vue'
 import { watch, computed, ref, unref } from 'vue';
-import { FormOutlined, PlusOutlined, DownloadOutlined, DeleteOutlined, SearchOutlined, SaveOutlined} from '@ant-design/icons-vue';
+import { FormOutlined, PlusOutlined, DownloadOutlined, DeleteOutlined, SearchOutlined, EyeOutlined} from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
+import Inscribir from './components/Perfil.vue';
 const baseUrl = window.location.origin;
 
 
@@ -158,6 +162,7 @@ const programasselect = ref([]);
 const programa = ref(null);
 const buscar = ref("");
 const inscripciones = ref([])
+const modalInscribir = ref(false);
 const visible = ref(false)
 const pagina = ref(1)
 const totalRegistros = ref(null)
@@ -173,6 +178,7 @@ const inscripcion = ref({
 })
 const postulante = ref({ id:"", nombre:"", dni:""})
 
+const abrirModalInscribir = () => { modalInscribir.value = true; };
 const showModalPrograma = () => { visible.value = true; };
 
 watch(buscar, ( newValue, oldValue ) => { getInscripciones() })
