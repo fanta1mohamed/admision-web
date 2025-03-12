@@ -67,7 +67,7 @@
             <template v-if="column.dataIndex === 'acciones'">
                 <div class="flex justify-center" style="">
                     <div class="mr-1">
-                        <a-button type="true" @click="abrirModalInscribir(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:gray; display: flex; align-items: center;"> <EyeOutlined/> </a-button>
+                        <a-button type="true" label="Inscribir" @click="abrirModalInscribir(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:gray; display: flex; align-items: center;">Inscribir</a-button>
                     </div>
                     <div class="mr-1">
                         <a-button type="true" @click="abrirEditar(record)" size="small" style="background:#f3f3f3; height: 30px; border: solid 1px #d9d9d9; color:blue; display: flex; align-items: center;"> <form-outlined/> </a-button>
@@ -118,7 +118,7 @@
                 </a-form-item>
                 <a-form-item has-feedback name="tipo">
                     <label>Modalidad</label>
-                    <a-select
+                        <a-select
                             ref="select"
                             v-model:value="inscripcion.id_modalidad"
                             placeholder="Seleccionar programa"
@@ -140,8 +140,72 @@
         </a-modal>
     </div>
 
-    <a-modal v-model:open="modalInscribir" title="Inscripción" style="margin-top: -40px; min-width: 700px;">
-        <Inscribir dni="74820781" />
+    <a-modal v-model:open="modalInscribir" title="Inscripción" style="margin-top: -40px; min-width: 900px;">
+
+        <Inscribir :dni="postulante.dni"  />
+
+        <div>
+            <div class="p-4">
+
+                <a-card>
+                <div class="mb-4">
+                    <div><span style="font-weight: bold; font-size: 1.3rem;"> DATOS DE INSCRIPCION</span></div>
+                </div>
+                <a-form
+                    ref="formRef"
+                    name="custom-validation"
+                    :model="formState"
+                    v-bind="layout"
+                    @finish="handleFinish"
+                    @validate="handleValidate"
+                    @finishFailed="handleFinishFailed"
+                    >
+                    <a-form-item has-feedback name="nombre">
+                        <label>Postulante</label>
+                        <a-input type="text" v-model:value="postulante.nombre"/>
+                    </a-form-item>
+                    <a-form-item has-feedback name="postulante">
+                        <label>Programa</label>
+                        <div class="">
+                            <a-select
+                                ref="select"
+                                v-model:value="inscripcion.id_programa"
+                                placeholder="Seleccionar programa"
+                                class="selector-modalidad"
+                                style="width: 100%;"
+                                :options="programasselect"
+                                >
+                            </a-select>
+                        </div>
+                    </a-form-item>
+                    <a-form-item has-feedback name="tipo">
+                        <label>Modalidad</label>
+                        <a-select
+                                ref="select"
+                                v-model:value="inscripcion.id_modalidad"
+                                placeholder="Seleccionar programa"
+                                class="selector-modalidad"
+                                style="width: 100%;">
+                                <a-select-option :value='1'>GRADUADOS Y TITULADOS</a-select-option>
+                            </a-select>
+                    </a-form-item>
+                    <a-form-item has-feedback name="nombre">
+                        <label>Observaciones</label>
+                        <a-textarea type="text" v-model:value="inscripcion.observacion" autocomplete="off" />
+                    </a-form-item>
+                </a-form>
+                </a-card>
+            </div>
+
+        </div>
+        <template #footer>
+            <div class="mr-4">
+                <a-button style="margin-left: 10px;" @click="resetForm">Cancelar</a-button>
+                <a-button type="primary" @click="guardarInscripcion()">Guardar</a-button>
+            </div>
+
+        </template>
+
     </a-modal>
     
 </template>
@@ -178,7 +242,18 @@ const inscripcion = ref({
 })
 const postulante = ref({ id:"", nombre:"", dni:""})
 
-const abrirModalInscribir = () => { modalInscribir.value = true; };
+const abrirModalInscribir = (item) => { 
+    inscripcion.value.id = item.id;
+    inscripcion.value.codigo = item.codigo;
+    inscripcion.value.id_programa = item.id_programa;
+    inscripcion.value.id_modalidad = item.id_modalidad;
+    inscripcion.value.observacion = item.observacion;
+    postulante.value.id = item.id_postulante;
+    postulante.value.dni = item.dni;
+    postulante.value.nombre = item.dni+" - "+item.nombres +" "+ item.paterno +" "+ item.materno;
+    modalInscribir.value = true; 
+
+};
 const showModalPrograma = () => { visible.value = true; };
 
 watch(buscar, ( newValue, oldValue ) => { getInscripciones() })
@@ -252,6 +327,22 @@ const guardar = () => {
         getInscripciones()
         notificacion('success',result.data.titulo, result.data.mensaje);
         visible.value = false;
+    });
+}
+
+const guardarInscripcion = () => {
+    let post = {
+        id:inscripcion.value.id,
+        id_postulante: postulante.value.id,
+        id_programa: inscripcion.value.id_programa,
+        id_modalidad: inscripcion.value.id_modalidad,
+        observacion: inscripcion.value.observacion,
+        dni: postulante.value.dni
+    };
+    axios.post("/segundas/guardar-inscripcion-segundas", post).then((result) => {
+        getInscripciones()
+        notificacion('success',result.data.titulo, result.data.mensaje);
+        modalInscribir.value = false;
     });
 }
 

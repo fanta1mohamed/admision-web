@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\Segundas;
 use App\Http\Controllers\Controller;
 use App\Models\Preinscripcion;
+use App\Models\Proceso;
+use App\Models\Inscripcion;
 use Illuminate\Http\Request;
 
 class PreinscripcionSegundasController extends Controller
@@ -90,9 +92,26 @@ class PreinscripcionSegundasController extends Controller
         
     }
 
-    public function Inscribir(Request $request){
 
-        return $request;
+    public function Inscribir(Request $request){
+        
+        $proceso = Proceso::find(auth()->user()->id_proceso);
+        
+        $prog = str_pad($request->id_programa, 2, '0', STR_PAD_LEFT);
+        $res = Inscripcion::where('codigo', 'like', $proceso->codigo_proceso.$prog.'%')
+            ->max(\DB::raw('CAST(SUBSTRING(codigo, 7) AS UNSIGNED)')) + 1;
+        $res = str_pad($res, 4, '0', STR_PAD_LEFT);
+
+        $inscripcion = Inscripcion::create([
+            'codigo' => $proceso->codigo_proceso . $prog . $res,
+            'id_postulante' => $request->id_postulante,
+            'id_programa' => $request->id_programa,
+            'id_modalidad' => $request->id_modalidad,
+            'observacion' => $request->observacion,
+            'estado' => 0,
+            'id_proceso' => auth()->user()->id_proceso,
+            'id_usuario' => auth()->id() 
+        ]);
 
         $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
         $this->response['mensaje'] = '';
@@ -100,6 +119,8 @@ class PreinscripcionSegundasController extends Controller
         return response()->json($this->response, 200);
         
     }
+
+
 
     
 

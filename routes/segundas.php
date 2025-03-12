@@ -30,7 +30,8 @@ Route::prefix('segundas')->middleware('segundas','auth')->group(function () {
     
     
     Route::post('actualizar-preinscripciones-segundas', [PreinscripcionSegundasController::class, 'Actualizar']);
-
+    Route::post('guardar-inscripcion-segundas', [PreinscripcionSegundasController::class, 'Inscribir']);
+    
 
     //POSTULANTES
     Route::get('/postulantes', fn () => Inertia::render('Segundas/Admin/Postulantes/index'))->name('segundas-postulantes-admin');
