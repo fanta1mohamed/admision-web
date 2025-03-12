@@ -97,12 +97,12 @@ class PostulanteSegundaController extends Controller
     ->orderBy('procesos.id', 'desc')
     ->get();
 
-    $foto = DocumentoSegunda::where('id_proceso', 16)
+    $foto = DocumentoSegunda::where('id_proceso', auth()->user()->id_proceso)
     ->where('dni', $dni)
     ->where('id_tipo', 8)
     ->value('url');
 
-    $titulo = DocumentoSegunda::where('id_proceso', 16)
+    $titulo = DocumentoSegunda::where('id_proceso', auth()->user()->id_proceso)
     ->where('dni', $dni)
     ->where('id_tipo', 7)
     ->value('url');
@@ -152,12 +152,12 @@ class PostulanteSegundaController extends Controller
         ->orderBy('procesos.id', 'desc')
         ->get();
     
-        $foto = DocumentoSegunda::where('id_proceso', 16)
+        $foto = DocumentoSegunda::where('id_proceso', auth()->user()->id_proceso)
         ->where('dni', $dni)
         ->where('id_tipo', 8)
         ->value('url');
     
-        $titulo = DocumentoSegunda::where('id_proceso', 16)
+        $titulo = DocumentoSegunda::where('id_proceso', auth()->user()->id_proceso)
         ->where('dni', $dni)
         ->where('id_tipo', 7)
         ->value('url');

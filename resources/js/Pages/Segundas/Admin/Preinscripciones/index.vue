@@ -142,7 +142,7 @@
 
     <a-modal v-model:open="modalInscribir" title="Inscripción" style="margin-top: -40px; min-width: 900px;">
 
-        <Inscribir :dni="postulante.dni"  />
+        <Inscribir :dni="postulante.dni"/>
 
         <div>
             <div class="p-4">
@@ -219,7 +219,6 @@ import { notification } from 'ant-design-vue';
 import axios from 'axios';
 import Inscribir from './components/Perfil.vue';
 const baseUrl = window.location.origin;
-
 
 const programasautorizados = ref([]);
 const programasselect = ref([]);
@@ -343,6 +342,15 @@ const guardarInscripcion = () => {
         getInscripciones()
         notificacion('success',result.data.titulo, result.data.mensaje);
         modalInscribir.value = false;
+        inscripcion.value.id = null;
+        inscripcion.value.codigo = null;
+        inscripcion.value.id_programa = null;
+        inscripcion.value.id_modalidad = null;
+        inscripcion.value.observacion = null;
+        postulante.value.id = null;
+        postulante.value.dni = null;
+        postulante.value.nombre = null;
+        modalInscribir.value = true; 
     });
 }
 
