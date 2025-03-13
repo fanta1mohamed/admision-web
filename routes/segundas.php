@@ -36,7 +36,7 @@ Route::prefix('segundas')->middleware('segundas','auth')->group(function () {
     //POSTULANTES
     Route::get('/postulantes', fn () => Inertia::render('Segundas/Admin/Postulantes/index'))->name('segundas-postulantes-admin');
     Route::post('get-preinscripciones-segundas', [PreinscripcionSegundasController::class, 'getPreinscripciones']);
-
+    Route::post('/save-postulante-admin', [PostulanteController::class, 'savePostulanteAdmin']);
 
     //VACANTES
     Route::get('/vacantes', fn () => Inertia::render('Segundas/Admin/Vacantes/index'))->name('segundas-vacantes-admin');
