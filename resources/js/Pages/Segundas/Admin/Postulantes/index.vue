@@ -279,7 +279,7 @@ const form = reactive({
 const fetchData = () => { };
 
 const saveData = async () => {
-    let res = await axios.post("save-postulante-admin",{  
+    let res = await axios.post("/save-postulante-admin",{  
         id: form.id,
         tipo_doc: form.tipo_doc,
         nro_doc: form.nro_doc,
