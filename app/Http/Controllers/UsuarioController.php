@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
 
+
 class UsuarioController extends Controller
 {
 
@@ -181,6 +182,24 @@ class UsuarioController extends Controller
         $this->response['permisos'] = $res;
         return response()->json($this->response, 200);
     }
+
+    public function cambiarContra(Request $request){
+
+        $usuario = User::find(auth()->id());
+
+        if (!Hash::check($request->oldPassword, $usuario->password)) {
+            return response()->json(['mensaje' => 'La contraseña actual no es correcta.'], 400);
+        }
+
+        $usuario->password = Hash::make($request->newPassword);
+        $usuario->save();
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $usuario;
+        return response()->json($this->response, 200);
+    }
+
+
 
 
 

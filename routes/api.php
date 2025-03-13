@@ -11,6 +11,7 @@ use App\Http\Controllers\CepreController;
 use App\Http\Controllers\HuellaController;
 use App\Http\Controllers\PagoBancoController;
 use App\Http\Controllers\ProcesoController;
+use App\Http\Controllers\IngresoController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-ingresante/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
@@ -63,6 +64,6 @@ Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProcesoH
 
 Route::post('/helper-photos', [HuellaController::class, 'uploadFotos']);
 
-
+Route::post('/test-correo', [IngresoController::class, 'crearCorreo']);
 
 //id_proceso, id_etapa, foto 

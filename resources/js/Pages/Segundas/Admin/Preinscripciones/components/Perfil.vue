@@ -82,7 +82,7 @@ import axios from 'axios';
 const props = defineProps(['dni']);
 
 const info = ref(null);
-const foto = ref("");
+const foto = ref("--");
 const titulo = ref("");
 const infoColegio = ref("");
 const preinscripciones = ref("");
@@ -101,6 +101,7 @@ const getPostulante = async () => {
         info.value = res.data.info;
         titulo.value = res.data.titulo;
         infoColegio.value = res.data.infoColegio;
+        foto.value = res.data.foto;
         preinscripciones.value = res.data.preinscripciones;
         inscripciones.value = res.data.inscripciones;
         control_biometrico.value = res.data.control_biometrico;

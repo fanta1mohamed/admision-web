@@ -58,7 +58,7 @@ Route::middleware('auth')->get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-    ]);
+    ]);    
 });
 
 Route::get('/dashboard', function () {
@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('cambiar-contra', [UsuarioController::class, 'cambiarContra']);
 
     Route::post('/select-programas', [ProgramaController::class, 'getSelectProgramas']);
     Route::post('/select-modalidades', [ModalidadController::class, 'getSelectModalidades']);
@@ -725,6 +726,9 @@ Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'
 Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma'])->middleware('auth');
 Route::get('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
 Route::get('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
+
+
+
 
 
 
