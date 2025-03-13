@@ -6,6 +6,7 @@ use App\Http\Controllers\Segundas\PreinscripcionSegundasController;
 use App\Http\Controllers\Segundas\PostulanteSegundaController;
 use App\Http\Controllers\Segundas\VacantesSegundaController;
 use App\Http\Controllers\Segundas\ModalidadSegundaController;
+
 use App\Http\Controllers\Segundas\ObservadosSegundaController;
 use App\Http\Controllers\Segundas\ResumenesSegundaController;
 
@@ -36,7 +37,7 @@ Route::prefix('segundas')->middleware('segundas','auth')->group(function () {
     //POSTULANTES
     Route::get('/postulantes', fn () => Inertia::render('Segundas/Admin/Postulantes/index'))->name('segundas-postulantes-admin');
     Route::post('get-preinscripciones-segundas', [PreinscripcionSegundasController::class, 'getPreinscripciones']);
-    Route::post('/save-postulante-admin', [PostulanteController::class, 'savePostulanteAdmin']);
+    Route::post('/save-postulante-admin', [PostulanteSegundaController::class, 'savePostulanteAdmin']);
 
     //VACANTES
     Route::get('/vacantes', fn () => Inertia::render('Segundas/Admin/Vacantes/index'))->name('segundas-vacantes-admin');

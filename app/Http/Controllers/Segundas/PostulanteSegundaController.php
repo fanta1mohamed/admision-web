@@ -178,6 +178,75 @@ class PostulanteSegundaController extends Controller
         ], 200);
     
       }
+
+
+
+      public function savePostulanteAdmin(Request $request ) {
+        
+            $modalidad = null;
+            if (!$request->id) {
+            $postulante = Postulante::create([
+                'primer_apellido' => $request->primer_apellido, 
+                'segundo_apellido' => $request->segundo_apellido,
+                'apellido_casada' => $request->apellido_casada,
+                'nombres' => $request->nombres,
+                'sexo' => $request->sexo,
+                'fec_nacimiento' => $request->fec_nacimiento,
+                'ubigeo_nacimiento' => $request->ubigeo_nacimiento,
+                'ubigeo_residencia' => $request->ubigeo_residencia,
+                'celular' => $request->celular,
+                'email' => $request->correo,
+                'estado_civil' => $request->estado_civil, 
+                'direccion' => $request->direccion,
+                'anio_egreso' => $request->egreso,
+                'nro_doc' => $request->nro_doc,
+                'tipo_doc'=> $request->tipo_doc, 
+                'observaciones' => $request->observaciones,
+                'id_colegio' => $request->colegio,
+            ]);
+            $this->response['tipo'] = 'success';
+            $this->response['titulo'] = 'REGISTRO NUEVO';
+            $this->response['mensaje'] = 'Proceso '.$postulante->nombre.' creado con exito';
+            $this->response['estado'] = true;
+            $this->response['datos'] = $postulante;
+        } else {
+            $temp = Postulante::find($request->id);
+            $postulante = Postulante::find($request->id);
+            $postulante->tipo_doc = $request->tipo_doc; 
+            $postulante->primer_apellido = $request->primer_apellido; 
+            $postulante->segundo_apellido = $request->segundo_apellido;
+            $postulante->apellido_casada = $request->apellido_casada;
+            $postulante->nombres = $request->nombres;
+            $postulante->sexo = $request->sexo;
+            $postulante->fec_nacimiento = $request->fec_nacimiento;
+            $postulante->ubigeo_nacimiento = $request->ubigeo_nacimiento;
+            $postulante->ubigeo_residencia = $request->ubigeo_residencia;
+            $postulante->celular = $request->celular;
+            $postulante->email = $request->correo;
+            $postulante->estado_civil = $request->estado_civil; 
+            $postulante->direccion = $request->direccion;
+            $postulante->anio_egreso = $request->egreso;
+            $postulante->nro_doc = $request->nro_doc;
+            $postulante->observaciones = $request->observaciones;
+            $postulante->id_colegio = $request->colegio;
+            $postulante->id_usuario = auth()->id();
+            $postulante->save();
+
+            if( $temp == $postulante ) {
+                $this->response['estado'] = false;
+            }else 
+            {
+                $this->response['tipo'] = 'info';
+                $this->response['titulo'] = '!REGISTRO ACTUALIZADO!';
+                $this->response['mensaje'] = 'Datos del '.$postulante->nombres.' actualizados';
+                $this->response['estado'] = true;
+                $this->response['datos'] = $postulante;
+            }
+
+            }
+
+        return response()->json($this->response, 200);
+    }
   
     
     
