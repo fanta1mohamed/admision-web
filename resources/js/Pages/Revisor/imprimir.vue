@@ -226,6 +226,19 @@
                               </a-select>
                             </div>
                           </a-form-item>
+
+                          <div class="mb-4">
+                            <a-table :columns="colAnteriores" :dataSource="correo_anteriores" :pagination="false" :scroll="{ x: 'max-content' }">
+                            </a-table>
+                          </div>
+
+                          <div class="mb-4">
+                            <a-radio-group v-model:value="crear_correo" size="large" button-style="solid">
+                              <a-radio-button :value="1">Crear correo</a-radio-button>
+                              <a-radio-button :value="0">No crear correo</a-radio-button>
+                            </a-radio-group>
+                          </div>
+
                         </a-col>
                       </a-row>
                     </a-card>
@@ -322,7 +335,7 @@
         </a-col>
       </a-row>
       <div class="mt-4 flex justify-end" style="margin-right: -10px;">
-        <a-button type="primary"  @click="abrirVentana()">Registrar</a-button>
+        <a-button type="primary" size="large" @click="abrirVentana()">Registrar</a-button>
       </div>
     </a-card>
 
@@ -331,7 +344,7 @@
 
       </div>
     </div>
-    <a-modal v-model:visible="modal" :closable="false" :maskClosable="false" style="width:1200px;" centered >
+    <a-modal v-model:open="modal" :closable="false" :maskClosable="false" style="width:1200px;" centered >
 
       <div class="flex justify-center">
         <span style="font-size:1.4rem; font-weight:bold;">Información del postulante</span>
@@ -480,8 +493,10 @@ const postulante = ref("");
 const postulantes = ref([])
 const anteriores = ref([]);
 const n_carrera = ref(0)
+const crear_correo = ref(1)
 
 const checkedList = ref([]);
+const correo_anteriores = ref([]);
 
 const dniInput = ref(null)
 const save = async () => {
@@ -511,6 +526,8 @@ const ingresante = ref({
   puesto:""
 })
 
+
+
 const fot = ref("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd_mbg2w3PjAKYTjjQ_Pb1g9fIeIHmqSbQberdQP5UL2EM5OCndsXeYDurhhEjQitF-Wo&usqp=CAU");
 const hIzq = ref("https://previews.123rf.com/images/viktorijareut/viktorijareut1511/viktorijareut151100169/47517431-negro-silueta-de-la-ilustraci%C3%B3n-de-huellas-digitales-trama-icono-de-huella-digital-huella-digital.jpg");
 const hDer = ref("https://previews.123rf.com/images/viktorijareut/viktorijareut1511/viktorijareut151100169/47517431-negro-silueta-de-la-ilustraci%C3%B3n-de-huellas-digitales-trama-icono-de-huella-digital-huella-digital.jpg");
@@ -536,7 +553,8 @@ const getIngresante =  async ( ) => {
   ingresante.value.programa = res.data.datos.programa
   ingresante.value.puesto= res.data.datos.puesto
   if(res.data.datos.fecha){ ingresante.value.fecha = res.data.datos.fecha }
-  getCarrerasPrevias()
+  getCarrerasPrevias();
+  correo_anteriores.value = res.data.correos;
   fot.value = res.data.foto;
   hIzq.value = res.data.hIzquierda;
   hDer.value = res.data.hDerecha;
@@ -588,7 +606,7 @@ watch(dniseleccionado, (newValue, oldValue ) => {
 
 const abrirVentana = async () => {
   let res = await axios.post("control-biometrico",
-  { dni: dniseleccionado.value, n_carrera: n_carrera.value });
+  { dni: dniseleccionado.value, n_carrera: n_carrera.value, crear_correo: crear_correo.value });
   imprimirPDF(res.data.datos);
   dniseleccionado.value = null
 }
@@ -682,6 +700,11 @@ const colpostulantes = ref([
   { title: 'Area', dataIndex: 'area', align:'center'},
   { title: 'Codigo', dataIndex: 'codigo', align:'center'},
   { title: '', dataIndex: 'acciones', width:'120px',}
+]);
+
+const colAnteriores = ref([
+  { title: 'name', dataIndex: 'name'},
+  { title: 'email', dataIndex: 'email'}
 ]);
 </script>
 

@@ -50,6 +50,8 @@ class IngresoController extends Controller {
             postulante.sexo, 
             postulante.fec_nacimiento,
             programa.nombre AS programa,
+            programa.programa_correo AS programa_correo,
+            facultad.nombre_correo AS facultad_correo,
             procesos.nombre AS proceso,
             modalidad.nombre AS modalidad,
             resultados.puntaje,
@@ -60,6 +62,7 @@ class IngresoController extends Controller {
         JOIN postulante ON postulante.nro_doc = resultados.dni_postulante
         JOIN inscripciones ON postulante.id = inscripciones.id_postulante
         JOIN programa ON programa.id = inscripciones.id_programa
+        JOIN facultad ON facultad.id = programa.id_facultad
         JOIN modalidad ON modalidad.id = inscripciones.id_modalidad
         JOIN procesos ON procesos.id = inscripciones.id_proceso AND resultados.id_proceso = inscripciones.id_proceso
         WHERE inscripciones.id_proceso = ".auth()->user()->id_proceso."
@@ -72,6 +75,30 @@ class IngresoController extends Controller {
         $doc_dni = url("/documentos/" . auth()->user()->id_proceso . "/biometrico/dnis/" . $dni . ".pdf") . '?v=' . time();
         $doc_certificado = url("/documentos/" . auth()->user()->id_proceso . "/biometrico/certificados/" . $dni . ".pdf") . '?v=' . time();
 
+
+        $url = "https://service6.unap.edu.pe/api/crear-correo";
+        $secretKey = "unap@2025";
+        $data = [
+            "apellido_paterno" => $res[0]->primer_apellido,
+            "apellido_materno" => $res[0]->segundo_apellido,
+            "nombres" => $res[0]->nombres,
+            "dni" => $res[0]->nro_doc,
+            "celular" => '999999999',
+            "correo_secundario" => 'solopruebas@test.com',
+            "facultad" => $res[0]->facultad_correo,
+            "escuela" => $res[0]->programa_correo,
+            "numero_ingresos" => false,
+        ];
+
+        $jsonData = json_encode($data);
+        $signature = hash_hmac('sha256', $jsonData, $secretKey);
+        $responsecorreo = [];
+        $responsecorreo = Http::withHeaders([
+            'X-Signature' => $signature,
+            'Content-Type' => 'application/json'
+        ])->post($url, $data);
+
+
         $this->response['estado'] = true;
         $this->response['foto'] = $fotoUrl;
         $this->response['hDerecha'] = $huellaDerecha;
@@ -79,55 +106,84 @@ class IngresoController extends Controller {
         $this->response['doc_dni'] = $doc_dni;
         $this->response['doc_certificado'] = $doc_certificado;
         $this->response['datos'] = $res[0];
+        $this->response['correos'] = $responsecorreo->json('users');
         return response()->json($this->response, 200);
+
     }
 
     public function biometrico(Request $request){
 
-        $re = DB::select("SELECT procesos.anio, procesos.ciclo_oti, programa.programa_oti,
-        postulante.primer_apellido AS paterno, postulante.segundo_apellido AS materno, postulante.nombres, 
-        tipo_documento_identidad.documento_oti AS tipo_doc_oti, postulante.nro_doc AS dni, users.name, 
-        users.paterno as upaterno, postulante.fec_nacimiento, postulante.sexo, postulante.ubigeo_residencia,
-        postulante.direccion, postulante.estado_civil, resultados.fecha, postulante.email,
-        postulante.celular, programa.cod_esp, modalidad.modalidad_oti, resultados.puntaje, resultados.puesto,
-        resultados.puesto_general, postulante.id AS id_postulante, procesos.id AS id_proceso, procesos.nombre AS proceso, modalidad.id AS id_modalidad, modalidad.nombre AS modalidad,
-        programa.nombre AS programa, programa.id as id_programa
-        FROM resultados 
-        JOIN postulante ON resultados.dni_postulante = postulante.nro_doc
-        JOIN inscripciones ON inscripciones.id_postulante = postulante.id
-        JOIN modalidad ON inscripciones.id_modalidad = modalidad.id
-        JOIN procesos ON resultados.id_proceso = procesos.id
-        LEFT JOIN users ON users.id = inscripciones.id_usuario
-        JOIN programa ON programa.id = inscripciones.id_programa
-        JOIN tipo_documento_identidad ON postulante.tipo_doc = tipo_documento_identidad.id
-        WHERE resultados.apto = 'SI' 
-        AND inscripciones.estado = 0
-        AND resultados.dni_postulante = ".$request->dni."
-        AND resultados.id_proceso = ".auth()->user()->id_proceso."
-        AND inscripciones.id_proceso = ".auth()->user()->id_proceso.";");
-
+        $re = DB::table('resultados')
+        ->select([
+            'procesos.anio',
+            'procesos.ciclo_oti',
+            'programa.programa_oti',
+            'postulante.primer_apellido as paterno',
+            'postulante.segundo_apellido as materno',
+            'postulante.nombres',
+            'tipo_documento_identidad.documento_oti as tipo_doc_oti',
+            'postulante.nro_doc as dni',
+            'users.name',
+            'users.paterno as upaterno',
+            'postulante.fec_nacimiento',
+            'postulante.sexo',
+            'postulante.ubigeo_residencia',
+            'postulante.direccion',
+            'postulante.estado_civil',
+            'resultados.fecha',
+            'postulante.email',
+            'postulante.celular',
+            'programa.cod_esp',
+            'modalidad.modalidad_oti',
+            'resultados.puntaje',
+            'resultados.puesto',
+            'resultados.puesto_general',
+            'postulante.id as id_postulante',
+            'procesos.id as id_proceso',
+            'procesos.nombre as proceso',
+            'modalidad.id as id_modalidad',
+            'modalidad.nombre as modalidad',
+            'programa.nombre as programa',
+            'programa.programa_correo as programa_correo',
+            'programa.id as id_programa',
+            'facultad.nombre_correo as facultad_correo',
+        ])
+        ->join('postulante', 'resultados.dni_postulante', '=', 'postulante.nro_doc')
+        ->join('inscripciones', 'inscripciones.id_postulante', '=', 'postulante.id')
+        ->join('modalidad', 'inscripciones.id_modalidad', '=', 'modalidad.id')
+        ->join('procesos', 'resultados.id_proceso', '=', 'procesos.id')
+        ->leftJoin('users', 'users.id', '=', 'inscripciones.id_usuario')
+        ->join('programa', 'inscripciones.id_programa', '=', 'programa.id')
+        ->join('facultad', 'programa.id_facultad', '=', 'facultad.id')
+        ->join('tipo_documento_identidad', 'postulante.tipo_doc', '=', 'tipo_documento_identidad.id')
+        ->where('resultados.apto', 'SI')
+        ->where('inscripciones.estado', 0)
+        ->where('resultados.dni_postulante', $request->dni)
+        ->where('resultados.id_proceso', auth()->user()->id_proceso)
+        ->where('inscripciones.id_proceso', auth()->user()->id_proceso)
+        ->get();
 
         try {
             DB::transaction(function () use ($request, $re) {
                 $database2 = 'mysql_secondary';
         
-                // Buscar si ya existe un registro en control_biometrico
                 $control = ControlBiometrico::where('id_proceso', auth()->user()->id_proceso)
                     ->where('id_postulante', $re[0]->id_postulante)
                     ->first();
+
         
                 if (!$control) {
-                    // Prefijo basado en programa
+
                     $prefijo = $re[0]->id_programa == '38' ? '25' : '25';
         
-                    // Obtener nuevo código de ingreso
                     $rs = DB::connection($database2)->select("SELECT CONCAT('$prefijo', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1, 1), 4, '0')) AS siguiente 
                         FROM unapnet.estudiante e 
                         WHERE LEFT(e.num_mat, 2) = '$prefijo';");
-        
+            
                     $nuevoCodigo = $rs[0]->siguiente;
+
+
         
-                    // Insertar en control_biometrico
                     $control = ControlBiometrico::create([
                         'id_proceso' => auth()->user()->id_proceso,
                         'id_postulante' => $re[0]->id_postulante,
@@ -139,7 +195,6 @@ class IngresoController extends Controller {
                         'correo_institucional' => null 
                     ]);
         
-                    // Registrar estudiante
                     Estudiante::on($database2)->create([
                         'num_mat' => $nuevoCodigo,
                         'cod_car' => $re[0]->programa_oti,
@@ -157,6 +212,7 @@ class IngresoController extends Controller {
                         'fch_ing' => $re[0]->fecha,
                         'direc' => $re[0]->direccion,
                         'email' => $re[0]->email,
+                        'emailins' => $control->correo_institucional,
                         'con_est' => 5,
                         'celular' => $re[0]->celular,
                         'cod_esp' => $re[0]->cod_esp,
@@ -171,7 +227,7 @@ class IngresoController extends Controller {
                     $control->update(['estado' => 2]);
                 }
         
-                if ($control->tiene_correo == 0) {
+                if ($control->tiene_correo == 0 ) {
                     $url = "https://service6.unap.edu.pe/api/crear-correo";
                     $secretKey = "unap@2025";
                     $data = [
@@ -181,9 +237,9 @@ class IngresoController extends Controller {
                         "dni" => $re[0]->dni,
                         "celular" => $re[0]->celular,
                         "correo_secundario" => $re[0]->email,
-                        "facultad" => $re[0]->programa,
-                        "escuela" => $re[0]->programa_oti,
-                        "numero_ingresos" => 1
+                        "facultad" => $re[0]->facultad_correo,
+                        "escuela" => $re[0]->programa_correo,
+                        "numero_ingresos" => $request->crear_correo,
                     ];
                     $jsonData = json_encode($data);
                     $signature = hash_hmac('sha256', $jsonData, $secretKey);
@@ -204,7 +260,6 @@ class IngresoController extends Controller {
                     ]);
                 }
         
-                // Generar PDF
                 $this->pdfbiometrico2($re[0]->dni);
             });
         
@@ -321,8 +376,6 @@ class IngresoController extends Controller {
             return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $e->getMessage()], 500);
         }
     }
-    
-
 
 
     public function pdf($datos){
@@ -364,6 +417,8 @@ class IngresoController extends Controller {
             users.name, users.paterno as upaterno, modalidad.nombre as modalidad,
             resultados.fecha, resultados.puntaje, resultados.puesto,
             resultados.puesto_general, control_biometrico.codigo_ingreso AS cod_ingreso,
+            control_biometrico.correo_institucional AS correo_institucional,
+            control_biometrico.tiene_correo AS tiene_correo,
             control_biometrico.segunda_carrera AS segunda_carrera,
             programa.nombre AS programa
             FROM resultados

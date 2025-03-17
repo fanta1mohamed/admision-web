@@ -192,32 +192,14 @@
     </div>
     <div style="text-align: justify; margin-top: -15px;">
         <p style="line-height: 1.5rem;">
-            @if ($data->segunda_carrera == 1)
+            @if ($data->correo_institucional == null)
                 Use el correo institucional que ya tiene asignado<br>
                 Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
             @else
-                    @php
-                        $nombres = explode(' ', $data->nombres);
-                        $iniciales = '';
-                    
-                        foreach ($nombres as $nombreParte) {
-                            $iniciales .= strtolower(substr($nombreParte, 0, 1));
-                        }
-                    
-                        $iniciales .= strtolower($data->paterno); 
-                        $iniciales .= strtolower(substr($data->materno, 0, 1));
-                    @endphp
+                Correo institucional: <span style="font-weight: bold"> {{$data->correo_institucional}} </span><br> 
+                Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}} </span><br>
+                Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
 
-                    Correo institucional: <span style="font-weight: bold"> {{$iniciales}}@est.unap.edu.pe </span><br> 
-                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$iniciales}}2025</span><br>
-                    Fecha de nacimiento: <span style="font-weight: bold"> {{$fnac}} </span><br>
-                {{-- @if ( $data->proceso == 'EXAMEN GENERAL')
-                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.General.2024 </span><br>
-                @else
-                    Contraseña de primer ingreso: <span style="font-weight: bold"> {{$data->dni}}.Cepreuna.2024 </span><br>
-                @endif
-
- --}}
             @endif
         </p>
 
