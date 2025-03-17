@@ -232,7 +232,7 @@ class IngresoController extends Controller {
                 }
         
                 if ($control->tiene_correo == 0 ) {
-                    $url = "https://service6.unap.edu.pe/api/crear-correo";
+                    $url = "http://10.1.20.30:6060/api/crear-correo";
                     $secretKey = "unap@2025";
                     $data = [
                         "apellido_paterno" => $re[0]->paterno,
