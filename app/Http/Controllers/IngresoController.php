@@ -111,10 +111,11 @@ class IngresoController extends Controller {
                 $responseData = $responsecorreo->json();
             } else {
 
-                Log::error('Error en servicio de correo', [
+                return response()->json([
                     'status' => $responsecorreo->status(),
                     'response' => $responsecorreo->body()
-                ]);
+                ],
+                200);
             }
             
         } catch (\Exception $e) {
