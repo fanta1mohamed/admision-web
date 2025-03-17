@@ -76,27 +76,27 @@ class IngresoController extends Controller {
         $doc_certificado = url("/documentos/" . auth()->user()->id_proceso . "/biometrico/certificados/" . $dni . ".pdf") . '?v=' . time();
 
 
-        $url = "https://service6.unap.edu.pe/api/crear-correo";
-        $secretKey = "unap@2025";
-        $data = [
-            "apellido_paterno" => $res[0]->primer_apellido,
-            "apellido_materno" => $res[0]->segundo_apellido,
-            "nombres" => $res[0]->nombres,
-            "dni" => $res[0]->nro_doc,
-            "celular" => '999999999',
-            "correo_secundario" => 'solopruebas@test.com',
-            "facultad" => $res[0]->facultad_correo,
-            "escuela" => $res[0]->programa_correo,
-            "numero_ingresos" => false,
-        ];
+        // $url = "https://service6.unap.edu.pe/api/crear-correo";
+        // $secretKey = "unap@2025";
+        // $data = [
+        //     "apellido_paterno" => $res[0]->primer_apellido,
+        //     "apellido_materno" => $res[0]->segundo_apellido,
+        //     "nombres" => $res[0]->nombres,
+        //     "dni" => $res[0]->nro_doc,
+        //     "celular" => '999999999',
+        //     "correo_secundario" => 'solopruebas@test.com',
+        //     "facultad" => $res[0]->facultad_correo,
+        //     "escuela" => $res[0]->programa_correo,
+        //     "numero_ingresos" => false,
+        // ];
 
-        $jsonData = json_encode($data);
-        $signature = hash_hmac('sha256', $jsonData, $secretKey);
+        // $jsonData = json_encode($data);
+        // $signature = hash_hmac('sha256', $jsonData, $secretKey);
         $responsecorreo = [];
-        $responsecorreo = Http::withHeaders([
-            'X-Signature' => $signature,
-            'Content-Type' => 'application/json'
-        ])->post($url, $data);
+        // $responsecorreo = Http::withHeaders([
+        //     'X-Signature' => $signature,
+        //     'Content-Type' => 'application/json'
+        // ])->post($url, $data);
 
 
         $this->response['estado'] = true;
