@@ -727,6 +727,7 @@ Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma'])->
 Route::get('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
 Route::get('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
 
+Route::get('/phpinfo', function () { phpinfo();});
 
 
 
