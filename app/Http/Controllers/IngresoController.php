@@ -76,8 +76,8 @@ class IngresoController extends Controller {
         $doc_certificado = url("/documentos/" . auth()->user()->id_proceso . "/biometrico/certificados/" . $dni . ".pdf") . '?v=' . time();
 
 
-        $url = "https://service6.unap.edu.pe/api/crear-correo";
-        $url = "http://10.1.20.30:6060";
+        //$url = "https://service6.unap.edu.pe/api/crear-correo";
+        $url = "http://10.1.20.30:6060/api/crear-correo";
         $secretKey = "unap@2025";
         $data = [
             "apellido_paterno" => $res[0]->primer_apellido,
