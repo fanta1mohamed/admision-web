@@ -76,53 +76,28 @@ class IngresoController extends Controller {
         $doc_certificado = url("/documentos/" . auth()->user()->id_proceso . "/biometrico/certificados/" . $dni . ".pdf") . '?v=' . time();
 
 
-        //$url = "https://service6.unap.edu.pe/api/crear-correo";
+        $url = "https://service6.unap.edu.pe/api/crear-correo";
         $url = "http://10.1.20.30:6060";
         $secretKey = "unap@2025";
-        
-        // Construcción de datos con manejo de valores nulos
         $data = [
             "apellido_paterno" => $res[0]->primer_apellido,
-            "apellido_materno" => $res[0]->segundo_apellido ?? '', // Manejo de null
+            "apellido_materno" => $res[0]->segundo_apellido,
             "nombres" => $res[0]->nombres,
             "dni" => $res[0]->nro_doc,
-            "celular" => $res[0]->celular ?? '999999999', // Usar dato real si existe
-            "correo_secundario" => $res[0]->email ?? 'solopruebas@test.com', // Email real
+            "celular" => '999999999',
+            "correo_secundario" => 'solopruebas@test.com',
             "facultad" => $res[0]->facultad_correo,
             "escuela" => $res[0]->programa_correo,
             "numero_ingresos" => false,
         ];
-        
-        $jsonData = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        $signature = hash_hmac('sha256', $jsonData, $secretKey);
-        
-        try {
-            $responsecorreo = Http::withHeaders([
-                'X-Signature' => $signature,
-                'Content-Type' => 'application/json'
-            ])
-            ->withOptions(['verify' => false])
-            ->timeout(15)
-            ->send('POST', $url, [
-                'body' => $jsonData
-            ]);
-            
-            if ($responsecorreo->successful()) {
-                $responseData = $responsecorreo->json();
-            } else {
 
-                return response()->json([
-                    'status' => $responsecorreo->status(),
-                    'response' => $responsecorreo->body()
-                ],
-                200);
-            }
-            
-        } catch (\Exception $e) {
-            // Manejar excepciones de red/timeout
-            // Log::critical('Error de conexión: ' . $e->getMessage());
-            return response()->json($e->getMessage(), 200);
-        }
+        $jsonData = json_encode($data);
+        $signature = hash_hmac('sha256', $jsonData, $secretKey);
+        $responsecorreo = [];
+        $responsecorreo = Http::withHeaders([
+            'X-Signature' => $signature,
+            'Content-Type' => 'application/json'
+        ])->post($url, $data);
 
 
         $this->response['estado'] = true;
@@ -132,9 +107,10 @@ class IngresoController extends Controller {
         $this->response['doc_dni'] = $doc_dni;
         $this->response['doc_certificado'] = $doc_certificado;
         $this->response['datos'] = $res[0];
-        if (!empty($responsecorreo)) {
-            $this->response['correos'] = is_array($responsecorreo) ? $responsecorreo : $responsecorreo->json('users');
-        }        //$this->response['correos'] = $responsecorreo->json('users');
+        if(count($responsecorreo) > 0){
+            $this->response['correos'] = $responsecorreo->json('users');
+        }
+        //$this->response['correos'] = $responsecorreo->json('users');
         return response()->json($this->response, 200);
 
     }
