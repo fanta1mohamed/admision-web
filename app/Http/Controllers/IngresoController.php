@@ -118,7 +118,8 @@ class IngresoController extends Controller {
             
         } catch (\Exception $e) {
             // Manejar excepciones de red/timeout
-            Log::critical('Error de conexión: ' . $e->getMessage());
+            // Log::critical('Error de conexión: ' . $e->getMessage());
+            return response()->json($e->getMessage(), 200);
         }
 
 
