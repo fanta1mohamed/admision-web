@@ -17,6 +17,7 @@ class ControlBiometrico extends Model
         'estado',
         'id_usuario',
         'correo_institucional',
-        'segunda_carrera'
+        'segunda_carrera',
+        'tiene_correo'
     ];
 }

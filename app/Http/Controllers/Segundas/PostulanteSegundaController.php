@@ -145,6 +145,7 @@ class PostulanteSegundaController extends Controller
         ->leftJoin('distritos', 'distritos.id', '=', 'ubigeo.id_distrito')
         ->where('postulante.nro_doc', '=', $dni)
         ->first();
+        
     
         $procesos = Inscripcion::select('procesos.id AS id_proceso','procesos.nombre AS proceso','inscripciones.codigo')
         ->join('procesos', 'procesos.id', '=', 'inscripciones.id_proceso')
@@ -178,8 +179,6 @@ class PostulanteSegundaController extends Controller
         ], 200);
     
       }
-
-
 
       public function savePostulanteAdmin(Request $request ) {
         

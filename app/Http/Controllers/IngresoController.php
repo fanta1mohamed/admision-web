@@ -109,77 +109,117 @@ class IngresoController extends Controller {
 
         try {
             DB::transaction(function () use ($request, $re) {
-
-                $ingreso = 1; $i_admision = 0;
-                if($request->n_carrera == 1 ){ $ingreso = 2; $i_admision = 1; }
-
-                $prefijo = $re[0]->id_programa == '38' ? '25' : '25';
-            
                 $database2 = 'mysql_secondary';
-                $rs = DB::connection($database2)->select("SELECT CONCAT('$prefijo', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1, 1), 4, '0')) AS siguiente 
-                FROM unapnet.estudiante e 
-                WHERE LEFT(e.num_mat, 2) = '$prefijo';");
+        
+                // Buscar si ya existe un registro en control_biometrico
+                $control = ControlBiometrico::where('id_proceso', auth()->user()->id_proceso)
+                    ->where('id_postulante', $re[0]->id_postulante)
+                    ->first();
+        
+                if (!$control) {
+                    // Prefijo basado en programa
+                    $prefijo = $re[0]->id_programa == '38' ? '25' : '25';
+        
+                    // Obtener nuevo código de ingreso
+                    $rs = DB::connection($database2)->select("SELECT CONCAT('$prefijo', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1, 1), 4, '0')) AS siguiente 
+                        FROM unapnet.estudiante e 
+                        WHERE LEFT(e.num_mat, 2) = '$prefijo';");
+        
+                    $nuevoCodigo = $rs[0]->siguiente;
+        
+                    // Insertar en control_biometrico
+                    $control = ControlBiometrico::create([
+                        'id_proceso' => auth()->user()->id_proceso,
+                        'id_postulante' => $re[0]->id_postulante,
+                        'codigo_ingreso' => $nuevoCodigo,
+                        'estado' => 1,
+                        'segunda_carrera' => $request->n_carrera == 1 ? 1 : 0,
+                        'id_usuario' => auth()->id(),
+                        'tiene_correo' => 0, 
+                        'correo_institucional' => null 
+                    ]);
+        
+                    // Registrar estudiante
+                    Estudiante::on($database2)->create([
+                        'num_mat' => $nuevoCodigo,
+                        'cod_car' => $re[0]->programa_oti,
+                        'paterno' => $re[0]->paterno,
+                        'materno' => $re[0]->materno,
+                        'nombres' => $re[0]->nombres,
+                        'tip_doc' => $re[0]->tipo_doc_oti,
+                        'num_doc' => $re[0]->dni,
+                        'num_car' => $request->n_carrera == 1 ? 2 : 1,
+                        'fch_nac' => $re[0]->fec_nacimiento,
+                        'sexo' => $re[0]->sexo,
+                        'ubigeo' => $re[0]->ubigeo_residencia,
+                        'mod_ing' => $re[0]->modalidad_oti,
+                        'est_civ' => [1 => 2, 2 => 1, 3 => 3, 4 => 6][$re[0]->estado_civil] ?? 1,
+                        'fch_ing' => $re[0]->fecha,
+                        'direc' => $re[0]->direccion,
+                        'email' => $re[0]->email,
+                        'con_est' => 5,
+                        'celular' => $re[0]->celular,
+                        'cod_esp' => $re[0]->cod_esp,
+                        'puntaje' => $re[0]->puntaje,
+                        'puesto_escuela' => $re[0]->puesto,
+                        'puesto_general' => $re[0]->puesto_general,
+                        'ano_ing' => $re[0]->anio,
+                        'per_ing' => $re[0]->ciclo_oti
+                    ]);
+                } else {
 
-                $nuevoCodigo = $rs[0]->siguiente;
-
-                $biometric = ControlBiometrico::create([
-                    'id_proceso' => auth()->user()->id_proceso,
-                    'id_postulante' => $re[0]->id_postulante,
-                    'codigo_ingreso' => $nuevoCodigo,
-                    'estado' => 1,
-                    'segunda_carrera' => $i_admision,
-                    'id_usuario' => auth()->id()
-                ]);
-
-                $e_civil = 1;
-                if($re[0]->estado_civil == 1 ) { $e_civil = 2;}
-                if($re[0]->estado_civil == 2 ) { $e_civil = 1;}
-                if($re[0]->estado_civil == 3 ) { $e_civil = 3;}
-                if($re[0]->estado_civil == 4 ) { $e_civil = 6;}
-
-                $estudiante = Estudiante::on('mysql_secondary')->create([
-                    'num_mat' => $nuevoCodigo,
-                    'cod_car' => $re[0]->programa_oti,
-                    'paterno' => $re[0]->paterno,
-                    'materno' => $re[0]->materno,
-                    'nombres' => $re[0]->nombres,
-                    'tip_doc' => $re[0]->tipo_doc_oti,
-                    'num_doc' => $re[0]->dni,
-                    'num_car' => $ingreso,
-                    'fch_nac' => $re[0]->fec_nacimiento,
-                    'sexo' => $re[0]->sexo,
-                    'ubigeo' => $re[0]->ubigeo_residencia,
-                    'mod_ing' => $re[0]->modalidad_oti,
-                    'est_civ' => $e_civil,
-                    'fch_ing' => $re[0]->fecha,
-                    'direc' => $re[0]->direccion,
-                    'email' => $re[0]->email,
-                    'con_est' => 5,
-                    'celular' => $re[0]->celular,
-                    'cod_esp' => $re[0]->cod_esp,
-                    'puntaje' => $re[0]->puntaje,
-                    'puesto_escuela' => $re[0]->puesto,
-                    'puesto_general' => $re[0]->puesto_general,
-                    'ano_ing' => $re[0]->anio,
-                    'per_ing' => $re[0]->ciclo_oti
-                ]);
-
-                $this->pdfbiometrico2($request->dni);
-
+                    $control->update(['estado' => 2]);
+                }
+        
+                if ($control->tiene_correo == 0) {
+                    $url = "https://service6.unap.edu.pe/api/crear-correo";
+                    $secretKey = "unap@2025";
+                    $data = [
+                        "apellido_paterno" => $re[0]->paterno,
+                        "apellido_materno" => $re[0]->materno,
+                        "nombres" => $re[0]->nombres,
+                        "dni" => $re[0]->dni,
+                        "celular" => $re[0]->celular,
+                        "correo_secundario" => $re[0]->email,
+                        "facultad" => $re[0]->programa,
+                        "escuela" => $re[0]->programa_oti,
+                        "numero_ingresos" => 1
+                    ];
+                    $jsonData = json_encode($data);
+                    $signature = hash_hmac('sha256', $jsonData, $secretKey);
+                    $response = Http::withHeaders([
+                        'X-Signature' => $signature,
+                        'Content-Type' => 'application/json'
+                    ])->post($url, $data);
+        
+                    if (!$response->successful()) {
+                        throw new \Exception('Error al crear el correo: ' . $response->body());
+                    }
+        
+                    $correoGenerado = $response->json('correo');
+        
+                    $control->update([
+                        'tiene_correo' => 1,
+                        'correo_institucional' => $correoGenerado
+                    ]);
+                }
+        
+                // Generar PDF
+                $this->pdfbiometrico2($re[0]->dni);
             });
+        
+            return response()->json(['estado' => true, 'datos' => $request->dni], 200);
+        
         } catch (\Exception $e) {
-            $errorMessage = $e->getMessage();
-            // Registrar el error en un archivo de registro
-            \Log::error('Error en la transacción: ' . $errorMessage);
-            // Devolver una respuesta de error al usuario con el mensaje de error
-            return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $errorMessage], 500);
+            \Log::error('Error en la transacción: ' . $e->getMessage());
+            return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $e->getMessage()], 500);
         }
+
 
         $this->response['estado'] = true;
         $this->response['datos'] = $request->dni;
         return response()->json($this->response, 200);
-        // return response()->download($outputFilePath);
-        // return response()->download($outputFilePath)->deleteFileAfterSend();
+
     }
 
     public function registrar_biometrico($dni)

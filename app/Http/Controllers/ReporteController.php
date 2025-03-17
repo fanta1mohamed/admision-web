@@ -34,7 +34,7 @@ class ReporteController extends Controller
                 WHERE ins.id_proceso = ".auth()->user()->id_proceso." AND ins.estado = 0
                 GROUP BY pro.nombre
             ) ins ON pre.programa = ins.programa
-            ORDER BY pre.cod_pro");
+            ORDER BY inscripciones desc;");
 
         $totales = DB::select("SELECT
             SUM(COALESCE(ins.inscripciones, 0)) AS total_inscripciones,
