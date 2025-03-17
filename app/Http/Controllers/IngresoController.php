@@ -107,8 +107,8 @@ class IngresoController extends Controller {
         $this->response['doc_dni'] = $doc_dni;
         $this->response['doc_certificado'] = $doc_certificado;
         $this->response['datos'] = $res[0];
-        if(count($responsecorreo) > 0){
-            $this->response['correos'] = $responsecorreo->json('users');
+        if (!empty($responsecorreo)) {
+            $this->response['correos'] = is_array($responsecorreo) ? $responsecorreo : $responsecorreo->json('users');
         }
         //$this->response['correos'] = $responsecorreo->json('users');
         return response()->json($this->response, 200);
