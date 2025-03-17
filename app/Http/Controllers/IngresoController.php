@@ -77,7 +77,7 @@ class IngresoController extends Controller {
 
 
         //$url = "https://service6.unap.edu.pe/api/crear-correo";
-        $url = "http://10.1.20.30";
+        $url = "http://10.1.20.30:6060";
         $secretKey = "unap@2025";
         
         // Construcción de datos con manejo de valores nulos
