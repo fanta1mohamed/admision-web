@@ -168,108 +168,112 @@ class IngresoController extends Controller {
         ->get();
 
         try {
-            DB::transaction(function () use ($request, $re) {
-                $database2 = 'mysql_secondary';
+            DB::beginTransaction(); // Iniciar transacción manualmente
         
-                $control = ControlBiometrico::where('id_proceso', auth()->user()->id_proceso)
-                    ->where('id_postulante', $re[0]->id_postulante)
-                    ->first();
-
+            $database2 = 'mysql_secondary';
+        
+            // Buscar en ControlBiometrico
+            $control = ControlBiometrico::where('id_proceso', auth()->user()->id_proceso)
+                ->where('id_postulante', $re[0]->id_postulante)
+                ->first();
+        
+            if (!$control) {
+                // Generar nuevo código de estudiante
+                $prefijo = $re[0]->id_programa == '38' ? '25' : '25';
+                $rs = DB::connection($database2)->select("SELECT CONCAT('$prefijo', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1, 1), 4, '0')) AS siguiente 
+                    FROM unapnet.estudiante e 
+                    WHERE LEFT(e.num_mat, 2) = '$prefijo';");
+                $nuevoCodigo = $rs[0]->siguiente;
+        
+                // Crear registro en ControlBiometrico
+                $control = ControlBiometrico::create([
+                    'id_proceso' => auth()->user()->id_proceso,
+                    'id_postulante' => $re[0]->id_postulante,
+                    'codigo_ingreso' => $nuevoCodigo,
+                    'estado' => 1,
+                    'segunda_carrera' => $request->n_carrera == 1 ? 1 : 0,
+                    'id_usuario' => auth()->id(),
+                    'tiene_correo' => 0,
+                    'correo_institucional' => null
+                ]);
         
                 if (!$control) {
-
-                    $prefijo = $re[0]->id_programa == '38' ? '25' : '25';
-        
-                    $rs = DB::connection($database2)->select("SELECT CONCAT('$prefijo', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1, 1), 4, '0')) AS siguiente 
-                        FROM unapnet.estudiante e 
-                        WHERE LEFT(e.num_mat, 2) = '$prefijo';");
-            
-                    $nuevoCodigo = $rs[0]->siguiente;
-
-
-        
-                    $control = ControlBiometrico::create([
-                        'id_proceso' => auth()->user()->id_proceso,
-                        'id_postulante' => $re[0]->id_postulante,
-                        'codigo_ingreso' => $nuevoCodigo,
-                        'estado' => 1,
-                        'segunda_carrera' => $request->n_carrera == 1 ? 1 : 0,
-                        'id_usuario' => auth()->id(),
-                        'tiene_correo' => 0, 
-                        'correo_institucional' => null 
-                    ]);
-        
-                    Estudiante::on($database2)->create([
-                        'num_mat' => $nuevoCodigo,
-                        'cod_car' => $re[0]->programa_oti,
-                        'paterno' => $re[0]->paterno,
-                        'materno' => $re[0]->materno,
-                        'nombres' => $re[0]->nombres,
-                        'tip_doc' => $re[0]->tipo_doc_oti,
-                        'num_doc' => $re[0]->dni,
-                        'num_car' => $request->n_carrera == 1 ? 2 : 1,
-                        'fch_nac' => $re[0]->fec_nacimiento,
-                        'sexo' => $re[0]->sexo,
-                        'ubigeo' => $re[0]->ubigeo_residencia,
-                        'mod_ing' => $re[0]->modalidad_oti,
-                        'est_civ' => [1 => 2, 2 => 1, 3 => 3, 4 => 6][$re[0]->estado_civil] ?? 1,
-                        'fch_ing' => $re[0]->fecha,
-                        'direc' => $re[0]->direccion,
-                        'email' => $re[0]->email,
-                        'emailins' => $control->correo_institucional,
-                        'con_est' => 5,
-                        'celular' => $re[0]->celular,
-                        'cod_esp' => $re[0]->cod_esp,
-                        'puntaje' => $re[0]->puntaje,
-                        'puesto_escuela' => $re[0]->puesto,
-                        'puesto_general' => $re[0]->puesto_general,
-                        'ano_ing' => $re[0]->anio,
-                        'per_ing' => $re[0]->ciclo_oti
-                    ]);
-                } else {
-
-                    $control->update(['estado' => 2]);
+                    throw new \Exception('Error al crear el registro en ControlBiometrico.');
                 }
         
-                if ($control->tiene_correo == 0 ) {
-                    $url = "http://10.1.20.30:6060/api/crear-correo";
-                    $secretKey = "unap@2025";
-                    $data = [
-                        "apellido_paterno" => $re[0]->paterno,
-                        "apellido_materno" => $re[0]->materno,
-                        "nombres" => $re[0]->nombres,
-                        "dni" => $re[0]->dni,
-                        "celular" => $re[0]->celular,
-                        "correo_secundario" => $re[0]->email,
-                        "facultad" => $re[0]->facultad_correo,
-                        "escuela" => $re[0]->programa_correo,
-                        "numero_ingresos" => $request->crear_correo,
-                    ];
-                    $jsonData = json_encode($data);
-                    $signature = hash_hmac('sha256', $jsonData, $secretKey);
-                    $response = Http::withHeaders([
-                        'X-Signature' => $signature,
-                        'Content-Type' => 'application/json'
-                    ])->post($url, $data);
+                // Crear registro en Estudiante
+                Estudiante::on($database2)->create([
+                    'num_mat' => $nuevoCodigo,
+                    'cod_car' => $re[0]->programa_oti,
+                    'paterno' => $re[0]->paterno,
+                    'materno' => $re[0]->materno,
+                    'nombres' => $re[0]->nombres,
+                    'tip_doc' => $re[0]->tipo_doc_oti,
+                    'num_doc' => $re[0]->dni,
+                    'num_car' => $request->n_carrera == 1 ? 2 : 1,
+                    'fch_nac' => $re[0]->fec_nacimiento,
+                    'sexo' => $re[0]->sexo,
+                    'ubigeo' => $re[0]->ubigeo_residencia,
+                    'mod_ing' => $re[0]->modalidad_oti,
+                    'est_civ' => [1 => 2, 2 => 1, 3 => 3, 4 => 6][$re[0]->estado_civil] ?? 1,
+                    'fch_ing' => $re[0]->fecha,
+                    'direc' => $re[0]->direccion,
+                    'email' => $re[0]->email,
+                    'emailins' => $control->correo_institucional,
+                    'con_est' => 5,
+                    'celular' => $re[0]->celular,
+                    'cod_esp' => $re[0]->cod_esp,
+                    'puntaje' => $re[0]->puntaje,
+                    'puesto_escuela' => $re[0]->puesto,
+                    'puesto_general' => $re[0]->puesto_general,
+                    'ano_ing' => $re[0]->anio,
+                    'per_ing' => $re[0]->ciclo_oti
+                ]);
+            } else {
+                $control->update(['estado' => 2]);
+            }
         
-                    if (!$response->successful()) {
-                        throw new \Exception('Error al crear el correo: ' . $response->body());
-                    }
+            // Crear correo institucional
+            if ($control->tiene_correo == 0) {
+                $url = "http://10.1.20.30:6060/api/crear-correo";
+                $secretKey = "unap@2025";
+                $data = [
+                    "apellido_paterno" => $re[0]->paterno,
+                    "apellido_materno" => $re[0]->materno,
+                    "nombres" => $re[0]->nombres,
+                    "dni" => $re[0]->dni,
+                    "celular" => $re[0]->celular,
+                    "correo_secundario" => $re[0]->email,
+                    "facultad" => $re[0]->facultad_correo,
+                    "escuela" => $re[0]->programa_correo,
+                    "numero_ingresos" => $request->crear_correo,
+                ];
+                $jsonData = json_encode($data);
+                $signature = hash_hmac('sha256', $jsonData, $secretKey);
+                $response = Http::withHeaders([
+                    'X-Signature' => $signature,
+                    'Content-Type' => 'application/json'
+                ])->post($url, $data);
         
-                    $correoGenerado = $response->json('correo');
-        
-                    $control->update([
-                        'tiene_correo' => 1,
-                        'correo_institucional' => $correoGenerado
-                    ]);
+                if (!$response->successful()) {
+                    throw new \Exception('Error al crear el correo: ' . $response->body());
                 }
         
-                $this->pdfbiometrico2($re[0]->dni);
-            });
+                $correoGenerado = $response->json('correo');
+        
+                $control->update([
+                    'tiene_correo' => 1,
+                    'correo_institucional' => $correoGenerado
+                ]);
+            }
+        
+            // Generar PDF (fuera de la transacción)
+            DB::commit(); // Confirmar transacción
+            $this->pdfbiometrico2($re[0]->dni);
         
             return response()->json(['estado' => true, 'datos' => $request->dni], 200);
-        
         } catch (\Exception $e) {
+            DB::rollBack(); // Revertir transacción
             \Log::error('Error en la transacción: ' . $e->getMessage());
             return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $e->getMessage()], 500);
         }
