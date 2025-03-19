@@ -278,6 +278,8 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/eliminar-carrera-previa/{id}', [CarrerasPreviascontroller::class, 'delete']);
 
 
+    Route::get('/get-select-programas-proceso-admin',[ProgramaProcesoController::class, 'getSelectProgramasProcesoAdmin']);
+
 });
 
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
@@ -563,6 +565,7 @@ Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
 //MODALIDADES y PROGRAMAS
 Route::get('/get-select-modalidad-proceso/{id}',[ProgramaProcesoController::class, 'getSelectModalidadesProceso']);
 Route::post('/get-select-programas-proceso',[ProgramaProcesoController::class, 'getSelectProgramasProceso']);
+
 Route::post('/get-select-programas-proceso-area',[ProgramaProcesoController::class, 'getSelectProgramasProcesoArea']);
 Route::get('/get-area-by-codigo/{area}',[ProgramaProcesoController::class, 'getAreaByCodigo']);
 

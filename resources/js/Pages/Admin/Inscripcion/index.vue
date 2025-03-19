@@ -5,59 +5,8 @@
     <!-- {{ buscar }} -->
     <row class="flex justify-between mb-4" >
         <div class="mr-3">
-            <a-select
-                ref="select"
-                v-model:value="programa"
-                placeholder="Seleccionar programa"
-                class="selector-modalidad"
-                style="width: 200px;"
-                >
-                <a-select-option :value='0'>TODOS</a-select-option>
-                <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
-                <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
-                <a-select-option :value='3'>ARQUITECTURA Y URBANISMO</a-select-option>
-                <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
-                <a-select-option :value='5'>ARTE: DANZA</a-select-option>
-                <a-select-option :value='6'>ARTE: MÚSICA</a-select-option>
-                <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
-                <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
-                <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
-                <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
-                <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
-                <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
-                <a-select-option :value='15'>DERECHO</a-select-option>
-                <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
-                <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
-                <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
-                <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
-                <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                <a-select-option :value='24'>INGENIERÍA AGRÍCOLA</a-select-option>
-                <a-select-option :value='25'>INGENIERÍA AGROINDUSTRIAL</a-select-option>
-                <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
-                <a-select-option :value='27'>INGENIERÍA CIVIL</a-select-option>
-                <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
-                <a-select-option :value='29'>INGENIERÍA DE SISTEMAS</a-select-option>
-                <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
-                <a-select-option :value='31'>INGENIERÍA ELECTRÓNICA</a-select-option>
-                <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
-                <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
-                <a-select-option :value='34'>INGENIERÍA MECÁNICA ELÉCTRICA</a-select-option>
-                <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
-                <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
-                <a-select-option :value='37'>INGENIERÍA TOPOGRÁFICA Y AGRIMENSURA</a-select-option>
-                <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
-                <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                <a-select-option :value='44'>TURISMO</a-select-option>
-                <a-select-option :value='45'>PSICOLOGÍA</a-select-option>
-            </a-select>
+            <a-select ref="select" v-model:value="programa" placeholder="Seleccionar programa de estudios" :options="programas" allowClear></a-select>
+
 
         </div>
         <div class="flex justify-between" style="position: relative;" >
@@ -133,7 +82,7 @@
     </AuthenticatedLayout>
     
     <div>
-        <a-modal v-model:visible="visible" title="Modificar Inscripción" style="margin-top: -40px;">
+        <a-modal v-model:open="visible" title="Modificar Inscripción" style="margin-top: -40px;">
             <!-- <pre>{{ programa}}</pre> -->
             <a-form
                 ref="formRef"
@@ -155,59 +104,7 @@
                 <a-form-item has-feedback name="postulante">
                     <label>Programa</label>
                     <div class="">
-                        <a-select
-                            ref="select"
-                            v-model:value="inscripcion.id_programa"
-                            placeholder="Seleccionar programa"
-                            class="selector-modalidad"
-                            style="width: 100%;"
-                            >
-                            <a-select-option :value='0'>TODOS</a-select-option>
-                            <a-select-option :value='1'>ADMINISTRACIÓN</a-select-option>
-                            <a-select-option :value='2'>ANTROPOLOGÍA</a-select-option>
-                            <a-select-option :value='3'>ARQUITECTURA Y URBANISMO</a-select-option>
-                            <a-select-option :value='4'>ARTE: ARTES PLÁSTICAS</a-select-option>
-                            <a-select-option :value='5'>ARTE: DANZA</a-select-option>
-                            <a-select-option :value='6'>ARTE: MÚSICA</a-select-option>
-                            <a-select-option :value='8'>BIOLOGÍA: ECOLOGÍA</a-select-option>
-                            <a-select-option :value='9'>BIOLOGÍA: MICROBIOLOGÍA Y LABORATORIO CLÍNICO</a-select-option>
-                            <a-select-option :value='10'>BIOLOGÍA: PESQUERÍA</a-select-option>
-                            <a-select-option :value='11'>CIENCIAS CONTABLES</a-select-option>
-                            <a-select-option :value='12'>CIENCIAS DE LA COMUNICACIÓN SOCIAL</a-select-option>
-                            <a-select-option :value='13'>CIENCIAS FÍSICO MATEMÁTICAS: FÍSICA</a-select-option>
-                            <a-select-option :value='14'>CIENCIAS FÍSICO MATEMÁTICAS: MATEMÁTICAS</a-select-option>
-                            <a-select-option :value='15'>DERECHO</a-select-option>
-                            <a-select-option :value='16'>EDUCACIÓN FÍSICA</a-select-option>
-                            <a-select-option :value='17'>EDUCACIÓN INICIAL</a-select-option>
-                            <a-select-option :value='18'>EDUCACIÓN PRIMARIA</a-select-option>
-                            <a-select-option :value='19'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIA, TECNOLOGÍA Y AMBIENTE</a-select-option>
-                            <a-select-option :value='20'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE CIENCIAS SOCIALES</a-select-option>
-                            <a-select-option :value='21'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE LENGUA, LITERATURA, PSICOLOGÍA Y FILOSOFÍA</a-select-option>
-                            <a-select-option :value='22'>EDUCACIÓN SECUNDARIA DE LA ESPECIALIDAD DE MATEMÁTICA, FÍSICA, COMPUTACIÓN E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='23'>ENFERMERÍA</a-select-option>
-                            <a-select-option :value='24'>INGENIERÍA AGRÍCOLA</a-select-option>
-                            <a-select-option :value='25'>INGENIERÍA AGROINDUSTRIAL</a-select-option>
-                            <a-select-option :value='26'>INGENIERÍA AGRONÓMICA</a-select-option>
-                            <a-select-option :value='27'>INGENIERÍA CIVIL</a-select-option>
-                            <a-select-option :value='28'>INGENIERÍA DE MINAS</a-select-option>
-                            <a-select-option :value='29'>INGENIERÍA DE SISTEMAS</a-select-option>
-                            <a-select-option :value='30'>INGENIERÍA ECONÓMICA</a-select-option>
-                            <a-select-option :value='31'>INGENIERÍA ELECTRÓNICA</a-select-option>
-                            <a-select-option :value='32'>INGENIERÍA ESTADÍSTICA E INFORMÁTICA</a-select-option>
-                            <a-select-option :value='33'>INGENIERÍA GEOLÓGICA</a-select-option>
-                            <a-select-option :value='34'>INGENIERÍA MECÁNICA ELÉCTRICA</a-select-option>
-                            <a-select-option :value='35'>INGENIERÍA METALÚRGICA</a-select-option>
-                            <a-select-option :value='36'>INGENIERÍA QUÍMICA</a-select-option>
-                            <a-select-option :value='37'>INGENIERÍA TOPOGRÁFICA Y AGRIMENSURA</a-select-option>
-                            <a-select-option :value='38'>MEDICINA HUMANA</a-select-option>
-                            <a-select-option :value='39'>MEDICINA VETERINARIA Y ZOOTECNIA</a-select-option>
-                            <a-select-option :value='40'>NUTRICIÓN HUMANA</a-select-option>
-                            <a-select-option :value='41'>ODONTOLOGÍA</a-select-option>
-                            <a-select-option :value='42'>SOCIOLOGÍA</a-select-option>
-                            <a-select-option :value='43'>TRABAJO SOCIAL</a-select-option>
-                            <a-select-option :value='44'>TURISMO</a-select-option>
-                            <a-select-option :value='45'>PSICOLOGÍA<Abbr></Abbr></a-select-option>
-                        </a-select>
+                        <a-select ref="select" v-model:value="inscripcion.id_programa" placeholder="Seleccionar programa de estudios" :options="programas" allowClear></a-select>
                     </div>
                 </a-form-item>
                 <a-form-item has-feedback name="tipo">
@@ -312,6 +209,13 @@ const getInscripciones =  async ( ) => {
     inscripciones.value = res.data.datos.data;
     totalRegistros.value = res.data.datos.total;
 }
+const programas = ref([]);
+const getProgramas =  async ( ) => {
+    let res = await axios.get( "get-select-programas-proceso-admin");
+    programas.value = res.data.datos;
+}
+getProgramas();
+
 
 const guardar = () => {
     let post = {

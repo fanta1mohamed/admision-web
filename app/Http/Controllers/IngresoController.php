@@ -168,24 +168,21 @@ class IngresoController extends Controller {
         ->get();
 
         try {
-            DB::beginTransaction(); // Iniciar transacción manualmente
-        
+            DB::beginTransaction();        
             $database2 = 'mysql_secondary';
         
-            // Buscar en ControlBiometrico
             $control = ControlBiometrico::where('id_proceso', auth()->user()->id_proceso)
                 ->where('id_postulante', $re[0]->id_postulante)
                 ->first();
         
             if (!$control) {
-                // Generar nuevo código de estudiante
+
                 $prefijo = $re[0]->id_programa == '38' ? '25' : '25';
                 $rs = DB::connection($database2)->select("SELECT CONCAT('$prefijo', LPAD(IFNULL(MAX(CAST(SUBSTRING(e.num_mat, 3) AS UNSIGNED)) + 1, 1), 4, '0')) AS siguiente 
                     FROM unapnet.estudiante e 
                     WHERE LEFT(e.num_mat, 2) = '$prefijo';");
                 $nuevoCodigo = $rs[0]->siguiente;
         
-                // Crear registro en ControlBiometrico
                 $control = ControlBiometrico::create([
                     'id_proceso' => auth()->user()->id_proceso,
                     'id_postulante' => $re[0]->id_postulante,
@@ -201,7 +198,6 @@ class IngresoController extends Controller {
                     throw new \Exception('Error al crear el registro en ControlBiometrico.');
                 }
         
-                // Crear registro en Estudiante
                 Estudiante::on($database2)->create([
                     'num_mat' => $nuevoCodigo,
                     'cod_car' => $re[0]->programa_oti,
@@ -233,7 +229,6 @@ class IngresoController extends Controller {
                 $control->update(['estado' => 2]);
             }
         
-            // Crear correo institucional
             if ($control->tiene_correo == 0) {
                 $url = "http://10.1.20.30:6060/api/crear-correo";
                 $secretKey = "unap@2025";
@@ -267,17 +262,15 @@ class IngresoController extends Controller {
                 ]);
             }
         
-            // Generar PDF (fuera de la transacción)
-            DB::commit(); // Confirmar transacción
+            DB::commit();
             $this->pdfbiometrico2($re[0]->dni);
         
             return response()->json(['estado' => true, 'datos' => $request->dni], 200);
         } catch (\Exception $e) {
-            DB::rollBack(); // Revertir transacción
-            \Log::error('Error en la transacción: ' . $e->getMessage());
+            DB::rollBack();
+            //\Log::error('Error en la transacción: ' . $e->getMessage());
             return response()->json(['error' => 'Ocurrió un error en la transacción: ' . $e->getMessage()], 500);
         }
-
 
         $this->response['estado'] = true;
         $this->response['datos'] = $request->dni;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProgramaProceso;
+use App\Models\Programa;
 use DB;
 
 class ProgramaProcesoController extends Controller
@@ -51,6 +52,18 @@ class ProgramaProcesoController extends Controller
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
     }
+    
+
+    public function getSelectProgramasProcesoAdmin() {
+
+        $res = DB::select("SELECT id AS value, nombre AS label  FROM programa 
+        WHERE id IN ( SELECT DISTINCT id_programa  FROM programas_proceso  WHERE id_proceso = ".auth()->user()->id_proceso.");");
+
+        $this->response['estado'] = true;
+        $this->response['datos'] = $res;
+        return response()->json($this->response, 200);
+    }
+
 
     public function getSelectProgramasProcesoArea(Request $request) {
 
