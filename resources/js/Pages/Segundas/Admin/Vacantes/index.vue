@@ -5,7 +5,6 @@
     <row class="flex justify-between mb-4">
         <div class="mr-3">
         <a-select ref="select" v-model:value="modalidad" :options="modalidades" @focus="focus" @change="handleChange"></a-select>
-        <div> <a-button @click="modalVacates = true"> Abrir </a-button></div>    
     </div>
         <div class="flex justify-between" style="position: relative;">
         <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px;">
