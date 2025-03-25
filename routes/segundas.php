@@ -43,6 +43,7 @@ Route::prefix('segundas')->middleware('segundas','auth')->group(function () {
     Route::get('/vacantes', fn () => Inertia::render('Segundas/Admin/Vacantes/index'))->name('segundas-vacantes-admin');
     Route::post('/get-vacantes-segundas-admin', [VacantesSegundaController::class, 'getVacantes']);
     Route::post('/save-numero-vacantes-segundas', [VacantesSegundaController::class, 'saveNumeroVacantes']);
+    Route::post('/actualizar-vacantes-segundas', [VacantesSegundaController::class, 'actualizar']);
     Route::post('/delete-vacante-segundas', [VacantesSegundaController::class, 'eliminar']);
 
     //MODALIDADES

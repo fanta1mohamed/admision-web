@@ -83,6 +83,27 @@ class VacantesSegundaController extends Controller
     
     }
 
+    public function actualizar(Request $request ) {
+
+
+        $vacante = Vacante::find($request->id_vacante);
+        $vacante->vacantes = $request->vacantes;
+        $vacante->estado = $request->estado;
+        $vacante->id_usuario = auth()->id();
+        $vacante->save();
+
+        $this->response['titulo'] = '!REGISTRO MODIFICADO!';
+        $this->response['mensaje'] = 'Filial '.$vacante->nombre.' modificado con exito';
+        $this->response['estado'] = true;
+        $this->response['datos'] = $vacante;
+
+
+        return response()->json($this->response, 200);
+    
+    }
+
+    
+
     public function eliminar(Request $request ) {
 
         $vacante = Vacante::find($request->id_vacante);

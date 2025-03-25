@@ -1,8 +1,6 @@
 <template>
 <Head title="Procesos"/>
 <AuthenticatedLayout>
-
-
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4" style="height: calc(100vh - 98px);">
 <row class="flex justify-between mb-4" >
     <div class="mr-3">
@@ -14,6 +12,7 @@
             @change="handleChange"
             >
         </a-select>
+ 
     </div>
     <div class="flex justify-between" style="position: relative;" >
     <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px;">
@@ -77,7 +76,6 @@
         </template>
     </a-table> 
 </div>
-<div>{{ editableData }}</div>
 <div class="flex" style="justify-content: flex-end;">
     <a-pagination v-model:current="pagina" simple page-size="50" :total="totalpaginas" />
 </div>
@@ -96,6 +94,8 @@ import { EyeOutlined, FormOutlined, EditOutlined, DeleteOutlined, SearchOutlined
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 
+
+const modalVacates = ref(false);
 const buscar = ref("");
 const pagina = ref(1)
 const totalpaginas = ref(null)

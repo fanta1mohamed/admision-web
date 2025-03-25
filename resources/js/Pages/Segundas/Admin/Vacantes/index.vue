@@ -5,7 +5,8 @@
     <row class="flex justify-between mb-4">
         <div class="mr-3">
         <a-select ref="select" v-model:value="modalidad" :options="modalidades" @focus="focus" @change="handleChange"></a-select>
-        </div>
+        <div> <a-button @click="modalVacates = true"> Abrir </a-button></div>    
+    </div>
         <div class="flex justify-between" style="position: relative;">
         <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px;">
             <template #prefix>
@@ -69,9 +70,45 @@
         </template>
         </a-table>
     </div>
-    <div class="flex" style="justify-content: flex-end;">
-        <a-pagination v-model:current="pagina" simple page-size="50" :total="totalpaginas" />
-    </div>
+        <div class="flex" style="justify-content: flex-end;">
+            <a-pagination v-model:current="pagina" simple page-size="50" :total="totalpaginas" />
+        </div>
+       
+        <a-modal
+            v-model:open="modalVacates"
+            title="Registrar Programa"
+            :footer="null"
+            width="400px"
+            @cancel="visible = false">
+            <div class="flex flex-col">
+                <div class="flex justify-end">
+                    <a-radio-group v-model:value="programa.estado" style="margin-bottom: 16px;">
+                        <a-radio :value="1">Activo</a-radio>
+                        <a-radio :value="0">Inactivo</a-radio>
+                    </a-radio-group>    
+                </div>
+                <div class="mt-4 mb-4">
+                    <label for="">Modalidad</label>
+                    <a-select v-model:value="modalidad" :options="modalidades" @change="handleChange" style="width: 100%;"></a-select>
+                </div>
+                <div class="mb-4">
+                    <label for="">Programa académico</label>
+                    <a-input v-model:value="programa.programa" placeholder="Programa">
+                        <template #prefix> <user-icon></user-icon> </template>
+                    </a-input>
+                </div>
+                <div class="mb-4">
+                    <label for="">Vacantes</label>
+                    <a-input v-model:value="programa.vacantes" placeholder="Vacantes">
+                        <template #prefix> <user-icon></user-icon> </template>
+                    </a-input>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <div class="mr-2"><a-button @click="modalVacates = false">Cancelar</a-button></div>
+                    <a-button type="primary" @click="actualizaVacantes()">Guardar</a-button>
+                </div>
+            </div>
+        </a-modal>
     </div>
 </AuthenticatedLayout>
 </template>
@@ -89,6 +126,8 @@ const pagina = ref(1);
 const totalpaginas = ref(null);
 const modalidades = ref([]);
 const modalidad = ref(1);
+
+const modalVacates = ref(false);
 
 const visible = ref(false);
 const buscarDep = ref("");
@@ -113,20 +152,21 @@ watch(pagina, () => {
 });
 
 const abrirEditar = (item) => {
-    visible.value = true;
-    programa.value.id = item.id;
-    programa.value.codigo = item.codigo;
-    programa.value.nombre = item.nombre;
-    programa.value.nivel_academico = item.nivel_academico;
-    programa.value.tipo_autorizacion = item.tipo_autorizacion;
-    programa.value.id_facultad = item.id_fac;
-    programa.value.estado = (item.estado == 1);
-    programa.value.area = item.area;
+    modalVacates.value = true;
+    programa.value = item;
 };
 
 const getModalidades = async () => {
-let res = await axios.get("/segundas/get-modalidades-segundas-activas");
-modalidades.value = res.data.datos;
+    let res = await axios.get("/segundas/get-modalidades-segundas-activas");
+    modalidades.value = res.data.datos;
+};
+
+const actualizaVacantes = async () => {
+    let res = await axios.post("/segundas/actualizar-vacantes-segundas",programa.value);
+    getProgramas();
+    notificacion('success', 'PROGRAMA ACTUALIZADO', res.data.mensaje);
+    programa.value = { id: null, codigo: "", nombre: "", vacantes: "", estado: true };
+    modalVacates.value = false;
 };
 
 const getProgramas = async () => {
