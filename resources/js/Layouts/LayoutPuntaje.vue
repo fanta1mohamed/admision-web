@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="flex justify-center title-proceso-container">
-          <span class="title-proceso text-center">EXAMEN {{ nombre }}</span>
+          <span class="title-proceso text-center">{{ nombre }}</span>
         </div>
         <div class="flex justify-center titulo-pre">
           <div>

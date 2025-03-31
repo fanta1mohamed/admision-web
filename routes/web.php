@@ -293,7 +293,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/postulantes', fn () => Inertia::render('Revisor/postulantes'))->name('revisor-postulantes');
     Route::get('/comprobantes-xd', fn () => Inertia::render('Revisor/components/voucher'));
 
-    Route::post('/get-pagos-banco', [PagoBancoController::class, 'getComprobantesDNI']);
+    Route::post('/get-pagos-banco', [PagoBancoController::class, '  ']);
     
 
     Route::post('/get-certificados-revision', [DocumentoController::class, 'getCertificadosRevision']);

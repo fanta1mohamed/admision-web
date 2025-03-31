@@ -11,7 +11,11 @@
     <div>
       <h1 style="font-size: 1.7rem;">Resultados del examen</h1>
       <p style="text-align: justify; font-size: 1em;">
-        Para consultar la relación de ingresantes del EXAMEN {{ props.proceso_seleccionado.nombre }},
+        Para consultar la relación de ingresantes del 
+        <span v-if="props.proceso_seleccionado.nivel == 1">
+          EXAMEN 
+        </span>
+        {{ props.proceso_seleccionado.nombre }},
         haga clic en el botón "Descargar" correspondiente a la fecha de su interés.
         El archivo se descargará automáticamente, y podrá abrirlo para visualizar el
         listado de ingresantes ordenado por mérito.
@@ -79,6 +83,8 @@
       </a-button>
     </div>
 
+
+  <div v-if="props.proceso_seleccionado.nivel == 1">
 
 
     <div class="mt-6"></div>
@@ -180,6 +186,8 @@
 
       </div>
     </div>
+
+  </div>  
 
     <div v-if="ingresante === 1" class="mt-6">
       <a-alert
