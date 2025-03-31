@@ -9,7 +9,7 @@
             </div>
             <div class="flex">
                 <div class="mr-1"><a-button @click="descargarResumen()" class="bg-blue-900" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;"><DownloadOutlined/></div> RESUMEN </div></a-button></div>
-                <div class="mr-1"><a-button class="bg-green-600" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;"><DownloadOutlined/></div> EXCEL </div></a-button></div>
+                <div class="mr-1"><a-button @click="descargarExcel()" class="bg-green-600" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;"><DownloadOutlined/></div> EXCEL </div></a-button></div>
                 <div><a-button @click="descargarDetalle()" class="bg-red-600" style="color: white; border:none;"><div class="flex"><div class="mr-2" style="margin-top: -3px;"><DownloadOutlined/></div> PDF </div></a-button></div>
             </div>
         </div>
@@ -460,6 +460,55 @@ const descargarResumen = async (items) => {
     window.URL.revokeObjectURL(url);
   } catch (error) {
     console.error('Error al descargar el archivo:', error);
+  }
+};
+
+
+// const descargarExcel = async (items) => {
+//   try {
+//     const response = await axios.post('/export-excel', 
+//     { term: buscar.value, programa: programa.value },
+//     {
+//       responseType: 'blob'
+//     });
+
+//     if (response.status !== 200) {
+//       throw new Error('Error al obtener el archivo');
+//     }
+
+//     const url = window.URL.createObjectURL(new Blob([response.data]));
+//     const link = document.createElement('a');
+//     link.href = url;
+//     const fecha = new Date();
+//     const formatoFecha = `${fecha.getDate().toString().padStart(2, '0')}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getFullYear()}_${fecha.getHours().toString().padStart(2, '0')}-${fecha.getMinutes().toString().padStart(2, '0')}-${fecha.getSeconds().toString().padStart(2, '0')}`;
+//     const nombreArchivo = `${formatoFecha}_resumen.xlsx`;
+//     link.setAttribute('download', nombreArchivo);
+//     document.body.appendChild(link);
+//     link.click();
+
+//     document.body.removeChild(link);
+//     window.URL.revokeObjectURL(url);
+//   } catch (error) {
+//     console.error('Error al descargar el archivo:', error);
+//   }
+// };
+
+
+
+const descargarExcel = async () => {
+  try {
+    const response = await axios.post("/export-excel", 
+    { term: buscar.value, programa: programa.value },
+    { responseType: "blob" });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "preinscritos.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error("Error al exportar:", error);
   }
 };
 

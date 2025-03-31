@@ -47,6 +47,8 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\DniController;
 use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\CarrerasPreviasController;
+use App\Http\Controllers\ExcelController;
+
 
 use App\Http\Controllers\SyncController;
 use Inertia\Inertia;
@@ -729,6 +731,8 @@ Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'
 Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma'])->middleware('auth');
 Route::get('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
 Route::get('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
+
+Route::post('/export-excel', [ExcelController::class, 'export'])->name('users.export');
 
 Route::get('/phpinfo', function () { phpinfo();});
 
