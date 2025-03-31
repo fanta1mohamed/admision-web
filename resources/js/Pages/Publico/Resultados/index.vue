@@ -9,7 +9,7 @@
 
   <a-card>
     <div>
-      <h1 style="font-size: 1.7rem;">Resultados del examen</h1>
+      <h1 style="font-size: 1.7rem;">Resultados del <span v-if="props.proceso_seleccionado.nivel == 1"></span>examen</h1>
       <p style="text-align: justify; font-size: 1em;">
         Para consultar la relación de ingresantes del 
         <span v-if="props.proceso_seleccionado.nivel == 1">
