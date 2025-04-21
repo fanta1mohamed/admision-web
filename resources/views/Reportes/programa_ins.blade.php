@@ -38,10 +38,10 @@
         .vertical-text {
             writing-mode: vertical-rl;
             text-align: center;
-            white-space: nowrap; 
+            white-space: nowrap;
             padding: 5px;
             font-weight: bold;
-            width: 26px; 
+            width: 26px;
         }
 </style>
 </head>
@@ -54,7 +54,7 @@
                 </td>
                 <td style="width: 532px; border:none;">
                     <div style="text-align: center; font-size:10pt;">
-                        <div style="font-size: 1.1rem; font-weight:bold">UNIVERSIDAD NACIONAL DEL ALTIPLANO</div>
+                        <div style="font-size: 1.1rem; font-weight:bold">UNIVERSIDAD NACIONAL DEL ALTIPLANO VICERRECTORADO ACADÉMICO</div>
                         <div style="font-size: 1rem; ">VICERRECTORADO ACADÉMICO</div>
                         <div>DIRECCIÓN DE ADMISIÓN</div>
                     </div>
@@ -68,7 +68,7 @@
         <div>
             <div style="text-align: center">
                 <span style="font-weight:bold; font-size:1rem; text-transform:uppercase"> RESUMEN DE INSCRIPCIONES DIARIAS - EXAMEN {{ $proceso->nombre }}</span>
-            </div> 
+            </div>
             <div style="font-size:10pt; text-align:center;" > FECHA Y HORA : {{ date('d/m/Y H:i:s') }}</div>
         </div>
         <div style=" font-size:10pt; margin-top:10px;">
@@ -118,14 +118,14 @@
                                 <td style="text-align: center;">{{ $item->{'ins_' . $fec} }}</td>
                             @endforeach
                             <td style="text-align: center;">{{ $item->inscripciones }}</td>
-                        </tr>   
+                        </tr>
                     @endforeach
                 </tbody>
             @else
                 <tbody>
                     <tr>
                         <td colspan="{{ count($fechas) + 4 }}" style="text-align: center;">No se encontraron datos</td>
-                    </tr>   
+                    </tr>
                 </tbody>
             @endif
             <tr>
