@@ -6,14 +6,23 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
 export default defineConfig({
       server: {
-        host: 'localhost', // Asegura que se sirva en localhost
-        port: 5173, // Puerto de Vite
+        host: '0.0.0.0',
+        port: 5173,
         strictPort: true,
-        cors: {
-            origin: '*', // Permitir cualquier origen (o especificar 'http://admision-web.test')
-            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-            allowedHeaders: ['Content-Type', 'Authorization'],
+        watch: {
+            usePolling: true,
         },
+        hmr: {
+            host: 'localhost',
+        },
+        // host: 'localhost', // Asegura que se sirva en localhost
+        // port: 5173, // Puerto de Vite
+        // strictPort: true,
+        // cors: {
+        //     origin: '*', // Permitir cualquier origen (o especificar 'http://admision-web.test')
+        //     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        //     allowedHeaders: ['Content-Type', 'Authorization'],
+        // },
       },  
       plugins: [
         laravel({

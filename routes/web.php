@@ -201,7 +201,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/save-documento', [DocumentoController::class, 'saveDocumentoAdmin']);
 
     Route::post('/get-postulantes-admin', [PostulanteController::class, 'getPostulantesAdmin']);
-    Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
+  #  Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
 
     Route::post('/save-postulante-admin', [PostulanteController::class, 'savePostulanteAdmin']);
     // Route::post('/modalidad/get-modalidades', [ModalidadController::class, 'getModalidades']);
@@ -287,11 +287,12 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/get-select-reglamentos', [ReglamentoController::class, 'getSelectReglamentos']);
     Route::post('/get-reglamentos', [ReglamentoController::class, 'getReglamentos']);
     Route::post('/save-reglamento', [ReglamentoController::class, 'saveReglamento']);
+    Route::get('/eliminar-reglamento/{id}', [ReglamentoController::class, 'eliminarReglamento']);
 
 
 });
 
-Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
+#Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
 
 Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
@@ -354,10 +355,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
 
     Route::get('/get-codigos-postulante/{dni}', [DocumentoController::class, 'getCodigoDNI']);
 
-
     Route::get('/nuevo-pdf-inscripcion/{dni}', [InscripcionController::class, 'pdfInscripcion']);
-
-
     Route::post('/cambiar-codigo', [DocumentoController::class, 'cambiarCodigo']);
 
     Route::get('/api-pagos/{parametro}', function ($parametro) {

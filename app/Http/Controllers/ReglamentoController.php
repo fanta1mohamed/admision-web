@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reglamento;
-
+use Illuminate\Support\Facades\File;
 
 class ReglamentoController extends Controller
 {
 
   public function getSelectReglamentos(){
     $res = Reglamento::select('id as value','nombre as label')->where('estado',1)->get();
+    
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
   }
+
 
   public function getReglamentos(Request $request)
   {
@@ -37,25 +39,73 @@ class ReglamentoController extends Controller
       ]);
 
       if ($request->hasFile('file')) {
-          $path = $request->file('file')->store('reglamentos', 'public');
+          $directory = public_path('documentos/reglamentos');
 
-          $reglamento = Reglamento::create([
-              'nombre' => $request->nombre,
-              'estado' => $request->estado,
-              'inicio_vigencia' => $request->inicio_vigencia,
-              'fin_vigencia' => $request->fin_vigencia,
-              'url' => 'storage/'.$path,
-              'id_usuario' => auth()->id(),
-              'version' => 1.0 // Ejemplo de versión inicial
-          ]);
+          if (!File::exists($directory)) {
+              File::makeDirectory($directory, 0777, true);
+          }
 
-          return response()->json([
-              'success' => 'Reglamento creado exitosamente',
-              'data' => $reglamento
-          ], 201);
+          $file = $request->file('file');
+          $filename = time() . '_' . $file->getClientOriginalName();
+          $file->move($directory, $filename);
+
+          if(!$request->id){
+              $reglamento = new Reglamento();
+              $reglamento->nombre = $request->nombre;
+              $reglamento->version = 1;
+              $reglamento->url = url('documentos/reglamentos/' . $filename);
+              $reglamento->estado = $request->estado;
+              $reglamento->inicio_vigencia = $request->inicio_vigencia;
+              $reglamento->fin_vigencia = $request->inicio_vigencia;
+              $reglamento->id_usuario = auth()->id();
+              $reglamento->save();
+          }else {
+            $reglamento = Reglamento::find($request->id);
+
+            if ($reglamento->url) {
+                $rutaArchivo = str_replace(url('/'), '', $reglamento->url);
+                $rutaArchivo = ltrim($rutaArchivo, '/');
+                if (File::exists(public_path($rutaArchivo))) {
+                    File::delete(public_path($rutaArchivo));
+                }
+            }
+
+            $reglamento->nombre = $request->nombre;
+            $reglamento->version = 1;
+            $reglamento->url = url('documentos/reglamentos/' . $filename);
+            $reglamento->estado = $request->estado;
+            $reglamento->inicio_vigencia = $request->inicio_vigencia;
+            $reglamento->fin_vigencia = $request->fin_vigencia;
+            $reglamento->id_usuario = auth()->id();
+            $reglamento->save();
+          }
+
+          $this->response['estado'] = true;
+          return response()->json($this->response, 200);
+
       }
 
       return response()->json(['error' => 'No se subió ningún archivo'], 400);
+  }
+
+
+  public function eliminarReglamento($id)
+  {
+    $reglamento = Reglamento::findOrFail($id);
+    if ($reglamento->url) {
+        $rutaAbsoluta = public_path(parse_url($reglamento->url, PHP_URL_PATH));
+        
+        if (File::exists($rutaAbsoluta)) {
+            File::delete($rutaAbsoluta);
+        }
+    }
+
+    $reglamento->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Reglamento y archivo eliminados correctamente'
+    ]);
   }
 
 

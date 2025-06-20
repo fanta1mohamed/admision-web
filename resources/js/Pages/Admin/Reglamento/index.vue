@@ -32,17 +32,12 @@
           class="custom-table"
         >
           <template #bodyCell="{ column, record }">
-            <!-- Columna Nombre -->
             <template v-if="column.dataIndex === 'nombre'">
               <span class="text-sm">{{ record.nombre }}</span>
             </template>
-
-            <!-- Columna Versión -->
             <template v-if="column.dataIndex === 'version'">
               <a-tag color="pink">V. {{ record.version }}.0</a-tag>
             </template>
-
-            <!-- Columna Vigencia -->
             <template v-if="column.dataIndex === 'vigencia'">
               <div class="flex justify-center">
                 <a-tag v-if="record.vigencia" color="blue">
@@ -51,8 +46,6 @@
                 <span v-else class="text-gray-300">sin vigencia</span>
               </div>
             </template>
-
-            <!-- Columna Estado -->
             <template v-if="column.dataIndex === 'estado'">
               <div class="flex justify-center">
                 <a-tag :color="record.estado ? 'blue' : 'red'">
@@ -60,8 +53,6 @@
                 </a-tag>
               </div>
             </template>
-
-            <!-- Columna Acciones -->
             <template v-if="column.dataIndex === 'acciones'">
               <div class="flex gap-2">
                 <a-button @click="viewDetails(record)" size="small" class="action-btn view-btn">
@@ -79,7 +70,6 @@
         </a-table>
       </div>
 
-      <!-- Paginación -->
       <div class="flex justify-end">
         <a-pagination
           v-model:current="currentPage"
@@ -188,19 +178,14 @@
 import { ref, computed, watch } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {
-  LinkOutlined,
-  FormOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-  FileOutlined,
-  UploadOutlined
-} from '@ant-design/icons-vue';
+import { LinkOutlined, FormOutlined, DeleteOutlined, SearchOutlined, FileOutlined, UploadOutlined } from '@ant-design/icons-vue';
 import { message, notification } from 'ant-design-vue';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import 'dayjs/locale/es';
+dayjs.locale('es');
 
-// Data and refs
+const baseUrl = window.location.origin;
 const searchTerm = ref('');
 const currentPage = ref(1);
 const pageSize = ref(50);
@@ -299,8 +284,11 @@ const editItem = (item) => {
   reglamento.value = {
     ...item,
     estado: item.estado === 1,
-    file: null
+    id: item.id,
+    inicio_vigencia: item.inicio_vigencia ? dayjs(item.inicio_vigencia) : null,
+    fin_vigencia: item.fin_vigencia ? dayjs(item.fin_vigencia) : null,
   };
+  pdfPreviewUrl.value = item.url;
   modalVisible.value = true;
 };
 
@@ -311,6 +299,10 @@ const submitForm = async () => {
     const formData = new FormData();
     formData.append('nombre', reglamento.value.nombre);
     formData.append('estado', reglamento.value.estado ? 1 : 0);
+
+    if (reglamento.value.id) {
+      formData.append('id', reglamento.value.id);
+    }
 
     if (reglamento.value.inicio_vigencia) {
       formData.append('inicio_vigencia', dayjs(reglamento.value.inicio_vigencia).format('YYYY-MM-DD'));
@@ -324,17 +316,10 @@ const submitForm = async () => {
       formData.append('file', reglamento.value.file);
     }
 
-    const url = reglamento.value.id
-      ? `/api/regulations/${reglamento.value.id}`
-      : '';
+    const url = 'save-reglamento';
+    const method = 'post';
 
-    const method = reglamento.value.id ? 'put' : 'post';
-
-    await axios({
-      method,
-      url,
-      data: formData,
-      headers: {
+    await axios({ method, url, data: formData, headers: {
         'Content-Type': 'multipart/form-data'
       }
     });
@@ -342,6 +327,7 @@ const submitForm = async () => {
     message.success('Reglamento guardado exitosamente!');
     modalVisible.value = false;
     getReglamentos();
+    resetForm();
   } catch (error) {
     console.error('Error saving regulation:', error);
     notification.error({
@@ -353,7 +339,7 @@ const submitForm = async () => {
 
 const deleteItem = async (item) => {
   try {
-    await axios.delete(`/api/regulations/${item.id}`);
+    await axios.get(`eliminar-reglamento/${item.id}`);
     message.success('Reglamento eliminado exitosamente!');
     getReglamentos();
   } catch (error) {
