@@ -10,10 +10,10 @@ use Inertia\Inertia;
 
 class ProcesoController extends Controller
 {
-  
+
   public function index()
   {
-      return Inertia::render('Procesos/procesos');        
+      return Inertia::render('Procesos/procesos');
   }
 
   public function getProcesos(Request $request)
@@ -23,15 +23,17 @@ class ProcesoController extends Controller
       'procesos.id', 'procesos.nombre','procesos.estado','procesos.anio',
       'procesos.url', 'procesos.fecha_examen', 'procesos.ciclo', 'procesos.slug',
       'procesos.nro_convocatoria as convocatoria', 'procesos.fec_inicio', 'procesos.fec_fin',
-      'procesos.fecha_examen as fec_examen', 'procesos.observaciones as observacion', 
+      'procesos.fecha_examen as fec_examen', 'procesos.observaciones as observacion',
       'filial.id as id_sede', 'filial.nombre as sede',
       'tipo_proceso.id as id_tipo', 'tipo_proceso.nombre as tipo',
+      'codigo_proceso','fec_1','fec_2','id_reglamento',
       'modalidad_proceso.id as id_modalidad', 'modalidad_proceso.nombre as modalidad'
     )
       ->join ('filial', 'filial.id', '=','procesos.id_sede_filial')
       ->join ('tipo_proceso', 'tipo_proceso.id', '=','procesos.id_tipo_proceso')
       ->join ('modalidad_proceso', 'modalidad_proceso.id', '=','procesos.id_modalidad_proceso')
       ->where($query_where)
+      ->where('nivel',1)
       ->where(function ($query) use ($request) {
           return $query
               ->orWhere('procesos.nombre', 'LIKE', '%' . $request->term . '%')
@@ -39,7 +41,7 @@ class ProcesoController extends Controller
               ->orWhere('modalidad_proceso.nombre', 'LIKE', '%' . $request->term . '%')
               ->orWhere('procesos.anio', 'LIKE', '%' . $request->term . '%');
       })->orderBy('procesos.id', 'DESC')
-      ->paginate(10);
+      ->paginate(50);
 
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
@@ -49,8 +51,13 @@ class ProcesoController extends Controller
   public function saveProceso(Request $request ) {
     $fec_inicio = null;
     $fec_fin = null;
+    $dia1 = null;
+    $dia2 = null;
+
     if ($request->has('f_inicio')) { $fec_inicio = substr($request->f_inicio, 0, 10); }
     if ($request->has('f_fin')) { $fec_fin = substr($request->f_fin, 0, 10); }
+    if ($request->has('dia_1')) { $dia1 = substr($request->dia_1, 0, 10); }
+    if ($request->has('dia_2')) { $dia2 = substr($request->dia_2, 0, 10); }
 
     $proceso = null;
     if (!$request->id) {
@@ -59,16 +66,23 @@ class ProcesoController extends Controller
             'slug' => $request->slug,
             'id_tipo_proceso' => $request->tipo,
             'ciclo' => $request->ciclo,
+            'ciclo_oti' => str_pad($request->ciclo, 2, '0', STR_PAD_LEFT),
             'id_modalidad_proceso' => $request->modalidad,
             'anio' => $request->anio,
             'estado' => $request->estado,
             'fecha_examen' => $request->fec_examen,
             'fec_inicio' => $fec_inicio,
             'fec_fin' => $fec_fin,
+            'fec_1' => $dia1,
+            'fec_2' => $dia2,
             'id_sede_filial' => $request->sede,
             'nro_convocatoria' => $request->convocatoria,
+            'id_modalidad_estudio' => 1,
             'observaciones' => $request->observacion,
             'url' => $request->url,
+            'nivel' => 1,
+            'codigo_proceso' => $request->cod_proceso,
+            'id_reglamento' => $request->id_reglamento,
             'id_usuario' => auth()->id()
         ]);
         $this->response['titulo'] = 'REGISTRO NUEVO';
@@ -121,28 +135,28 @@ class ProcesoController extends Controller
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
-  
+
   }
 
 
-  public function getModalidades(){ 
+  public function getModalidades(){
     $res = DB::select('SELECT id as value, nombre as label FROM modalidad_proceso');
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
   }
 
-  
+
   public function getFormulario($nombreProceso)
   {
     $proceso = Proceso::where('slug', $nombreProceso)->where('estado',1)->first();
-    if($proceso){ 
+    if($proceso){
       if( $proceso->nivel == 1 ){
-        return Inertia::render('Publico/preinscripcioncepre', ['procceso_seleccionado' => $proceso]); 
+        return Inertia::render('Publico/preinscripcioncepre', ['procceso_seleccionado' => $proceso]);
       }else{
         if( $proceso->nivel == 2 ){
-          return Inertia::render('Segundas/Publico/preinscripcion', ['procceso_seleccionado' => $proceso]); 
-        } 
+          return Inertia::render('Segundas/Publico/preinscripcion', ['procceso_seleccionado' => $proceso]);
+        }
       }
 
     } else {
@@ -154,8 +168,8 @@ class ProcesoController extends Controller
   {
     $admin = User::where('estado', 1)->where('id', auth()->id())->where('id_rol', 1)->exists() ? 1 : 0;
     $proceso = Proceso::where('slug', $nombreProceso)->first();
-    if($proceso){ 
-      return Inertia::render('Publico/Resultados/index', ['proceso_seleccionado' => $proceso, 'admin' => $admin]); 
+    if($proceso){
+      return Inertia::render('Publico/Resultados/index', ['proceso_seleccionado' => $proceso, 'admin' => $admin]);
     }
     abort(404);
   }
@@ -165,7 +179,7 @@ class ProcesoController extends Controller
     $res = Proceso::where('estado', 1)
     ->select('id as value', 'nombre as label')
     ->get();
-    
+
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);
@@ -175,7 +189,7 @@ class ProcesoController extends Controller
     $res = Proceso::where('estado', 1)
     ->select('id as value', 'nombre as label','anio', DB::raw("IF(ciclo = 1, 'I', 'II') as ciclo"))
     ->get();
-    
+
     $this->response['estado'] = true;
     $this->response['datos'] = $res;
     return response()->json($this->response, 200);

@@ -13,15 +13,15 @@ class ProgramaController extends Controller
     public function index()
     {
         return Inertia::render('Programas/programas');
-        
-    }  
+
+    }
 
 
 
     public function getProgramas(Request $request)
     {
       $query_where = [];
-     
+
      // array_push($query_where, ['filial.cod_dep', '=', 'provincia.cod_dep']);
 
       $res = Programa::select(
@@ -46,7 +46,7 @@ class ProgramaController extends Controller
                 ->orWhere('programa.area', 'LIKE', '%' . $request->term . '%');
         })->orderBy('programa.id', 'DESC')
         ->paginate(50);
-  
+
       $this->response['estado'] = true;
       $this->response['datos'] = $res;
       return response()->json($this->response, 200);
@@ -124,6 +124,6 @@ class ProgramaController extends Controller
   }
 
 
-  
+
 
 }

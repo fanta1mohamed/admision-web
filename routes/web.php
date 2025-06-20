@@ -48,7 +48,7 @@ use App\Http\Controllers\DniController;
 use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\CarrerasPreviasController;
 use App\Http\Controllers\ExcelController;
-
+use App\Http\Controllers\ReglamentoController;
 
 use App\Http\Controllers\SyncController;
 use Inertia\Inertia;
@@ -60,7 +60,7 @@ Route::middleware('auth')->get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-    ]);    
+    ]);
 });
 
 Route::get('/dashboard', function () {
@@ -282,6 +282,13 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
 
     Route::get('/get-select-programas-proceso-admin',[ProgramaProcesoController::class, 'getSelectProgramasProcesoAdmin']);
 
+    //REGLAMENTOS
+    Route::get('/reglamentos', fn () => Inertia::render('Admin/Reglamento/index'))->name('admin-reglamento');
+    Route::get('/get-select-reglamentos', [ReglamentoController::class, 'getSelectReglamentos']);
+    Route::post('/get-reglamentos', [ReglamentoController::class, 'getReglamentos']);
+    Route::post('/save-reglamento', [ReglamentoController::class, 'saveReglamento']);
+
+
 });
 
 Route::post('/get-participantes-vocacional', [vocacionalController::class, 'participantesVocacional']);
@@ -296,7 +303,7 @@ Route::prefix('revisor')->middleware('auth','revisor')->group(function () {
     Route::get('/comprobantes-xd', fn () => Inertia::render('Revisor/components/voucher'));
 
     Route::post('/get-pagos-banco', [PagoBancoController::class, '  ']);
-    
+
 
     Route::post('/get-certificados-revision', [DocumentoController::class, 'getCertificadosRevision']);
     Route::post('/cambiar-estado', [DocumentoController::class, 'cambiarEstado']);

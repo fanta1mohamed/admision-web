@@ -9,8 +9,8 @@
     >
       <div class="sider-header mt-3">
         <div>
-          <img 
-            src="../../assets/imagenes/logotiny.png" 
+          <img
+            src="../../assets/imagenes/logotiny.png"
             class="sider-logo"
             alt="Logo"
           />
@@ -24,8 +24,8 @@
       <div class="h-[calc(100vh-80px)] overflow-y-scroll custom-scrollbar">
         <div class="mb-4">
           <div class="flex justify-center">
-            <img 
-              src="../../assets/imagenes/usuario.png" 
+            <img
+              src="../../assets/imagenes/usuario.png"
               style="width: 150px;"
             />
           </div>
@@ -60,8 +60,8 @@
           class="custom-menu"
         >
           <template v-for="item in menuItems" :key="item.key">
-            <a-menu-item 
-              v-if="!item.children" 
+            <a-menu-item
+              v-if="!item.children"
               :key="item"
               :class="{ 'menu-item-active': route().current(item.route) }"
             >
@@ -70,9 +70,9 @@
                 <span class="menu-text">{{ item.label }}</span>
               </Link>
             </a-menu-item>
-            
-            <a-sub-menu 
-              v-else 
+
+            <a-sub-menu
+              v-else
               :key="item.key"
               :title="item.label"
               class="submenu"
@@ -80,7 +80,7 @@
               <template #icon>
                 <component :is="item.icon" />
               </template>
-              
+
               <a-menu-item
                 v-for="child in item.children"
                 :key="child.key"
@@ -99,8 +99,8 @@
 
     <!-- Contenido principal -->
     <a-layout>
-      <a-layout-header class="main-header" style="background: white;">
-        <menu-fold-outlined 
+      <a-layout-header class="main-header" style="background: white; margin:0px -30px;">
+        <menu-fold-outlined
           class="collapse-trigger"
           @click="collapsed = !collapsed"
         />
@@ -120,7 +120,7 @@
 import { ref, watch } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import Header from '@/Layouts/Header.vue';
-import { 
+import {
   AppstoreFilled,
   SettingFilled,
   MenuFoldOutlined
@@ -272,6 +272,13 @@ const menuItems = [
         label: 'Pagos',
         route: 'programa-index'
       },
+      {
+        key: 'reglamentos',
+        icon: SettingFilled,
+        label: 'Reglamentos',
+        route: 'admin-reglamento'
+      },
+
     ]
   },
   {
@@ -324,7 +331,7 @@ const menuItems = [
       },
     ]
   },
-  
+
   {
     key: 'gestion',
     icon: SettingFilled,
@@ -403,7 +410,7 @@ const menuItems = [
         label: 'Ratio',
         route: 'usuarios-index'
       },
-      
+
       {
         key: 'resumenobservados',
         icon: SettingFilled,
@@ -438,7 +445,7 @@ const menuItems = [
       },
     ]
   }
-  
+
 ];
 
 const findParentKey = (routeName) => {
@@ -457,7 +464,7 @@ watch(() => router.page.url, () => {
     .find(item => route().current(item.route));
 
   selectedKeys.value = activeItem ? [activeItem.key] : [];
-  
+
   const parentKey = findParentKey(router.page.url);
   openKeys.value = parentKey ? [parentKey] : [];
 }, { immediate: true });
@@ -534,7 +541,6 @@ watch(() => router.page.url, () => {
   background:yellow;
   display: flex;
   align-items: center;
-  padding: 10 0px;  
   border-bottom: 1px solid #d9d9d9;
 }
 

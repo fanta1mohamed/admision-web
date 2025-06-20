@@ -8,64 +8,61 @@
     <a-button type="primary" style="background: #476175; border: none; border-radius: 5px;" @click="showModalProceso">Nuevo</a-button>
   </div>
   <div class="flex justify-between" style="position: relative;" >
-    <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 30px;"/>
-  <div class="mr-2" style="position: absolute; left: 8px; top: 3px;"><search-outlined /></div>
+    <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 10px;">
+      <template #prefix>
+        <search-outlined />
+      </template>
+    </a-input>
   </div>
 </div>
 
-<a-table 
-  :columns="columnsProcesos" 
+<a-table
+  :columns="columnsProcesos"
   :data-source="procesos"
   :pagination="{ pageSize: 10}"
   size="small"
-  > 
+  >
   <template #bodyCell="{ column, index, record }">
 
-  <template v-if="column.dataIndex === 'modalidad'">
-    <div class="flex" style="justify-content: center;">
-      <a-tag color="cyan" v-if="procesos[index].modalidad === 'CEPREUNA'" >CEPREUNA</a-tag>
-      <a-tag color="orange" v-if="procesos[index].modalidad === 'GENERAL'" >GENERAL</a-tag>
-      <a-tag color="pink" v-if="procesos[index].modalidad === 'EXTRAORDINARIO'"> EXTRAORDINARIO</a-tag>
-    </div>
-  </template>
-
-  <template v-if="column.dataIndex === 'estado'">
-    <div class="flex" style="justify-content: center;">
-      <div v-if="1 == procesos[index].estado">
-          <a-tag color="green">VIGENTE</a-tag>
-      </div>  
-      <div v-if="procesos[index].estado == 0">
-          <a-tag color="red">NO VIGENTE</a-tag>
+    <template v-if="column.dataIndex === 'modalidad'">
+      <div class="flex" style="justify-content: center;">
+        <a-tag color="cyan" v-if="procesos[index].modalidad === 'CEPREUNA'" >CEPREUNA</a-tag>
+        <a-tag color="orange" v-if="procesos[index].modalidad === 'GENERAL'" >GENERAL</a-tag>
+        <a-tag color="pink" v-if="procesos[index].modalidad === 'EXTRAORDINARIO'"> EXTRAORDINARIO</a-tag>
       </div>
-    </div>
-  </template>
+    </template>
+
+    <template v-if="column.dataIndex === 'estado'">
+      <div class="flex" style="justify-content: center;">
+        <div v-if="1 == procesos[index].estado">
+            <a-tag color="green">VIGENTE</a-tag>
+        </div>
+        <div v-if="procesos[index].estado == 0">
+            <a-tag color="red">NO VIGENTE</a-tag>
+        </div>
+      </div>
+    </template>
 
     <template v-if="column.dataIndex === 'acciones'">
-      <div class="flex" style="justify-content: space-between;">
-        <a-button type="" @click="irLink(record)" style="color:blue;" size="small">
-          <template #icon><link-outlined/></template>
-        </a-button> 
-        <a-button  @click="abrirEditar(record)" style="color:#476175;" size="small">
-          <template #icon><form-outlined/></template>
+      <div style="display: flex; gap: 2px;">
+        <a-button @click="irLink(record)" size="small" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: green; display: flex; align-items: center;">
+          <link-outlined />
         </a-button>
-        <a-button type="" @click="eliminar(record)" style="color:crimson;" shape="" size="small">
-          <template #icon><delete-outlined/></template>
+        <a-button @click="abrirEditar(record)" size="small" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: #1890ff; display: flex; align-items: center;">
+          <form-outlined />
+        </a-button>
+        <a-button @click="eliminar(record)" size="small" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: #ff4d4f; display: flex; align-items: center;">
+          <delete-outlined />
         </a-button>
       </div>
     </template>
   </template>
-</a-table> 
+</a-table>
 
 </div>
 
 
-<a-modal v-model:visible="visible" :closable="false" style="margin-top: -50px" width="800px">
-  <div style="background: #476175; height: 36px; margin-left:-24px; margin-right:-24px; margin-top:-24px; margin-bottom: 28px;">
-        <div class="flex justify-between ml-3 mr-1" style="height:36px; align-items: center;">
-            <div><span style="font-weight: bold; color:white; font-size:1rem;">Nuevo Proceso</span></div>
-            <div><span ><a-button @click="cerrarmodal()" style="background:none; border:none; color:white;">X</a-button></span></div>
-        </div>
-  </div>
+<a-modal v-model:open="visible" centered :title="proceso.id?'Editar proceso':'Nuevo proceso'" width="900px">
 
   <a-form
     ref="formProceso"
@@ -77,8 +74,7 @@
     @validate="handleValidate"
     @finishFailed="handleFinishFailed"
   >
-
-  <div class="flex justify-end" style="margin-top:-15px; margin-bottom: 0px;">
+  <div class="flex justify-end" style="margin-top:15px; margin-bottom: 0px;">
     <div class="mr-4">
       <a-form-item label="Estado" name="estado">
         <a-switch v-model:checked="proceso.estado"/>
@@ -104,25 +100,43 @@
       >
         <div>
           <label for="">Nombre (<span style="color:red">*</span>)</label>
-          <a-input type="text" style="width: 100%;" v-model:value="proceso.nombre" autocomplete="off" />
+          <a-input type="text" style="width: 100%;" v-model:value="proceso.nombre" autocomplete="off">
+            <template #prefix> <se-outlined/></template>
+          </a-input>
         </div>
       </a-form-item>
     </a-col>
 
-    <a-col :span="24" :md="12" :lg="8" :xl="8" :xxl="8">
+    <a-col :span="24" :md="12" :lg="6" :xl="4" :xxl="4">
       <a-form-item name="convocatoria">
         <div>
           <label for="">N° convocatoria</label>
-          <a-input type="text" style="width: 100%;" v-model:value="proceso.convocatoria" autocomplete="off" />
+          <a-input type="text" style="width: 100%;" v-model:value="proceso.convocatoria" autocomplete="off">
+            <template #prefix> <se-outlined/></template>
+          </a-input>
         </div>
       </a-form-item>
     </a-col>
 
-    <a-col :span="24" :md="12" :lg="16" :xl="16" :xxl="16">
+    <a-col :span="24" :md="12" :lg="6" :xl="4" :xxl="4">
+      <div>
+        <label for="">Año (<span style="color:red">*</span>)</label>
+        <a-form-item name="anio" :rules="[{ required: true, message: 'campo obligatorio' }]">
+          <a-input-number style="width: 100%;"  v-model:value="proceso.anio" >
+            <template #prefix> <se-outlined/></template>
+          </a-input-number>
+        </a-form-item>
+      </div>
+    </a-col>
+
+
+    <a-col :span="24" :md="12" :lg="12" :xl="16" :xxl="16">
       <a-form-item name="slug" :rules="[{ required: true, message: 'campo obligatorio' }]">
         <div>
           <label for="">Slug(<span style="color:red">*</span>)</label>
-          <a-input type="text" style="width: 100%;" v-model:value="proceso.slug" autocomplete="off" />
+          <a-input type="text" style="width: 100%;" v-model:value="proceso.slug" autocomplete="off">
+            <template #prefix> <se-outlined/></template>
+          </a-input>
         </div>
       </a-form-item>
     </a-col>
@@ -156,7 +170,7 @@
             v-model:value="proceso.tipo"
           />
         </a-form-item>
-      
+
       </div>
     </a-col>
 
@@ -176,16 +190,7 @@
       </div>
     </a-col>
 
-    <a-col :span="24" :md="12" :lg="12" :xl="8" :xxl="24">
-      <div>
-        <label for="">Año (<span style="color:red">*</span>)</label>
-        <a-form-item name="anio" :rules="[{ required: true, message: 'campo obligatorio' }]">
-          <a-input-number style="width: 100%;"  v-model:value="proceso.anio" />
-        </a-form-item>      
-      </div>
-    </a-col>
-
-    <a-col :span="24" :md="12" :lg="12" :xl="8" :xxl="24">
+    <a-col :span="24" :md="12" :lg="8" :xl="8" :xxl="24">
       <div>
         <label for=""> Fec. inicio</label>
         <a-form-item name="estado">
@@ -194,9 +199,9 @@
       </div>
     </a-col>
 
-    <a-col :span="24" :md="12" :lg="12" :xl="8" :xxl="24">
+    <a-col :span="24" :md="12" :lg="8" :xl="8" :xxl="24">
       <div>
-        <label for=""> Fec. fin</label>
+        <label for="">Fec. fin</label>
         <a-form-item name="estado">
           <a-date-picker v-model:value="proceso.f_fin" format="DD/MM/YYYY" placeholder="fecha fin" style="width: 100%;"/>
         </a-form-item>
@@ -207,19 +212,70 @@
       <a-form-item name="fec_examen" :rules="[{ required: true, message: 'campo obligatorio' }]">
         <div>
           <label for="">Fec. examen</label>
-          <a-input type="text" style="width: 100%;" v-model:value="proceso.fec_examen" autocomplete="off" />
+          <a-input type="text" style="width: 100%;" v-model:value="proceso.fec_examen" autocomplete="off">
+            <template #prefix> <se-outlined/></template>
+          </a-input>
         </div>
       </a-form-item>
     </a-col>
 
-    <a-col :span="24" :md="24" :lg="16" :xl="16" :xxl="16">
+    <a-col :span="24" :md="12" :lg="16" :xl="16" :xxl="16">
       <a-form-item name="url">
         <div>
           <label for="">URL</label>
-          <a-input v-if="proceso.slug != null" type="text" style="width: 100%;" :value="baseUrl+'/'+proceso.slug+'/preinscripcion'" autocomplete="off" disabled />
-          <a-input v-else type="text" style="width: 100%;" :value="baseUrl+'/'+proceso.slug+'/preinscripcion'" autocomplete="off" disabled />
+          <a-input v-if="proceso.slug != null" type="text" style="width: 100%;" :value="baseUrl+'/'+proceso.slug+'/preinscripcion'" autocomplete="off" disabled>
+            <template #prefix> <se-outlined/></template>
+          </a-input>
+          <a-input v-else type="text" style="width: 100%;" :value="baseUrl+'/'+proceso.slug+'/preinscripcion'" autocomplete="off" disabled>
+            <template #prefix> <se-outlined/></template>
+          </a-input>
         </div>
       </a-form-item>
+    </a-col>
+
+    <a-col :span="24" :md="12" :lg="8" :xl="8" :xxl="8">
+      <a-form-item name="cod_proceso" :rules="[{ required: true, message: 'campo obligatorio' }]">
+        <div>
+          <label for="">Cod proceso</label>
+          <a-input v-model:value="proceso.cod_proceso" type="text" style="width: 100%;"  autocomplete="off">
+            <template #prefix> <se-outlined/></template>
+          </a-input>
+        </div>
+      </a-form-item>
+    </a-col>
+
+    <a-col :span="24" :md="24" :lg="24" :xl="12" :xxl="12">
+      <a-form-item name="id_reglamento">
+        <div>
+          <label for="">Reglamento</label>
+          <a-select
+            ref="Tipo"
+            style="width: 100%"
+            :options="reglamentos"
+            @focus="focus"
+            @change="handleChange"
+            v-model:value="proceso.id_reglamento"
+          />
+        </div>
+      </a-form-item>
+    </a-col>
+
+    <a-col :span="24" :md="12" :lg="12" :xl="6" :xxl="6">
+      <div>
+        <label for="">Día 1</label>
+        <a-form-item name="dia_1" :rules="[{ required: true, message: 'campo obligatorio' }]">
+          <a-date-picker v-model:value="proceso.dia_1" format="DD/MM/YYYY" placeholder="Día 1" style="width: 100%;"/>
+        </a-form-item>
+      </div>
+    </a-col>
+
+    <a-col :span="24" :md="12" :lg="12" :xl="6" :xxl="6">
+      <div>
+        <label for="">Día 2</label>
+        <a-form-item name="dia_2" >
+          <a-date-picker v-model:value="proceso.dia_2" format="DD/MM/YYYY" placeholder="Día 2" style="width: 100%;"/>
+        </a-form-item>
+      </div>
     </a-col>
 
     <a-col :span="24" :md="24" :lg="24" :xl="24" :xxl="24">
@@ -242,8 +298,6 @@
 </a-modal>
 </AuthenticatedLayout>
 
-
-
 </template>
 
 <script setup>
@@ -263,6 +317,7 @@ const procesos= ref([]);
 const visible = ref(false);
 const modalidades = ref([])
 const formProceso = ref(null);
+const reglamentos = ref([]);
 const proceso = reactive({
   id:null,
   nombre:"",
@@ -277,7 +332,11 @@ const proceso = reactive({
   estado: true,
   f_inicio : '',
   f_fin:'',
+  dia_1:'',
+  dia_2:'',
   url:"",
+  cod_proceso:"",
+  id_reglamento: null,
   observacion:""
 })
 
@@ -290,10 +349,9 @@ watch(buscar, ( newValue, oldValue ) => {
   clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       getProcesos();
-    }, 500);  
+    }, 500);
 
 })
-
 
 const abrirEditar = (item) => {
   console.log(item);
@@ -309,7 +367,11 @@ const abrirEditar = (item) => {
   proceso.fec_examen = item.fecha_examen;
   if(item.fec_inicio){ proceso.f_inicio = dayjs(item.fec_inicio) }
   if(item.fec_fin){ proceso.f_fin = dayjs(item.fec_fin) }
+  if(item.fec_1){ proceso.dia_1 = dayjs(item.fec_1) }
+  if(item.fec_2){ proceso.dia_2 = dayjs(item.fec_2) }
   proceso.tipo = item.id_tipo;
+  proceso.id_reglamento = item.id_reglamento;
+  proceso.cod_proceso = item.codigo_proceso;
   proceso.observacion = item.observacion;
   proceso.modalidad = item.id_modalidad;
   proceso.anio = item.anio;
@@ -349,6 +411,12 @@ const getModalidades =  async (term = "", page = 1) => {
   //proceso.value.modalidad = res.data.datos[0].value;
 }
 
+const getReglamentos =  async (term = "", page = 1) => {
+  let res = await axios.get("get-select-reglamentos");
+  reglamentos.value = res.data.datos;
+}
+
+
 const guardar = async ()  => {
   const values = await formProceso.value.validateFields();
   axios.post("save-proceso", proceso).then((result) => {
@@ -372,7 +440,7 @@ const columnsProcesos = [
   { title: 'Modalidad', dataIndex: 'modalidad', align:'center', width:'120px' },
   { title: 'Año', dataIndex: 'anio', width:'40px'},
   { title: 'Estado', dataIndex: 'estado', align:'center', width:'60px' },
-  { title: 'Acciones', dataIndex: 'acciones', width:'50px'},
+  { title: 'Acciones', dataIndex: 'acciones', align:'center', width:'50px'},
 ];
 
 const notificacion = (type, titulo, mensaje) => {
@@ -405,4 +473,5 @@ getProcesos()
 getSedes()
 getTipos()
 getModalidades()
+getReglamentos()
 </script>

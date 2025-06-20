@@ -14,8 +14,8 @@
     </row>
 
     <div style="">
-        <a-table 
-            :columns="columnsProgramas" 
+        <a-table
+            :columns="columnsProgramas"
             :data-source="programas"
             :pagination="false"
             size="small"
@@ -23,14 +23,14 @@
             >
             <template #bodyCell="{ column, index, record }">
                 <template v-if="column.dataIndex === 'codigo'">
-                    <div><span style="font-size: .9rem">{{ record.codigo }}</span></div>                
+                    <div><span style="font-size: .9rem">{{ record.codigo }}</span></div>
                 </template>
 
                 <template v-if="column.dataIndex === 'nombre'">
-                    <div><span style="font-size: .9rem;">{{ record.nombre }}</span></div>                
+                    <div><span style="font-size: .9rem;">{{ record.nombre }}</span></div>
                 </template>
                 <template v-if="column.dataIndex === 'facultad'">
-                    <div><span style="font-size: .9rem;">{{ record.facultad }}</span></div>                
+                    <div><span style="font-size: .9rem;">{{ record.facultad }}</span></div>
                 </template>
                 <template v-if="column.dataIndex === 'area'">
                     <div class="flex" style="justify-content: center;">
@@ -39,7 +39,7 @@
                         <a-tag style="font-size: .8rem;" color="blue" v-if=" programas[index].area == 'INGENIERÍAS'">{{ programas[index].area }}</a-tag>
                     </div>
                 </template>
-                
+
                 <template v-if="column.dataIndex === 'estado'">
                     <div class="flex" style="justify-content: center;">
                         <div v-if="1 == programas[index].estado">
@@ -63,16 +63,16 @@
                     </a-button>
                 </template>
             </template>
-        </a-table> 
+        </a-table>
     </div>
     <div class="flex" style="justify-content: flex-end;">
         <a-pagination v-model:current="pagina" simple page-size="50" :total="totalpaginas" />
     </div>
 
     </div>
-    
+
     </AuthenticatedLayout>
-    
+
     <div>
         <a-modal v-model:visible="visible" :title="programa.id == null?'Nuevo Programa':'Editar Programa'" style="margin-top: -40px;">
 
@@ -92,7 +92,7 @@
             <a-form-item has-feedback label="Nombre" name="nombre">
                 <a-input type="text" v-model:value="programa.nombre" autocomplete="off" />
             </a-form-item>
-        
+
             <a-form-item has-feedback label="Facultad" name="facultad">
                 <a-select
                     :options="facultades"
@@ -123,30 +123,30 @@
                     </a-select-option>
                 </a-select>
             </a-form-item>
-            
+
             <a-form-item has-feedback label="Vigente" name="estado">
                 <a-switch v-model:checked="programa.estado"/>
             </a-form-item>
-    
+
             </a-form>
-    
+
         <template #footer>
             <a-button style="margin-left: 10px;" @click="resetForm">Cancelar</a-button>
             <a-button type="primary" @click="guardar()">Guardar</a-button>
         </template>
         </a-modal>
     </div>
-    
+
     </template>
-        
-    <script setup>
-    import { Head } from '@inertiajs/vue3';
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-    import { watch, computed, ref, unref } from 'vue';
-    import { EyeOutlined, FormOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue';
-    import { notification } from 'ant-design-vue';
-    import axios from 'axios';
-    
+
+<script setup>
+import { Head } from '@inertiajs/vue3';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { watch, computed, ref, unref } from 'vue';
+import { EyeOutlined, FormOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons-vue';
+import { notification } from 'ant-design-vue';
+import axios from 'axios';
+
     const buscar = ref("");
     const pagina = ref(1)
     const totalpaginas = ref(null)
@@ -166,20 +166,20 @@
         estado:true,
         area:"BIOMEDICAS"
     })
-    
+
     const showModalPrograma = () => {
         visible.value = true;
     };
-    
+
     watch(buscar, ( newValue, oldValue ) => {
         getProgramas()
     })
-    
-    
+
+
     watch(buscarDep, ( newValue, oldValue ) => {
         getDepartamentos()
     })
-    
+
     watch(visible, ( newValue, oldValue ) => {
     if(visible.value == false && programa.value.id != null ){
         programa.value.id = null;
@@ -192,9 +192,9 @@
     watch(pagina, ( newValue, oldValue ) => {
         getProgramas()
     })
-    
+
     const abrirEditar = (item) => {
-    
+
         visible.value = true;
         programa.value.id = item.id;
         programa.value.codigo = item.codigo;
@@ -207,14 +207,14 @@
         programa.value.area = item.area
     }
 
-        
+
     const getFacultades =  async ( ) => {
         let res = await axios.get(
         "get-facultades");
         facultades.value = res.data.datos;
     }
-    
-    
+
+
     const getProgramas =  async (term = "") => {
         let res = await axios.post(
         "programas/get-programas?page=" + pagina.value,
@@ -223,8 +223,8 @@
         programas.value = res.data.datos.data;
         totalpaginas.value = res.data.datos.total;
     }
-    
-    
+
+
     const guardar = () => {
         let post = {
         id: programa.value.id,
@@ -245,14 +245,14 @@
         programa.value.nombre = ""
         });
     }
-    
+
     const eliminar = (item) => {
         axios.get("eliminar-programa/"+item.id).then((result) => {
         getProgramas();
         notificacion('warning', 'PROGRAMA ELIMINADO', result.data.mensaje );
         });
     }
-    
+
     const columnsProgramas = [
         { title: 'Cod', dataIndex: 'codigo', width:'60px', align:'center', responsive: ['md'],},
         { title: 'Nombre', dataIndex: 'nombre'},
@@ -260,10 +260,10 @@
         { title: 'Fun.', dataIndex: 'estado', align:'center', width:'60px', responsive: ['md'],},
         { title: 'Acciones', dataIndex: 'acciones', width:"90px", align:'center'},
     ];
-    
-    
-    const selectedRowKeys = ref([]); 
-    
+
+
+    const selectedRowKeys = ref([]);
+
     const onSelectChange = changableRowKeys => {
         console.log('selectedRowKeys changed: ', changableRowKeys);
         selectedRowKeys.value = changableRowKeys;
@@ -275,7 +275,7 @@
         hideDefaultSelections: true,
         };
     });
-    
+
     const notificacion = (type, titulo, mensaje) => {
         notification[type]({
         message: titulo,
@@ -286,11 +286,11 @@
     const verDetalle = (item) => {
         console.log("Detalle:", item);
     };
-    
+
     getFacultades()
     getProgramas()
 
-    
+
 </script>
 
 <style >
@@ -300,17 +300,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
 /* Estilo para un scroll específico */
@@ -327,17 +327,17 @@
 }
 
 .scroll-container::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
   border-radius: 10px;
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
   border-radius: 10px;
 }
 
 .scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
-    
+
 </style>
