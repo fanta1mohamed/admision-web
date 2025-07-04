@@ -42,7 +42,7 @@
                     @focus="focus"
                     @change="handleChange"
                   >
-                    <a-select-option value="general">General 2025-I</a-select-option>
+                    <a-select-option :value="item.value" v-for="item in procesos" :key="item" > {{ item.label }}</a-select-option>
                     <!-- <a-select-option value="cepreuna">Cepreuna 2025-I</a-select-option>
                     <a-select-option value="extraordinario">Extraordinario 2025-I</a-select-option> -->
                   </a-select>
@@ -109,7 +109,7 @@
 
       <a-layout-content class="main-content">
         <div class="content-container">
-          <slot />
+          <slot/>
         </div>
       </a-layout-content>
     </a-layout>
@@ -119,17 +119,19 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3'
 import Header from '@/Layouts/Header.vue';
 import {
   AppstoreFilled,
   SettingFilled,
   MenuFoldOutlined
 } from '@ant-design/icons-vue';
+const page = usePage()
 
 const collapsed = ref(false);
 const selectedKeys = ref([]);
 const openKeys = ref([]);
-const proceso = ref('general')
+const proceso = ref(page.props.auth.user.id_proceso);
 
 const menuItems = [
   {
@@ -458,6 +460,13 @@ const findParentKey = (routeName) => {
   return null;
 };
 
+const procesos = ref([])
+const getProcesos = async () => {  
+    let res = await axios.get(`/admin/get-select-procesos`);
+    procesos.value = res.data.datos;  
+}
+getProcesos();  
+
 watch(() => router.page.url, () => {
   const activeItem = menuItems
     .flatMap(item => item.children ? item.children : item)
@@ -468,6 +477,17 @@ watch(() => router.page.url, () => {
   const parentKey = findParentKey(router.page.url);
   openKeys.value = parentKey ? [parentKey] : [];
 }, { immediate: true });
+
+const cambiarProceso = async () => {  
+  let res = await axios.post("/admin/cambiar_proceso",{ "id_proceso": proceso.value});
+  if(res.data.estado == true){
+    location.reload();
+  }
+}
+
+watch(proceso, (newVal, oldVal) => {
+    cambiarProceso();
+})
 </script>
 
 <style>

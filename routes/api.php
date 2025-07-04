@@ -61,9 +61,11 @@ Route::post('/get-pagos-banco', [PagoBancoController::class, 'getComprobantesDNI
 Route::post('/get-pagos-banco-secuencia', [PagoBancoController::class, 'getComprobantesSecuencia']);
 
 Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProcesoHuellas']);
-
 Route::post('/helper-photos', [HuellaController::class, 'uploadFotos']);
-
 Route::post('/test-correo', [IngresoController::class, 'crearCorreo']);
+
+Route::get('/get-procesos', [ProcesoController::class, 'getProcesoResultados']);
+
+
 
 //id_proceso, id_etapa, foto 
