@@ -21,7 +21,7 @@ class ProgramaProcesoController extends Controller
             MAX(CASE WHEN pp.id_modalidad = 3 THEN "SI" ELSE "-" END) AS "3",
             MAX(CASE WHEN pp.id_modalidad = 4 THEN "SI" ELSE "-" END) AS "4",
             MAX(CASE WHEN pp.id_modalidad = 5 THEN "SI" ELSE "-" END) AS "5"
-        FROM programas_proceso pp
+        FROM vacantes pp
         JOIN programa pro ON pro.id = pp.id_programa
         WHERE pp.id_proceso = '. auth()->user()->id_proceso.'  and pp.estado = 1 GROUP BY pro.nombre_corto;');
 
@@ -33,7 +33,7 @@ class ProgramaProcesoController extends Controller
 
 
     public function getSelectModalidadesProceso($id_proceso) {
-        $res = DB::select("SELECT mo.id AS value, nombre AS label FROM (SELECT distinct id_modalidad FROM programas_proceso
+        $res = DB::select("SELECT mo.id AS value, nombre AS label FROM (SELECT distinct id_modalidad FROM vacantes
         WHERE id_proceso = $id_proceso) AS pp
         JOIN modalidad mo ON mo.id = pp.id_modalidad");
 
@@ -44,9 +44,9 @@ class ProgramaProcesoController extends Controller
 
 
     public function getSelectProgramasProceso(Request $request) {
-        $res = DB::select("SELECT programa.id AS value, programa.nombre AS label  FROM (SELECT id_programa FROM programas_proceso
-            WHERE id_modalidad = $request->id_modalidad AND id_proceso = $request->id_proceso AND programas_proceso.estado = 1) AS programas_proceso
-            JOIN programa ON programa.id = programas_proceso.id_programa");
+        $res = DB::select("SELECT programa.id AS value, programa.nombre AS label  FROM (SELECT id_programa FROM vacantes
+            WHERE id_modalidad = $request->id_modalidad AND id_proceso = $request->id_proceso AND vacantes.estado = 1) AS vacantes
+            JOIN programa ON programa.id = vacantes.id_programa");
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
