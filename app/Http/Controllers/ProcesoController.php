@@ -195,6 +195,40 @@ class ProcesoController extends Controller
     return response()->json($this->response, 200);
   }
 
+  public function cambiarProceso(Request $request) {
+      $usuario = User::find(auth()->user()->id);
+      $usuario->id_proceso = $request->id_proceso;
+      $usuario->save();
+
+      $this->response['estado'] = true;
+      return response()->json($this->response, 200);
+  }
+
+  public function getProcesoResultados(Request $request) {
+
+      $res = Proceso::select(
+      "procesos.id",
+      "procesos.nombre",
+      "procesos.slug",
+      "procesos.anio",
+      "procesos.estado",
+      "procesos.fec_fin",
+      "procesos.id_sede_filial",
+      "procesos.fecha_examen",
+      "reglamento.url",
+      "procesos.fec_1",
+      "procesos.fec_2"
+      )->orderby('procesos.id','desc')
+      ->leftjoin('reglamento','reglamento.id', 'procesos.id_reglamento')
+      ->where('nivel',1)->get();
+      $this->response['estado'] = true;
+      $this->response['res'] = $res;
+      return response()->json($this->response, 200);
+
+  }
+
+
+  
 
 
 

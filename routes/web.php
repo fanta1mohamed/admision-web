@@ -46,7 +46,6 @@ use App\Http\Controllers\ControlBiometricoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\DniController;
 use App\Http\Controllers\DocumentoSegundaController;
-use App\Http\Controllers\CarrerasPreviasController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ReglamentoController;
 
@@ -129,6 +128,8 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/procesos/get-procesos', [ProcesoController::class, 'getProcesos']);
     Route::post('/save-proceso', [ProcesoController::class, 'saveProceso']);
     Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProceso']);
+    Route::post('/cambiar_proceso', [ProcesoController::class, 'cambiarProceso']);
+    
 
     //PREINSCRIPCION
     Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
@@ -742,11 +743,5 @@ Route::post('/export-excel', [ExcelController::class, 'export'])->name('users.ex
 Route::get('/phpinfo', function () { phpinfo();});
 
 
-
-
-
 require __DIR__.'/auth.php';
 require __DIR__.'/segundas.php';
-
-
-
