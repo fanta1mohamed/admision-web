@@ -8,7 +8,7 @@
 
         <div style="margin: 0px 0px;">
             <!-- <div style="display: flex; justify-content: center; margin-top: 13px;"><span class="pre-titulo-login">SISTEMA</span></div> -->
-            <div style="margin-top: 10px;"><span class="titulo-login">ADMISIÓN</span></div>
+            <!-- <div style="margin-top: 10px;"><span class="titulo-login">ADMISIÓN</span></div> -->
         </div>
         <!-- <div class="imagen-dad" style="padding-top: 5px;">
             <img src="../../assets/imagenes/logoDAD.png"/>

@@ -76,7 +76,7 @@ class ApixController extends Controller {
                 'inscripciones.id_programa'
             )
             ->join('control_biometrico','control_biometrico.id_postulante','postulante.id')
-            ->join('procesos','control_biometrico.id_proceso','procesos.id') 
+            ->join('procesos','control_biometrico.id_proceso','procesos.id')
             ->join('inscripciones','inscripciones.id_postulante','postulante.id')
             // ->where('procesos.anio', '=',$anio)
             // ->where('procesos.ciclo', '=',$ciclo)
@@ -100,18 +100,18 @@ class ApixController extends Controller {
             $res = null;
 
             $res = Postulante::select(
-                'postulante.nro_doc', 
-                'postulante.primer_apellido', 
+                'postulante.nro_doc',
+                'postulante.primer_apellido',
                 'postulante.segundo_apellido',
-                'postulante.nombres', 
-                DB::raw('"" as id_gestion'), 
+                'postulante.nombres',
+                DB::raw('"" as id_gestion'),
                 DB::raw('"" as id_programa'),
-                DB::raw('null as pagos')        
+                DB::raw('null as pagos')
             )
             ->where('nro_doc', '=', $dni)
             ->first();
             return $res;
-      
+
     }
 
     public function getBiometrico($codigo){
@@ -126,7 +126,7 @@ class ApixController extends Controller {
         }
 
     }
-    
+
 
     public function update(Request $request, Postulante $postulante){
         $rules = [
@@ -146,7 +146,7 @@ class ApixController extends Controller {
     }
     public function destroy(Postulante $postulante){
 
-        
+
     }
 
 
