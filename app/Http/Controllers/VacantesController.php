@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Programa;
+use App\Models\Proceso;
 use App\Models\Vacante;
 use DB;
 
@@ -12,6 +13,8 @@ class VacantesController extends Controller
 {
 
     public function getVacantes( Request $request) {
+
+        $proceso = Proceso::find(auth()->user()->id_proceso);
         $query_where = [];
         // array_push($query_where, ['filial.cod_dep', '=', 'provincia.cod_dep']);
 
@@ -23,19 +26,22 @@ class VacantesController extends Controller
             'vacantes.vacantes',
             'vacantes.estado'
         )
-        ->leftJoin('vacantes', function($join) {
+        ->leftJoin('vacantes', function($join) use($proceso, $request) {
             $join->on('vacantes.id_programa', '=', 'programa.id')
-                ->where('vacantes.id_proceso', auth()->user()->id_proceso)
-                ->where('vacantes.id_modalidad', 1);
+                ->where('vacantes.id_proceso', auth()->user()->id_proceso )
+                ->where('vacantes.id_modalidad', $request->modalidad);
         })
         ->where($query_where)
+        ->where('programa.nivel', $proceso->nivel)
         ->where(function ($query) use ($request) {
             return $query
                 ->orWhere('programa.codigo_sunedu', 'LIKE', '%' . $request->term . '%')
                 ->orWhere('programa.nombre', 'LIKE', '%' . $request->term . '%');
-        })->orderBy('programa.id', 'DESC')
+        })->orderBy('programa.id', 'ASC')
         ->paginate(50);
-        
+
+
+
         $this->response['estado'] = true;
         $this->response['datos'] = $res;
         return response()->json($this->response, 200);
@@ -73,7 +79,7 @@ class VacantesController extends Controller
         }
 
         return response()->json($this->response, 200);
-    
+
     }
 
     public function eliminar(Request $request ) {
@@ -85,10 +91,10 @@ class VacantesController extends Controller
         $this->response['mensaje'] = '';
         $this->response['estado'] = true;
         return response()->json($this->response, 200);
-    
+
     }
 
-    
+
     public function getSelectModalidadesProceso($id_proceso) {
         $res = DB::select("SELECT mo.id AS value, nombre AS label FROM (SELECT distinct id_modalidad FROM vacantes
         WHERE id_proceso = $id_proceso) AS pp
