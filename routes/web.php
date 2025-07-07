@@ -48,7 +48,7 @@ use App\Http\Controllers\DniController;
 use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ReglamentoController;
-use App\Http\Controllers\CarrerasPreviascontroller;
+use App\Http\Controllers\CarrerasPreviasController;
 
 
 use App\Http\Controllers\SyncController;
