@@ -565,20 +565,6 @@ class PostulanteController extends Controller
           ], 400);
       }
 
-      // $existingRecords = DB::table('carreras_previas')->where('dni_postulante', $dni)->exists();
-
-      // if ($existingRecords) {
-      //     return response()->json([
-      //         'anteriores' => [],
-      //         'loading' => false,
-      //         'modalSancionado' => false,
-      //         'confirmacion' => false,
-      //         'message' => 'No tiene carreras previas'
-      //     ]);
-      // }
-
-
-
           $payload = [ 'doc_' => $formState, 'nom_' => 'DIRECCIÓN', 'app_' => 'ADMISIÓN', 'apm_' => 'UNAP'];
 
           $response = Http::withHeaders([
@@ -586,8 +572,6 @@ class PostulanteController extends Controller
           ])->post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', $payload);
 
           $data = $response->json();
-
-
 
           $isCountable = is_array($data) || $data instanceof Countable;
 

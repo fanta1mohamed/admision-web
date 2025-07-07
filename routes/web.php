@@ -48,6 +48,8 @@ use App\Http\Controllers\DniController;
 use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ReglamentoController;
+use App\Http\Controllers\CarrerasPreviascontroller;
+
 
 use App\Http\Controllers\SyncController;
 use Inertia\Inertia;
@@ -129,7 +131,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/save-proceso', [ProcesoController::class, 'saveProceso']);
     Route::get('/get-select-procesos', [ProcesoController::class, 'getSelectProceso']);
     Route::post('/cambiar_proceso', [ProcesoController::class, 'cambiarProceso']);
-    
+
 
     //PREINSCRIPCION
     Route::post('/get-postulante-datos-personales', [PostulanteController::class, 'getPostulanteXDni']);
