@@ -512,7 +512,7 @@
                         :rules="[
                           { required: true, message: 'Ingresa un correo valido', trigger: 'change'},
                           { type: 'email', message: 'Ingresa un correo valido'},
-                          { validator: validateCorreo, trigger:'blur'} 
+                          { validator: validateCorreo, trigger:'blur'}
                         ]">
                       <div><label>Correo (<span style="color:red;">*</span>)</label></div>
                       <a-input type="email" @input="correoInput"  v-model:value="datospersonales.correo" />
@@ -1300,10 +1300,11 @@
           </div>
       </div>
       <div v-else>
-        <div v-if="anteriores.length >= 1" style="width: 100%; max-width: 1000px; margin-top:20px;">
+        <div v-if="anteriores.length >= 2" style="width: 100%; max-width: 1000px; margin-top:20px;">
           <div class="mb-4">
-            <div class="flex justify-center"><span>Se ha detectado Que Ud. Tiene ingresos previos</span></div>
-            <div class="mt-3 flex justify-left"><span>Seleccine los programas para continuar</span></div>
+            <div class="flex justify-center"><span>Estimado postulante se ha detectado Que Ud. Tiene ingresos previos</span></div>
+            <div class="mt-3 flex justify-left"><span>Se ha verificado que usted registra dos o más ingresos previos a nuestra universidad.
+De acuerdo con las normativas vigentes, no es posible continuar con una nueva postulación.</span></div>
           </div>
           <a-row style="display:flex; justify-content:center;" class="pb-0">
               <a-col :span="24">
@@ -1335,7 +1336,7 @@
               </a-col>
           </a-row>
           <div class="my-2 mb-4">
-            <a-alert message="Si no reconoce haber ingresado a ninguna de esas carreras o ya renunció presione en CANCELAR y aproximese a OTI" type="warning" show-icon />
+            <a-alert message="Si no reconoce haber ingresado a ninguna de esas carreras presione en CANCELAR y aproximese a DIRECCIÓN DE ADMISIÓN DE LA UNA PUNO" type="warning" show-icon />
           </div>
           <div class="flex justify-center" v-if="confirmacion === true">
             <div>
@@ -1352,8 +1353,8 @@
             <div class="flex justify-end mt-6 mb-3">
               <a-button @click="cancelarInscripcion()" class="mr-2" style="color: teal; border: 1px solid teal; border-radius:5px;">Cancelar</a-button>
               <div v-if="selectedItems">
-                <a-button v-if="selectedItems.length === 0" disabled style=" border: 1px solid gray; border-radius:5px;">Continuar</a-button>
-                <a-button v-if="selectedItems.length > 0" @click="registrarPrevias()" style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
+                <a-button v-if="anteriores.length >= 2" disabled style=" border: 1px solid gray; border-radius:5px;">Continuar</a-button>
+                <a-button v-if="anteriores.length == []" @click="registrarPrevias()" style="color: white; background: #476175; border: 1px solid #476175; border-radius:5px;">Continuar</a-button>
               </div>
             </div>
           </div>
