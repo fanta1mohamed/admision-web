@@ -144,10 +144,48 @@ class ApixController extends Controller {
                 'message' => 'Postulante actualizado'
             ],200);
     }
-    public function destroy(Postulante $postulante){
 
+
+    public function getPostulanteProcesos($dni)
+    {
+      $postulante = Postulante::selectRaw('
+          postulante.nro_doc,
+          postulante.nombres,
+          postulante.primer_apellido,
+          postulante.segundo_apellido,
+          JSON_ARRAYAGG(procesos.nombre) as procesos
+      ')
+      ->join('inscripciones', 'inscripciones.id_postulante', '=', 'postulante.id')
+      ->join('procesos', 'procesos.id', '=', 'inscripciones.id_proceso')
+      ->where('postulante.nro_doc', $dni)
+      ->groupBy(
+          'postulante.nro_doc',
+          'postulante.nombres',
+          'postulante.primer_apellido',
+          'postulante.segundo_apellido'
+      )
+      ->first();
+
+      if (!$postulante) {
+          return response()->json([
+              'estado' => false,
+              'user_info' => null
+          ], 200);
+      }
+
+      return response()->json([
+          'estado' => true,
+          'user_info' => [
+              'dni'      => $postulante->nro_doc,
+              'nombres'  => $postulante->nombres,
+              'paterno'  => $postulante->primer_apellido,
+              'materno'  => $postulante->segundo_apellido,
+              'procesos' => json_decode($postulante->procesos, true),
+          ]
+      ], 200);
 
     }
+
 
 
 

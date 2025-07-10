@@ -16,6 +16,7 @@ use App\Http\Controllers\IngresoController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-ingresante/{dni}/{anio}/{ciclo}', [ApixController::class, 'getIngresante']);
     Route::get('/get-postulante-pago/{dni}/{proceso}', [ApixController::class, 'getPostulantePago']);
+    Route::get('/v1/get-postulante-inscrito/{dni}', [ApixController::class, 'getPostulanteProcesos']);
     Route::post('/get-procesos', [ProcesoController::class, 'getProcesos']);
 });
 Route::middleware('throttle:50,1')->post('/v1/postulante-cepre-inscrito', [CepreController::class, 'getVerInscripcion']);
@@ -44,7 +45,7 @@ Route::get('/obtener-origin', function (Request $request) {
     $contenido = $respuesta->getBody()->getContents();
     return response()->json($contenido);
 });
- 
+
 Route::get('/obtener-origin2', function (Request $request) {
     $origin = $request->header('Origin');
     return response()->json(['origin' => $origin]);
@@ -68,4 +69,5 @@ Route::get('/get-procesos', [ProcesoController::class, 'getProcesoResultados']);
 
 
 
-//id_proceso, id_etapa, foto 
+
+//id_proceso, id_etapa, foto
