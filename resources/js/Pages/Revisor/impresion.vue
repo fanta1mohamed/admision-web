@@ -59,12 +59,12 @@
         <div class="container-principal">
           <a-col flex="1 1">
             <div class="container-postulante">
-                  <div class="mr-3 container-imagen">
+                 <div class="mr-3 container-imagen">
                     <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/'+foto_postulante"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <div v-if="postulante.postulante_foto !== null" class="mr-3 container-imagen">
-                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/'+postulante.postulante_foto"/> 
+                    <img v-if="postulante.primer_apellido !== ''" :src="postulante.postulante_foto"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
@@ -376,8 +376,8 @@ const inscripciones = ref(null)
 const postulantes = ref([]) 
 const postulante = ref({ 
   id:"",
-  nombres:"", 
-  foto_postulante:"",
+  nombres:"",
+  postulante_foto: null,
   primer_apellido:"",
   segundo_apellido:"", 
   sexo: 'Masculino', 
@@ -421,7 +421,11 @@ const getPostulantesByDni =  async () => {
       postulante.value.cod_programa = res.data.datos.cod_programa;
       postulante.value.id_programa = res.data.datos.id_programa;
       postulante.value.id_proceso = res.data.datos.id_proceso;
-      if (res.data.datos.postulante_foto) {postulante.value.postulante_foto = res.data.datos.postulante_foto;}
+      if (res.data.datos.postulante_foto != null) {
+          postulante.value.postulante_foto = baseUrl+'/'+res.data.datos.postulante_foto;
+      } else {
+          postulante.value.postulante_foto = "https://static.vecteezy.com/system/resources/previews/027/728/804/non_2x/faceless-businessman-user-profile-icon-business-leader-profile-picture-portrait-user-member-people-icon-in-flat-style-circle-button-with-avatar-photo-silhouette-free-png.png";
+      }
       postulante.value.id_modalidad = res.data.datos.id_modalidad;
       postulante.value.dni_temp = res.data.datos.dni;
       foto_postulante.value = res.data.foto;
@@ -490,6 +494,7 @@ const Inscribir =  async () => {
   postulante.value = { 
     id:"",
     nombres:"", 
+    postulante_foto: null, 
     primer_apellido:"",
     segundo_apellido:"", 
     sexo:'Masculino', 
@@ -588,6 +593,7 @@ watch(dni, ( newValue, oldValue ) => {
   clearTimeout(timeout2);
   timeout2 = setTimeout(() => { 
     if(dni.value.length == 8){
+      postulante.postulante_foto = null,       
       getPostulantes();
     }
  }, 500
