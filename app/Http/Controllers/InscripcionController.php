@@ -10,6 +10,7 @@ use App\Models\Proceso;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 
 class InscripcionController extends Controller
@@ -54,8 +55,10 @@ class InscripcionController extends Controller
             return response()->json($this->response, 200);
         }
         else {
+
             $res = DB::select("SELECT postulante.id as id_postulante, postulante.nro_doc AS dni, postulante.nombres, 
-            postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento,
+            postulante.primer_apellido, postulante.segundo_apellido, postulante.sexo, postulante.fec_nacimiento, 
+            postulante.foto_url AS postulante_foto, postulante.revisado as postulante_revisado, 
             programa.id AS id_programa, programa.nombre as programa, programa.codigo as cod_programa,
             colegios.id AS id_colegio, concat(colegios.gestion,".'" - "'.", colegios.nombre) AS colegio,
             colegios.id_gestion as id_gestion,
@@ -75,6 +78,65 @@ class InscripcionController extends Controller
             WHERE postulante.nro_doc = $dni AND postulante.estado = 1
             AND pre_inscripcion.id_proceso = ". auth()->user()->id_proceso);
             if(count($res) > 0 ){
+                $edad = Carbon::parse($res[0]->fec_nacimiento)->age;
+
+                if ($edad >= 18) {
+                    if ($res[0]->postulante_revisado == 0 || $res[0]->postulante_revisado == null) {
+                        $consulta = DB::table('consultas_reniec')
+                            ->orderBy('cant', 'asc')
+                            ->first();
+
+                        if ($consulta) {
+                            if (now()->toDateString() !== Carbon::parse($consulta->updated_at)->toDateString()) {
+                                DB::table('consultas_reniec')
+                                    ->where('id', $consulta->id)
+                                    ->update(['cant' => 0, 'updated_at' => now()]);
+                                $consulta->cant = 0;
+                            }
+
+                            DB::table('consultas_reniec')->where('id', $consulta->id)->increment('cant');
+                            $token = $consulta->token;
+
+                            $response = Http::withHeaders([
+                                'Accept' => 'application/json',
+                                'Authorization' => "Bearer $token",
+                            ])->get("https://service7.unap.edu.pe/api/v1/reniec/consulta/" . $res[0]->dni);
+
+                            if ($response->ok() && isset($response['data'])) {
+                                $data = $response['data'];
+
+                               if (!empty($data['foto'])) {
+                                    $imageData = base64_decode($data['foto']);
+                                    if ($imageData !== false) {
+                                        $imageName = $res[0]->dni . '.jpg';
+                                        $folderPath = public_path('fotos_postulante');
+
+                                        if (!file_exists($folderPath)) {
+                                            mkdir($folderPath, 0777, true);
+                                        }
+
+                                        $imagePath = $folderPath . '/' . $imageName;
+
+                                        file_put_contents($imagePath, $imageData);
+
+                                        $postulante = Postulante::find($res[0]->id_postulante);
+                                        if ($postulante) {
+                                            $postulante->primer_apellido = $data['apPrimer'];
+                                            $postulante->segundo_apellido = $data['apSegundo'];
+                                            $postulante->nombres = $data['prenombres'];
+                                            $postulante->direccion = $data['direccion'];
+                                            $postulante->revisado = 1;
+                                            $postulante->foto_url = 'fotos_postulante/' . $imageName;
+                                            $postulante->save();
+                                            $res[0]->postulante_foto = 'fotos_postulante/'.$imageName;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 $this->response['estado'] = true;
                 $this->response['foto'] = 'documentos/'.auth()->user()->id_proceso.'/inscripciones/fotos/'.$dni.'.jpg';
                 $this->response['huellaD'] = 'documentos/'.auth()->user()->id_proceso.'/inscripciones/huellas/'.$dni.'.jpg';

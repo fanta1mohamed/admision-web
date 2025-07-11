@@ -33,6 +33,8 @@ class Postulante extends Model
         'cod_orcid',
         'observaciones',
         'id_colegio',
+        'foto_url',
+        'revisado',
         'id_usuario',
         'carreras_previas'
     ];

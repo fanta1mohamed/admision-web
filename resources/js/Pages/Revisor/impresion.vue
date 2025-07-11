@@ -10,7 +10,7 @@
               <div v-if="postulante.programa"><span><strong style="font-size:1.7rem;">{{ postulante.programa }}</strong></span></div>
               <div v-else><span><strong style="font-size:1.7rem;">PROGRAMA DE ESTUDIOS</strong></span></div>
               <div v-if="postulante.modalidad" style="text-align:center; margin-top:-10px;"><span style="font-size:1rem;">( {{ postulante.modalidad }} )</span></div>
-              <div v-else style="text-align:center; margin-top:-10px;"><span style="font-size:1rem;">( MODALIDAD )</span></div>
+              <div v-else style="text-align:center; margin-top:10px;"><span style="font-size:1rem;">( MODALIDAD )</span></div>
             </div>
 
   
@@ -61,6 +61,10 @@
             <div class="container-postulante">
                   <div class="mr-3 container-imagen">
                     <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/'+foto_postulante"/> 
+                    <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
+                  </div>
+                  <div v-if="postulante.postulante_foto !== null" class="mr-3 container-imagen">
+                    <img v-if="postulante.primer_apellido !== ''" :src="baseUrl+'/'+postulante.postulante_foto"/> 
                     <img v-else :src="baseUrl+'/fotos/postulantex.jpg'"/>
                   </div>
                   <!-- {{ postulante }} -->
@@ -373,6 +377,7 @@ const postulantes = ref([])
 const postulante = ref({ 
   id:"",
   nombres:"", 
+  foto_postulante:"",
   primer_apellido:"",
   segundo_apellido:"", 
   sexo: 'Masculino', 
@@ -398,6 +403,7 @@ const getPostulantes =  async (term = "", page = 1) => {
 }
 
 const getPostulantesByDni =  async () => {
+  
   let res = await axios.get("get-postulante-dni/" + dniseleccionado.value);
     if(res.data.datos){
       postulante.value.id = res.data.datos.id_postulante;    
@@ -415,6 +421,7 @@ const getPostulantesByDni =  async () => {
       postulante.value.cod_programa = res.data.datos.cod_programa;
       postulante.value.id_programa = res.data.datos.id_programa;
       postulante.value.id_proceso = res.data.datos.id_proceso;
+      if (res.data.datos.postulante_foto) {postulante.value.postulante_foto = res.data.datos.postulante_foto;}
       postulante.value.id_modalidad = res.data.datos.id_modalidad;
       postulante.value.dni_temp = res.data.datos.dni;
       foto_postulante.value = res.data.foto;
@@ -589,6 +596,7 @@ watch(dni, ( newValue, oldValue ) => {
 
 let timeout;
 watch(dniseleccionado, ( newValue, oldValue ) => {
+
   clearTimeout(timeout);  
     timeout = setTimeout(() => {
       getPreinscripciones()
@@ -596,6 +604,7 @@ watch(dniseleccionado, ( newValue, oldValue ) => {
       getPostulantesByDni()
       getDocumentos()
       getAnteriores()
+
     }, 500);
 })
 
