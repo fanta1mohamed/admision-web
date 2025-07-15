@@ -8,9 +8,12 @@
         <div> 
             <a-button type="primary" @click="modal = true" style="border-radius: 6px; background: #476175; border: none;">Nuevo</a-button>
         </div>
-        <div class="flex justify-between" style="position: relative;" >
-            <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 30px; border-radius: 6px;"/>
-            <div class="mr-2" style="position: absolute; left: 8px; top: 3px; "><search-outlined /></div>
+        <div class="flex justify-between" style="position: relative;">
+            <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; border-radius: 6px;">
+                <template #prefix>
+                    <search-outlined />
+                </template>
+            </a-input> 
         </div>
     </div>
 
@@ -98,22 +101,24 @@
         <a-table :dataSource="colegios" size="" :columns="columns" :pagination="false">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.dataIndex === 'acciones'">
-                    <a-button type="success" class="mr-1" style="color: #476175;" size="small" disabled>
-                        <template #icon><EyeOutlined/></template>
+                    <div style="display: flex; gap: 2px;">
+                    <a-button size="small" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: green; display: flex; align-items: center;">
+                        <EyeOutlined/>
                     </a-button>
-                    <a-button class="mr-1" @click="abrirEditar(record)" style="color: blue;" size="small">
-                        <template #icon><form-outlined/></template>
+
+                    <a-button size="small" @click="abrirEditar(record)" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: #1890ff; display: flex; align-items: center;">
+                        <form-outlined/>
                     </a-button>
                     <a-popconfirm
                         title="¿Estas seguro de eliminar?"
                         @confirm="eliminar(record)"
                         disabled
                         >
-                        <a-button  size="small" style="color: crimson;" disabled>
-                            <template #icon><delete-outlined disabled/></template>
+                        <a-button size="small" @click="abrirEditar(record)" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: crimson; display: flex; align-items: center;">
+                            <delete-outlined disabled/>
                          </a-button>
                     </a-popconfirm>
-    
+                </div>
                 </template>    
             </template>
         </a-table>

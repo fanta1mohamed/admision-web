@@ -57,7 +57,7 @@ class ProgramaProcesoController extends Controller
     public function getSelectProgramasProcesoAdmin() {
 
         $res = DB::select("SELECT id AS value, nombre AS label  FROM programa 
-        WHERE id IN ( SELECT DISTINCT id_programa  FROM programas_proceso  WHERE id_proceso = ".auth()->user()->id_proceso.");");
+        WHERE id IN ( SELECT DISTINCT id_programa  FROM vacantes  WHERE id_proceso = ".auth()->user()->id_proceso.");");
 
         $this->response['estado'] = true;
         $this->response['datos'] = $res;

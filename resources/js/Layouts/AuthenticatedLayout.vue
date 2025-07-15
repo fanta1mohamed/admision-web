@@ -99,7 +99,7 @@
 
     <!-- Contenido principal -->
     <a-layout>
-      <a-layout-header class="main-header" style="background: white; margin:0px -30px;">
+      <a-layout-header class="main-header" style="background: white; padding: 0px 20px; margin:0px 0px;">
         <menu-fold-outlined
           class="collapse-trigger"
           @click="collapsed = !collapsed"
@@ -385,8 +385,8 @@ const menuItems = [
     {
         key: 'resumen',
         icon: SettingFilled,
-        label: 'Resumen',
-        route: 'usuarios-index'
+        label: 'Resumen inscripciones',
+        route: 'admin-resumenes-inscripcion'
       },
       {
         key: 'reppreinscripcion',
@@ -586,6 +586,6 @@ watch(proceso, (newVal, oldVal) => {
 }
 
 .content-container {
-  padding: 0 14px 14px 14px;
+  padding: 0px 14px 14px 14px;
 }
 </style>

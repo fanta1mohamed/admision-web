@@ -49,6 +49,7 @@ use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ReglamentoController;
 use App\Http\Controllers\CarrerasPreviasController;
+use App\Http\Controllers\ResumenInscripcionesController;
 
 
 use App\Http\Controllers\SyncController;
@@ -291,6 +292,11 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/get-reglamentos', [ReglamentoController::class, 'getReglamentos']);
     Route::post('/save-reglamento', [ReglamentoController::class, 'saveReglamento']);
     Route::get('/eliminar-reglamento/{id}', [ReglamentoController::class, 'eliminarReglamento']);
+
+    Route::get('/resumenes-inscripcion', fn () => Inertia::render('Admin/Resumenes/inscripciones'))->name('admin-resumenes-inscripcion');
+    Route::post('/resumen-inscripciones', [ResumenInscripcionesController::class, 'resumenInscripciones']);
+
+
 
 
 });

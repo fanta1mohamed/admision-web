@@ -4,12 +4,14 @@
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">    
 <!-- {{ buscar }} -->
 <row class="flex justify-between mb-4" >
-    <div class="mr-3">
-    <a-button type="primary" @click="showModalPrograma"></a-button>
+    <div class="mr-0 pt-2">
+        <span style="font-size: 1.2rem; font-weight: bold;">Postulantes</span>
+        <!-- <a-button type="primary" @click="showModalPrograma"></a-button> -->
     </div>
     <div class="flex justify-between" style="position: relative;" >
-    <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 30px;"/>
-    <div class="mr-2" style="position: absolute; left: 8px; top: 3px; "><search-outlined /></div>
+        <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px;">
+            <template #prefix> <search-outlined /> </template>
+        </a-input>
     </div>
 </row>
 
@@ -21,29 +23,32 @@
     > 
     <template #bodyCell="{ column, index, record}">
         <template v-if="column.dataIndex === 'ver_postulante'">
-            <a-button type="true" @click="goPostulante(record.nro_doc)" size="small" style="height: 30px; display: flex; align-items: center;">
+            <a-button @click="goPostulante(record.nro_doc)" size="small" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: #000080a0; display: flex; align-items: center;">
                 <EyeOutlined />
             </a-button>
         </template>
         <template v-if="column.dataIndex === 'nombres'">
             {{ record.nombres }} {{  record.primer_apellido }} {{ record.segundo_apellido }}
         </template>
-
+        
         <template v-if="column.dataIndex === 'acciones'">
-            <a-button type="primary" @click="abrirEditar(record)" size="small">
-            <template #icon><form-outlined/></template>
+
+        <div style="display: flex; gap: 2px;">
+            <a-button @click="abrirEditar(record)" size="small" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: #1890ff; display: flex; align-items: center;">
+                <form-outlined />
             </a-button>
-            <a-divider type="vertical" />
+            <link-outlined />
 
             <a-popconfirm
                 v-if="modalidades.length"
                 title="¿Estas seguro de eliminar?"
                 @confirm="eliminar(modalidades[index])"
                 >
-                <a-button type="danger" shape="" size="small">
-                    <template #icon><delete-outlined/></template>
+                <a-button @click="eliminar(record)" size="small" style="background:white; height: 28px; border: 1px solid #d9d9d9; color: #ff4d4f; display: flex; align-items: center;">
+                    <delete-outlined/>
                 </a-button>
             </a-popconfirm>
+        </div>
         </template>
     </template>
 </a-table> 
@@ -72,31 +77,41 @@
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>DNI</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese el número de documento' }]">
-                        <a-input v-model:value="form.nro_doc" />
+                        <a-input v-model:value="form.nro_doc">
+                            <template #prefix> <search- /> </template>  
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Ap. Paterno</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese el primer apellido' }]">
-                        <a-input v-model:value="form.primer_apellido" />
+                        <a-input v-model:value="form.primer_apellido">
+                            <template #prefix> <search- /> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Ap. Materno</label>
                         <a-form-item >
-                        <a-input v-model:value="form.segundo_apellido" />
+                        <a-input v-model:value="form.segundo_apellido">
+                            <template #prefix> <search-/> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Ap. Casada</label>
                         <a-form-item >
-                        <a-input v-model:value="form.apellido_casada" />
+                        <a-input v-model:value="form.apellido_casada">
+                            <template #prefix> <search/> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Nombres</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese los nombres' }]">
-                        <a-input v-model:value="form.nombres" />
+                        <a-input v-model:value="form.nombres">
+                            <template #prefix> <search-/> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
@@ -117,25 +132,33 @@
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Ubigeo Nacimiento</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese el ubigeo de nacimiento' }]">
-                        <a-input v-model:value="form.ubigeo_nacimiento" />
+                        <a-input v-model:value="form.ubigeo_nacimiento">
+                            <template #prefix> <search- /> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Ubigeo residencia</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese el ubigeo de residencia' }]">
-                        <a-input v-model:value="form.ubigeo_residencia" />
+                        <a-input v-model:value="form.ubigeo_residencia">
+                            <template #prefix> <search-/> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Celular</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese el número de celular' }]">
-                        <a-input v-model:value="form.celular" />
+                        <a-input v-model:value="form.celular">
+                            <template #prefix> <search-/> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Correo</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese el correo electrónico' }, { type: 'email', message: 'Por favor ingrese un correo electrónico válido' }]">
-                        <a-input v-model:value="form.email" />
+                        <a-input v-model:value="form.email">
+                            <template #prefix> <search-outlined /> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
@@ -150,25 +173,33 @@
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Dirección</label>
                         <a-form-item :rules="[{ required: true, message: 'Por favor ingrese la dirección' }]">
-                        <a-input v-model:value="form.direccion" />
+                        <a-input v-model:value="form.direccion">
+                            <template #prefix> <search- /> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <a-form-item>
                         <label>Año egreso</label>
-                        <a-input v-model:value="form.anio_egreso" />
+                        <a-input v-model:value="form.anio_egreso">
+                            <template #prefix> <search-/> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Observaciones</label>
                     <a-form-item>
-                        <a-input v-model:value="form.observaciones" />
+                        <a-input v-model:value="form.observaciones">
+                            <template #prefix> <search-/> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     <a-col :xs="24" :sm="12" :md="8" :lg="6">
                         <label>Colegio</label>
                         <a-form-item>
-                        <a-input v-model:value="form.id_colegio" />
+                        <a-input v-model:value="form.id_colegio">
+                            <template #prefix> <search- /> </template>
+                        </a-input>
                         </a-form-item>
                     </a-col>
                     </a-row>

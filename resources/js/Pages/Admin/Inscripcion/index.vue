@@ -10,8 +10,11 @@
 
         </div>
         <div class="flex justify-between" style="position: relative;" >
-        <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px; padding-left: 30px;"/>
-        <div class="mr-2" style="position: absolute; left: 8px; top: 3px; "><search-outlined /></div>
+        <a-input type="text" placeholder="Buscar" v-model:value="buscar" style="max-width: 300px;">
+            <template #prefix>
+                <search-outlined />
+            </template>
+       </a-input>
         </div>
     </row>
 
