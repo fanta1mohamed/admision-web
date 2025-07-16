@@ -294,7 +294,13 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::get('/eliminar-reglamento/{id}', [ReglamentoController::class, 'eliminarReglamento']);
 
     Route::get('/resumenes-inscripcion', fn () => Inertia::render('Admin/Resumenes/inscripciones'))->name('admin-resumenes-inscripcion');
+    Route::get('/resumenes-general', fn () => Inertia::render('Admin/Resumenes/resumenGeneral'))->name('admin-resumenes-general');
+    Route::get('/resumenes-inscripcion-programa-diario', fn () => Inertia::render('Admin/Resumenes/programaDiario'))->name('admin-resumenes-programa-diario');
+    Route::get('/reporte-usuarios-diario', fn () => Inertia::render('Admin/Resumenes/usuarioDiario'))->name('admin-resumenes-usuario-diario');
     Route::post('/resumen-inscripciones', [ResumenInscripcionesController::class, 'resumenInscripciones']);
+    Route::post('/reporte-programa', [ReporteController::class, 'reportePrograma'])->middleware('auth');
+    Route::post('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
+    Route::post('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
 
 
 
@@ -577,7 +583,6 @@ Route::get('/get-pagos-simulacro-online/{dni}', function ($dni) {
     }
 });
 
-
 //MODALIDADES y PROGRAMAS
 Route::get('/get-select-modalidad-proceso/{id}',[ProgramaProcesoController::class, 'getSelectModalidadesProceso']);
 Route::post('/get-select-programas-proceso',[ProgramaProcesoController::class, 'getSelectProgramasProceso']);
@@ -711,8 +716,6 @@ Route::get('/ver-pago/{concepto}', [PagoBancoController::class, 'getComprobanteC
 Route::get('{p}/resultados', [ProcesoController::class, 'getViewResultados']);
 Route::get('get-puntajes-maximos-proceso/{p}', [PuntajeController::class, 'getPunajesMaximos']);
 
-
-
 Route::get('/certificado', fn () => Inertia::render('Publico/Resultados/components/certificado'));
 Route::post('/save-certificado', [CertificadoController::class, 'save']);
 Route::post('/get-certificados-postulante', [CertificadoController::class, 'getCertificados']);
@@ -739,12 +742,9 @@ Route::post('/actualizar-verificacion', [VerificacionFotosController::class, 'up
 Route::post('/get-fotos-verificacion', [VerificacionFotosController::class, 'getFotosVerificaion']);
 Route::post('/save-filial', [VerificacionFotosController::class, 'saveFilial']);
 Route::get('/eliminar-filial/{id}', [VerificacionFotosController::class, 'deleteFilial']);
-
 Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'))->middleware('auth','simulacro');
 
-Route::get('/reporte-programa', [ReporteController::class, 'reportePrograma'])->middleware('auth');
-Route::get('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
-Route::get('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
+
 
 Route::post('/export-excel', [ExcelController::class, 'export'])->name('users.export');
 

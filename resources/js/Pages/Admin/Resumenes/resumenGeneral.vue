@@ -2,20 +2,8 @@
 <Head title="Resumen inscripciones"/>
 <AuthenticatedLayout>
 
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
-    <div class="mb-4">
-      <span style="font-size: 1.3rem;">Resumen inscripción</span>
-    </div>
-    <div class="checkbox-group-container">
-      <a-checkbox-group
-        v-model:value="selectedColumns"
-        :options="columnOptions"
-      />
-    </div>    
-  </div>
-
-<div class=" mt-4 bg-white overflow-hidden shadow-sm sm:rounded-lg p-4" style="height: calc(100vh - 230px);">
-  <row class="flex justify-end mb-4" >
+<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg pt-4 pl-4 pb-0" style="height: calc(100vh - 103px);">
+  <row class="flex justify-end mb-3">
       <div class="mr-3">
           <a-button type="primary" style="border-radius: 5px; background: #476175; border:none;" @click="descargarDetalle()">Descargar</a-button>
       </div>
@@ -24,10 +12,10 @@
   <div style="">
      <a-table
         :columns="columns"
-        :data-source="resumenes"
+        :data-source="datos"
         :pagination="false"
         size="small"
-        :scroll="{ x: 200, y: 'calc(100vh - 400px)' }"
+        :scroll="{ x: 200, y: 'calc(100vh - 236px)' }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'total'">
@@ -37,16 +25,26 @@
 
       <template #summary>
         <a-table-summary fixed="bottom">
-          <a-table-summary-row>
-            <a-table-summary-cell :col-span="columns.length - 1" style="text-align: right;">
-              <span style="font-weight: bold; color: #476175;">
-                Total Registros:
-              </span>
+          <a-table-summary-row v-if="total.length > 0 ">
+            <a-table-summary-cell :col-span="2" style="text-align: left;">
+                <span style="font-weight: bold; font-size: 1rem; color: #476175;">
+                    Totales
+                </span>
             </a-table-summary-cell>
             <a-table-summary-cell style="text-align: center;">
-              <span style="font-weight: bold; color: #476175;">
-                {{ totalGeneral }}
-              </span>
+                <span style="font-weight: bold; color: #476175;">
+                    {{ total[0].total_preinscripciones }}
+                </span>
+            </a-table-summary-cell>
+            <a-table-summary-cell style="text-align: center;">
+                <span style="font-weight: bold; color: #476175;">
+                    {{ total[0].total_inscripciones }}
+                </span>
+            </a-table-summary-cell>
+            <a-table-summary-cell style="text-align: center;">
+                <span style="font-weight: bold; color: #476175;">
+                    {{ total[0].total_diferencia }}
+                </span>
             </a-table-summary-cell>
           </a-table-summary-row>
         </a-table-summary>
@@ -66,66 +64,31 @@
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { watch, computed, ref } from 'vue';
-import { SearchOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import axios from 'axios';
 
 const buscar = ref("");
 const pagina = ref(1)
-const totalpaginas = ref(0)
-const resumenes = ref([]);
-const selectedColumns = ref(['area']);
-const totalGeneral = computed(() => {
-  return resumenes.value.reduce((acc, item) => acc + item.total, 0);
-});
+const datos = ref([]);
+const total = ref([])
 
-
-const columnOptions = [
-  { label: 'Área', value: 'area' },
-  { label: 'Programa', value: 'programa' },
-  { label: 'Modalidad', value: 'modalidad' },
-  { label: 'Sexo', value: 'sexo' },
-  { label: 'Usuario', value: 'usuario' }
+const columns =  [
+    { title: 'Cod', dataIndex: 'codigo', width:'50px' },
+    { title: 'Programa de estudios', dataIndex: 'programa', align:'left'},
+    { title: 'Preinscripciones', dataIndex: 'preinscripciones', align:'center', width:'120px'  },
+    { title: 'Inscripciones', dataIndex: 'inscripciones', align:'center', width:'120px'},
+    { title: 'Diferencia', dataIndex: 'diferencia', align:'center', width:'120px' },
 ];
-
-const columns = computed(() => {
-  return [
-    ...selectedColumns.value.map(col => {
-      const option = columnOptions.find(opt => opt.value === col);
-      return {
-        title: option ? option.label : col,
-        dataIndex: col,
-        key: col,
-        align: 'left'
-      };
-    }),
-    {
-      title: 'Total',
-      dataIndex: 'total',
-      key: 'total',
-      align: 'center',
-      width: '90px',
-
-    }
-  ];
-});
-
 
 const getResumen = async () => {
   try {
-    let res = await axios.post("resumen-inscripciones?page=" + pagina.value, {
-      group_by: selectedColumns.value,
-      term: buscar.value
-    });
-    resumenes.value = res.data.data;
-    totalpaginas.value = res.data.datos.total;
+    let res = await axios.post("reporte-programa");
+    datos.value = res.data.datos;
+    total.value = res.data.totales;
   } catch (error) {
     // notification.error({ message: "Error", description: "No se pudo cargar los datos." });
   }
 }
-
-
-watch(selectedColumns, () => { getResumen() });
 watch(pagina, () => { getResumen() });
 
 
@@ -138,14 +101,11 @@ watch(buscar, () => {
   }, 500);
 });
 
-const fecha = new Date();
-
 const descargarDetalle = async () => {
   try {
-    const response = await axios.post('resumen-inscripciones',
+    const response = await axios.post('reporte-programa',
       {
         descargar: 1,
-        group_by: selectedColumns.value,
       },
       {
         responseType: 'blob'

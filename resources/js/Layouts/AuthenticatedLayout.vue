@@ -381,30 +381,31 @@ const menuItems = [
     key: 'reportes',
     icon: SettingFilled,
     label: 'Reportes',
-    children: [
-    {
+    children: [       
+      {
+        key: 'resumen_general',
+        icon: SettingFilled,
+        label: 'Resumen general',
+        route: 'admin-resumenes-general'
+      },
+      {
         key: 'resumen',
         icon: SettingFilled,
         label: 'Resumen inscripciones',
         route: 'admin-resumenes-inscripcion'
       },
+
       {
-        key: 'reppreinscripcion',
+        key: 'res_programa_diario',
         icon: SettingFilled,
-        label: 'Rep preninscripcion',
-        route: 'roles-index'
+        label: 'Rep programa diario',
+        route: 'admin-resumenes-programa-diario'
       },
       {
-        key: 'repinscripcion',
+        key: 'res_usuarios_diario',
         icon: SettingFilled,
-        label: 'Rep inscripciones',
-        route: 'roles-index'
-      },
-      {
-        key: 'inscripcionprograma',
-        icon: SettingFilled,
-        label: 'Rep biométrico',
-        route: 'usuarios-index'
+        label: 'Rep usuarios diario',
+        route: 'admin-resumenes-usuario-diario'
       },
       {
         key: 'ratio',
