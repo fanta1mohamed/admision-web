@@ -112,7 +112,7 @@ const columns = computed(() => {
       width: 20,
       align: 'center',
       fixed: 'left',
-      customHeaderCell: () => ({ style: { background: '#e3e3e3' } }),
+      customHeaderCell: () => ({ style: { background: '#c9c9c9' } }),
     },
     {
       title: 'PROGRAMA DE ESTUDIOS',
@@ -131,7 +131,7 @@ const columns = computed(() => {
       align: 'center',
       children: group.dates.map(fecha => ({
         title: fecha.split('-')[2],
-        dataIndex: `ins${fecha}`,
+        dataIndex: `ins_${fecha}`,
         key: `ins_${fecha}`,
         width: 30,
         customHeaderCell: () => ({ style: { background: '#e3e3e3', textAlign:'center', height: '40px', width:'40px', padding: '0 0px' } }),
