@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\File;
 class DescargarArchivosController extends Controller
 {
 
-  public function downloadZip()
+  public function downloadZip($carpeta)
 {
-    $folder = public_path('documentos/' . auth()->user()->id_proceso);
+    $folder = public_path('documentos/' . auth()->user()->id_proceso.'/inscripciones/'.$carpeta);
     $filename = 'documentos_' . auth()->user()->id_proceso . '.zip';
 
     return new StreamedResponse(function () use ($folder) {
