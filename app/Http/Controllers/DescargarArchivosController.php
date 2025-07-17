@@ -14,28 +14,60 @@ class DescargarArchivosController extends Controller
 {
 
   public function downloadZip()
-{
-    $folder = public_path('documentos/' . auth()->user()->id_proceso);
-    $filename = 'documentos_' . auth()->user()->id_proceso . '.zip';
+  {
+      $folder = public_path('documentos/' . auth()->user()->id_proceso);
+      $filename = 'documentos_' . auth()->user()->id_proceso . '.zip';
 
-    return new StreamedResponse(function () use ($folder) {
-        $options = new \ZipStream\Option\Archive();
-        $options->setSendHttpHeaders(true);
+      // Verificar si la carpeta existe
+      if (!File::exists($folder)) {
+          abort(404, 'La carpeta no existe');
+      }
 
-        $zip = new ZipStream(null, $options);
-        $files = File::allFiles($folder);
+      // Crear el archivo ZIP temporal
+      $zipPath = storage_path('app/temp_zips/' . $filename);
 
-        foreach ($files as $file) {
-            $relativePath = ltrim(str_replace($folder, '', $file->getPathname()), '/\\');
-            $zip->addFileFromPath($relativePath, $file->getRealPath());
-        }
+      // Asegurarse de que el directorio temporal existe
+      if (!File::exists(dirname($zipPath))) {
+          File::makeDirectory(dirname($zipPath), 0755, true);
+      }
 
-        $zip->finish();
-    }, 200, [
-        'Content-Type' => 'application/octet-stream',
-        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-    ]);
-}
+      // Crear el archivo ZIP (esto puede tomar tiempo para 10GB)
+      $zip = new ZipArchive();
+      if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+          $files = File::allFiles($folder);
+
+          foreach ($files as $file) {
+              $relativePath = ltrim(str_replace($folder, '', $file->getPathname()), '/\\');
+              $zip->addFile($file->getRealPath(), $relativePath);
+          }
+
+          $zip->close();
+      } else {
+          abort(500, 'No se pudo crear el archivo ZIP');
+      }
+
+      // Configurar headers para descarga chunked
+      $headers = [
+          'Content-Type' => 'application/zip',
+          'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+          'Content-Length' => filesize($zipPath),
+      ];
+
+      // Usar respuesta chunked para archivos grandes
+      $response = Response::stream(function () use ($zipPath) {
+          $stream = fopen($zipPath, 'rb');
+          while (!feof($stream)) {
+              echo fread($stream, 1024 * 1024); // Leer en chunks de 1MB
+              flush();
+          }
+          fclose($stream);
+
+          // Eliminar el archivo temporal después de la descarga
+          unlink($zipPath);
+      }, 200, $headers);
+
+      return $response;
+  }
 
 
 }
