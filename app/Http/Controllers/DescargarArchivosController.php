@@ -12,47 +12,32 @@ use Illuminate\Support\Facades\File;
 class DescargarArchivosController extends Controller
 {
 
-    public function downloadZip($nombre)
-    {
-          $folder = public_path('documentos/' . auth()->user()->id_proceso.'/inscripciones/'.$nombre);
-          $zipFile = storage_path('app/documentos.zip');
+    public function downloadZip()
+{
+    $folder = public_path('documentos/' . auth()->user()->id_proceso);
+    $filename = 'documentos_' . auth()->user()->id_proceso . '.zip';
 
-          $zip = new ZipArchive;
+    $response = new StreamedResponse(function () use ($folder) {
+        $zip = new \ZipStream\ZipStream(null, [
+            'outputName' => 'archivos.zip',
+            'sendHttpHeaders' => false,
+        ]);
 
-          if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-              $files = File::allFiles($folder);
+        $files = File::allFiles($folder);
 
-              foreach ($files as $file) {
-                  $relativeName = str_replace($folder . '/', '', $file->getRealPath());
-                  $zip->addFile($file->getRealPath(), $relativeName);
-              }
+        foreach ($files as $file) {
+            $relativeName = str_replace($folder . '/', '', $file->getRealPath());
+            $zip->addFileFromPath($relativeName, $file->getRealPath());
+        }
 
-              $zip->close();
+        $zip->finish();
+    });
 
-              $response = new StreamedResponse(function () use ($zipFile) {
-                  readfile($zipFile);
-              });
+    $response->headers->set('Content-Type', 'application/octet-stream');
+    $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
 
-              $filename = 'documentos_' . date('Ymd_His') . '.zip';
-
-              $response->headers->set('Content-Type', 'application/zip');
-              $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
-              $response->headers->set('Content-Length', filesize($zipFile));
-
-              // Eliminar archivo después de enviar
-              $response->headers->set('X-Delete-File-After-Send', 'true');
-
-              // Usar terminación del kernel para eliminar después
-              app()->terminating(function () use ($zipFile) {
-                  @unlink($zipFile);
-              });
-
-              return $response;
-          }
-
-          return response()->json(['error' => 'No se pudo crear el archivo ZIP.'], 500);
-
-    }
+    return $response;
+}
 
 
 }

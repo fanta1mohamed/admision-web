@@ -303,7 +303,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
     Route::post('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
 
-    Route::get('/descargar-documentos/{n}', [DescargarArchivosController::class, 'downloadZip']);
+    Route::get('/descargar-documentos', [DescargarArchivosController::class, 'downloadZip']);
 
 
 });
