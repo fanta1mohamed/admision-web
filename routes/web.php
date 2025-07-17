@@ -303,8 +303,15 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
     Route::post('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
 
-    Route::get('/descargar-documentos', [DescargarArchivosController::class, 'downloadZip']);
+    Route::get('/descargar-documentos', fn () => Inertia::render('Procesos/temp'));
+    Route::post('/admin/descargar-documentos/prepare', [DescargarArchivosController::class, 'prepareDownload'])
+        ->name('download.prepare');
 
+    Route::get('/admin/descargar-documentos/status', [DescargarArchivosController::class, 'downloadStatus'])
+        ->name('download.status');
+
+    Route::get('/admin/descargar-documentos/download/{filename}', [DescargarArchivosController::class, 'downloadPreparedZip'])
+        ->name('download.prepared');
 
 });
 

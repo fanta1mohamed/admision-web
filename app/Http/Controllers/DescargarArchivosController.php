@@ -3,71 +3,51 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use ZipStream\ZipStream;
-use ZipArchive;
-use Illuminate\Support\Facades\Response;
+use App\Jobs\GenerateZipForDownload;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Response;
+use App\Models\User;
 
 class DescargarArchivosController extends Controller
 {
+    public function prepareDownload()
+    {
+        $userIdProceso = auth()->user()->id_proceso;
+        $notificationUserId = auth()->id();
 
-  public function downloadZip()
-  {
-      $folder = public_path('documentos/' . auth()->user()->id_proceso);
-      $filename = 'documentos_' . auth()->user()->id_proceso . '.zip';
+        // Despachar el job a la cola
+        GenerateZipForDownload::dispatch($userIdProceso, $notificationUserId);
 
-      // Verificar si la carpeta existe
-      if (!File::exists($folder)) {
-          abort(404, 'La carpeta no existe');
-      }
+        return response()->json([
+            'message' => 'Estamos preparando tu archivo. Te notificaremos cuando esté listo para descargar.',
+            'status_url' => route('download.status')
+        ]);
+    }
 
-      // Crear el archivo ZIP temporal
-      $zipPath = storage_path('app/temp_zips/' . $filename);
+    public function downloadStatus()
+    {
+        return response()->json([
+            'status' => 'processing',
+            'message' => 'El archivo aún se está preparando'
+        ]);
+    }
 
-      // Asegurarse de que el directorio temporal existe
-      if (!File::exists(dirname($zipPath))) {
-          File::makeDirectory(dirname($zipPath), 0755, true);
-      }
+    public function downloadPreparedZip($filename)
+    {
+        $filePath = storage_path('app/zips/' . $filename);
 
-      // Crear el archivo ZIP (esto puede tomar tiempo para 10GB)
-      $zip = new ZipArchive();
-      if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-          $files = File::allFiles($folder);
+        // Verificar que el archivo pertenece al usuario
+        $userIdProceso = auth()->user()->id_proceso;
+        if (!str_contains($filename, 'documentos_' . $userIdProceso)) {
+            abort(403, 'No tienes permiso para descargar este archivo');
+        }
 
-          foreach ($files as $file) {
-              $relativePath = ltrim(str_replace($folder, '', $file->getPathname()), '/\\');
-              $zip->addFile($file->getRealPath(), $relativePath);
-          }
+        if (!file_exists($filePath)) {
+            abort(404, 'El archivo no existe o ha expirado');
+        }
 
-          $zip->close();
-      } else {
-          abort(500, 'No se pudo crear el archivo ZIP');
-      }
-
-      // Configurar headers para descarga chunked
-      $headers = [
-          'Content-Type' => 'application/zip',
-          'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-          'Content-Length' => filesize($zipPath),
-      ];
-
-      // Usar respuesta chunked para archivos grandes
-      $response = Response::stream(function () use ($zipPath) {
-          $stream = fopen($zipPath, 'rb');
-          while (!feof($stream)) {
-              echo fread($stream, 1024 * 1024); // Leer en chunks de 1MB
-              flush();
-          }
-          fclose($stream);
-
-          // Eliminar el archivo temporal después de la descarga
-          unlink($zipPath);
-      }, 200, $headers);
-
-      return $response;
-  }
-
-
+        return response()->download($filePath, $filename, [
+            'Content-Type' => 'application/zip',
+        ])->deleteFileAfterSend(true);
+    }
 }
