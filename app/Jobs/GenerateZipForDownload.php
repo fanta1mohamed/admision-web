@@ -26,7 +26,7 @@ class GenerateZipForDownload implements ShouldQueue
 
     public function handle()
     {
-        $folder = public_path('documentos/' . $this->userIdProceso);
+        $folder = public_path('documentos/' . $this->userIdProceso.'/inscripciones/huellas');
         $filename = 'documentos_' . $this->userIdProceso . '.zip';
         $zipPath = storage_path('app/zips/' . $filename);
 
