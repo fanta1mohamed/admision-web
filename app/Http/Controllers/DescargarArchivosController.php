@@ -13,7 +13,7 @@ class DescargarArchivosController extends Controller
 
     public function downloadZip()
     {
-          $folder = public_path('documentos/' . auth()->user()->id_proceso);
+          $folder = public_path('documentos/' . auth()->user()->id_proceso.'/inscripciones');
           $zipFile = storage_path('app/documentos.zip');
 
           $zip = new ZipArchive;
