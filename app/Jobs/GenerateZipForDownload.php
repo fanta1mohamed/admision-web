@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 use ZipArchive;
 
 class GenerateZipForDownload implements ShouldQueue
@@ -46,7 +47,6 @@ class GenerateZipForDownload implements ShouldQueue
 
             $zip->close();
 
-            // Notificar al usuario que el archivo está listo
             $user = User::find($this->notificationUserId);
             $user->notify(new ZipReadyNotification($filename));
 
