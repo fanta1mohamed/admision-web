@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\File;
 class DescargarArchivosController extends Controller
 {
 
-    public function downloadZip()
+    public function downloadZip($nombre)
     {
-          $folder = public_path('documentos/' . auth()->user()->id_proceso.'/inscripciones');
+          $folder = public_path('documentos/' . auth()->user()->id_proceso.'/inscripciones/'.$nombre);
           $zipFile = storage_path('app/documentos.zip');
 
           $zip = new ZipArchive;
