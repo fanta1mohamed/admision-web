@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use ZipArchive;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
