@@ -48,11 +48,10 @@ use App\Http\Controllers\DniController;
 use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ReglamentoController;
+use App\Http\Controllers\RatioController;
 use App\Http\Controllers\CarrerasPreviasController;
 use App\Http\Controllers\ResumenInscripcionesController;
 use App\Http\Controllers\DescargarArchivosController;
-
-
 use App\Http\Controllers\SyncController;
 use Inertia\Inertia;
 
@@ -302,6 +301,9 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/reporte-programa', [ReporteController::class, 'reportePrograma'])->middleware('auth');
     Route::post('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
     Route::post('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
+    Route::post('/get-ratio', [RatioController::class, 'getRatio']);
+    Route::get('/ratio', fn () => Inertia::render('Admin/Resumenes/ratio'))->name('admin-ratio');
+    
 
     Route::get('/descargar-documentos', fn () => Inertia::render('Procesos/temp'));
     Route::post('/admin/descargar-documentos/prepare', [DescargarArchivosController::class, 'prepareDownload'])

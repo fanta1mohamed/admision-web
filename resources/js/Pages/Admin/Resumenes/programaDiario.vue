@@ -11,11 +11,11 @@
     <div style="font-size: 0.7rem">
       <a-table
         :columns="columns"
-        :data-source="tableData"
-        bordered
-        size="small"
+        :data-source="datos"
         :pagination="false"
-        :scroll="{ x: 200, y: 'calc(100vh - 280px)' }"
+        size="small"
+        :rowClassName="rowClassName"
+        :scroll="{ x: 200, y: 'calc(100vh - 240px)' }"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'programa'">
@@ -60,7 +60,6 @@
 </AuthenticatedLayout>
 </template>
 
-
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
@@ -72,6 +71,7 @@ const fechas = ref([]);
 const totales = ref([{ total_inscripciones: 0 }]);
 const loading = ref(false);
 const error = ref(null);
+const numeroFilasAmarillas = ref(8); // Variable añadida aquí
 
 onMounted(async () => {
   try {
@@ -153,18 +153,9 @@ const columns = computed(() => {
   return base;
 });
 
-const tableData = computed(() => {
-  if (!datos.value || datos.value.length === 0) {
-    return [{
-      key: 'no-data',
-      codigo: '',
-      programa: error.value ? 'Error al cargar datos' : 'No se encontraron datos',
-      ...Object.fromEntries((fechas.value || []).map(f => [`ins_${f}`, ''])),
-      inscripciones: '',
-    }];
-  }
-  return datos.value.map((item, index) => ({ key: index, ...item }));
-});
+const rowClassName = (record, index) => {
+  return index < numeroFilasAmarillas.value ? 'fila-amarilla' : '';
+};
 
 const totalInscripciones = computed(() => {
   return totales.value[0]?.total_inscripciones || 0;
@@ -209,10 +200,11 @@ const descargarDetalle = async () => {
 };
 </script>
 
-
 <style>
-
-
+.fila-amarilla,
+.fila-amarilla > td {
+  background-color: #fff9cc !important;
+}
 ::-webkit-scrollbar { 
   width: 9px; 
   height: 12px;
@@ -270,6 +262,4 @@ const descargarDetalle = async () => {
   margin-right: 8px;     /* opcional: espacio lateral */
   margin-bottom: 8px;    /* espacio entre filas */
 }
-
-
 </style>

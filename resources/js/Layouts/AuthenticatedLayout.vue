@@ -411,7 +411,7 @@ const menuItems = [
         key: 'ratio',
         icon: SettingFilled,
         label: 'Ratio',
-        route: 'usuarios-index'
+        route: 'admin-ratio'
       },
 
       {
