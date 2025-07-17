@@ -50,6 +50,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ReglamentoController;
 use App\Http\Controllers\CarrerasPreviasController;
 use App\Http\Controllers\ResumenInscripcionesController;
+use App\Http\Controllers\DescargarArchivosController;
 
 
 use App\Http\Controllers\SyncController;
@@ -302,7 +303,7 @@ Route::prefix('admin')->middleware('auth','admin')->group(function () {
     Route::post('/reporte-programa-diario', [ReporteController::class, 'reporteProgramaDiario'])->middleware('auth');
     Route::post('/reporte-usuarios', [ReporteController::class, 'reporteUsuarios'])->middleware('auth');
 
-
+    Route::get('/descargar-documentos', [DescargarArchivosController::class, 'downloadZip']);
 
 
 });
