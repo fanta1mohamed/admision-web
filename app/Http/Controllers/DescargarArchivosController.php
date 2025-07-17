@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\File;
 class DescargarArchivosController extends Controller
 {
 
-  public function downloadZip($carpeta)
+  public function downloadZip()
 {
     $folder = public_path('documentos/' . auth()->user()->id_proceso);
     $filename = 'documentos_' . auth()->user()->id_proceso . '.zip';
