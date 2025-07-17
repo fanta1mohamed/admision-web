@@ -15,7 +15,7 @@ class DescargarArchivosController extends Controller
 
   public function downloadZip($carpeta)
 {
-    $folder = public_path('documentos/' . auth()->user()->id_proceso.'/inscripciones/'.$carpeta);
+    $folder = public_path('documentos/' . auth()->user()->id_proceso);
     $filename = 'documentos_' . auth()->user()->id_proceso . '.zip';
 
     return new StreamedResponse(function () use ($folder) {
