@@ -548,93 +548,82 @@ class PostulanteController extends Controller
   }
 
 
-    public function getCarrerasPrevias(Request $request)
-    {
-        $participante = $request->input('participante', null);
-        $formState = $request->input('formState', null);
-        $dni = $participante ? $participante['dni'] : ($formState ? $formState : null);
+  public function getCarrerasPrevias(Request $request)
+  {
+      $participante = $request->input('participante', null);
+      $formState = $request->input('formState', null);
+      $dni = $participante ? $participante['dni'] : ($formState ? $formState : null);
 
-        if (!$dni) {
-            return response()->json([
-                'anteriores' => [],
-                'loading' => false,
-                'modalSancionado' => false,
-                'confirmacion' => false,
-                'message' => 'No se proporcionaron datos válidos'
-            ], 400);
-        }
+      if (!$dni) {
+          return response()->json([
+              'anteriores' => [],
+              'loading' => false,
+              'modalSancionado' => false,
+              'confirmacion' => false,
+              'message' => 'No se proporcionaron datos válidos'
+          ], 400);
+      }
 
-        $payload = [ 
-            'doc_' => $formState, 
-            'nom_' => 'DIRECCIÓN', 
-            'app_' => 'ADMISIÓN', 
-            'apm_' => 'UNAP'
-        ];
+      $payload = [ 'doc_' => $formState, 'nom_' => 'DIRECCIÓN', 'app_' => 'ADMISIÓN', 'apm_' => 'UNAP'];
 
-        try {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json'
-            ])->post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', $payload);
+      try {
+          $response = Http::timeout(5)->withHeaders([
+              'Content-Type' => 'application/json'
+          ])->post('https://service2.unap.edu.pe/TieneCarrerasPrevias/', $payload);
 
-            $data = $response->json();
+          $data = $response->json();
+      } catch (\Exception $e) {
+          return response()->json([
+              'anteriores' => [],
+              'loading' => false,
+              'modalSancionado' => false,
+              'confirmacion' => false,
+              'message' => 'Servicio no disponible'
+          ]);
+      }
 
-            $isCountable = is_array($data) || $data instanceof Countable;
+      if ((is_array($data) || $data instanceof Countable) && count($data) > 0) {
+          foreach ($data as $item) {
+              CarrerasPrevias::updateOrCreate(
+                  [
+                      'dni_postulante' => $dni,
+                      'cod_car' => $item['careerId'],
+                  ],
+                  [
+                      'codigo' => $item['code'],
+                      'nombre' => $item['name'],
+                      'condicion' => $item['cond1tion'],
+                  ]
+              );
+          }
 
-            if ($isCountable && count($data) > 0) {
-                foreach ($data as $item) {
-                    CarrerasPrevias::updateOrCreate(
-                        [
-                            'dni_postulante' => $dni,
-                            'cod_car' => $item['careerId'],
-                        ],
-                        [
-                            'codigo' => $item['code'],
-                            'nombre' => $item['name'],
-                            'condicion' => $item['cond1tion'],
-                        ]
-                    );
-                }
+          if (count($data) == 1) {
+              return response()->json([
+                  'anteriores' => [],
+                  'loading' => false,
+                  'modalSancionado' => false,
+                  'confirmacion' => false,
+                  'message' => 'No tiene carreras previas'
+              ]);
+          }
 
-                if (count($data) == 1) {
-                    return response()->json([
-                        'anteriores' => [],
-                        'loading' => false,
-                        'modalSancionado' => false,
-                        'confirmacion' => false,
-                        'message' => 'No tiene carreras previas'
-                    ]);
-                }
+          return response()->json([
+              'anteriores' => $data,
+              'loading' => false,
+              'modalSancionado' => false,
+              'confirmacion' => false,
+              'message' => 'Tiene carreras previas'
+          ]);
+      }
 
-                return response()->json([
-                    'anteriores' => $data,
-                    'loading' => false,
-                    'modalSancionado' => false,
-                    'confirmacion' => false,
-                    'message' => 'Tiene carreras previas'
-                ]);
-            }
-
-            // Si no hay datos o la respuesta es vacía
-            return response()->json([
-                'anteriores' => [],
-                'loading' => false,
-                'modalSancionado' => false,
-                'confirmacion' => false,
-                'message' => 'No tiene carreras previas'
-            ]);
-        } catch (Throwable $e) {
-            // Log opcional para monitoreo
-            Log::error('Error consultando carreras previas: ' . $e->getMessage());
-
-            return response()->json([
-                'anteriores' => [],
-                'loading' => false,
-                'modalSancionado' => false,
-                'confirmacion' => false,
-                'message' => 'No se pudo consultar carreras previas'
-            ]);
-        }
-    }
+      return response()->json([
+          'anteriores' => [],
+          'loading' => false,
+          'modalSancionado' => false,
+          'confirmacion' => false,
+          'message' => 'No tiene carreras previas'
+      ]);
+  }
 
 
     //segundas
