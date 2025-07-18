@@ -49,6 +49,7 @@ use App\Http\Controllers\DocumentoSegundaController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ReglamentoController;
 use App\Http\Controllers\RatioController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\CarrerasPreviasController;
 use App\Http\Controllers\ResumenInscripcionesController;
 use App\Http\Controllers\DescargarArchivosController;
@@ -759,6 +760,10 @@ Route::get('verificacion-fotos', fn () => Inertia::render('VerfificacionD/index'
 Route::post('/export-excel', [ExcelController::class, 'export'])->name('users.export');
 
 Route::get('/phpinfo', function () { phpinfo();});
+
+Route::get('/notifiacion-correo', function () { return view('emails.notificaciones.notificacion_puerta'); });
+#Route::get('/email-comunicado', [EmailController::class, 'enviarComunicado']);
+Route::get('/prueba-correo', [EmailController::class, 'enviarCorreo']);
 
 
 require __DIR__.'/auth.php';
